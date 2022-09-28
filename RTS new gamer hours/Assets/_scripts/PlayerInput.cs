@@ -14,6 +14,11 @@ public class PlayerInput : MonoBehaviour
     private static readonly string inputSelectUnits = "SelectUnits";
     private static readonly string inputDeselectUnits = "DeselectUnits";
     private static readonly string inputRallyTroops = "RallyTroops";
+    private static readonly string inputToggleCycleMenu = "ToggleCycleMenu";
+    private static readonly string inputCycleRight = "Cycle Right";
+    private static readonly string inputCycleLeft = "Cycle Left";
+    private static readonly string inputBack = "Back";
+    private static readonly string inputSelect = "Select";
 
     public static string GetInputMoveHorizontal => inputMoveHorizontal;
     public static string GetInputMoveVertical => inputMoveVertical;
@@ -22,8 +27,19 @@ public class PlayerInput : MonoBehaviour
     public static string GetInputSelectUnits => inputSelectUnits;
     public static string GetInputDeselectUnits => inputDeselectUnits;
     public static string GetInputRallyTroops => inputRallyTroops;
+    public static string GetInputToggleCycleMenu => inputToggleCycleMenu;
+    public static string GetCycleRight => inputCycleRight;
+    public static string GetCycleLeft => inputCycleLeft;
+    public static string GetInputBack => inputBack;
+    public static string GetInputSelect => inputSelect;
 
     public static List<Player> players;
+
+
+
+    private static bool[] playerIsInMenu = new bool[4] { false, false, false, false };
+    public static bool GetPlayerIsInMenu(int playerID) => playerIsInMenu[playerID];
+    public static void SetPlayerIsInMenu(int playerID, bool inMenu) => playerIsInMenu[playerID] = inMenu;
 
     private static float[] vibrateControllerCounter = new float[4];
     private static float[] vibrateDurationMultiplier = new float[4];

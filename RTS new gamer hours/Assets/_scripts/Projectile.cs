@@ -2,8 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof (Rigidbody))]
 public class Projectile : MonoBehaviour
 {
+    private float damage = 0;
+    private Rigidbody rb;
+
+    private void Start()
+    {
+        rb = GetComponent<Rigidbody>();
+    }
+
+    public void Launch (Vector3 target, float force, float damage)
+    {
+        this.damage = damage;
+        SetTrajectory (rb, target, force);
+    }
     /// <summary>
     /// Applies the force to the Rigidbody such that it will land, if unobstructed, at the target position.  The arch [0, 1] determines the percent of arch to provide between the minimum and maximum arch.  If target is out of range, it will fail to launch and return false; otherwise, it will launch and return true.  This only takes the Y gravity into account, and X gravity will not affect the trajectory.
     /// </summary>

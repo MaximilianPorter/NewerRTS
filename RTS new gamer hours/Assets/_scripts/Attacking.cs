@@ -15,6 +15,7 @@ public class Attacking : MonoBehaviour
     [SerializeField] private UnitStats stats;
     [SerializeField] private bool isRanged = true;
     [SerializeField] private float range = 5f;
+    [SerializeField] private float damage = 1f;
     [SerializeField] private float projectileForce;
     [SerializeField] private GameObject projectile;
 
@@ -39,6 +40,7 @@ public class Attacking : MonoBehaviour
         {
             isRanged = stats.isRanged;
             range = stats.range;
+            damage = stats.damage;
             projectileForce = stats.projectileForce;
             projectile = stats.projectile;
         }
@@ -125,8 +127,8 @@ public class Attacking : MonoBehaviour
 
     private void Shoot ()
     {
-        Rigidbody projInstance = Instantiate(projectile, firePoint.position, Quaternion.identity).GetComponent<Rigidbody>();
-        Projectile.SetTrajectory(projInstance, target.position, projectileForce);
+        Projectile projInstance = Instantiate(projectile, firePoint.position, Quaternion.identity).GetComponent<Projectile>();
+        projInstance.Launch(target.position, damage, projectileForce);
     }
 
     private void OnDrawGizmosSelected()

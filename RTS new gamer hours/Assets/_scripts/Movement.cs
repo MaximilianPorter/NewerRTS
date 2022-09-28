@@ -24,16 +24,12 @@ public class Movement : MonoBehaviour
     [SerializeField] private PhysicMaterial groundedMat;
     [SerializeField] private PhysicMaterial inAirMat;
 
-    [SerializeField] private GameObject selectedGO;
-
     private bool isGrounded = false;
     private RaycastHit groundHitPoint;
-    private Vector3 debugRandomPoint;
     private Vector3 moveTarget = Vector3.zero;
     private Transform lookAtTarget;
     private Rigidbody rb;
     private BoxCollider col;
-    private bool isSelected = false;
 
     private bool canMove = true;
     private Vector3 moveInput = Vector3.zero;
@@ -42,8 +38,6 @@ public class Movement : MonoBehaviour
 
     public float GetMaxMoveSpeed => maxMoveSpeed;
     public bool GetIsGrounded => isGrounded;
-    public void SetIsSelected (bool yes) => isSelected = yes;
-    public bool GetIsSelected => isSelected;
     public bool GetCanMove => canMove;
     public Vector3 GetMoveTarget => moveTarget;
 
@@ -56,11 +50,6 @@ public class Movement : MonoBehaviour
 
         rb = GetComponent<Rigidbody>();
         col = GetComponent<BoxCollider>();
-
-        float x = Random.Range(-40f, 40f);
-        float y = transform.position.y;
-        float z = Random.Range(-40f, 40f);
-        debugRandomPoint = new Vector3 (x, y, z);
 
         if (stats)
         {
@@ -83,8 +72,6 @@ public class Movement : MonoBehaviour
         else
         {
             moveInput = moveTarget == Vector3.zero ? Vector3.zero : (moveTarget - transform.position).normalized;
-
-            selectedGO.SetActive(isSelected);
         }
         moveInput.y = 0;
 
@@ -102,10 +89,12 @@ public class Movement : MonoBehaviour
         // update friction
         col.material = isGrounded ? groundedMat : inAirMat;
 
-        canMove = (new Vector3 (moveTarget.x, transform.position.y, moveTarget.z) - transform.position).sqrMagnitude > stopMovingDist * stopMovingDist
-            && moveInput != Vector3.zero;
+        canMove = (new Vector3(moveTarget.x, transform.position.y, moveTarget.z) - transform.position).sqrMagnitude > stopMovingDist * stopMovingDist
+            && moveInput != Vector3.zero
+            && ((playerIdentifier.GetIsPlayer && !PlayerInput.GetPlayerIsInMenu(playerIdentifier.GetPlayerID)) || !playerIdentifier.GetIsPlayer);
 
-        
+
+
 
         if (!playerIdentifier.GetIsPlayer)
         {
