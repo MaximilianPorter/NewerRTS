@@ -8,7 +8,7 @@ public class MapGenerationManager : MonoBehaviour
 
     [Header("Trees")]
     [SerializeField] private GameObject[] trees;
-    [SerializeField][Range(0.1f, 1f)] private float density = 1f;
+    [SerializeField][Range(0.1f, 5f)] private float density = 1f;
     [SerializeField] private float randomTreeOffset = 0.5f;
     //[SerializeField] private int treeAmt = 100;
     [SerializeField][Range(0f, 1f)] private float spawnThreshold = 0.5f;

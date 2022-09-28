@@ -178,7 +178,7 @@ public class PlayerBuilding : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (hoveringBuilding == other.GetComponent<Building>())
+        if (hoveringBuilding && hoveringBuilding == other.GetComponent<Building>())
         {
             hoveringBuilding.PlayerHover(false);
             hoveringBuilding = null;
