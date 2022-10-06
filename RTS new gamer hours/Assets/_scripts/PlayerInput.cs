@@ -9,8 +9,11 @@ public class PlayerInput : MonoBehaviour
 {
     private static readonly string inputMoveHorizontal = "Move Horizontal";
     private static readonly string inputMoveVertical = "Move Vertical";
+    private static readonly string inputLookHorizontal = "Look Horizontal";
+    private static readonly string inputLookVertical = "Look Vertical";
     private static readonly string inputJump = "Jump";
     private static readonly string inputAttack = "Attack";
+    private static readonly string inputBlock = "Block";
     private static readonly string inputSelectUnits = "SelectUnits";
     private static readonly string inputDeselectUnits = "DeselectUnits";
     private static readonly string inputRallyTroops = "RallyTroops";
@@ -22,8 +25,11 @@ public class PlayerInput : MonoBehaviour
 
     public static string GetInputMoveHorizontal => inputMoveHorizontal;
     public static string GetInputMoveVertical => inputMoveVertical;
+    public static string GetInputLookHorizontal => inputLookHorizontal;
+    public static string GetInputLookVertical => inputLookVertical;
     public static string GetInputJump => inputJump;
     public static string GetInputAttack => inputAttack;
+    public static string GetInputBlock => inputBlock;
     public static string GetInputSelectUnits => inputSelectUnits;
     public static string GetInputDeselectUnits => inputDeselectUnits;
     public static string GetInputRallyTroops => inputRallyTroops;

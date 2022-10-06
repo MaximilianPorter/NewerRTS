@@ -147,15 +147,18 @@ public class PlayerBuilding : MonoBehaviour
             {
                 // if we're in range of a building
                 // open build menu
-                cycleMenu.transform.position = mainCam.WorldToScreenPoint(transform.position + (Vector3)cycleMenuOffset);
                 cycleMenuIsOpen = true;
                 unitSelection.DeselectUnits();
             }
 
         }
 
+
+
         if (cycleMenuIsOpen)
         {
+            cycleMenu.transform.position = mainCam.WorldToScreenPoint(transform.position + (Vector3)cycleMenuOffset);
+
             if (PlayerInput.players[identifier.GetPlayerID].GetButtonDown(PlayerInput.GetInputBack))
                 cycleMenuIsOpen = false;
 

@@ -27,9 +27,11 @@ public class UnitSelection : MonoBehaviour
     {
         // if the player is in a menu, we don't do unit selection updates
         if (PlayerInput.GetPlayerIsInMenu(identifier.GetPlayerID))
-        {
             return;
-        }
+
+        // if the player has no troops, we don't do unit selection updates
+        if (PlayerHolder.GetUnits(identifier.GetPlayerID).Count <= 0)
+            return;
 
         // deselect units when you're selecting new ones
         if (PlayerInput.players[identifier.GetPlayerID].GetButtonSinglePressDown(PlayerInput.GetInputSelectUnits))

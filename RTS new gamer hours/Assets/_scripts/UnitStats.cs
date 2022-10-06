@@ -10,6 +10,7 @@ public class UnitStats : ScriptableObject
     public float health;
     public float damage;
     public float timeBetweenAttacks;
+    public float slowMultiplierBlocking = 0.2f;
 
     [Header("Ranged")]
     public bool isRanged = false;

@@ -8,6 +8,7 @@ public class MapGenerationManager : MonoBehaviour
 
     [Header("Trees")]
     [SerializeField] private GameObject[] trees;
+    [SerializeField] private bool randomRotation = true;
     [SerializeField][Range(0.1f, 5f)] private float density = 1f;
     [SerializeField] private float randomTreeOffset = 0.5f;
     //[SerializeField] private int treeAmt = 100;
@@ -43,7 +44,8 @@ public class MapGenerationManager : MonoBehaviour
     {
         if (randomSeed)
             seed = Random.Range(0, 100000000);
-        
+
+        Random.InitState(seed);
     }
 
     private void Start()
@@ -75,11 +77,12 @@ public class MapGenerationManager : MonoBehaviour
                     // check if raycast hit a layer in groundmask
                     if (groundMask == (groundMask | (1 << hit.transform.gameObject.layer)))
                     {
-
                         Vector3 randomOffset = new Vector3(Random.Range(-randomTreeOffset, randomTreeOffset), 0f, Random.Range(-randomTreeOffset, randomTreeOffset));
-                        //Quaternion randRot = Quaternion.Lerp(Quaternion.LookRotation(Vector3.forward, Vector3.up), Quaternion.LookRotation(-Vector3.forward, Vector3.up), Random.Range(0f, 1f));
+                        Quaternion randRot = Quaternion.Lerp(Quaternion.LookRotation(Vector3.forward, Vector3.up), Quaternion.LookRotation(-Vector3.forward, Vector3.up), Random.Range(0f, 1f));
 
-                        GameObject treeInstance = Instantiate(trees[Random.Range(0, trees.Length)], hit.point + randomOffset, Quaternion.identity, treeParent.transform);
+                        GameObject treeInstance = Instantiate(trees[Random.Range(0, trees.Length)], hit.point + randomOffset,
+                            randomRotation ? randRot : Quaternion.identity,
+                            treeParent.transform);
                         spawnedTrees.Add(treeInstance);
                     }
                 }

@@ -9,7 +9,7 @@ public class Movement : MonoBehaviour
     [Header("Stats")]
     [SerializeField] private UnitStats stats;
     [SerializeField] private float moveForce = 10f;
-    [SerializeField] private float maxMoveSpeed = 10f;
+    [SerializeField] private float maxMoveSpeed = 5f;
     [SerializeField] private float stopMovingDist = 0.02f;
 
     [Space(10)]
@@ -30,6 +30,8 @@ public class Movement : MonoBehaviour
     private Transform lookAtTarget;
     private Rigidbody rb;
     private BoxCollider col;
+    private float slowMultiplier = 1f;
+    private int currentSlowPriority = 0;
 
     private bool canMove = true;
     private Vector3 moveInput = Vector3.zero;
@@ -119,8 +121,8 @@ public class Movement : MonoBehaviour
         {
             rb.AddForce(transform.forward * moveForce * moveInput.magnitude, ForceMode.Force);
             Vector3 clampedVelocity = rb.velocity;
-            clampedVelocity.x = Mathf.Clamp(clampedVelocity.x, -maxMoveSpeed, maxMoveSpeed);
-            clampedVelocity.z = Mathf.Clamp(clampedVelocity.z, -maxMoveSpeed, maxMoveSpeed);
+            clampedVelocity.x = Mathf.Clamp(clampedVelocity.x, -maxMoveSpeed * slowMultiplier, maxMoveSpeed * slowMultiplier);
+            clampedVelocity.z = Mathf.Clamp(clampedVelocity.z, -maxMoveSpeed * slowMultiplier, maxMoveSpeed * slowMultiplier);
             clampedVelocity.y -= extraGravity * Time.fixedDeltaTime;
             rb.velocity = clampedVelocity;
         }
@@ -138,7 +140,21 @@ public class Movement : MonoBehaviour
         lookAtTarget = newLookAtTarget;
     }
 
-
+    /// <summary>
+    /// Sets the value of the slowMultiplier to determine the max movespeed (maxmovespeed * multiplier)
+    /// </summary>
+    /// <param name="priority"> if this value is higher than the current value, it will override the multiplier </param>
+    /// <param name="multiplier"> 0 - 1 0=not moving, 1=normal movement </param>
+    /// <returns>returns true if setting the multiplier was succesful</returns>
+    public bool SetSlowMultiplier (int priority, float multiplier)
+    {
+        if (priority >= currentSlowPriority)
+        {
+            slowMultiplier = multiplier;
+            return true;
+        }
+        return false;
+    }
 
     private void LookTowards (Vector3 dir)
     {

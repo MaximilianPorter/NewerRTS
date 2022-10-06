@@ -9,15 +9,21 @@ public class Attacking : MonoBehaviour
     [SerializeField] private Transform swordHolder;
     [SerializeField] private Transform rightHandTarget;
 
+    [SerializeField] private Animator shieldAnimator;
+    [SerializeField] private Transform shieldHolder;
+    [SerializeField] private Transform leftHandTarget;
+
     private Identifier playerIdentifier;
 
     [Header("Stats")]
     [SerializeField] private UnitStats stats;
     [SerializeField] private bool isRanged = true;
     [SerializeField] private float range = 5f;
+    [SerializeField] private float timeBetweenAttacks = 0.5f;
     [SerializeField] private float damage = 1f;
     [SerializeField] private float projectileForce;
     [SerializeField] private GameObject projectile;
+    [SerializeField] private float slowMultiplierBlocking = 0.2f;
 
     [Space(10)]
 
@@ -29,6 +35,8 @@ public class Attacking : MonoBehaviour
     private Movement movement;
     private Transform target;
     private Transform nearestEnemy;
+    private bool canAttack = true;
+    private float attackCounter = 10000f;
     public Transform GetNearestEnemy => nearestEnemy;
 
     private void Awake()
@@ -41,8 +49,10 @@ public class Attacking : MonoBehaviour
             isRanged = stats.isRanged;
             range = stats.range;
             damage = stats.damage;
+            timeBetweenAttacks = stats.timeBetweenAttacks;
             projectileForce = stats.projectileForce;
             projectile = stats.projectile;
+            slowMultiplierBlocking = stats.slowMultiplierBlocking;
         }
     }
 
@@ -50,14 +60,24 @@ public class Attacking : MonoBehaviour
     {
         if (playerIdentifier.GetIsPlayer)
         {
-            if (PlayerInput.players[playerIdentifier.GetPlayerID].GetButtonDown(PlayerInput.GetInputAttack))
+            if (canAttack && PlayerInput.players[playerIdentifier.GetPlayerID].GetButton(PlayerInput.GetInputAttack) && !shieldAnimator.GetBool("isBlocking"))
             {
                 swordAnimator.SetTrigger("Attack");
                 PlayerInput.VibrateController(playerIdentifier.GetPlayerID, .5f, .2f);
+                Attack();
             }
 
+            bool isBlocking = PlayerInput.players[playerIdentifier.GetPlayerID].GetButton(PlayerInput.GetInputBlock);
+            swordAnimator.SetBool ("isBlocking", isBlocking);
+            shieldAnimator.SetBool("isBlocking", isBlocking);
+            if (isBlocking)
+                movement.SetSlowMultiplier(0, slowMultiplierBlocking);
+            else
+                movement.SetSlowMultiplier(0, 1f);
         }
         rightHandTarget.position = swordHolder.position;
+        if (shieldHolder)
+            leftHandTarget.position = shieldHolder.position;
 
         if (debugShoot)
         {
@@ -69,6 +89,8 @@ public class Attacking : MonoBehaviour
         {
             NonPlayerBehaviour();
         }
+
+        HandleAttackingTime();
     }
 
     private void FixedUpdate()
@@ -79,7 +101,7 @@ public class Attacking : MonoBehaviour
         }
     }
 
-    private void NonPlayerBehaviour ()
+    private void NonPlayerBehaviour()
     {
         if (nearestEnemy != null)
         {
@@ -96,11 +118,32 @@ public class Attacking : MonoBehaviour
             {
                 movement.SetMoveTarget(nearestEnemy.position);
             }
+
+            // if you're able to attack and there's an enemy
+            if (canAttack)
+            {
+                Attack();
+            }
         }
         else
         {
             movement.SetLookAt(null);
 
+        }
+    }
+
+    private void HandleAttackingTime ()
+    {
+        attackCounter += Time.deltaTime;
+        canAttack = attackCounter > timeBetweenAttacks;
+    }
+    private void Attack ()
+    {
+        attackCounter = 0f;
+        
+        if (isRanged)
+        {
+            Shoot();
         }
     }
 
