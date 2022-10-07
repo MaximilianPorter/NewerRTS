@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
+using UnityEditor.TerrainTools;
 
 public class Identifier : MonoBehaviour
 {

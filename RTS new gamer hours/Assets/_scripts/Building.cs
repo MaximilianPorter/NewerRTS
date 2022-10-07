@@ -6,16 +6,15 @@ using static UnityEditor.Experimental.GraphView.GraphView;
 [RequireComponent(typeof(Identifier))]
 public class Building : MonoBehaviour
 {
-    [SerializeField] private GameObject playerHoverEffect;
+    [SerializeField] private BuildingStats stats;
     [SerializeField] private bool debugSpawnUnit = false;
     [SerializeField] private Transform rallyPoint;
-    [SerializeField] private GameObject unit;
-    [SerializeField] private float buildRadius = 5f;
+    [SerializeField] private GameObject playerHoverEffect;
     
     private Identifier identifier;
     private bool playerIsHovering = false;
 
-    public float GetBuildRadius => buildRadius;
+    public BuildingStats GetStats => stats;
 
     private void Awake()
     {
@@ -42,7 +41,7 @@ public class Building : MonoBehaviour
     private void SpawnUnit ()
     {
         // spawn unit
-        UnitActions unitInstance = Instantiate(unit, transform.position, Quaternion.identity).GetComponent <UnitActions>();
+        UnitActions unitInstance = Instantiate(stats.unit, transform.position, Quaternion.identity).GetComponent <UnitActions>();
         unitInstance.gameObject.SetActive(true); // i think when i spawn them as UnitActions, they spawn disabled
 
         // set team / ownership stuff
@@ -64,6 +63,6 @@ public class Building : MonoBehaviour
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.blue;
-        Gizmos.DrawWireSphere(transform.position, buildRadius);
+        Gizmos.DrawWireSphere(transform.position, stats.buildRadius);
     }
 }
