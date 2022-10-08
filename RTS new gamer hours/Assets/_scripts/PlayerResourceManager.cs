@@ -53,4 +53,16 @@ public class PlayerResourceManager : MonoBehaviour
             GetResource[playerID] -= amt;
         }
     }
+
+    public static bool HasResources (int playerID, Resources resources)
+    {
+        if (Food[playerID] >= resources.GetFood &&
+            Wood[playerID] >= resources.GetWood &&
+            Stone[playerID] >= resources.GetStone)
+        {
+            return true;
+        }
+
+        return false;
+    }
 }

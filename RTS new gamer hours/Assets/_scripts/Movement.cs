@@ -23,6 +23,8 @@ public class Movement : MonoBehaviour
     [SerializeField] private LayerMask groundMask;
     [SerializeField] private PhysicMaterial groundedMat;
     [SerializeField] private PhysicMaterial inAirMat;
+    //[SerializeField] private GameObject wheatTuft;
+    //private Quaternion wheatRot;
 
     private bool isGrounded = false;
     private RaycastHit groundHitPoint;
@@ -59,6 +61,10 @@ public class Movement : MonoBehaviour
             maxMoveSpeed = stats.maxMoveSpeed;
             stopMovingDist = stats.stopMovingDist;
         }
+
+        //wheatTuft.SetActive(false);
+        //wheatRot = Quaternion.identity;
+
     }
 
     private void Update()
@@ -112,6 +118,13 @@ public class Movement : MonoBehaviour
         {
             LookTowards(moveInput);
         }
+
+
+    }
+
+    private void LateUpdate()
+    {
+        
     }
 
     private void FixedUpdate()
@@ -161,6 +174,32 @@ public class Movement : MonoBehaviour
         Quaternion lookRot = Quaternion.LookRotation(dir, Vector3.up);
         rb.rotation = Quaternion.Lerp(rb.rotation, lookRot, rotationSpeed * Time.deltaTime);
     }
+
+    //private void OnTriggerStay(Collider other)
+    //{
+    //    if (other.CompareTag("Field"))
+    //    {
+    //        //wheatTuft.SetActive(true);
+    //        float distFromEdge = 0.3f;
+    //        Bounds bounds = other.bounds;
+
+    //        Vector3 clampedPos = new Vector3(Mathf.Clamp (transform.position.x, other.transform.position.x - bounds.size.x / 2f + distFromEdge, other.transform.position.x + bounds.size.x / 2f - distFromEdge),
+    //            other.transform.position.y,
+    //            Mathf.Clamp(transform.position.z, other.transform.position.z - bounds.size.z / 2f + distFromEdge, other.transform.position.z + bounds.size.z / 2f - distFromEdge));
+
+    //        wheatTuft.transform.position = clampedPos;
+    //        wheatTuft.transform.rotation = wheatRot;
+    //    }
+    //}
+
+    //private void OnTriggerExit(Collider other)
+    //{
+    //    if (other.CompareTag("Field"))
+    //    {
+    //        wheatTuft.SetActive(false);
+    //        wheatRot = Quaternion.LookRotation(Vector3.Lerp(Vector3.forward, -Vector3.right, Random.Range(0f, 1f)), Vector3.up);
+    //    }
+    //}
 
     private void OnDrawGizmosSelected()
     {

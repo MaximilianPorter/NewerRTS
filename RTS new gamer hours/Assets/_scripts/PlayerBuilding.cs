@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,22 +8,35 @@ using UnityEngine;
 public class PlayerBuilding : MonoBehaviour
 {
     [SerializeField] private Camera playerCam;
-    [SerializeField] private GameObject buildingMenu;
-    [SerializeField] private Vector2 buildingMenuOffset;
-    [SerializeField] private Transform buildingUiLayoutGroup;
-    [SerializeField] private float menuCycleSpeed = 5f;
-    [SerializeField] private Building[] buildings;
+    [SerializeField] private GameObject buttonMenu;
+    [SerializeField] private Vector2 buttonMenuOffset;
+    [SerializeField] private Transform buttonUiLayoutGroup;
+    [SerializeField] private float menuCycleSpeed = 10f;
+    [SerializeField] private BuyIconUI[] initialIcons;
+
 
 
     private Identifier identifier;
     private UnitSelection unitSelection;
+    private Building lastHoveringBuilding;
     private Building hoveringBuilding; // building that is being stood on
 
+    private bool clickedOnBuilding = false;
     private bool buildingMenuIsOpen = false;
-    private BuildingIconUi[] uiIcons;
+    private bool unitMenuIsOpen = false;
+    private BuyIconUI[] allIcons;
     private int selectedIconIndex = 0;
 
+    public BuyIconUI GetSelectedUiButton => allIcons[selectedIconIndex];
     public bool GetHasMenuOpen => buildingMenuIsOpen;
+
+    [Serializable]
+    private struct UiBuilding
+    {
+        public Building building;
+        public BuyIconUI icon;
+    }
+
 
     private void Awake()
     {
@@ -30,18 +44,20 @@ public class PlayerBuilding : MonoBehaviour
         unitSelection = GetComponent<UnitSelection>();
 
         // find ui icons in the layout group
-        uiIcons = buildingUiLayoutGroup.GetComponentsInChildren<BuildingIconUi>();
+        allIcons = buttonUiLayoutGroup.GetComponentsInChildren<BuyIconUI>();
+        DisableAllIcons();
     }
 
     private void Update()
     {
-        // TODO if (building menu open / building troop buy menu open)
+        // TODO unit buy menu
+
+        if (buildingMenuIsOpen)
+            ManageSelectedIcon();
 
         HandleOpeningCycleMenu();
 
-        ManageSelectedIcon();
-
-        ChangeColorOfBuildingIcon();
+        CheckForHoveringBuilding();
     }
 
     private void ManageSelectedIcon ()
@@ -54,33 +70,22 @@ public class PlayerBuilding : MonoBehaviour
         {
             DecreaseIconIndex();
         }
-        buildingUiLayoutGroup.transform.localPosition = Vector3.Lerp(buildingUiLayoutGroup.transform.localPosition, -uiIcons[selectedIconIndex].transform.localPosition, Time.deltaTime * menuCycleSpeed);
-    }
-
-    private void ChangeColorOfBuildingIcon ()
-    {
-        for (int i = 0; i < buildings.Length; i++)
-        {
-            bool hasWood = PlayerResourceManager.Wood[identifier.GetPlayerID] >= buildings[i].GetStats.woodCost;
-            bool hasStone = PlayerResourceManager.Stone[identifier.GetPlayerID] >= buildings[i].GetStats.stoneCost;
-
-            uiIcons[i].SetAffordable(hasWood && hasStone);
-        }
+        buttonUiLayoutGroup.transform.localPosition = Vector3.Lerp(buttonUiLayoutGroup.transform.localPosition, -allIcons[selectedIconIndex].transform.localPosition, Time.deltaTime * menuCycleSpeed);
     }
 
     private void IncreaseIconIndex ()
     {
         // if the gameobject is active and we can increase
-        if (selectedIconIndex + 1 < uiIcons.Length)
+        if (selectedIconIndex + 1 < allIcons.Length)
         {
-            for (int i = 0; i < uiIcons.Length; i++)
+            for (int i = 0; i < allIcons.Length; i++)
             {
-                if (selectedIconIndex + 1 < uiIcons.Length)
+                if (selectedIconIndex + 1 < allIcons.Length)
                     selectedIconIndex++;
                 else
                     selectedIconIndex = 0;
 
-                if (uiIcons[selectedIconIndex].gameObject.activeSelf)
+                if (allIcons[selectedIconIndex].gameObject.activeSelf)
                 {
                     break;
                 }
@@ -89,9 +94,9 @@ public class PlayerBuilding : MonoBehaviour
         else
         {
             selectedIconIndex = 0;
-            for (int i = 0; i < uiIcons.Length; i++)
+            for (int i = 0; i < allIcons.Length; i++)
             {
-                if (uiIcons[selectedIconIndex].gameObject.activeSelf)
+                if (allIcons[selectedIconIndex].gameObject.activeSelf)
                 {
                     break;
                 }
@@ -105,14 +110,14 @@ public class PlayerBuilding : MonoBehaviour
         // if the gameobject is active and we can decrease
         if (selectedIconIndex - 1 >= 0)
         {
-            for (int i = 0; i < uiIcons.Length; i++)
+            for (int i = 0; i < allIcons.Length; i++)
             {
                 if (selectedIconIndex - 1 >= 0)
                     selectedIconIndex--;
                 else
-                    selectedIconIndex = uiIcons.Length - 1;
+                    selectedIconIndex = allIcons.Length - 1;
 
-                if (uiIcons[selectedIconIndex].gameObject.activeSelf)
+                if (allIcons[selectedIconIndex].gameObject.activeSelf)
                 {
                     break;
                 }
@@ -120,11 +125,11 @@ public class PlayerBuilding : MonoBehaviour
         }
         else
         {
-            selectedIconIndex = uiIcons.Length - 1;
+            selectedIconIndex = allIcons.Length - 1;
 
-            for (int i = 0; i < uiIcons.Length; i++)
+            for (int i = 0; i < allIcons.Length; i++)
             {
-                if (uiIcons[selectedIconIndex].gameObject.activeSelf)
+                if (allIcons[selectedIconIndex].gameObject.activeSelf)
                 {
                     break;
                 }
@@ -137,59 +142,82 @@ public class PlayerBuilding : MonoBehaviour
 
     private void HandleOpeningCycleMenu ()
     {
-        buildingMenu.SetActive(buildingMenuIsOpen);
+        buttonMenu.SetActive(buildingMenuIsOpen);
         PlayerInput.SetPlayerIsInMenu(identifier.GetPlayerID, buildingMenuIsOpen);
 
-        // toggle building menu
-        if (PlayerInput.players[identifier.GetPlayerID].GetButtonDown(PlayerInput.GetInputToggleCycleMenu) && !hoveringBuilding)
+        // turn on building menu on button down
+        if (PlayerInput.players[identifier.GetPlayerID].GetButtonDown(PlayerInput.GetInputOpenBuildMenu) && !hoveringBuilding && !buildingMenuIsOpen)
         {
-            // close building menu
-            if (buildingMenuIsOpen)
-            {
-                CloseBuildMenu();
-                return;
-            }
-
-            // if we're standing close enough to a building to build another building
-            Building closestBuilding = PlayerHolder.GetBuildings(identifier.GetPlayerID).OrderBy(building => (building.transform.position - transform.position).sqrMagnitude).ToArray()[0];
-
-            if ((closestBuilding.transform.position - transform.position).sqrMagnitude < closestBuilding.GetStats.buildRadius * closestBuilding.GetStats.buildRadius)
+            // if any buildings are close enough to player
+            bool inRangeOfBuilding = PlayerHolder.GetBuildings(identifier.GetPlayerID).Any(building => (building.transform.position - transform.position).sqrMagnitude < building.GetStats.buildRadius * building.GetStats.buildRadius);
+            if (inRangeOfBuilding)
             {
                 // if we're in range of a building
                 // open build menu
                 buildingMenuIsOpen = true;
                 unitSelection.DeselectUnits();
-            }
 
+                selectedIconIndex = allIcons.ToList().IndexOf(initialIcons[0]);
+                // turn on correct menu buttons
+                for (int i = 0; i < initialIcons.Length; i++)
+                {
+                    initialIcons[i].gameObject.SetActive(true);
+                }
+
+                return;
+            }
+        }
+
+
+        // turn on building menu for selected building
+        if (PlayerInput.players[identifier.GetPlayerID].GetButtonDown(PlayerInput.GetInputOpenBuildMenu) && hoveringBuilding && !buildingMenuIsOpen
+            && hoveringBuilding.GetStats.subsequentUpgrades.Length > 0)
+        {
+            clickedOnBuilding = true;
+            buildingMenuIsOpen = true;
+            unitSelection.DeselectUnits();
+
+            bool runOnce = false;
+            for (int i = 0; i < allIcons.Length; i++)
+            {
+                // if any icon type is the same as the hovering building subsequent upgrades
+                if (hoveringBuilding.GetStats.subsequentUpgrades.Any (upgrade => upgrade == allIcons[i].GetButtonType))
+                {
+                    if (!runOnce)
+                    {
+                        selectedIconIndex = i;
+                        runOnce = true;
+                    }
+                    allIcons[i].gameObject.SetActive(true);
+                }
+            }
         }
 
 
         // BUILDING MENU OPEN
         if (buildingMenuIsOpen)
         {
+            // click the back button
+            if (PlayerInput.players[identifier.GetPlayerID].GetButtonDown(PlayerInput.GetInputBack))
+                CloseBuildMenu();
+
             // close build menu if we're ever too far away || standing on building
-            Building closestBuilding = PlayerHolder.GetBuildings(identifier.GetPlayerID).OrderBy(building => (building.transform.position - transform.position).sqrMagnitude).ToArray()[0];
-            if ((closestBuilding.transform.position - transform.position).sqrMagnitude >= closestBuilding.GetStats.buildRadius * closestBuilding.GetStats.buildRadius
-                || hoveringBuilding)
+            bool inRangeOfBuilding = PlayerHolder.GetBuildings(identifier.GetPlayerID).Any(building => (building.transform.position - transform.position).sqrMagnitude < building.GetStats.buildRadius * building.GetStats.buildRadius);
+            
+            if ((!inRangeOfBuilding || hoveringBuilding) && !clickedOnBuilding)
             {
                 CloseBuildMenu();
             }
 
 
-            buildingMenu.transform.position = playerCam.WorldToScreenPoint(transform.position + (Vector3)buildingMenuOffset);
 
-            if (PlayerInput.players[identifier.GetPlayerID].GetButtonDown(PlayerInput.GetInputBack))
-                CloseBuildMenu();
+            buttonMenu.transform.position = playerCam.WorldToScreenPoint(transform.position + (Vector3)buttonMenuOffset);
 
             if (PlayerInput.players[identifier.GetPlayerID].GetButtonDown(PlayerInput.GetInputSelect))
             {
-                bool hasWood = PlayerResourceManager.Wood[identifier.GetPlayerID] >= buildings[selectedIconIndex].GetStats.woodCost;
-                bool hasStone = PlayerResourceManager.Stone[identifier.GetPlayerID] >= buildings[selectedIconIndex].GetStats.stoneCost;
-
-                // if we have the resources
-                if (hasWood && hasStone)
+                // if we have the resources, click button and close menu
+                if (allIcons[selectedIconIndex].TryClickButton())
                 {
-                    BuildBuilding();
                     CloseBuildMenu();
                 }
                 else
@@ -203,38 +231,67 @@ public class PlayerBuilding : MonoBehaviour
     private void CloseBuildMenu ()
     {
         buildingMenuIsOpen = false;
-        selectedIconIndex = 0;
+        clickedOnBuilding = false;
+        DisableAllIcons();
     }
-    private void BuildBuilding ()
-    {
-        // spend resources
-        PlayerResourceManager.SubtractResource(identifier.GetPlayerID, ref PlayerResourceManager.Wood, buildings[selectedIconIndex].GetStats.woodCost);
-        PlayerResourceManager.SubtractResource(identifier.GetPlayerID, ref PlayerResourceManager.Stone, buildings[selectedIconIndex].GetStats.stoneCost);
 
+
+
+    public void BuildBuilding (Building building)
+    {
         // place building
-        Vector3 buildingPos = new Vector3(transform.position.x, 0f, transform.position.z);
-        Identifier placedBuildingIdentity = Instantiate(buildings[selectedIconIndex].gameObject, buildingPos, Quaternion.identity).GetComponent<Identifier>();
+        Vector3 buildingPos = hoveringBuilding ? hoveringBuilding.transform.position : new Vector3(transform.position.x, 0f, transform.position.z);
+        Identifier placedBuildingIdentity = Instantiate(building.gameObject, buildingPos, Quaternion.identity).GetComponent<Identifier>();
 
         // set team and player ID of building
         placedBuildingIdentity.SetPlayerID(identifier.GetPlayerID);
         placedBuildingIdentity.SetTeamID(identifier.GetTeamID);
     }
 
-    private void OnTriggerEnter(Collider other)
+    public void UpgradeBuilding (Building building)
     {
-        if (hoveringBuilding == null && other.TryGetComponent (out Building building) && other.GetComponent<Identifier>().GetPlayerID == identifier.GetPlayerID)
+        hoveringBuilding.DeleteBuilding();
+
+        BuildBuilding(building);
+    }
+
+    private void DisableAllIcons()
+    {
+        for (int i = 0; i < allIcons.Length; i++)
         {
-            building.PlayerHover(true);
-            hoveringBuilding = building;
+            allIcons[i].gameObject.SetActive(false);
         }
     }
 
-    private void OnTriggerExit(Collider other)
+    private void CheckForHoveringBuilding ()
     {
-        if (hoveringBuilding && hoveringBuilding == other.GetComponent<Building>())
+        Building[] closestBuildings = PlayerHolder.GetBuildings(identifier.GetPlayerID).
+            Where(building => (building.transform.position - transform.position).sqrMagnitude < building.GetStats.interactionRadius * building.GetStats.interactionRadius).ToArray();
+            //OrderBy(building => (building.transform.position - transform.position).sqrMagnitude).ToArray();
+
+        if (closestBuildings.Length > 0)
         {
-            hoveringBuilding.PlayerHover(false);
+            hoveringBuilding = closestBuildings.OrderBy(building => (building.transform.position - transform.position).sqrMagnitude).ToArray()[0];
+
+            // step away from last building
+            if (lastHoveringBuilding != hoveringBuilding)
+            {
+                if (lastHoveringBuilding)
+                    lastHoveringBuilding.PlayerHover(false);
+                lastHoveringBuilding = hoveringBuilding;
+            }
+
+            hoveringBuilding.PlayerHover(true);
+        }
+        else
+        {
+            // step away from building
+            if (lastHoveringBuilding)
+                lastHoveringBuilding.PlayerHover(false);
+
             hoveringBuilding = null;
         }
+
+            
     }
 }

@@ -16,6 +16,8 @@ public class LegManager : MonoBehaviour
     [SerializeField] private Movement movement;
     [SerializeField] private AnimationCurve legHeightCurve;
     [SerializeField] private LayerMask groundMask;
+    [SerializeField] private Transform bodyHolder;
+    [SerializeField] private AnimationCurve bodyVerticalCurve;
 
 
     [SerializeField] private List<Leg> legs = new List<Leg>();
@@ -78,11 +80,12 @@ public class LegManager : MonoBehaviour
         // increment the active leg to move
         legCounters[activeLeg] += Time.deltaTime * legSwitchSpeed;
 
+        bodyHolder.localPosition = new Vector3(0f, bodyVerticalCurve.Evaluate(legCounters[activeLeg]) * moveSpeed01, 0f);
 
         // keep next position for each leg chosen
         for (int i = 0; i < legs.Count; i++)
         {
-            Vector3 legCastPos = legs[i].hip.position + rb.velocity.normalized * maxStepDist * moveSpeed01;
+            Vector3 legCastPos = legs[i].hip.position + (transform.forward * 0.001f) + rb.velocity.normalized * maxStepDist * moveSpeed01;
             RaycastHit hit;
             if (Physics.Raycast(legCastPos, Vector3.down, out hit, legLength, groundMask))
             {

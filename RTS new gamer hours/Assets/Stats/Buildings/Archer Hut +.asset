@@ -12,8 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44fe55230886a964789777ffc795784a, type: 3}
   m_Name: Archer Hut +
   m_EditorClassIdentifier: 
-  foodCost: 0
-  woodCost: 100
-  stoneCost: 100
+  buildingName: Archery Range+
+  buildingDescription: Building for training elite archers
+  cost:
+    food: 0
+    wood: 100
+    stone: 100
+  buildingType: 3
+  subsequentUpgrades: 0d000000
   buildRadius: 5
   unit: {fileID: 5160717717918629767, guid: fb7d6664d9a1205468efe50fbb594e9b, type: 3}

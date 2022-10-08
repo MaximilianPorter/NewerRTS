@@ -12,8 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44fe55230886a964789777ffc795784a, type: 3}
   m_Name: House
   m_EditorClassIdentifier: 
-  foodCost: 0
-  woodCost: 100
-  stoneCost: 100
+  buildingName: HOUSE
+  buildingDescription: Increases population cap
+  cost:
+    food: 0
+    wood: 100
+    stone: 100
+  buildingType: 0
+  subsequentUpgrades: 010000000200000005000000
   buildRadius: 5
   unit: {fileID: 0}

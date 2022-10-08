@@ -10,10 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 44fe55230886a964789777ffc795784a, type: 3}
-  m_Name: Home
+  m_Name: CASTLE
   m_EditorClassIdentifier: 
-  foodCost: 0
-  woodCost: 0
-  stoneCost: 0
+  buildingName: CASTLE
+  buildingDescription: The base of operations
+  cost:
+    food: 0
+    wood: 100
+    stone: 100
   buildRadius: 10
   unit: {fileID: 0}

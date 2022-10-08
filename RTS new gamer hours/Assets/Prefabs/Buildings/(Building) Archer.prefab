@@ -116,9 +116,9 @@ BoxCollider:
   m_GameObject: {fileID: 6350645103487335872}
   m_Material: {fileID: 0}
   m_IsTrigger: 1
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
-  m_Size: {x: 17, y: 12, z: 20}
+  m_Size: {x: 15, y: 12, z: 15}
   m_Center: {x: 0, y: 6, z: 0}
 --- !u!114 &6350645103487335874
 MonoBehaviour:
@@ -132,6 +132,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a215cfdac3b59f42a109b254b30c511, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isParent: 1
   isPlayer: 0
   playerID: 0
   teamID: 0
@@ -151,6 +152,8 @@ MonoBehaviour:
   debugSpawnUnit: 0
   rallyPoint: {fileID: 6350645103241911235}
   playerHoverEffect: {fileID: 1364829847180319022}
+  tagsToHit:
+  - Tree
 --- !u!1001 &6350645103224329043
 PrefabInstance:
   m_ObjectHideFlags: 0

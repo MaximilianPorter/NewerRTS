@@ -273,3 +273,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 395968b7eaed2664cb9ba326fdd5e987, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  treeDestroyEffect: {fileID: 6084277808126909220, guid: 1bbc1becf583a394c8f3bbd5b379b56d, type: 3}

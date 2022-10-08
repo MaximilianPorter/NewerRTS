@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using static UnityEditor.Experimental.GraphView.GraphView;
 
@@ -10,10 +11,12 @@ public class Building : MonoBehaviour
     [SerializeField] private bool debugSpawnUnit = false;
     [SerializeField] private Transform rallyPoint;
     [SerializeField] private GameObject playerHoverEffect;
-    
+
+    private bool rallyPointMoved = false;
     private Identifier identifier;
     private bool playerIsHovering = false;
 
+    public bool GetRallyPointMoved => rallyPointMoved;
     public BuildingStats GetStats => stats;
 
     private void Awake()
@@ -24,6 +27,8 @@ public class Building : MonoBehaviour
     private void Start()
     {
         PlayerHolder.AddBuilding(identifier.GetPlayerID, this);
+
+        DestroySurroundings();
     }
 
     private void Update()
@@ -51,8 +56,7 @@ public class Building : MonoBehaviour
         // first rally point
         unitInstance.GetMovement.SetMoveTarget(rallyPoint.position + new Vector3(Random.Range(-.5f, 0.5f), 0f, Random.Range(-.5f, 0.5f)));
 
-        // add unit to list of all units for player
-        PlayerHolder.AddUnit(identifier.GetPlayerID, unitInstance);
+        // unit is added to player list in UnitActions.Start()
     }
 
     public void PlayerHover (bool isHovering)
@@ -60,9 +64,35 @@ public class Building : MonoBehaviour
         playerIsHovering = isHovering;
     }
 
+    public void DeleteBuilding ()
+    {
+        PlayerHolder.RemoveBuilding(identifier.GetPlayerID, this);
+
+        Destroy(gameObject);
+    }
+
+    private void DestroySurroundings()
+    {
+        Collider[] hits = Physics.OverlapSphere(transform.position, stats.interactionRadius);
+        string[] tagsToHit = new string[] { "Tree" };
+        for (int i = 0; i < hits.Length; i++)
+        {
+            if (tagsToHit.Contains(hits[i].tag))
+            {
+                if (hits[i].TryGetComponent(out TreeShake tree))
+                {
+                    tree.KillTree();
+                }
+            }
+        }
+    }
+
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.blue;
         Gizmos.DrawWireSphere(transform.position, stats.buildRadius);
+
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, stats.interactionRadius);
     }
 }

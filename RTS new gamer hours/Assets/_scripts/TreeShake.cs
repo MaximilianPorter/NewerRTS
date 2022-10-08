@@ -5,6 +5,8 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class TreeShake : MonoBehaviour
 {
+    [SerializeField] private GameObject treeDestroyEffect;
+
     private Rigidbody rb;
 
     private void Awake()
@@ -23,4 +25,13 @@ public class TreeShake : MonoBehaviour
 
         rb.AddTorque(dir.normalized * force * 10, ForceMode.Impulse);
     }
+
+    public void KillTree ()
+    {
+        GameObject treeDestroyedEffectInstance = Instantiate(treeDestroyEffect, transform.position + new Vector3 (0f, 0.5f, 0f), Quaternion.identity);
+        Destroy(treeDestroyedEffectInstance, 5f);
+
+        Destroy(gameObject);
+    }
+
 }

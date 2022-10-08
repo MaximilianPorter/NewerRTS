@@ -10,6 +10,7 @@ public class UnitActions : MonoBehaviour
     [SerializeField] private GameObject orderingObject;
     [SerializeField] private UnitStats unitStats;
 
+    private Identifier identifier;
     private Movement movement;
     private Attacking attacking;
     private bool isSelected = false;
@@ -23,10 +24,17 @@ public class UnitActions : MonoBehaviour
 
     private void Awake()
     {
+        identifier = GetComponent<Identifier>();
         movement = GetComponent<Movement>();
         attacking = GetComponent<Attacking>();
 
         orderingObject.SetActive(false);
+    }
+
+    private void Start()
+    {
+        // add unit to list of all units for player
+        PlayerHolder.AddUnit(identifier.GetPlayerID, this);
     }
 
     private void Update()

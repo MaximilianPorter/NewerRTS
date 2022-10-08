@@ -17,11 +17,16 @@ public class PlayerInput : MonoBehaviour
     private static readonly string inputSelectUnits = "SelectUnits";
     private static readonly string inputDeselectUnits = "DeselectUnits";
     private static readonly string inputRallyTroops = "RallyTroops";
-    private static readonly string inputToggleCycleMenu = "ToggleCycleMenu";
+    private static readonly string inputOpenBuildMenu = "OpenBuildMenu";
+    private static readonly string inputOpenUnitMenu = "OpenUnitMenu";
     private static readonly string inputCycleRight = "Cycle Right";
     private static readonly string inputCycleLeft = "Cycle Left";
     private static readonly string inputBack = "Back";
     private static readonly string inputSelect = "Select";
+    private static readonly string inputDpadUp = "DPAD UP";
+    private static readonly string inputDpadDown = "DPAD DOWN";
+    private static readonly string inputDpadLeft = "DPAD LEFT";
+    private static readonly string inputDpadRight = "DPAD RIGHT";
 
     public static string GetInputMoveHorizontal => inputMoveHorizontal;
     public static string GetInputMoveVertical => inputMoveVertical;
@@ -33,11 +38,16 @@ public class PlayerInput : MonoBehaviour
     public static string GetInputSelectUnits => inputSelectUnits;
     public static string GetInputDeselectUnits => inputDeselectUnits;
     public static string GetInputRallyTroops => inputRallyTroops;
-    public static string GetInputToggleCycleMenu => inputToggleCycleMenu;
+    public static string GetInputOpenBuildMenu => inputOpenBuildMenu;
+    public static string GetInputOpenUnitMenu => inputOpenUnitMenu;
     public static string GetCycleRight => inputCycleRight;
     public static string GetCycleLeft => inputCycleLeft;
     public static string GetInputBack => inputBack;
     public static string GetInputSelect => inputSelect;
+    public static string GetInputDpadUp => inputDpadUp;
+    public static string GetInputDpadDown => inputDpadDown;
+    public static string GetInputDpadLeft => inputDpadLeft;
+    public static string GetInputDpadRight => inputDpadRight;
 
     public static List<Player> players;
 

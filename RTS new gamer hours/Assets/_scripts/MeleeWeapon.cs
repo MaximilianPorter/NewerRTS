@@ -10,6 +10,7 @@ public class MeleeWeapon : MonoBehaviour
     [SerializeField] private float force = 0.1f;
 
     [SerializeField] private GameObject woodHitEffect;
+    [SerializeField] private GameObject wheatHitEffect;
 
     public void Attack ()
     {
@@ -22,6 +23,13 @@ public class MeleeWeapon : MonoBehaviour
             firstTree.GetComponent <TreeShake>().ShakeOnce(-dir, force);
             GameObject woodHitInstance = Instantiate(woodHitEffect, firstTree.transform.position + new Vector3 (0f, 1f, 0f), Quaternion.identity);
             Destroy(woodHitInstance, 5f);
+        }
+
+        Collider wheat = hits.FirstOrDefault(hit => hit.CompareTag("Field"));
+        if (wheat != null)
+        {
+            GameObject wheatHitInstance = Instantiate(wheatHitEffect, transform.position, Quaternion.identity);
+            Destroy(wheatHitInstance, 5f);
         }
     }
 

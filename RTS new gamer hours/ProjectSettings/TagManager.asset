@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Stone Surface
   - Tree
+  - Sword
+  - Field
   layers:
   - Default
   - TransparentFX

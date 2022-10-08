@@ -15,6 +15,10 @@ public class PlayerHolder : MonoBehaviour
     {
         playerBuildings[playerID].Add(building);
     }
+    public static void RemoveBuilding(int playerID, Building building)
+    {
+        playerBuildings[playerID].Remove(building);
+    }
 
 
 
@@ -26,6 +30,10 @@ public class PlayerHolder : MonoBehaviour
     public static void AddUnit (int playerID, UnitActions unit)
     {
         playerUnits[playerID].Add(unit);
+    }
+    public static void RemoveUnit (int playerID, UnitActions unit)
+    {
+        playerUnits[playerID].Remove(unit);
     }
 
 
