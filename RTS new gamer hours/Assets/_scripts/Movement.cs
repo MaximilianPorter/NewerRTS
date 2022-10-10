@@ -31,7 +31,7 @@ public class Movement : MonoBehaviour
     private Vector3 moveTarget = Vector3.zero;
     private Transform lookAtTarget;
     private Rigidbody rb;
-    private BoxCollider col;
+    private CapsuleCollider col;
     private float slowMultiplier = 1f;
     private int currentSlowPriority = 0;
 
@@ -44,6 +44,7 @@ public class Movement : MonoBehaviour
     public bool GetIsGrounded => isGrounded;
     public bool GetCanMove => canMove;
     public Vector3 GetMoveTarget => moveTarget;
+    public float GetMoveSpeed01 => Mathf.Clamp01(rb.velocity.sqrMagnitude / (maxMoveSpeed * maxMoveSpeed));
 
     private void Awake()
     {
@@ -53,7 +54,7 @@ public class Movement : MonoBehaviour
         }
 
         rb = GetComponent<Rigidbody>();
-        col = GetComponent<BoxCollider>();
+        col = GetComponent<CapsuleCollider>();
 
         if (stats)
         {
@@ -91,7 +92,7 @@ public class Movement : MonoBehaviour
         }
 
         // check if grounded
-        isGrounded = Physics.Raycast(transform.position, Vector3.down, out groundHitPoint, (-col.center.y + col.size.y / 2f) + 0.1f, groundMask);
+        isGrounded = Physics.Raycast(transform.position, Vector3.down, out groundHitPoint, (-col.center.y + col.height / 2f) + 0.1f, groundMask);
         rb.drag = isGrounded ? groundedDrag : inAirDrag;
 
         // update friction
@@ -206,7 +207,7 @@ public class Movement : MonoBehaviour
         if (Application.isPlaying)
         {
             Gizmos.color = Color.red;
-            Gizmos.DrawRay(transform.position, Vector3.down * ((-col.center.y + col.size.y / 2f) + 0.1f));
+            Gizmos.DrawRay(transform.position, Vector3.down * ((-col.center.y + col.height / 2f) + 0.1f));
         }
     }
 }

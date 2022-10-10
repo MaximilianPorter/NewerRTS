@@ -43,10 +43,10 @@ public class Building : MonoBehaviour
             playerHoverEffect.SetActive(playerIsHovering);
     }
 
-    private void SpawnUnit ()
+    public void SpawnUnit ()
     {
         // spawn unit
-        UnitActions unitInstance = Instantiate(stats.unit, transform.position, Quaternion.identity).GetComponent <UnitActions>();
+        UnitActions unitInstance = Instantiate(stats.unit.gameObject, transform.position, Quaternion.identity).GetComponent <UnitActions>();
         unitInstance.gameObject.SetActive(true); // i think when i spawn them as UnitActions, they spawn disabled
 
         // set team / ownership stuff

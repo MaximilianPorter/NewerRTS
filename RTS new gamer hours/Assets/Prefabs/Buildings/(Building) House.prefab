@@ -138,8 +138,6 @@ MonoBehaviour:
   debugSpawnUnit: 0
   rallyPoint: {fileID: 4652193343078273374}
   playerHoverEffect: {fileID: 746813185951655678}
-  tagsToHit:
-  - Tree
 --- !u!1 &4652193343078273373
 GameObject:
   m_ObjectHideFlags: 0

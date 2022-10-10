@@ -13,12 +13,13 @@ public class Attacking : MonoBehaviour
     [SerializeField] private Transform shieldHolder;
     [SerializeField] private Transform leftHandTarget;
 
-    private Identifier playerIdentifier;
+    private Identifier identifier;
 
     [Header("Stats")]
     [SerializeField] private UnitStats stats;
     [SerializeField] private bool isRanged = true;
-    [SerializeField] private float range = 5f;
+    [SerializeField] private float lookRange = 5f;
+    [SerializeField] private float attackRange = 5f;
     [SerializeField] private float timeBetweenAttacks = 0.5f;
     [SerializeField] private float damage = 1f;
     [SerializeField] private float projectileForce;
@@ -37,17 +38,26 @@ public class Attacking : MonoBehaviour
     private Transform nearestEnemy;
     private bool canAttack = true;
     private float attackCounter = 10000f;
+
+    private float checkForEnemyCounter = 0;
+    private const float checkForEnemyTime = 2f;
+
+
+    public void SetNearestEnemy (Transform newEnemy) => nearestEnemy = newEnemy;
     public Transform GetNearestEnemy => nearestEnemy;
+    public UnitStats GetStats => stats;
+    public float GetLookRange => lookRange;
 
     private void Awake()
     {
-        playerIdentifier = GetComponent<Identifier>();
+        identifier = GetComponent<Identifier>();
         movement = GetComponent<Movement>();
 
         if (stats)
         {
             isRanged = stats.isRanged;
-            range = stats.range;
+            lookRange = stats.lookRange;
+            attackRange = stats.attackRange;
             damage = stats.damage;
             timeBetweenAttacks = stats.timeBetweenAttacks;
             projectileForce = stats.projectileForce;
@@ -58,16 +68,16 @@ public class Attacking : MonoBehaviour
 
     private void Update()
     {
-        if (playerIdentifier.GetIsPlayer)
+        if (identifier.GetIsPlayer)
         {
-            if (canAttack && PlayerInput.players[playerIdentifier.GetPlayerID].GetButton(PlayerInput.GetInputAttack) && !shieldAnimator.GetBool("isBlocking"))
+            if (canAttack && PlayerInput.players[identifier.GetPlayerID].GetButton(PlayerInput.GetInputAttack) && !shieldAnimator.GetBool("isBlocking"))
             {
                 swordAnimator.SetTrigger("Attack");
-                PlayerInput.VibrateController(playerIdentifier.GetPlayerID, .5f, .2f);
+                PlayerInput.VibrateController(identifier.GetPlayerID, .5f, .2f);
                 Attack();
             }
 
-            bool isBlocking = PlayerInput.players[playerIdentifier.GetPlayerID].GetButton(PlayerInput.GetInputBlock);
+            bool isBlocking = PlayerInput.players[identifier.GetPlayerID].GetButton(PlayerInput.GetInputBlock);
             swordAnimator.SetBool ("isBlocking", isBlocking);
             shieldAnimator.SetBool("isBlocking", isBlocking);
             if (isBlocking)
@@ -75,7 +85,12 @@ public class Attacking : MonoBehaviour
             else
                 movement.SetSlowMultiplier(0, 1f);
         }
+
+
+
         rightHandTarget.position = swordHolder.position;
+
+
         if (shieldHolder)
             leftHandTarget.position = shieldHolder.position;
 
@@ -85,7 +100,7 @@ public class Attacking : MonoBehaviour
             debugShoot = false;
         }
 
-        if (!playerIdentifier.GetIsPlayer)
+        if (!identifier.GetIsPlayer)
         {
             NonPlayerBehaviour();
         }
@@ -95,9 +110,14 @@ public class Attacking : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (!playerIdentifier.GetIsPlayer)
+        if (!identifier.GetIsPlayer)
         {
-            FindNearestEnemy();
+            checkForEnemyCounter += Time.fixedDeltaTime;
+            if (checkForEnemyCounter > checkForEnemyTime || nearestEnemy == null)
+            {
+                FindNearestEnemy();
+                checkForEnemyCounter = 0f;
+            }
         }
     }
 
@@ -108,19 +128,22 @@ public class Attacking : MonoBehaviour
             movement.SetLookAt(nearestEnemy);
 
             // if the place we're going to is already within (range / 2) of the target, stop moving and attack the target
-            if ((movement.GetMoveTarget - nearestEnemy.position).sqrMagnitude < (range * range) / 2f)
+            if ((movement.GetMoveTarget - nearestEnemy.position).sqrMagnitude < (lookRange * lookRange) / 2f)
             {
                 movement.SetMoveTarget(transform.position);
             }
 
             // melee chase after the enemy if they've reached they're pos
-            if (!isRanged && !movement.GetCanMove)
+            if (!isRanged && !movement.GetCanMove && 
+                (transform.position - nearestEnemy.position).sqrMagnitude > attackRange * attackRange) // don't worry about pos if you're already in attacking range
             {
-                movement.SetMoveTarget(nearestEnemy.position);
+                // pos = enemy + attackrange / 4
+                // not exactly on the enemy position, but close enough to attack
+                movement.SetMoveTarget(nearestEnemy.position + (transform.position - nearestEnemy.position).normalized * (attackRange * 0.75f));
             }
 
-            // if you're able to attack and there's an enemy
-            if (canAttack)
+            // if canAttack and there's an enemy IN RANGE
+            if (canAttack && (transform.position - nearestEnemy.position).sqrMagnitude < attackRange * attackRange)
             {
                 Attack();
             }
@@ -135,21 +158,26 @@ public class Attacking : MonoBehaviour
     private void HandleAttackingTime ()
     {
         attackCounter += Time.deltaTime;
-        canAttack = attackCounter > timeBetweenAttacks;
+        canAttack = attackCounter > timeBetweenAttacks && movement.GetMoveSpeed01 < 0.01f; // can attack if your timer is ready and you're not moving
     }
     private void Attack ()
     {
         attackCounter = 0f;
+        FindNearestEnemy();
         
         if (isRanged)
         {
             Shoot();
         }
+        else
+        {
+            swordAnimator.SetTrigger("Attack");
+        }
     }
 
     private void FindNearestEnemy ()
     {
-        Collider[] nearbyUnits = Physics.OverlapSphere(transform.position, range, enemyMask).Where(unit => unit.GetComponent<Identifier>().GetTeamID != playerIdentifier.GetTeamID).ToArray();
+        Collider[] nearbyUnits = Physics.OverlapSphere(transform.position, lookRange, enemyMask).Where(unit => unit.GetComponent<Identifier>().GetTeamID != identifier.GetTeamID).ToArray();
 
         if (nearbyUnits.Length <= 0)
         {
@@ -157,11 +185,10 @@ public class Attacking : MonoBehaviour
             return;
         }
 
-        //Collider[] enemyUnits = nearbyUnits.Where(unit => unit.GetComponent<PlayerIdentifier>().GetTeamID != playerIdentifier.GetTeamID).ToArray();
         foreach (Collider enemyCol in nearbyUnits)
         {
             if (nearestEnemy == null || (enemyCol.transform.position - transform.position).sqrMagnitude <
-                (nearestEnemy.position - transform.position).sqrMagnitude * (nearestEnemy.position - transform.position).sqrMagnitude)
+                (nearestEnemy.position - transform.position).sqrMagnitude)
             {
                 nearestEnemy = enemyCol.transform;
             }
@@ -177,6 +204,9 @@ public class Attacking : MonoBehaviour
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, range);
+        Gizmos.DrawWireSphere(transform.position, lookRange);
+
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, attackRange);
     }
 }

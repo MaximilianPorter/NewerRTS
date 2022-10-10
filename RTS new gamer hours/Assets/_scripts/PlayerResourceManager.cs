@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class PlayerResourceManager : MonoBehaviour
@@ -34,6 +35,8 @@ public class PlayerResourceManager : MonoBehaviour
             debugFood[i] = Food[i];
             debugWood[i] = Wood[i];
             debugStone[i] = Stone[i];
+
+            PopulationCap[i] = PlayerHolder.GetBuildings(i).Sum(building => building.GetStats.population);
         }
     }
 
@@ -54,7 +57,7 @@ public class PlayerResourceManager : MonoBehaviour
         }
     }
 
-    public static bool HasResources (int playerID, Resources resources)
+    public static bool HasResources (int playerID, ResourceAmount resources)
     {
         if (Food[playerID] >= resources.GetFood &&
             Wood[playerID] >= resources.GetWood &&

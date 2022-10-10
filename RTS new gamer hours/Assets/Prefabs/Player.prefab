@@ -5521,6 +5521,7 @@ GameObject:
   - component: {fileID: 8604555271031939300}
   - component: {fileID: 8604555271031939290}
   - component: {fileID: 1883212638}
+  - component: {fileID: 4937149247306698491}
   m_Layer: 7
   m_Name: Sword Parent
   m_TagString: Untagged
@@ -5581,8 +5582,25 @@ MonoBehaviour:
     m_Bits: 1
   radius: 1
   force: 0.1
+  defaultHitEffect: {fileID: 0}
   woodHitEffect: {fileID: 2267995361900405330, guid: 1e4d304ec963f404584b40b7b57fdfe5, type: 3}
   wheatHitEffect: {fileID: 418890771932710656, guid: e70d15db9bca2c247869b10add2b9fbe, type: 3}
+--- !u!114 &4937149247306698491
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8604555271031939303}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a215cfdac3b59f42a109b254b30c511, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isParent: 0
+  isPlayer: 0
+  playerID: 0
+  teamID: 0
 --- !u!1 &8604555271056584149
 GameObject:
   m_ObjectHideFlags: 0
@@ -5789,7 +5807,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8604555271138620345}
-  - component: {fileID: 8604555271138620346}
+  - component: {fileID: 4687902781437581068}
   - component: {fileID: 8604555271138620350}
   - component: {fileID: 8604555271138620349}
   - component: {fileID: 8604555271138620348}
@@ -5827,18 +5845,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
---- !u!65 &8604555271138620346
-BoxCollider:
+--- !u!136 &4687902781437581068
+CapsuleCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8604555271138620357}
-  m_Material: {fileID: 13400000, guid: e1627cd15cd8fa24ebfd3a1951c282aa, type: 2}
+  m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.4, y: 1.5, z: 0.4}
+  m_Radius: 0.25
+  m_Height: 1.5
+  m_Direction: 1
   m_Center: {x: 0, y: -0.125, z: 0}
 --- !u!54 &8604555271138620350
 Rigidbody:
@@ -5868,6 +5887,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a215cfdac3b59f42a109b254b30c511, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isParent: 0
   isPlayer: 1
   playerID: 0
   teamID: 0
@@ -6021,7 +6041,8 @@ MonoBehaviour:
   leftHandTarget: {fileID: 8604555271533599335}
   stats: {fileID: 11400000, guid: 0aa38894e85d023409d6fd04b76fdd7c, type: 2}
   isRanged: 1
-  range: 5
+  lookRange: 5
+  attackRange: 5
   timeBetweenAttacks: 0.5
   damage: 1
   projectileForce: 0
@@ -6068,7 +6089,10 @@ MonoBehaviour:
   buttonMenuOffset: {x: 0, y: 0}
   buttonUiLayoutGroup: {fileID: 0}
   menuCycleSpeed: 10
+  selectAnim: {fileID: 0}
+  queuedUnitsLayoutGroup: {fileID: 0}
   initialIcons: []
+  cancelUnits: {fileID: 0}
 --- !u!114 &183182291
 MonoBehaviour:
   m_ObjectHideFlags: 0

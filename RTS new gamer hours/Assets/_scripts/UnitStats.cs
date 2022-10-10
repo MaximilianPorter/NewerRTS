@@ -5,16 +5,15 @@ using UnityEngine;
 [CreateAssetMenu (fileName = "Unit Name", menuName = "Create Unit Stats")]
 public class UnitStats : ScriptableObject
 {
-    public string unitName = "developer man forgot to name this guy";
-    public string unitDescription = "really cool unit type that the developer totally remembered to describe";
     public float health;
     public float damage;
     public float timeBetweenAttacks;
     public float slowMultiplierBlocking = 0.2f;
+    public float lookRange = 5f;
+    public float attackRange = 1f;
 
     [Header("Ranged")]
     public bool isRanged = false;
-    public float range = 5f;
     public float projectileForce;
     public GameObject projectile;
 

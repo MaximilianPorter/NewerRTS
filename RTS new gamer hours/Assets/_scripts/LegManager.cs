@@ -61,6 +61,12 @@ public class LegManager : MonoBehaviour
         legsGrounded = new bool[legs.Count];
 
         legLength = Vector3.Distance(legs[0].hip.transform.position, legs[0].hip.GetChild(0).GetChild(0).position);
+
+        for (int i = 0; i < legs.Count; i++)
+        {
+            legs[i].target.position = legs[i].hip.position + new Vector3(0f, -legLength * 0.8f, 0f);
+            lastPositions[i] = legs[i].hip.position + new Vector3(0f, -legLength * 0.8f, 0f);
+        }
     }
 
     private void Update()
@@ -76,6 +82,9 @@ public class LegManager : MonoBehaviour
             }
             return;
         }
+
+        if (moveSpeed01 < 0.01f)
+            return;
 
         // increment the active leg to move
         legCounters[activeLeg] += Time.deltaTime * legSwitchSpeed;

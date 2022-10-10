@@ -11,15 +11,17 @@ public class BuyIconUI : MonoBehaviour
     [SerializeField] private string buttonDescription = "Description of that same thing";
 
     [SerializeField] private BuyIcons buttonType;
-    [SerializeField] private Resources cost;
+    [SerializeField] private ResourceAmount cost;
     [SerializeField] private Color normalColor = Color.white;
-    [SerializeField] private Color disabledColor = Color.gray;
+    [SerializeField] private Color disabledColor = new Color(0, 0, 0, 0.5f);
     [SerializeField] private Button.ButtonClickedEvent buttonAction = new Button.ButtonClickedEvent();
 
     private bool isAffordable = true;
     private Image[] images;
     private Identifier identifier;
 
+
+    public ResourceAmount GetCost => cost;
     public string GetButtonName => buttonName;
     public string GetButtonDescription => buttonDescription;
     //public Resources GetCost => cost;
@@ -69,8 +71,11 @@ public enum BuyIcons
     // numbers are assigned in case i ever need to add a new enum in between
     // DONT CHANGE THE NUMBERS, JUST ADD A NEW NUMBER
 
+    // DEFAULT
+    NONE = 0,
+
     // BUILDINGS
-    Building_House = 0,
+    Building_House = 20,
     Building_Village = 1,
     Building_Archers = 2,
     Building_ArchersPlus = 3,
@@ -92,6 +97,7 @@ public enum BuyIcons
     BuildingRallyPoint = 13,
 
     // UNITS
+    CancelProduction = 21,
     Archer = 14,
     ArcherPlus = 15,
     Swordsman = 16,
@@ -99,6 +105,6 @@ public enum BuyIcons
     Mage = 18,
     Spearman = 19,
 
-    // highest number: 19
-    // last changed on 10/7/22 - 3:56pm
+    // highest number: 21
+    // last changed on 10/9/22 - 11:05am
 }

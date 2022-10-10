@@ -68,6 +68,7 @@ public class UnitSelection : MonoBehaviour
         }
 
 
+
         // deselect all units
         if (PlayerInput.players[identifier.GetPlayerID].GetButtonDown(PlayerInput.GetInputDeselectUnits))
         {
@@ -102,6 +103,9 @@ public class UnitSelection : MonoBehaviour
                 int boxWidth = Mathf.Clamp(Mathf.RoundToInt(Mathf.Sqrt((float)selectedUnits.Length)), 0, 20);
                 for (int i = 0; i < selectedUnits.Length; i++)
                 {
+                    if (selectedUnits[i] == null)
+                        continue;
+
                     int row = Mathf.FloorToInt(i / boxWidth);
                     int column = i % boxWidth;
                     Vector3 boxPos = transform.forward * (row + 1f) + transform.right * (column - boxWidth / 2f);
@@ -115,6 +119,9 @@ public class UnitSelection : MonoBehaviour
                 int boxWidth = Mathf.Clamp (selectedUnits.Length, 0, 20);
                 for (int i = 0; i < selectedUnits.Length; i++)
                 {
+                    if (selectedUnits[i] == null)
+                        continue;
+
                     int row = Mathf.FloorToInt(i / boxWidth);
                     int column = i % boxWidth;
                     Vector3 boxPos = transform.forward * (row + 1f) + transform.right * (column - boxWidth / 2f);
@@ -139,6 +146,9 @@ public class UnitSelection : MonoBehaviour
 
             for (int i = 0; i < selectedUnits.Length; i++)
             {
+                if (selectedUnits[i] == null)
+                    continue;
+
                 selectedUnits[i].GetOrderingObject.SetActive(false);
 
                 // if we never chose a pattern, just put the unit near the player
@@ -196,6 +206,9 @@ public class UnitSelection : MonoBehaviour
     {
         for (int i = 0; i < selectedUnits.Length; i++)
         {
+            if (selectedUnits[i] == null)
+                continue;
+
             selectedUnits[i].GetOrderingObject.SetActive(false);
             selectedUnits[i].SetIsSelected(false);
         }

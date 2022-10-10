@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
-public class Resources
+public class ResourceAmount
 {
     [SerializeField] private int food = 0;
     [SerializeField] private int wood = 0;
@@ -18,7 +18,7 @@ public class Resources
     public int GetWood => wood;
     public int GetStone => stone;
 
-    public Resources(int food, int wood, int stone)
+    public ResourceAmount(int food, int wood, int stone)
     {
         this.food = food;
         this.wood = wood;

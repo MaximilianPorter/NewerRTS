@@ -12,15 +12,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ac889f1e1c8a4f46b9fe26f45ce43e0, type: 3}
   m_Name: Regular Infantry
   m_EditorClassIdentifier: 
-  unitName: developer man forgot to name this guy
-  unitDescription: really cool unit type that the developer totally remembered to
-    describe
-  health: 0
-  damage: 0
+  health: 100
+  damage: 5
   timeBetweenAttacks: 0.5
   slowMultiplierBlocking: 0.2
-  isRanged: 1
-  range: 5
+  lookRange: 5
+  attackRange: 1
+  isRanged: 0
   projectileForce: 0
   projectile: {fileID: 0}
   moveForce: 1000
