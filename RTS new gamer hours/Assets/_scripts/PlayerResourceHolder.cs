@@ -23,11 +23,11 @@ public class PlayerResourceHolder : MonoBehaviour
         populationText.text = PlayerHolder.GetUnits(identifier.GetPlayerID).Count.ToString() + "/" +
             PlayerResourceManager.PopulationCap[identifier.GetPlayerID].ToString();
 
-        foodText.text = PlayerResourceManager.Food[identifier.GetPlayerID].ToString();
+        foodText.text = PlayerResourceManager.PlayerResourceAmounts[identifier.GetPlayerID].GetFood.ToString();
 
-        woodText.text = PlayerResourceManager.Wood[identifier.GetPlayerID].ToString();
+        woodText.text = PlayerResourceManager.PlayerResourceAmounts[identifier.GetPlayerID].GetWood.ToString();
 
-        stoneText.text = PlayerResourceManager.Stone[identifier.GetPlayerID].ToString();
+        stoneText.text = PlayerResourceManager.PlayerResourceAmounts[identifier.GetPlayerID].GetStone.ToString();
 
     }
 }

@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using TMPro;
+using UnityEngine.UI;
 
 [RequireComponent (typeof (Identifier))]
 public class PlayerBuilding : MonoBehaviour
@@ -14,6 +16,7 @@ public class PlayerBuilding : MonoBehaviour
     [SerializeField] private float menuCycleSpeed = 10f;
     [SerializeField] private Animator selectAnim;
     [SerializeField] private Transform queuedUnitsLayoutGroup;
+    [SerializeField] private Image costAreaLayout;
 
     [Header("Building")]
     [SerializeField] private BuyIconUI[] initialIcons;
@@ -39,6 +42,9 @@ public class PlayerBuilding : MonoBehaviour
     private bool buildingMenuIsOpen = false;
 
     private bool unitMenuIsOpen = false;
+
+    private Transform[] costResourceTransforms;
+    private TMP_Text[] costTexts;
 
     private QueuedUpUnitUi[] allQueuedUnits;
     private BuyIconUI[] allIcons;
@@ -69,6 +75,13 @@ public class PlayerBuilding : MonoBehaviour
         allIcons = buttonUiLayoutGroup.GetComponentsInChildren<BuyIconUI>();
         DisableAllIcons();
         allQueuedUnits = queuedUnitsLayoutGroup.GetComponentsInChildren<QueuedUpUnitUi>();
+
+        costResourceTransforms = new Transform[costAreaLayout.transform.childCount];
+        for (int i = 0; i < costAreaLayout.transform.childCount; i++)
+        {
+            costResourceTransforms[i] = costAreaLayout.transform.GetChild(i);
+        }
+        costTexts = costAreaLayout.GetComponentsInChildren<TMP_Text>();
     }
 
     private void Update()
@@ -99,6 +112,20 @@ public class PlayerBuilding : MonoBehaviour
             DecreaseIconIndex();
         }
         buttonUiLayoutGroup.transform.localPosition = Vector3.Lerp(buttonUiLayoutGroup.transform.localPosition, -allIcons[selectedIconIndex].transform.localPosition, Time.deltaTime * menuCycleSpeed);
+
+        // fade cost ui if the button isn't affordable
+        costAreaLayout.color = new Color(costAreaLayout.color.r, costAreaLayout.color.g, costAreaLayout.color.b,
+            allIcons[selectedIconIndex].GetIsAffordable ? 1f : 0.5f);
+
+        // adjust cost ui display of selected button
+        ResourceAmount cost = allIcons[selectedIconIndex].GetCost;
+        costResourceTransforms[0].gameObject.SetActive(cost.GetFood > 0);
+        costResourceTransforms[1].gameObject.SetActive(cost.GetWood > 0);
+        costResourceTransforms[2].gameObject.SetActive(cost.GetStone > 0);
+        costAreaLayout.gameObject.SetActive(cost.GetFood > 0 || cost.GetWood > 0 || cost.GetStone > 0);
+        costTexts[0].text = cost.GetFood.ToString();
+        costTexts[1].text = cost.GetWood.ToString();
+        costTexts[2].text = cost.GetStone.ToString();
     }
 
     private void IncreaseIconIndex ()
@@ -408,9 +435,11 @@ public class PlayerBuilding : MonoBehaviour
         ResourceAmount cost = allIcons.FirstOrDefault(icon => icon.GetButtonType == unitType).GetCost;
         int unitCount = allQueuedUnits.FirstOrDefault(queuedUnit => queuedUnit.GetUnitType == unitType).GetUnitAmt;
         // refunt cost of unit
-        PlayerResourceManager.Food[identifier.GetPlayerID] += cost.GetFood * unitCount;
-        PlayerResourceManager.Wood[identifier.GetPlayerID] += cost.GetWood * unitCount;
-        PlayerResourceManager.Stone[identifier.GetPlayerID] += cost.GetStone * unitCount;
+        PlayerResourceManager.PlayerResourceAmounts[identifier.GetPlayerID].AddResources(
+            cost.GetFood * unitCount,
+            cost.GetWood * unitCount,
+            cost.GetStone * unitCount
+            );
 
         allQueuedUnits.FirstOrDefault(queuedUnit => queuedUnit.GetUnitType == unitType).SetDetails(0, 0);
     }

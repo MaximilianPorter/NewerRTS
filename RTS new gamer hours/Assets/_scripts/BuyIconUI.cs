@@ -20,7 +20,7 @@ public class BuyIconUI : MonoBehaviour
     private Image[] images;
     private Identifier identifier;
 
-
+    public bool GetIsAffordable => isAffordable;
     public ResourceAmount GetCost => cost;
     public string GetButtonName => buttonName;
     public string GetButtonDescription => buttonDescription;
@@ -39,7 +39,7 @@ public class BuyIconUI : MonoBehaviour
 
     private void Update()
     {
-        isAffordable = PlayerResourceManager.HasResources(identifier.GetPlayerID, cost);
+        isAffordable = PlayerResourceManager.PlayerResourceAmounts[identifier.GetPlayerID].HasResources(cost);
         for (int i = 0; i < images.Length; i++)
         {
             images[i].color = isAffordable ? normalColor : disabledColor;
@@ -52,11 +52,9 @@ public class BuyIconUI : MonoBehaviour
     /// <returns></returns>
     public bool TryClickButton ()
     {
-        if (PlayerResourceManager.HasResources (identifier.GetPlayerID, cost))
+        if (PlayerResourceManager.PlayerResourceAmounts[identifier.GetPlayerID].HasResources (cost))
         {
-            PlayerResourceManager.SubtractResource(identifier.GetPlayerID, ref PlayerResourceManager.Food, cost.GetFood);
-            PlayerResourceManager.SubtractResource(identifier.GetPlayerID, ref PlayerResourceManager.Wood, cost.GetWood);
-            PlayerResourceManager.SubtractResource(identifier.GetPlayerID, ref PlayerResourceManager.Stone, cost.GetStone);
+            PlayerResourceManager.PlayerResourceAmounts[identifier.GetPlayerID].SubtractResoruces(cost);
 
             buttonAction.Invoke();
             return true;

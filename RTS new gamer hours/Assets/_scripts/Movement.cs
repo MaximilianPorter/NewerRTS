@@ -67,7 +67,7 @@ public class Movement : MonoBehaviour
 
     private void Update()
     {
-        moveInput = (moveTarget - transform.position).normalized;
+        moveInput = (moveTarget - transform.position);
         moveInput.y = 0;
 
         if (isGrounded && inputJumpDown)
@@ -101,7 +101,7 @@ public class Movement : MonoBehaviour
         // move
         if (canMove)
         {
-            rb.AddForce(transform.forward * moveForce * moveInput.magnitude, ForceMode.Force);
+            rb.AddForce(transform.forward * moveForce, ForceMode.Force);
             Vector3 clampedVelocity = rb.velocity;
             clampedVelocity.x = Mathf.Clamp(clampedVelocity.x, -maxMoveSpeed * slowMultiplier, maxMoveSpeed * slowMultiplier);
             clampedVelocity.z = Mathf.Clamp(clampedVelocity.z, -maxMoveSpeed * slowMultiplier, maxMoveSpeed * slowMultiplier);
@@ -144,7 +144,7 @@ public class Movement : MonoBehaviour
 
     private void LookTowards (Vector3 dir)
     {
-        if (dir.magnitude < 0.05f)
+        if (dir.magnitude < 0.1f)
             return;
 
         Quaternion lookRot = Quaternion.LookRotation(dir, Vector3.up);
@@ -184,7 +184,7 @@ public class Movement : MonoBehaviour
             Gizmos.color = Color.red;
             Gizmos.DrawRay(transform.position, Vector3.down * ((-col.center.y + col.height / 2f) + 0.1f));
 
-            //Gizmos.DrawSphere(moveTarget, 0.5f);
+            Gizmos.DrawSphere(moveTarget, 0.5f);
         }
     }
 }

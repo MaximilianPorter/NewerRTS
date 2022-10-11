@@ -18,10 +18,41 @@ public class ResourceAmount
     public int GetWood => wood;
     public int GetStone => stone;
 
-    public ResourceAmount(int food, int wood, int stone)
+    public ResourceAmount(int food = 0, int wood = 0, int stone = 0)
     {
         this.food = food;
         this.wood = wood;
         this.stone = stone;
+    }
+
+    public bool HasResources (ResourceAmount compareResources)
+    {
+        if (food >= compareResources.GetFood &&
+            wood >= compareResources.GetWood &&
+            stone >= compareResources.GetStone)
+            return true;
+
+        return false;
+    }
+
+    public void SubtractResoruces (ResourceAmount subtractResources)
+    {
+        food = (int)Mathf.Clamp(food - subtractResources.GetFood, 0, Mathf.Infinity);
+        wood = (int)Mathf.Clamp(wood - subtractResources.GetWood, 0, Mathf.Infinity);
+        stone = (int)Mathf.Clamp(stone - subtractResources.GetStone, 0, Mathf.Infinity);
+    }
+
+    public void AddResources (ResourceAmount addResources)
+    {
+        food += addResources.GetFood;
+        wood += addResources.GetWood;
+        stone += addResources.GetStone;
+    }
+
+    public void AddResources (int food = 0, int wood = 0, int stone = 0)
+    {
+        this.food += food;
+        this.wood += wood;
+        this.stone += stone;
     }
 }
