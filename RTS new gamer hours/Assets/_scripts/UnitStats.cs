@@ -15,7 +15,16 @@ public class UnitStats : ScriptableObject
     [Header("Ranged")]
     public bool isRanged = false;
     public float projectileForce;
+    [Tooltip("at most how far off the projectile will be")]
+    public float accuracy = 0f;
+    [Range(0f, 1f)]public float projectileArch = 0.5f;
     public GameObject projectile;
+
+    [Header("Melee")]
+    public LayerMask hitMask;
+    public float hitDistance = 0.5f;
+    public float hitRadius = 0.5f;
+    public float hitForce = 0.1f;
 
     [Header("Movement")]
     public float moveForce = 1000f;

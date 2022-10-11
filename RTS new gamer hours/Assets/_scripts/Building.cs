@@ -17,6 +17,8 @@ public class Building : MonoBehaviour
     private bool playerIsHovering = false;
 
     public bool GetRallyPointMoved => rallyPointMoved;
+    public Vector3 GetRallyPointPos => rallyPoint.position;
+    
     public BuildingStats GetStats => stats;
 
     private void Awake()
@@ -85,6 +87,12 @@ public class Building : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void SetRallyPoint(Vector3 newRallyPoint)
+    {
+        rallyPoint.position = newRallyPoint;
+        rallyPointMoved = true;
     }
 
     private void OnDrawGizmosSelected()

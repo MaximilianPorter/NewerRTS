@@ -18,6 +18,6 @@ MonoBehaviour:
   interactionRadius: 2
   buildRadius: 5
   population: 3
-  unit: {fileID: 4258379125407079058, guid: fb7d6664d9a1205468efe50fbb594e9b, type: 3}
+  unit: {fileID: 4258379125407079058, guid: d14c90c55a5aa6b4293e3c16f01004b4, type: 3}
   initialUnitSpawnTime: 5
   spawnTimeMultiPerBuilding: 0.7

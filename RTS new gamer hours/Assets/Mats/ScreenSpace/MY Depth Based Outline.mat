@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: MY Depth Based Outline
-  m_Shader: {fileID: 4800000, guid: 065803456599c8349af208624b748e56, type: 3}
+  m_Shader: {fileID: 4800000, guid: 0f1f80c00a37f314997bf00780b60a99, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords:
   - _NORMALMAP_TANGENT_SPACE

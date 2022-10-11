@@ -13,6 +13,7 @@ public class LegManager : MonoBehaviour
 
     [Space(10)]
 
+    [SerializeField] private Vector3 footOffset = Vector3.zero;
     [SerializeField] private Movement movement;
     [SerializeField] private AnimationCurve legHeightCurve;
     [SerializeField] private LayerMask groundMask;
@@ -34,7 +35,6 @@ public class LegManager : MonoBehaviour
     [Serializable]
     private struct Leg
     {
-        public LineRenderer rend;
         public Transform hip;
         public Transform target;
         public Transform jumpTargetPos;
@@ -98,7 +98,7 @@ public class LegManager : MonoBehaviour
             RaycastHit hit;
             if (Physics.Raycast(legCastPos, Vector3.down, out hit, legLength, groundMask))
             {
-                nextPositions[i] = hit.point;
+                nextPositions[i] = hit.point + footOffset;
             }
 
 
@@ -109,12 +109,12 @@ public class LegManager : MonoBehaviour
 
 
             // line renderers
-            if (legs[i].rend)
-            {
-                legs[i].rend.SetPosition(0, legs[i].hip.position);
-                legs[i].rend.SetPosition(1, legs[i].hip.GetChild (0).position);
-                legs[i].rend.SetPosition(2, legs[i].hip.GetChild (0).GetChild (0).position);
-            }
+            //if (legs[i].rend)
+            //{
+            //    legs[i].rend.SetPosition(0, legs[i].hip.position);
+            //    legs[i].rend.SetPosition(1, legs[i].hip.GetChild (0).position);
+            //    legs[i].rend.SetPosition(2, legs[i].hip.GetChild (0).GetChild (0).position);
+            //}
         }
 
 
@@ -144,12 +144,12 @@ public class LegManager : MonoBehaviour
     {
         if (Application.isPlaying)
         {
-            Gizmos.color = Color.blue;
-            for (int i = 0; i < nextPositions.Length; i++)
-            {
-                Gizmos.DrawSphere(nextPositions[i], 0.1f);
+            //Gizmos.color = Color.blue;
+            //for (int i = 0; i < nextPositions.Length; i++)
+            //{
+            //    Gizmos.DrawSphere(nextPositions[i], 0.1f);
 
-            }
+            //}
         }
 
         //Gizmos.DrawRay(body.position, body.velocity.normalized * 10f);

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class PlayerHolder : MonoBehaviour
@@ -14,6 +15,18 @@ public class PlayerHolder : MonoBehaviour
     public static void AddBuilding (int playerID, Building building)
     {
         playerBuildings[playerID].Add(building);
+
+        // if other buildings of this type have a rallypoint set, set the new building too
+        Building[] buildingsWithType = playerBuildings[playerID].Where(check => check.GetStats.buildingType == building.GetStats.buildingType).ToArray();
+        for (int i = 0; i < buildingsWithType.Length; i++)
+        {
+            Building checkBuilding = buildingsWithType[i];
+            if (checkBuilding.GetRallyPointMoved)
+            {
+                building.SetRallyPoint(checkBuilding.GetRallyPointPos);
+                break;
+            }
+        }
     }
     public static void RemoveBuilding(int playerID, Building building)
     {

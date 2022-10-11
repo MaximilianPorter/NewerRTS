@@ -14,13 +14,23 @@ public class UnitActions : MonoBehaviour
     [SerializeField] private bool debugDie = false;
     [SerializeField] private GameObject bloodSplatterImage;
     [SerializeField] private GameObject bloodGoreEffect;
-     
+
+    [Header("Animated")]
+    [SerializeField] private Renderer[] bodyPartsNeedMaterial;
+
+    [Header("Animations")]
+    [SerializeField] private AnimatorOverrideController unitOverrideController;
+    [SerializeField] private Animator animator;
+    [SerializeField] private float walkAnimSpeed = 1f;
+    [SerializeField] private float attackAnimSpeed = 1f;
+    [SerializeField] private float attackFireWaitTime = 0.4f;
+
     private Identifier identifier;
     private Movement movement;
     private Attacking attacking;
     private Health health;
     private bool isSelected = false;
-
+    private bool isAttacking = false;
 
     public UnitStats GetStats => unitStats;
     public Movement GetMovement => movement;
@@ -39,10 +49,20 @@ public class UnitActions : MonoBehaviour
 
         health.SetValues(unitStats.health);
         orderingObject.SetActive(false);
+
+
+        SetAnimations(unitOverrideController);
     }
 
     private void Start()
     {
+        // turn on correct body parts
+        for (int i = 0; i < bodyPartsNeedMaterial.Length; i++)
+        {
+            bodyPartsNeedMaterial[i].material = PlayerColorManager.GetUnitMaterial(identifier.GetTeamID);
+        }
+
+
         // add unit to list of all units for player
         PlayerHolder.AddUnit(identifier.GetPlayerID, this);
     }
@@ -53,6 +73,33 @@ public class UnitActions : MonoBehaviour
 
         if (debugDie || health.GetIsDead)
             Die();
+
+        if (animator)
+        {
+            isAttacking = animator.GetCurrentAnimatorStateInfo(0).IsName("Attack");
+            animator.ResetTrigger("Attack");
+
+            if (!isAttacking)
+            {
+                if (attacking.GetHasLoadedAttack)
+                {
+                    animator.speed = attackAnimSpeed;
+                    animator.SetTrigger("Attack");
+                    attacking.SetAttackWaitTime(attackFireWaitTime / animator.speed);
+                    return;
+                }
+
+
+                animator.SetBool("isMoving", movement.GetMoveSpeed01 > 0.1f);
+                if (animator.GetBool("isMoving"))
+                    animator.speed = walkAnimSpeed;
+
+
+
+                if (animator.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
+                    animator.speed = 1f;
+            }
+        }
     }
 
     public void Die ()
@@ -66,6 +113,11 @@ public class UnitActions : MonoBehaviour
         Destroy(goreInstance, 5f);
 
         Destroy(gameObject);
+    }
+
+    private void SetAnimations (AnimatorOverrideController newController)
+    {
+        animator.runtimeAnimatorController = newController;
     }
 
 

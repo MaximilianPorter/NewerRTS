@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ac889f1e1c8a4f46b9fe26f45ce43e0, type: 3}
+  m_Name: Swordsman
+  m_EditorClassIdentifier: 
+  health: 100
+  damage: 20
+  timeBetweenAttacks: 1
+  slowMultiplierBlocking: 0.2
+  lookRange: 5
+  attackRange: 1
+  isRanged: 0
+  projectileForce: 0
+  accuracy: 0
+  projectileArch: 0.5
+  projectile: {fileID: 0}
+  hitMask:
+    serializedVersion: 2
+    m_Bits: 1024
+  hitDistance: 0.5
+  hitRadius: 0.5
+  hitForce: 0.1
+  moveForce: 1000
+  maxMoveSpeed: 1
+  maxStepDistance: 0.2
+  legSwitchSpeed: 3.8
+  stopMovingDist: 0.1

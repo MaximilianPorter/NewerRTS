@@ -5,24 +5,92 @@ using UnityEngine;
 [RequireComponent(typeof (Rigidbody))]
 public class Projectile : MonoBehaviour
 {
-    private float damage = 0;
-    private Rigidbody rb;
+    [SerializeField][Range(0.1f, 2f)] private float hitTargetDist = 0.1f;
+    [SerializeField] private LayerMask hitMask;
 
-    private void Start()
+    private Rigidbody rb;
+    private float damage = 0;
+    private int teamID = 10000;
+    private Vector3 lastPos = Vector3.zero;
+
+    public Rigidbody GetRigidbody => rb;
+
+
+    private void Awake()
     {
         rb = GetComponent<Rigidbody>();
     }
 
-    public void Launch (Vector3 target, float force, float damage)
+    private void Start()
+    {
+        Destroy(gameObject, 10f);
+    }
+
+    private void FixedUpdate()
+    {
+        transform.LookAt(transform.position + rb.velocity);
+
+        // stop raycasting when we hit something
+        if (rb.isKinematic)
+            return;
+
+        if (lastPos != Vector3.zero)
+        {
+            // check for hits
+            RaycastHit hit;
+            Vector3 lastDir = (lastPos - transform.position);
+            Vector3 castPos = transform.position + lastDir.normalized * 2f;
+            if (Physics.Raycast(castPos, transform.forward, out hit, 2f, hitMask))
+            {
+                if (hit.transform.TryGetComponent(out Identifier testIdentifier) && testIdentifier.GetTeamID == teamID)
+                    return;
+
+                float diff = 2f - hit.distance;
+                transform.position += lastDir.normalized * diff;
+
+                rb.isKinematic = true;
+                rb.velocity = Vector3.zero;
+                
+                if (hit.transform.gameObject.layer != LayerMask.NameToLayer ("Ground"))
+                    transform.SetParent(hit.transform);
+
+                // deal damage to different team
+                if (hit.transform.TryGetComponent(out Identifier identifier) && identifier.GetTeamID != teamID)
+                {
+                    if (hit.transform.TryGetComponent(out Health health))
+                        health.TakeDamage(damage);
+                }
+            }
+        }
+
+        lastPos = transform.position;
+    }
+
+    public void SetInfo (float damage, int teamID)
     {
         this.damage = damage;
-        SetTrajectory (rb, target, force);
+        this.teamID = teamID;
     }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        if (Application.isPlaying)
+        {
+            Vector3 lastDir = (lastPos - transform.position);
+            Gizmos.DrawRay(transform.position + lastDir.normalized * 2f, transform.forward * 2f);
+        }
+        //Gizmos.DrawWireSphere(transform.position, hitRadius);
+    }
+
+
     /// <summary>
     /// Applies the force to the Rigidbody such that it will land, if unobstructed, at the target position.  The arch [0, 1] determines the percent of arch to provide between the minimum and maximum arch.  If target is out of range, it will fail to launch and return false; otherwise, it will launch and return true.  This only takes the Y gravity into account, and X gravity will not affect the trajectory.
     /// </summary>
-    public static bool SetTrajectory(Rigidbody rigidbody, Vector3 target, float force, float arch = 0.5f)
+    /// <param name="accuracy">determines between random[-accuracy, +accuracy] how far off the shot will be on the x and z axes</param>
+    public static bool SetTrajectory(Rigidbody rigidbody, Vector3 target, float force, float accuracy = 0f, float arch = 0.5f)
     {
+        target += new Vector3(Random.Range(-accuracy, accuracy), 0f, Random.Range(-accuracy, accuracy));
         Mathf.Clamp(arch, 0, 1);
         var origin = rigidbody.position;
         float x = target.x - origin.x;
@@ -42,7 +110,7 @@ public class Projectile : MonoBehaviour
         float vx = x / time;
         float vy = y / time + time * gravity / 2;
         float vz = z / time;
-        var trajectory = new Vector3(vx, vy, vz);
+        var trajectory = new Vector3(vx, vy, vz) * rigidbody.mass;
         rigidbody.AddForce(trajectory, ForceMode.Impulse);
         return true;
     }

@@ -10,17 +10,25 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8ac889f1e1c8a4f46b9fe26f45ce43e0, type: 3}
-  m_Name: Regular Infantry
+  m_Name: Archer
   m_EditorClassIdentifier: 
-  health: 100
-  damage: 5
-  timeBetweenAttacks: 0.5
+  health: 80
+  damage: 30
+  timeBetweenAttacks: 2
   slowMultiplierBlocking: 0.2
-  lookRange: 5
-  attackRange: 1
-  isRanged: 0
-  projectileForce: 0
-  projectile: {fileID: 0}
+  lookRange: 7
+  attackRange: 6
+  isRanged: 1
+  projectileForce: 10
+  accuracy: 0.3
+  projectileArch: 0.5
+  projectile: {fileID: 5640332772760401253, guid: 55e4c6da466501e4da37fba31125a102, type: 3}
+  hitMask:
+    serializedVersion: 2
+    m_Bits: 1024
+  hitDistance: 0.5
+  hitRadius: 0.5
+  hitForce: 0.1
   moveForce: 1000
   maxMoveSpeed: 1
   maxStepDistance: 0.2

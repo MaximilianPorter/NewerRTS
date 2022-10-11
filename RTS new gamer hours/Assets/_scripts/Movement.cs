@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEditor.Timeline;
 using UnityEngine;
 
-[RequireComponent (typeof (Identifier))]
 public class Movement : MonoBehaviour
 {
     [Header("Stats")]
@@ -36,10 +35,12 @@ public class Movement : MonoBehaviour
     private int currentSlowPriority = 0;
 
     private bool canMove = true;
+    private bool additionalCanMove = true;
     private Vector3 moveInput = Vector3.zero;
     private bool inputJumpDown = false;
-    private Identifier playerIdentifier;
 
+    public Transform GetLookTarget => lookAtTarget;
+    public void SetInputJumpDown(bool newInput) => inputJumpDown = newInput;
     public float GetMaxMoveSpeed => maxMoveSpeed;
     public bool GetIsGrounded => isGrounded;
     public bool GetCanMove => canMove;
@@ -48,11 +49,6 @@ public class Movement : MonoBehaviour
 
     private void Awake()
     {
-        if (TryGetComponent(out Identifier identifier))
-        {
-            playerIdentifier = identifier;
-        }
-
         rb = GetComponent<Rigidbody>();
         col = GetComponent<CapsuleCollider>();
 
@@ -63,6 +59,7 @@ public class Movement : MonoBehaviour
             stopMovingDist = stats.stopMovingDist;
         }
 
+        SetMoveTarget(transform.position);
         //wheatTuft.SetActive(false);
         //wheatRot = Quaternion.identity;
 
@@ -70,20 +67,8 @@ public class Movement : MonoBehaviour
 
     private void Update()
     {
-        if (playerIdentifier.GetIsPlayer)
-        {
-            moveInput = new Vector3(PlayerInput.players[playerIdentifier.GetPlayerID].GetAxis(PlayerInput.GetInputMoveHorizontal),
-                0f,
-                PlayerInput.players[playerIdentifier.GetPlayerID].GetAxis(PlayerInput.GetInputMoveVertical));
-
-            inputJumpDown = PlayerInput.players[playerIdentifier.GetPlayerID].GetButtonDown(PlayerInput.GetInputJump);
-        }
-        else
-        {
-            moveInput = moveTarget == Vector3.zero ? Vector3.zero : (moveTarget - transform.position).normalized;
-        }
+        moveInput = (moveTarget - transform.position).normalized;
         moveInput.y = 0;
-
 
         if (isGrounded && inputJumpDown)
         {
@@ -98,35 +83,18 @@ public class Movement : MonoBehaviour
         // update friction
         col.material = isGrounded ? groundedMat : inAirMat;
 
-        canMove = (new Vector3(moveTarget.x, transform.position.y, moveTarget.z) - transform.position).sqrMagnitude > stopMovingDist * stopMovingDist
-            && moveInput != Vector3.zero
-            && ((playerIdentifier.GetIsPlayer && !PlayerInput.GetPlayerIsInMenu(playerIdentifier.GetPlayerID)) || !playerIdentifier.GetIsPlayer);
 
-
-
-
-        if (!playerIdentifier.GetIsPlayer)
+        // look towards target if there is one, if not, look in the direction you're moving
+        if (lookAtTarget != null)
         {
-            if (canMove)
-            {
-                LookTowards(moveInput);
-            }
-            else if (lookAtTarget != null)
-            {
-                LookTowards(lookAtTarget.position - transform.position);
-            }
-        }else if (canMove)
-        {
-            LookTowards(moveInput);
-        }
+            LookTowards(lookAtTarget.position - transform.position);
+        }else
+            LookTowards(moveInput == Vector3.zero ? transform.forward : moveInput);
 
-
+        canMove = additionalCanMove && (new Vector3(moveTarget.x, transform.position.y, moveTarget.z) - transform.position).sqrMagnitude > stopMovingDist * stopMovingDist
+            && moveInput != Vector3.zero;
     }
 
-    private void LateUpdate()
-    {
-        
-    }
 
     private void FixedUpdate()
     {
@@ -143,6 +111,10 @@ public class Movement : MonoBehaviour
     }
 
 
+    public void SetCanMove (bool newCanMove)
+    {
+        additionalCanMove = newCanMove;
+    }
 
     public void SetMoveTarget (Vector3 newTarget)
     {
@@ -172,6 +144,9 @@ public class Movement : MonoBehaviour
 
     private void LookTowards (Vector3 dir)
     {
+        if (dir.magnitude < 0.05f)
+            return;
+
         Quaternion lookRot = Quaternion.LookRotation(dir, Vector3.up);
         rb.rotation = Quaternion.Lerp(rb.rotation, lookRot, rotationSpeed * Time.deltaTime);
     }
@@ -208,6 +183,8 @@ public class Movement : MonoBehaviour
         {
             Gizmos.color = Color.red;
             Gizmos.DrawRay(transform.position, Vector3.down * ((-col.center.y + col.height / 2f) + 0.1f));
+
+            //Gizmos.DrawSphere(moveTarget, 0.5f);
         }
     }
 }

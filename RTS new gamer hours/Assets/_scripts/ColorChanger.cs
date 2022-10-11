@@ -10,6 +10,7 @@ public class ColorChanger : MonoBehaviour
 
     [Tooltip("Doesn't matter if there's a Identifier.cs in the parent or self")]
     [SerializeField] private int teamID;
+    [SerializeField] private int[] meshRendMaterialChange;
 
     private void Start()
     {
@@ -74,7 +75,26 @@ public class ColorChanger : MonoBehaviour
         // MATERIAL
         if (TryGetComponent(out MeshRenderer mRend))
         {
-            mRend.material = PlayerColorManager.GetPlayerMaterial(teamID);
+            Material[] mats = mRend.materials;
+            if (meshRendMaterialChange.Length <= 0)
+                mats[0] = PlayerColorManager.GetPlayerMaterial(teamID);
+            for (int i = 0; i < meshRendMaterialChange.Length; i++)
+            {
+                mats[meshRendMaterialChange[i]] = PlayerColorManager.GetPlayerMaterial(teamID);
+            }
+            mRend.materials = mats;
+        }
+
+        if (TryGetComponent (out SkinnedMeshRenderer smRend))
+        {
+            Material[] mats = smRend.materials;
+            if (meshRendMaterialChange.Length <= 0)
+                mats[0] = PlayerColorManager.GetPlayerMaterial(teamID);
+            for (int i = 0; i < meshRendMaterialChange.Length; i++)
+            {
+                mats[meshRendMaterialChange[i]] = PlayerColorManager.GetPlayerMaterial(teamID);
+            }
+            smRend.materials = mats;
         }
     }
 }
