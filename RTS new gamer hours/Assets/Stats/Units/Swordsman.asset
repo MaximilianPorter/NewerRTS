@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ac889f1e1c8a4f46b9fe26f45ce43e0, type: 3}
   m_Name: Swordsman
   m_EditorClassIdentifier: 
+  unitType: 16
   health: 100
   damage: 20
   timeBetweenAttacks: 1

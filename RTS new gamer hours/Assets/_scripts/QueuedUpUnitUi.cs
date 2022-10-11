@@ -13,6 +13,10 @@ public class QueuedUpUnitUi : MonoBehaviour
     private int unitAmt = 0;
 
     public int GetUnitAmt => unitAmt;
+
+    /// <summary>
+    /// radialFill is [0, 1]
+    /// </summary>
     public void SetDetails(int amount, float radialFill)
     {
         fillImage.fillAmount = radialFill;

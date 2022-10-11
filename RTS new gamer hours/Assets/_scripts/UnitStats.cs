@@ -5,6 +5,7 @@ using UnityEngine;
 [CreateAssetMenu (fileName = "Unit Name", menuName = "Create Unit Stats")]
 public class UnitStats : ScriptableObject
 {
+    public BuyIcons unitType;
     public float health;
     public float damage;
     public float timeBetweenAttacks;
