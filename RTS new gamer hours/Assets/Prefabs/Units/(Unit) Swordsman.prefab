@@ -485,6 +485,7 @@ MonoBehaviour:
   debugDie: 0
   bloodSplatterImage: {fileID: 3758024593050388391, guid: 7f803312f365dcd408609b38989a661d, type: 3}
   bloodGoreEffect: {fileID: 7442719172150680357, guid: ded24b2bedd49f9409b5a3d3ef418441, type: 3}
+  keepDistFromOthers: 0.5
   bodyPartsNeedMaterial:
   - {fileID: 3819548900116704623}
   - {fileID: 3819548900109495827}
@@ -495,6 +496,7 @@ MonoBehaviour:
   attackAnimSpeed: 1
   attackFireWaitTime: 0.4
   torch: {fileID: 5640332772760401253, guid: 696cdb4dded55164ea4fd9ff66f75923, type: 3}
+  torchDamage: 10
   torchThrowForce: 5
   timeBetweenThrows: 3
   throwAnimSpeed: 1.5
@@ -515,7 +517,7 @@ MonoBehaviour:
   moveForce: 0
   maxMoveSpeed: 0
   stopMovingDist: 0.02
-  rotationSpeed: 50
+  rotationSpeed: 10
   jumpForce: 30
   inAirDrag: 0
   groundedDrag: 5

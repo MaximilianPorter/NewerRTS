@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor;
 using UnityEngine;
 
 public class Attacking : MonoBehaviour
@@ -46,7 +47,6 @@ public class Attacking : MonoBehaviour
     private float attackAnimWaitTimeCounter = 1000f;
     private bool hasAttacked = false;
 
-    //public void SetHasAttacked() => hasLoadedAttack = false;
     public bool GetCanAttack => canAttack;
     public void SetNearestEnemy (Transform newEnemy) => nearestEnemy = newEnemy;
     public Transform GetNearestEnemy => nearestEnemy;
@@ -190,22 +190,22 @@ public class Attacking : MonoBehaviour
 
     private void FindNearestEnemy (Vector3 fromPoint)
     {
-        Collider[] nearbyUnits = Physics.OverlapSphere(fromPoint, stats.lookRange, enemyMask).Where(unit => unit.GetComponent<Identifier>().GetTeamID != identifier.GetTeamID).ToArray();
+        //Collider[] nearbyUnits = Physics.OverlapSphere(fromPoint, stats.lookRange, enemyMask).Where(unit => unit.GetComponent<Identifier>().GetTeamID != identifier.GetTeamID).ToArray();
 
-        if (nearbyUnits.Length <= 0)
-        {
-            nearestEnemy = null;
-            return;
-        }
+        //if (nearbyUnits.Length <= 0)
+        //{
+        //    nearestEnemy = null;
+        //    return;
+        //}
 
-        foreach (Collider enemyCol in nearbyUnits)
-        {
-            if (nearestEnemy == null || (enemyCol.transform.position - fromPoint).sqrMagnitude <
-                (nearestEnemy.position - fromPoint).sqrMagnitude)
-            {
-                nearestEnemy = enemyCol.transform;
-            }
-        }
+        //foreach (Collider enemyCol in nearbyUnits)
+        //{
+        //    if (nearestEnemy == null || (enemyCol.transform.position - fromPoint).sqrMagnitude <
+        //        (nearestEnemy.position - fromPoint).sqrMagnitude)
+        //    {
+        //        nearestEnemy = enemyCol.transform;
+        //    }
+        //}
     }
 
     private void Shoot ()

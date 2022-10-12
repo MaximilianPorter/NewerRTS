@@ -1,3 +1,4 @@
+using Cinemachine.Utility;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.Timeline;
@@ -42,6 +43,8 @@ public class Movement : MonoBehaviour
     private bool additionalCanTurn = true;
     private Vector3 moveInput = Vector3.zero;
     private bool inputJumpDown = false;
+    private Vector3 lookDirAddition = Vector3.zero;
+    private float lookAdditionStrength = 0f;
 
     public bool GetHasReachedMovePos => hasReachedMovePos;
     public Vector3 GetVelocity => rb.velocity;
@@ -74,8 +77,8 @@ public class Movement : MonoBehaviour
 
     private void Update()
     {
+
         moveInput = (new Vector3(moveTarget.x, 0, moveTarget.z) - new Vector3(transform.position.x, 0f, transform.position.z));
-        moveInput.y = 0;
 
         if (isGrounded && inputJumpDown)
         {
@@ -92,7 +95,8 @@ public class Movement : MonoBehaviour
 
 
 
-        hasReachedMovePos = (new Vector3(moveTarget.x, transform.position.y, moveTarget.z) - transform.position).sqrMagnitude <= stopMovingDist * stopMovingDist;
+        hasReachedMovePos = CloseToPos(moveTarget, stopMovingDist * 2);
+
         if (hasReachedMovePos)
             SetMoveTarget(transform.position);
 
@@ -109,7 +113,7 @@ public class Movement : MonoBehaviour
         if (lookAtTarget != null)
         {
             FixedLookTowards(lookAtTarget.position - transform.position);
-        }else
+        } else
             FixedLookTowards(moveInput == Vector3.zero ? transform.forward : moveInput);
 
 
@@ -125,6 +129,14 @@ public class Movement : MonoBehaviour
         }
     }
 
+
+    private bool CloseToPos (Vector3 pos, float softDist)
+    {
+        pos.y = 0f;
+        Vector3 myPos = new Vector3(transform.position.x, 0f, transform.position.z);
+
+        return (myPos - pos).sqrMagnitude <= softDist * softDist;
+    }
 
     public void SetCanMove (bool newCanMove)
     {
@@ -162,16 +174,25 @@ public class Movement : MonoBehaviour
         return false;
     }
 
+    public void SetLookDirAddition(Vector3 dir, float strength)
+    {
+        lookDirAddition = dir;
+        lookAdditionStrength = strength;
+    }
+
     private void FixedLookTowards (Vector3 dir)
     {
-        if (dir.magnitude < 0.2f || !canTurn)
+        if (dir.magnitude < 0.15f || !canTurn)
             return;
 
-        //Vector3 cross = Vector3.Cross(dir, Vector3.up);
         dir = dir.normalized;
 
-        Quaternion lookRot = Quaternion.LookRotation(dir, Vector3.up);
-        Quaternion newRotation = Quaternion.Lerp(rb.rotation, lookRot, rotationSpeed * Time.fixedDeltaTime);
+        // this is so they actually arrive at their move pos
+        float rotSpeed = CloseToPos(moveTarget, 1f) ? 50f : rotationSpeed;
+
+        Vector3 addDir = Vector3.Lerp(Vector3.zero, lookDirAddition, lookAdditionStrength);
+        Quaternion lookRot = Quaternion.LookRotation(dir + addDir, Vector3.up);
+        Quaternion newRotation = Quaternion.Lerp(rb.rotation, lookRot, rotSpeed * Time.fixedDeltaTime);
         newRotation.eulerAngles = new Vector3(0f, newRotation.eulerAngles.y, 0f);
         rb.rotation = newRotation;
     }
@@ -210,6 +231,9 @@ public class Movement : MonoBehaviour
             Gizmos.DrawRay(transform.position, Vector3.down * ((-col.center.y + col.height / 2f) + 0.1f));
 
             Gizmos.DrawSphere(moveTarget, 0.1f);
+
+            Gizmos.color = new Color(1f, 0.5f, 0.5f);
+            Gizmos.DrawLine(transform.position, transform.position + lookDirAddition * 2f);
         }
     }
 }

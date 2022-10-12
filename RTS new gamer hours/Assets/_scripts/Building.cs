@@ -19,6 +19,9 @@ public class Building : MonoBehaviour
     private Identifier identifier;
     private bool playerIsHovering = false;
 
+    private Cell lastCell;
+    private Cell activeCell;
+
     private Health health;
 
     public bool GetRallyPointMoved => rallyPointMoved;
@@ -40,6 +43,8 @@ public class Building : MonoBehaviour
 
         if (playerHoverEffect)
             playerHoverEffect.SetActive(false);
+
+        AssignActiveCell();
     }
 
     private void Update()
@@ -58,7 +63,19 @@ public class Building : MonoBehaviour
             Die();
         }
 
-        
+    }
+
+    private void AssignActiveCell()
+    {
+        activeCell = UnitCellManager.GetCell(transform.position);
+        if (lastCell == null || lastCell != activeCell)
+        {
+            if (lastCell != null)
+                lastCell.unitsInCell.Remove(identifier);
+
+            activeCell.unitsInCell.Add(identifier);
+            lastCell = activeCell;
+        }
     }
 
     public void SpawnUnit ()
@@ -92,6 +109,7 @@ public class Building : MonoBehaviour
     }
     public void DeleteBuilding ()
     {
+        lastCell.unitsInCell.Remove(identifier);
         PlayerHolder.RemoveBuilding(identifier.GetPlayerID, this);
 
         Destroy(gameObject);

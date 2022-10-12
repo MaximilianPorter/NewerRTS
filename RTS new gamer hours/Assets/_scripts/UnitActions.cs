@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -15,6 +16,7 @@ public class UnitActions : MonoBehaviour
     [SerializeField] private bool debugDie = false;
     [SerializeField] private GameObject bloodSplatterImage;
     [SerializeField] private GameObject bloodGoreEffect;
+    [SerializeField] private float keepDistFromOthers = 1f;
 
     [Header("Animated")]
     [SerializeField] private Renderer[] bodyPartsNeedMaterial;
@@ -34,6 +36,8 @@ public class UnitActions : MonoBehaviour
     [SerializeField] private float throwAnimSpeed = 1.5f;
     [SerializeField] private float throwFireWaitTime = 0.6f;
 
+    private float findNearestEnemyCounter = 0f;
+
     private Identifier identifier;
     private Movement movement;
     private Attacking attacking;
@@ -45,6 +49,9 @@ public class UnitActions : MonoBehaviour
     private float throwWaitTimer = 0f;
     private Vector3 tempThrowTarget;
     private bool hasThrown = true;
+
+    private Cell lastCell;
+    private Cell activeCell;
 
     public UnitStats GetStats => unitStats;
     public Movement GetMovement => movement;
@@ -117,6 +124,106 @@ public class UnitActions : MonoBehaviour
             Throw();
 
         HandleMoveTowardsEnemies();
+
+
+        AssignActiveCell();
+
+
+        findNearestEnemyCounter -= Time.deltaTime;
+        if (movement.GetMoveSpeed01 > 0.05f || findNearestEnemyCounter <= 0)
+        {
+            CellFindNearestEnemy();
+            findNearestEnemyCounter = Random.Range (0.1f, 0.3f);
+        }
+    }
+
+    private void AssignActiveCell ()
+    {
+        activeCell = UnitCellManager.GetCell(transform.position);
+        if (lastCell == null || lastCell != activeCell)
+        {
+            if (lastCell != null)
+                lastCell.unitsInCell.Remove(identifier);
+
+            activeCell.unitsInCell.Add(identifier);
+            lastCell = activeCell;
+        }
+    }
+
+    private void CellFindNearestEnemy()
+    {
+        int cellsOutToCheck = Mathf.CeilToInt(unitStats.lookRange / UnitCellManager.cellWidth);
+
+        Vector2Int bottomLeft = new Vector2Int(activeCell.pos.x - cellsOutToCheck, activeCell.pos.y - cellsOutToCheck);
+        Vector2Int topRight = new Vector2Int(activeCell.pos.x + cellsOutToCheck, activeCell.pos.y + cellsOutToCheck);
+        Cell[] cellsAroundMe = UnitCellManager.GetCells(bottomLeft, topRight);
+
+
+        attacking.SetNearestEnemy(ReturnClosestEnemy(cellsAroundMe));
+    }
+
+    private Transform ReturnClosestEnemy(Cell[] cellsToCheck)
+    {
+        Transform closestEnemy = null;
+        Transform closestAny = null;
+
+        for (int i = 0; i < cellsToCheck.Length; i++)
+        {
+            if (cellsToCheck[i] == null)
+                continue;
+
+
+            foreach (Identifier unit in cellsToCheck[i].unitsInCell)
+            {
+                if (unit == null)
+                    continue;
+
+                if (unit == identifier) // don't look for self
+                    continue;
+
+                Vector3 unitDir = (unit.transform.position - transform.position);
+                if (unitDir.sqrMagnitude > unitStats.lookRange * unitStats.lookRange)
+                {
+                    continue;
+                }
+                
+
+                // detect closest enemy
+                if (unit.GetTeamID != identifier.GetTeamID)
+                {
+                    if (closestEnemy == null)
+                        closestEnemy = unit.transform;
+                    else if (unitDir.sqrMagnitude < (closestEnemy.position - transform.position).sqrMagnitude)
+                        closestEnemy = unit.transform;
+                }
+
+                // detect closest unit of any kind
+                if (unitDir.sqrMagnitude < keepDistFromOthers && Vector3.Dot(unitDir, transform.forward) > 0f && unit != closestEnemy)
+                {
+                    if (closestAny == null)
+                        closestAny = unit.transform;
+                    else if (unitDir.sqrMagnitude < (closestAny.position - transform.position).sqrMagnitude)
+                        closestAny = unit.transform;
+                }
+            }
+
+
+
+
+            // if we already found an enmy in the first 12 squares, there's no point to keep checking
+            if (i >= 12 && closestEnemy != null)
+                break;
+        }
+        if (closestAny && movement.GetLookTarget == null)
+        {
+            Vector3 closestDir = (closestAny.position - transform.position);
+            Vector3 tempMovePos = transform.position + Vector3.Lerp(-closestDir.normalized, transform.forward, 0.5f);
+            movement.SetLookDirAddition((tempMovePos - transform.position).normalized, keepDistFromOthers / closestDir.magnitude);
+        }
+        else
+            movement.SetLookDirAddition(Vector3.zero, 0);
+
+        return closestEnemy;
     }
 
     private void HandleMoveTowardsEnemies ()
@@ -162,6 +269,7 @@ public class UnitActions : MonoBehaviour
                         // if we're out of range of attacking
                         // move close enough to attack
                         movement.SetMoveTarget(enemy.position);
+                        movement.SetLookAt(null);
                     }
                     else
                     {
@@ -210,6 +318,7 @@ public class UnitActions : MonoBehaviour
 
     public void Die ()
     {
+        lastCell.unitsInCell.Remove(identifier);
         PlayerHolder.RemoveUnit(identifier.GetPlayerID, this);
 
         //GameObject bloodInstance = Instantiate(bloodSplatterImage, new Vector3(transform.position.x, 0.01f, transform.position.z),
