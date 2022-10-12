@@ -13,7 +13,8 @@ public class Building : MonoBehaviour
     [SerializeField] private GameObject playerHoverEffect;
     [SerializeField] private GameObject smokeExplosion;
 
-    
+
+    private float scaleUpCounter = 0f;
     private bool rallyPointMoved = false;
     private Identifier identifier;
     private bool playerIsHovering = false;
@@ -36,6 +37,9 @@ public class Building : MonoBehaviour
         PlayerHolder.AddBuilding(identifier.GetPlayerID, this);
 
         DestroySurroundings();
+
+        if (playerHoverEffect)
+            playerHoverEffect.SetActive(false);
     }
 
     private void Update()
@@ -51,7 +55,7 @@ public class Building : MonoBehaviour
 
         if (health.GetCurrentHealth < 0)
         {
-            DeleteBuilding();
+            Die();
         }
 
         
@@ -78,12 +82,17 @@ public class Building : MonoBehaviour
         playerIsHovering = isHovering;
     }
 
+
+    public void Die ()
+    {
+        GameObject smokeInstance = Instantiate(smokeExplosion, transform.position, Quaternion.identity);
+        Destroy(smokeInstance, 5f);
+
+        DeleteBuilding();
+    }
     public void DeleteBuilding ()
     {
         PlayerHolder.RemoveBuilding(identifier.GetPlayerID, this);
-
-        GameObject smokeInstance = Instantiate(smokeExplosion, transform.position, Quaternion.identity);
-        Destroy(smokeInstance, 5f);
 
         Destroy(gameObject);
     }
@@ -114,6 +123,12 @@ public class Building : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
+        if (!stats)
+        {
+            Debug.LogError("Please assign stats to " + gameObject.name);
+            return;
+        }
+
         Gizmos.color = Color.blue;
         Gizmos.DrawWireSphere(transform.position, stats.buildRadius);
 

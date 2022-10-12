@@ -10,14 +10,14 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 44fe55230886a964789777ffc795784a, type: 3}
-  m_Name: Archer Hut
+  m_Name: Tower
   m_EditorClassIdentifier: 
-  buildingType: 2
-  unitType: 14
-  subsequentUpgrades: 0d00000003000000
+  buildingType: 9
+  unitType: 0
+  subsequentUpgrades: 0a000000
   interactionRadius: 2
   buildRadius: 5
-  population: 2
+  population: 0
   unit: {fileID: 6806056615238588080, guid: 197e208e373752448a8eb352aa3896d9, type: 3}
   initialUnitSpawnTime: 5
   spawnTimeMultiPerBuilding: 0.7

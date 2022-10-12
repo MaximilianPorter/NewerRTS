@@ -84,8 +84,8 @@ public enum BuyIcons
 
     Building_Workshop = 8,
 
-    Building_Turret = 9,
-    Building_TurretPlus = 10,
+    Building_Tower = 9,
+    Building_TowerPlus = 10,
 
     Building_Farm = 11,
     Building_FarmPlus = 12,
