@@ -43,13 +43,11 @@ public class Attacking : MonoBehaviour
 
     private float checkForEnemyCounter = 0;
     private float checkForEnemyTime = .2f;
-    private bool hasLoadedAttack = false;
     private float attackAnimWaitTimeCounter = 1000f;
     private bool hasAttacked = false;
 
     //public void SetHasAttacked() => hasLoadedAttack = false;
     public bool GetCanAttack => canAttack;
-    public bool GetHasLoadedAttack => hasLoadedAttack;
     public void SetNearestEnemy (Transform newEnemy) => nearestEnemy = newEnemy;
     public Transform GetNearestEnemy => nearestEnemy;
     public UnitStats GetStats => stats;
@@ -59,18 +57,6 @@ public class Attacking : MonoBehaviour
     {
         identifier = GetComponent<Identifier>();
         movement = GetComponent<Movement>();
-
-        //if (stats)
-        //{
-        //    isRanged = stats.isRanged;
-        //    lookRange = stats.lookRange;
-        //    attackRange = stats.attackRange;
-        //    damage = stats.damage;
-        //    timeBetweenAttacks = stats.timeBetweenAttacks;
-        //    projectileForce = stats.projectileForce;
-        //    projectile = stats.projectile;
-        //    slowMultiplierBlocking = stats.slowMultiplierBlocking;
-        //}
     }
 
     private void Update()
@@ -83,14 +69,10 @@ public class Attacking : MonoBehaviour
 
         if (!identifier.GetIsPlayer)
         {
-            NonPlayerBehaviour();
+            //NonPlayerBehaviour();
         }
 
         HandleAttackingTime();
-
-        attackAnimWaitTimeCounter -= Time.deltaTime;
-        if (attackAnimWaitTimeCounter < 0 && !hasAttacked)
-            SendAttack();
     }
 
     private void FixedUpdate()
@@ -100,60 +82,93 @@ public class Attacking : MonoBehaviour
             checkForEnemyCounter += Time.fixedDeltaTime;
             if (checkForEnemyCounter > checkForEnemyTime)// || nearestEnemy == null)
             {
-                FindNearestEnemy();
+                FindNearestEnemy(movement.GetMoveTarget);
                 checkForEnemyCounter = 0f;
                 checkForEnemyTime = Random.Range(0.1f, 0.3f);
             }
         }
     }
 
-    private void NonPlayerBehaviour()
-    {
-        if (nearestEnemy != null)
-        {
-            // if the place we're going to is already within (range) of the target, stop moving and look at the target
-            if ((movement.GetMoveTarget - nearestEnemy.position).sqrMagnitude < (stats.lookRange * stats.lookRange))
-            {
-                movement.SetLookAt(nearestEnemy);
-                movement.SetMoveTarget(transform.position);
-            }
-            else
-                movement.SetLookAt(null);
+    //private void NonPlayerBehaviour()
+    //{
+    //    if (nearestEnemy != null)
+    //    {
+    //        //// if the place we're going to is already within (range) of the target, stop moving and look at the target
+    //        //if ((movement.GetMoveTarget - nearestEnemy.position).sqrMagnitude < (stats.lookRange * stats.lookRange))
+    //        //{
+    //        //    movement.SetLookAt(nearestEnemy);
+    //        //    movement.SetMoveTarget(transform.position);
+    //        //    return;
+    //        //}
+    //        //else
+    //        //    movement.SetLookAt(null);
 
-            // chase after the enemy until they can attack, only if they've reached their original desired position
-            if (!movement.GetCanMove && 
-                (transform.position - nearestEnemy.position).sqrMagnitude > stats.attackRange * stats.attackRange) // don't worry about pos if you're already in attacking range
-            {
-                // pos = enemy + attackrange / 4
-                // not exactly on the enemy position, but close enough to attack
-                movement.SetMoveTarget(nearestEnemy.position + (transform.position - nearestEnemy.position).normalized * (stats.attackRange * 0.75f));
-            }
+    //        // if the point we're moving to is far enough away (lookrange / 2) don't pay attention to any enemies nearby
+    //        if ((movement.GetMoveTarget - transform.position).sqrMagnitude > (stats.lookRange * stats.lookRange) / 2f)
+    //        {
+    //            movement.SetLookAt(null);
+    //            return;
+    //        }
+    //        else if (movement.GetLookTarget != nearestEnemy)
+    //        {
+    //            // if the point we're moving to is close enough
+    //            movement.SetLookAt(nearestEnemy);
+    //            movement.SetMoveTarget (transform.position);
+    //        }
 
-            // if canAttack and there's an enemy IN RANGE
-            if (canAttack && (transform.position - nearestEnemy.position).sqrMagnitude < stats.attackRange * stats.attackRange)
-            {
-                //Attack();
-                hasLoadedAttack = true;
-                attackCounter = 0f;
-            }
-        }
-        else
-        {
-            movement.SetLookAt(null);
+    //        if (movement.GetHasReachedMovePos && nearestEnemy.TryGetComponent(out Building nearestBuilding))
+    //        {
+    //            Vector3 buildingDir = (nearestBuilding.transform.position - transform.position);
+    //            bool isWithinDist = buildingDir.sqrMagnitude <= nearestBuilding.GetStats.interactionRadius * nearestBuilding.GetStats.interactionRadius;
+    //            if (!isWithinDist)
+    //            {
+    //                Vector3 moveTarget = nearestBuilding.transform.position - buildingDir.normalized * nearestBuilding.GetStats.interactionRadius;
+    //                moveTarget.y = transform.position.y;
+    //                movement.SetMoveTarget(moveTarget);
+    //            }
+    //        }
+    //        else if (movement.GetHasReachedMovePos && 
+    //            (transform.position - nearestEnemy.position).sqrMagnitude > stats.attackRange * stats.attackRange) // don't worry about pos if you're already in attacking range
+    //        {
+    //            // chase after the enemy until they can attack, only if they've reached their original desired position
 
-        }
-    }
+    //            // pos = enemy + attackrange / 4
+    //            // not exactly on the enemy position, but close enough to attack
+    //            movement.SetMoveTarget(nearestEnemy.position + (transform.position - nearestEnemy.position).normalized * (stats.attackRange * 0.75f));
+
+
+    //            // if canAttack and there's an enemy IN RANGE
+    //            if (canAttack && (transform.position - nearestEnemy.position).sqrMagnitude < stats.attackRange * stats.attackRange)
+    //            {
+    //                //Attack();
+    //                hasLoadedAttack = true;
+    //                attackCounter = 0f;
+    //            }
+    //        }
+
+    //    }
+    //    else
+    //    {
+    //        movement.SetLookAt(null);
+
+    //    }
+    //}
 
     private void HandleAttackingTime ()
     {
         attackCounter += Time.deltaTime;
-        canAttack = attackCounter > stats.timeBetweenAttacks && (identifier.GetIsPlayer || movement.GetMoveSpeed01 < 0.01f); // can attack if your timer is ready and you're not moving
+        attackAnimWaitTimeCounter -= Time.deltaTime;
+
+        // can attack if your timer is ready and you're not moving
+        canAttack = attackCounter > stats.timeBetweenAttacks && (identifier.GetIsPlayer || movement.GetMoveSpeed01 < 0.01f); 
+
+        if (attackAnimWaitTimeCounter < 0 && !hasAttacked)
+            SendAttack();
     }
     public void SetAttackWaitTime (float waitTime)
     {
+        attackCounter = 0f;
         hasAttacked = false;
-        hasLoadedAttack = false;
-
 
         attackAnimWaitTimeCounter = waitTime;
     }
@@ -170,25 +185,23 @@ public class Attacking : MonoBehaviour
             MeleeHit();
             //swordAnimator.SetTrigger("Attack");
         }
-        FindNearestEnemy();
+        FindNearestEnemy(transform.position);
     }
 
-    private void FindNearestEnemy ()
+    private void FindNearestEnemy (Vector3 fromPoint)
     {
-        Collider[] nearbyUnits = Physics.OverlapSphere(transform.position, stats.lookRange, enemyMask).Where(unit => unit.GetComponent<Identifier>().GetTeamID != identifier.GetTeamID).ToArray();
+        Collider[] nearbyUnits = Physics.OverlapSphere(fromPoint, stats.lookRange, enemyMask).Where(unit => unit.GetComponent<Identifier>().GetTeamID != identifier.GetTeamID).ToArray();
 
         if (nearbyUnits.Length <= 0)
         {
-            if (nearestEnemy)
-                movement.SetMoveTarget(transform.position);
             nearestEnemy = null;
             return;
         }
 
         foreach (Collider enemyCol in nearbyUnits)
         {
-            if (nearestEnemy == null || (enemyCol.transform.position - transform.position).sqrMagnitude <
-                (nearestEnemy.position - transform.position).sqrMagnitude)
+            if (nearestEnemy == null || (enemyCol.transform.position - fromPoint).sqrMagnitude <
+                (nearestEnemy.position - fromPoint).sqrMagnitude)
             {
                 nearestEnemy = enemyCol.transform;
             }
@@ -204,7 +217,8 @@ public class Attacking : MonoBehaviour
         Projectile projInstance = Instantiate(stats.projectile, firePoint.position, Quaternion.identity).GetComponent<Projectile>();
         projInstance.SetInfo(stats.damage, identifier.GetTeamID);
 
-        Projectile.SetTrajectory(projInstance.GetRigidbody, movement.GetLookTarget.position, stats.projectileForce, stats.accuracy, stats.projectileArch);
+        Projectile.SetTrajectory(projInstance.GetRigidbody, movement.GetLookTarget.position, stats.projectileForce, stats.accuracy, stats.projectileArch,
+            stats.leadsTarget ? movement.GetLookTarget.GetComponent<Rigidbody>() : null);
     }
 
     public void MeleeHit()

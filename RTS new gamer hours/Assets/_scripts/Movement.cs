@@ -33,15 +33,22 @@ public class Movement : MonoBehaviour
     private CapsuleCollider col;
     private float slowMultiplier = 1f;
     private int currentSlowPriority = 0;
+    private Vector3 debugReadVelocity;
+    private bool hasReachedMovePos = false;
 
     private bool canMove = true;
+    private bool canTurn = true;
     private bool additionalCanMove = true;
+    private bool additionalCanTurn = true;
     private Vector3 moveInput = Vector3.zero;
     private bool inputJumpDown = false;
 
+    public bool GetHasReachedMovePos => hasReachedMovePos;
+    public Vector3 GetVelocity => rb.velocity;
     public Transform GetLookTarget => lookAtTarget;
     public void SetInputJumpDown(bool newInput) => inputJumpDown = newInput;
     public float GetMaxMoveSpeed => maxMoveSpeed;
+    public Vector3 GetMoveDir => moveInput;
     public bool GetIsGrounded => isGrounded;
     public bool GetCanMove => canMove;
     public Vector3 GetMoveTarget => moveTarget;
@@ -67,7 +74,7 @@ public class Movement : MonoBehaviour
 
     private void Update()
     {
-        moveInput = (moveTarget - transform.position);
+        moveInput = (new Vector3(moveTarget.x, 0, moveTarget.z) - new Vector3(transform.position.x, 0f, transform.position.z));
         moveInput.y = 0;
 
         if (isGrounded && inputJumpDown)
@@ -84,20 +91,28 @@ public class Movement : MonoBehaviour
         col.material = isGrounded ? groundedMat : inAirMat;
 
 
-        // look towards target if there is one, if not, look in the direction you're moving
-        if (lookAtTarget != null)
-        {
-            LookTowards(lookAtTarget.position - transform.position);
-        }else
-            LookTowards(moveInput == Vector3.zero ? transform.forward : moveInput);
 
-        canMove = additionalCanMove && (new Vector3(moveTarget.x, transform.position.y, moveTarget.z) - transform.position).sqrMagnitude > stopMovingDist * stopMovingDist
-            && moveInput != Vector3.zero;
+        hasReachedMovePos = (new Vector3(moveTarget.x, transform.position.y, moveTarget.z) - transform.position).sqrMagnitude <= stopMovingDist * stopMovingDist;
+        if (hasReachedMovePos)
+            SetMoveTarget(transform.position);
+
+        canMove = additionalCanMove && !hasReachedMovePos && moveInput != Vector3.zero;
+        canTurn = additionalCanTurn;
     }
 
 
     private void FixedUpdate()
     {
+        debugReadVelocity = rb.velocity;
+
+        // look towards target if there is one, if not, look in the direction you're moving
+        if (lookAtTarget != null)
+        {
+            FixedLookTowards(lookAtTarget.position - transform.position);
+        }else
+            FixedLookTowards(moveInput == Vector3.zero ? transform.forward : moveInput);
+
+
         // move
         if (canMove)
         {
@@ -114,6 +129,11 @@ public class Movement : MonoBehaviour
     public void SetCanMove (bool newCanMove)
     {
         additionalCanMove = newCanMove;
+    }
+
+    public void SetCanTurn (bool newCanTurn)
+    {
+        additionalCanTurn = newCanTurn;
     }
 
     public void SetMoveTarget (Vector3 newTarget)
@@ -142,13 +162,18 @@ public class Movement : MonoBehaviour
         return false;
     }
 
-    private void LookTowards (Vector3 dir)
+    private void FixedLookTowards (Vector3 dir)
     {
-        if (dir.magnitude < 0.1f)
+        if (dir.magnitude < 0.2f || !canTurn)
             return;
 
+        //Vector3 cross = Vector3.Cross(dir, Vector3.up);
+        dir = dir.normalized;
+
         Quaternion lookRot = Quaternion.LookRotation(dir, Vector3.up);
-        rb.rotation = Quaternion.Lerp(rb.rotation, lookRot, rotationSpeed * Time.deltaTime);
+        Quaternion newRotation = Quaternion.Lerp(rb.rotation, lookRot, rotationSpeed * Time.fixedDeltaTime);
+        newRotation.eulerAngles = new Vector3(0f, newRotation.eulerAngles.y, 0f);
+        rb.rotation = newRotation;
     }
 
     //private void OnTriggerStay(Collider other)
@@ -184,7 +209,7 @@ public class Movement : MonoBehaviour
             Gizmos.color = Color.red;
             Gizmos.DrawRay(transform.position, Vector3.down * ((-col.center.y + col.height / 2f) + 0.1f));
 
-            Gizmos.DrawSphere(moveTarget, 0.5f);
+            Gizmos.DrawSphere(moveTarget, 0.1f);
         }
     }
 }

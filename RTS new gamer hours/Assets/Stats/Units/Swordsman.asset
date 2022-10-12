@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unitType: 16
   health: 100
-  damage: 20
+  damage: 30
   timeBetweenAttacks: 1
   slowMultiplierBlocking: 0.2
   lookRange: 5
@@ -22,6 +22,7 @@ MonoBehaviour:
   isRanged: 0
   projectileForce: 0
   accuracy: 0
+  leadsTarget: 0
   projectileArch: 0.5
   projectile: {fileID: 0}
   hitMask:

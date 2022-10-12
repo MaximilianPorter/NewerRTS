@@ -5684,7 +5684,7 @@ MonoBehaviour:
   moveForce: 0
   maxMoveSpeed: 0
   stopMovingDist: 0.02
-  rotationSpeed: 30
+  rotationSpeed: 50
   jumpForce: 30
   inAirDrag: 0
   groundedDrag: 5
@@ -5837,6 +5837,7 @@ MonoBehaviour:
   rallyTroopsEffectPrefab: {fileID: 8450968138510638528, guid: ea9ac5282c5e6674dac7a7a636a2c21f, type: 3}
   maxSelectionRadius: 30
   radiusIncreaseSpeed: 4
+  selectedUnitsUiLayout: {fileID: 0}
 --- !u!114 &183182282
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5856,6 +5857,7 @@ MonoBehaviour:
   menuCycleSpeed: 10
   selectAnim: {fileID: 0}
   queuedUnitsLayoutGroup: {fileID: 0}
+  costAreaLayout: {fileID: 0}
   initialIcons:
   - {fileID: 0}
   - {fileID: 0}

@@ -1,11 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 [RequireComponent(typeof (Rigidbody))]
 public class Projectile : MonoBehaviour
 {
-    [SerializeField][Range(0.1f, 2f)] private float hitTargetDist = 0.1f;
+    [SerializeField] private bool lookTowardsVelocity = true;
+    [SerializeField] private bool destroyOnContact = false;
+    [SerializeField] private bool burns = false;
+
+    [SerializeField] private GameObject spawnOnHit;
     [SerializeField] private LayerMask hitMask;
 
     private Rigidbody rb;
@@ -28,7 +33,8 @@ public class Projectile : MonoBehaviour
 
     private void FixedUpdate()
     {
-        transform.LookAt(transform.position + rb.velocity);
+        if (lookTowardsVelocity)
+            transform.LookAt(transform.position + rb.velocity);
 
         // stop raycasting when we hit something
         if (rb.isKinematic)
@@ -38,15 +44,16 @@ public class Projectile : MonoBehaviour
         {
             // check for hits
             RaycastHit hit;
-            Vector3 lastDir = (lastPos - transform.position);
-            Vector3 castPos = transform.position + lastDir.normalized * 2f;
+            //Vector3 lastDir = (lastPos - transform.position);
+            Vector3 castPos = transform.position - transform.forward * 2f;
             if (Physics.Raycast(castPos, transform.forward, out hit, 2f, hitMask))
             {
+                // don't hit anything that's on our team
                 if (hit.transform.TryGetComponent(out Identifier testIdentifier) && testIdentifier.GetTeamID == teamID)
                     return;
 
                 float diff = 2f - hit.distance;
-                transform.position += lastDir.normalized * diff;
+                transform.position += -transform.forward * diff;
 
                 rb.isKinematic = true;
                 rb.velocity = Vector3.zero;
@@ -60,6 +67,20 @@ public class Projectile : MonoBehaviour
                     if (hit.transform.TryGetComponent(out Health health))
                         health.TakeDamage(damage);
                 }
+
+                if (burns && hit.transform.TryGetComponent (out BurningObject burnedObject))
+                {
+                    burnedObject.ResetBurn();
+                }
+
+                if (spawnOnHit)
+                {
+                    GameObject hitEffectInstance = Instantiate(spawnOnHit, hit.point, Quaternion.identity);
+                    Destroy(hitEffectInstance, 5f);
+                }
+
+                if (destroyOnContact)
+                    Destroy(gameObject);
             }
         }
 
@@ -77,7 +98,7 @@ public class Projectile : MonoBehaviour
         Gizmos.color = Color.red;
         if (Application.isPlaying)
         {
-            Vector3 lastDir = (lastPos - transform.position);
+            Vector3 lastDir = -transform.forward;
             Gizmos.DrawRay(transform.position + lastDir.normalized * 2f, transform.forward * 2f);
         }
         //Gizmos.DrawWireSphere(transform.position, hitRadius);
@@ -88,14 +109,16 @@ public class Projectile : MonoBehaviour
     /// Applies the force to the Rigidbody such that it will land, if unobstructed, at the target position.  The arch [0, 1] determines the percent of arch to provide between the minimum and maximum arch.  If target is out of range, it will fail to launch and return false; otherwise, it will launch and return true.  This only takes the Y gravity into account, and X gravity will not affect the trajectory.
     /// </summary>
     /// <param name="accuracy">determines between random[-accuracy, +accuracy] how far off the shot will be on the x and z axes</param>
-    public static bool SetTrajectory(Rigidbody rigidbody, Vector3 target, float force, float accuracy = 0f, float arch = 0.5f)
+    public static bool SetTrajectory(Rigidbody rigidbody, Vector3 target, float force, float accuracy = 0f, float arch = 0.5f, Rigidbody targetRigidbody = null)
     {
         target += new Vector3(Random.Range(-accuracy, accuracy), 0f, Random.Range(-accuracy, accuracy));
+        float targetVelX = targetRigidbody ? targetRigidbody.velocity.x : 0f;
+        float targetVelZ = targetRigidbody ? targetRigidbody.velocity.z : 0f;
         Mathf.Clamp(arch, 0, 1);
         var origin = rigidbody.position;
-        float x = target.x - origin.x;
+        float x = target.x - origin.x + targetVelX*1.2f;
         float y = target.y - origin.y;
-        float z = target.z - origin.z;
+        float z = target.z - origin.z + targetVelZ*1.2f;
         float gravity = -Physics.gravity.y;
         float b = force * force - y * gravity;
         float discriminant = b * b - gravity * gravity * (x * x + y * y);

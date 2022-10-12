@@ -145,7 +145,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 091dc986ba44ccd48ba3d35d5283d010, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hitTargetDist: 0.1
+  lookTowardsVelocity: 1
+  destroyOnContact: 0
+  spawnOnHit: {fileID: 2954536634476184738, guid: 8f0d7a0fd98170949b5c3025e9af01ae, type: 3}
   hitMask:
     serializedVersion: 2
     m_Bits: 1088

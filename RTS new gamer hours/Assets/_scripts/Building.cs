@@ -11,10 +11,14 @@ public class Building : MonoBehaviour
     [SerializeField] private bool debugSpawnUnit = false;
     [SerializeField] private Transform rallyPoint;
     [SerializeField] private GameObject playerHoverEffect;
+    [SerializeField] private GameObject smokeExplosion;
 
+    
     private bool rallyPointMoved = false;
     private Identifier identifier;
     private bool playerIsHovering = false;
+
+    private Health health;
 
     public bool GetRallyPointMoved => rallyPointMoved;
     public Vector3 GetRallyPointPos => rallyPoint.position;
@@ -24,6 +28,7 @@ public class Building : MonoBehaviour
     private void Awake()
     {
         identifier = GetComponent<Identifier>();
+        health = GetComponent<Health>();
     }
 
     private void Start()
@@ -43,6 +48,13 @@ public class Building : MonoBehaviour
 
         if (playerHoverEffect)
             playerHoverEffect.SetActive(playerIsHovering);
+
+        if (health.GetCurrentHealth < 0)
+        {
+            DeleteBuilding();
+        }
+
+        
     }
 
     public void SpawnUnit ()
@@ -70,8 +82,13 @@ public class Building : MonoBehaviour
     {
         PlayerHolder.RemoveBuilding(identifier.GetPlayerID, this);
 
+        GameObject smokeInstance = Instantiate(smokeExplosion, transform.position, Quaternion.identity);
+        Destroy(smokeInstance, 5f);
+
         Destroy(gameObject);
     }
+
+    
 
     private void DestroySurroundings()
     {

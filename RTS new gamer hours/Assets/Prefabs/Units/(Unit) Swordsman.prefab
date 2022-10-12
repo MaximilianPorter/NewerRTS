@@ -409,7 +409,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5160717717918629767}
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 15.84, y: 2.32, z: 15.51}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -492,8 +492,13 @@ MonoBehaviour:
   unitOverrideController: {fileID: 22100000, guid: 177688c0ea202c8409db64cedf786bb2, type: 2}
   animator: {fileID: 3819548900121083419}
   walkAnimSpeed: 1
-  attackAnimSpeed: 2
+  attackAnimSpeed: 1
   attackFireWaitTime: 0.4
+  torch: {fileID: 5640332772760401253, guid: 696cdb4dded55164ea4fd9ff66f75923, type: 3}
+  torchThrowForce: 5
+  timeBetweenThrows: 3
+  throwAnimSpeed: 1.5
+  throwFireWaitTime: 1.1
 --- !u!114 &5160717717918629886
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -510,7 +515,7 @@ MonoBehaviour:
   moveForce: 0
   maxMoveSpeed: 0
   stopMovingDist: 0.02
-  rotationSpeed: 30
+  rotationSpeed: 50
   jumpForce: 30
   inAirDrag: 0
   groundedDrag: 5
@@ -540,7 +545,7 @@ MonoBehaviour:
   firePoint: {fileID: 1871431924477064749}
   enemyMask:
     serializedVersion: 2
-    m_Bits: 1024
+    m_Bits: 5120
 --- !u!114 &1556448994491191459
 MonoBehaviour:
   m_ObjectHideFlags: 0
