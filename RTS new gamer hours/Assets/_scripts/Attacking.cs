@@ -42,8 +42,8 @@ public class Attacking : MonoBehaviour
     private bool canAttack = true;
     private float attackCounter = 10000f;
 
-    private float checkForEnemyCounter = 0;
-    private float checkForEnemyTime = .2f;
+    //private float checkForEnemyCounter = 0;
+    //private float checkForEnemyTime = .2f;
     private float attackAnimWaitTimeCounter = 1000f;
     private bool hasAttacked = false;
 
@@ -79,13 +79,13 @@ public class Attacking : MonoBehaviour
     {
         if (!identifier.GetIsPlayer)
         {
-            checkForEnemyCounter += Time.fixedDeltaTime;
-            if (checkForEnemyCounter > checkForEnemyTime)// || nearestEnemy == null)
-            {
-                FindNearestEnemy(movement.GetMoveTarget);
-                checkForEnemyCounter = 0f;
-                checkForEnemyTime = Random.Range(0.1f, 0.3f);
-            }
+            //checkForEnemyCounter += Time.fixedDeltaTime;
+            //if (checkForEnemyCounter > checkForEnemyTime)// || nearestEnemy == null)
+            //{
+            //    FindNearestEnemy(movement.GetMoveTarget);
+            //    checkForEnemyCounter = 0f;
+            //    checkForEnemyTime = Random.Range(0.1f, 0.3f);
+            //}
         }
     }
 
@@ -185,28 +185,28 @@ public class Attacking : MonoBehaviour
             MeleeHit();
             //swordAnimator.SetTrigger("Attack");
         }
-        FindNearestEnemy(transform.position);
+        //FindNearestEnemy(transform.position);
     }
 
-    private void FindNearestEnemy (Vector3 fromPoint)
-    {
-        //Collider[] nearbyUnits = Physics.OverlapSphere(fromPoint, stats.lookRange, enemyMask).Where(unit => unit.GetComponent<Identifier>().GetTeamID != identifier.GetTeamID).ToArray();
+    //private void FindNearestEnemy (Vector3 fromPoint)
+    //{
+    //    Collider[] nearbyUnits = Physics.OverlapSphere(fromPoint, stats.lookRange, enemyMask).Where(unit => unit.GetComponent<Identifier>().GetTeamID != identifier.GetTeamID).ToArray();
 
-        //if (nearbyUnits.Length <= 0)
-        //{
-        //    nearestEnemy = null;
-        //    return;
-        //}
+    //    if (nearbyUnits.Length <= 0)
+    //    {
+    //        nearestEnemy = null;
+    //        return;
+    //    }
 
-        //foreach (Collider enemyCol in nearbyUnits)
-        //{
-        //    if (nearestEnemy == null || (enemyCol.transform.position - fromPoint).sqrMagnitude <
-        //        (nearestEnemy.position - fromPoint).sqrMagnitude)
-        //    {
-        //        nearestEnemy = enemyCol.transform;
-        //    }
-        //}
-    }
+    //    foreach (Collider enemyCol in nearbyUnits)
+    //    {
+    //        if (nearestEnemy == null || (enemyCol.transform.position - fromPoint).sqrMagnitude <
+    //            (nearestEnemy.position - fromPoint).sqrMagnitude)
+    //        {
+    //            nearestEnemy = enemyCol.transform;
+    //        }
+    //    }
+    //}
 
     private void Shoot ()
     {

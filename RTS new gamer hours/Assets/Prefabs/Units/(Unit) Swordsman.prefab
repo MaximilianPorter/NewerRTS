@@ -517,6 +517,11 @@ MonoBehaviour:
   moveForce: 0
   maxMoveSpeed: 0
   stopMovingDist: 0.02
+  wallHitMask:
+    serializedVersion: 2
+    m_Bits: 64
+  castDist: 3
+  rayCount: 10
   rotationSpeed: 10
   jumpForce: 30
   inAirDrag: 0

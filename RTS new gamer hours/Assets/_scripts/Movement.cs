@@ -12,6 +12,11 @@ public class Movement : MonoBehaviour
     [SerializeField] private float maxMoveSpeed = 5f;
     [SerializeField] private float stopMovingDist = 0.02f;
 
+    [Header("Collision Avoidance")]
+    [SerializeField] private LayerMask wallHitMask;
+    [SerializeField] private float castDist = 3f;
+    [SerializeField] private int rayCount = 10;
+
     [Space(10)]
 
     [SerializeField] private float rotationSpeed = 10f;
@@ -95,13 +100,15 @@ public class Movement : MonoBehaviour
 
 
 
-        hasReachedMovePos = CloseToPos(moveTarget, stopMovingDist * 2);
+        hasReachedMovePos = CloseToPos(moveTarget, stopMovingDist);
 
         if (hasReachedMovePos)
             SetMoveTarget(transform.position);
 
         canMove = additionalCanMove && !hasReachedMovePos && moveInput != Vector3.zero;
         canTurn = additionalCanTurn;
+
+        
     }
 
 
@@ -129,6 +136,33 @@ public class Movement : MonoBehaviour
         }
     }
 
+    //private Vector3 FindUnobstructedDir()
+    //{
+    //    float furthestUnobstructedDist = 0f;
+    //    Vector3 bestDir = transform.forward;
+    //    for (int i = 0; i < rayCount; i++)
+    //    {
+    //        Vector3 towardsTarget = Vector3.Lerp(transform.forward, (moveTarget - transform.position), 0.3f);
+    //        Vector3 dir = Vector3.Lerp(towardsTarget, Vector3.Cross(towardsTarget, Vector3.up) * (i % 2 == 0 ? 1f : -1f), (float)i / (float)rayCount);
+
+    //        RaycastHit hit;
+    //        if (Physics.SphereCast(transform.position, .01f, dir, out hit, castDist, wallHitMask))
+    //        {
+    //            if (hit.distance > furthestUnobstructedDist)
+    //            {
+    //                bestDir = dir;
+    //                furthestUnobstructedDist = hit.distance;
+    //            }
+
+    //        }
+    //        else
+    //        {
+    //            return dir;
+    //        }
+    //    }
+
+    //    return bestDir;
+    //}
 
     private bool CloseToPos (Vector3 pos, float softDist)
     {
@@ -190,8 +224,9 @@ public class Movement : MonoBehaviour
         // this is so they actually arrive at their move pos
         float rotSpeed = CloseToPos(moveTarget, 1f) ? 50f : rotationSpeed;
 
-        Vector3 addDir = Vector3.Lerp(Vector3.zero, lookDirAddition, lookAdditionStrength);
-        Quaternion lookRot = Quaternion.LookRotation(dir + addDir, Vector3.up);
+        Vector3 addDir = dir + Vector3.Lerp(Vector3.zero, lookDirAddition, lookAdditionStrength);
+
+        Quaternion lookRot = Quaternion.LookRotation(addDir, Vector3.up);
         Quaternion newRotation = Quaternion.Lerp(rb.rotation, lookRot, rotSpeed * Time.fixedDeltaTime);
         newRotation.eulerAngles = new Vector3(0f, newRotation.eulerAngles.y, 0f);
         rb.rotation = newRotation;
@@ -225,6 +260,7 @@ public class Movement : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
+
         if (Application.isPlaying)
         {
             Gizmos.color = Color.red;
