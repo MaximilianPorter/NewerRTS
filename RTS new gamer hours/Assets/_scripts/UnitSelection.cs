@@ -189,7 +189,7 @@ public class UnitSelection : MonoBehaviour
                     unitsToRally[i].GetOrderingObject.transform.position = transform.position + new Vector3(Random.Range(-maxDistAway, maxDistAway), 0f, Random.Range(-maxDistAway, maxDistAway));
                 }
 
-                unitsToRally[i].GetMovement.SetMoveTarget(unitsToRally[i].GetOrderingObject.transform.position);
+                unitsToRally[i].GetMovement.SetDestination(unitsToRally[i].GetOrderingObject.transform.position);
             }
             // reset pattern index
             patternIndex = -1;

@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.AI.Navigation;
 using UnityEngine;
 
 public class MapGenerationManager : MonoBehaviour
 {
     [SerializeField] private LayerMask groundMask;
+    [SerializeReference] private NavMeshSurface navMeshSurface;
 
     [Header("Trees")]
     [SerializeField] private GameObject[] trees;
@@ -46,12 +48,17 @@ public class MapGenerationManager : MonoBehaviour
             seed = Random.Range(0, 100000000);
 
         Random.InitState(seed);
+
+
+        treeParent = new GameObject("Tree Parent");
+        SpawnTrees();
+        AdjustTreeNoise();
+
+        navMeshSurface.BuildNavMesh();
     }
 
     private void Start()
     {
-        treeParent = new GameObject("Tree Parent");
-        SpawnTrees();
 
         //InitializeGroundHeights();
         //PickGroundHeights();
@@ -95,6 +102,12 @@ public class MapGenerationManager : MonoBehaviour
         float[,] noiseMap = Noise.GenerateNoiseMap(mapWidth, mapHeight, seed, noiseScale, octaves, persistance, lacunarity, offset);
         for (int i = 0; i < spawnedTrees.Count; i++)
         {
+            if (spawnedTrees[i] == null)
+            {
+                spawnedTrees.RemoveAt(i);
+                break;
+            }
+
             if (noiseMap[(int)(spawnedTrees[i].transform.position.x + treeArea.x), (int)(spawnedTrees[i].transform.position.z + treeArea.y)] < spawnThreshold)
                 spawnedTrees[i].SetActive(false);
             else

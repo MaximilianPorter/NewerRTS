@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.UIElements;
 
-[RequireComponent(typeof(Movement))]
+[RequireComponent(typeof(NavMeshMovement))]
 [RequireComponent(typeof(Attacking))]
 [RequireComponent(typeof(Health))]
 public class UnitActions : MonoBehaviour
@@ -16,7 +17,6 @@ public class UnitActions : MonoBehaviour
     [SerializeField] private bool debugDie = false;
     [SerializeField] private GameObject bloodSplatterImage;
     [SerializeField] private GameObject bloodGoreEffect;
-    [SerializeField] private float keepDistFromOthers = 1f;
 
     [Header("Animated")]
     [SerializeField] private Renderer[] bodyPartsNeedMaterial;
@@ -39,7 +39,7 @@ public class UnitActions : MonoBehaviour
     private float findNearestEnemyCounter = 0f;
 
     private Identifier identifier;
-    private Movement movement;
+    private NavMeshMovement navMovement;
     private Attacking attacking;
     private Health health;
     private bool isSelected = false;
@@ -54,7 +54,7 @@ public class UnitActions : MonoBehaviour
     private Cell activeCell;
 
     public UnitStats GetStats => unitStats;
-    public Movement GetMovement => movement;
+    public NavMeshMovement GetMovement => navMovement;
     public Attacking GetAttacking() => attacking;
     public Identifier GetIdentifier() => identifier;
     public GameObject GetOrderingObject => orderingObject;
@@ -64,7 +64,7 @@ public class UnitActions : MonoBehaviour
     private void Awake()
     {
         identifier = GetComponent<Identifier>();
-        movement = GetComponent<Movement>();
+        navMovement = GetComponent<NavMeshMovement>();
         attacking = GetComponent<Attacking>();
         health = GetComponent<Health>();
 
@@ -91,6 +91,7 @@ public class UnitActions : MonoBehaviour
     private void Update()
     {
         selectedGO.SetActive(isSelected);
+        attacking.SetCanAttack(navMovement.GetMoveSpeed01 < 0.01f);
 
         if (debugDie || health.GetIsDead)
             Die();
@@ -99,8 +100,8 @@ public class UnitActions : MonoBehaviour
         {
             isAttacking = animator.GetCurrentAnimatorStateInfo(0).IsName("Attack");
             isThrowing = animator.GetCurrentAnimatorStateInfo(0).IsName("Throw");
-            movement.SetCanMove(!isAttacking && !isThrowing);
-            movement.SetCanTurn(!isThrowing);
+            navMovement.SetCanMove(!isAttacking && !isThrowing);
+            navMovement.SetCanTurn(!isThrowing);
 
             if (isThrowing)
                 animator.speed = throwAnimSpeed;
@@ -109,7 +110,7 @@ public class UnitActions : MonoBehaviour
 
             if (!isAttacking && !isThrowing)
             {
-                animator.SetBool("isMoving", movement.GetMoveSpeed01 > 0.1f);
+                animator.SetBool("isMoving", navMovement.GetMoveSpeed01 > 0.1f);
                 if (animator.GetBool("isMoving"))
                     animator.speed = walkAnimSpeed;
 
@@ -130,7 +131,7 @@ public class UnitActions : MonoBehaviour
 
 
         findNearestEnemyCounter -= Time.deltaTime;
-        if (movement.GetMoveSpeed01 > 0.05f || findNearestEnemyCounter <= 0)
+        if (navMovement.GetMoveSpeed01 > 0.05f || findNearestEnemyCounter <= 0)
         {
             CellFindNearestEnemy();
             findNearestEnemyCounter = Random.Range (0.1f, 0.3f);
@@ -165,7 +166,6 @@ public class UnitActions : MonoBehaviour
     private Transform ReturnClosestEnemy(Cell[] cellsToCheck)
     {
         Transform closestEnemy = null;
-        Transform closestAny = null;
 
         for (int i = 0; i < cellsToCheck.Length; i++)
         {
@@ -196,15 +196,6 @@ public class UnitActions : MonoBehaviour
                     else if (unitDir.sqrMagnitude < (closestEnemy.position - transform.position).sqrMagnitude)
                         closestEnemy = unit.transform;
                 }
-
-                // detect closest unit of any kind
-                if (unitDir.sqrMagnitude < keepDistFromOthers && Vector3.Dot(unitDir, transform.forward) > 0f && unit != closestEnemy)
-                {
-                    if (closestAny == null)
-                        closestAny = unit.transform;
-                    else if (unitDir.sqrMagnitude < (closestAny.position - transform.position).sqrMagnitude)
-                        closestAny = unit.transform;
-                }
             }
 
 
@@ -214,30 +205,28 @@ public class UnitActions : MonoBehaviour
             if (i >= 12 && closestEnemy != null)
                 break;
         }
-        if (closestAny && movement.GetLookTarget == null)
-        {
-            Vector3 closestDir = (closestAny.position - transform.position);
-            Vector3 tempMovePos = transform.position + Vector3.Lerp(-closestDir.normalized, transform.forward, 0.5f);
-            movement.SetLookDirAddition((tempMovePos - transform.position).normalized, keepDistFromOthers / closestDir.magnitude);
-        }
-        else
-            movement.SetLookDirAddition(Vector3.zero, 0);
 
         return closestEnemy;
     }
 
     private void HandleMoveTowardsEnemies ()
     {
-        Vector3 moveTowardsPos = movement.GetMoveTarget;
+        Vector3 moveTowardsPos = navMovement.GetDestination;
         Transform enemy = attacking.GetNearestEnemy;
 
         if (enemy)
         {
-            // if we click and there's no enemy close to that pos, then we full commit to that pos and then worry later
-            if ((moveTowardsPos - enemy.position).sqrMagnitude > (unitStats.lookRange * unitStats.lookRange) / 2f && moveTowardsPos != transform.position)
+            // (MOVING) if we click far enough away from the enemy
+            if (navMovement.GetIsMoving && (moveTowardsPos - enemy.position).sqrMagnitude > (unitStats.lookRange/2f * unitStats.lookRange/2f))
             {
-                movement.SetLookAt(null);
+                navMovement.SetLookAt(null);
                 return;
+            }
+            
+            // (NOT MOVING) if we click far enough away from our own range
+            else if (!navMovement.GetIsMoving && (moveTowardsPos - transform.position).sqrMagnitude > (unitStats.lookRange/2f * unitStats.lookRange/2f))
+            {
+                navMovement.SetLookAt(null);
             }
 
             // if we click and there's an enemy close to that clickPos (range / 2f) then we go to that enemy
@@ -250,13 +239,13 @@ public class UnitActions : MonoBehaviour
                     if (sqrDistFromEnemy > enemyBuilding.GetStats.interactionRadius * enemyBuilding.GetStats.interactionRadius)
                     {
                         // if we're out of range to throw shit on the building
-                        movement.SetMoveTarget (enemy.position);
+                        navMovement.SetDestination (enemy.position);
                     }
                     else
                     {
                         // if we're in range to lob that stinky poo poo onto the building
-                        movement.SetMoveTarget(transform.position);
-                        movement.SetLookAt(enemy);
+                        navMovement.ResetDestination();
+                        navMovement.SetLookAt(enemy);
 
                         if (throwCounter > timeBetweenThrows)
                             StartThrow(enemy.position);
@@ -268,14 +257,14 @@ public class UnitActions : MonoBehaviour
                     {
                         // if we're out of range of attacking
                         // move close enough to attack
-                        movement.SetMoveTarget(enemy.position);
-                        movement.SetLookAt(null);
+                        navMovement.SetDestination(enemy.position);
+                        navMovement.SetLookAt(null);
                     }
                     else
                     {
                         // we're in range of attacking
-                        movement.SetMoveTarget(transform.position);
-                        movement.SetLookAt(enemy);
+                        navMovement.ResetDestination();
+                        navMovement.SetLookAt(enemy);
 
                         if (attacking.GetCanAttack && !isAttacking)
                         {
@@ -287,7 +276,7 @@ public class UnitActions : MonoBehaviour
         }
         else
         {
-            movement.SetLookAt(null);
+            navMovement.SetLookAt(null);
         }
     }
 
@@ -302,7 +291,7 @@ public class UnitActions : MonoBehaviour
         throwCounter = 0f;
         hasThrown = false;
         animator.SetTrigger("Throw");
-        throwWaitTimer = throwFireWaitTime;
+        throwWaitTimer = throwFireWaitTime / animator.speed;
 
         tempThrowTarget = target;
     }

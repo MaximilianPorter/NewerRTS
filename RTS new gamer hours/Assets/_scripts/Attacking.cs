@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Attacking : MonoBehaviour
 {
@@ -26,8 +27,8 @@ public class Attacking : MonoBehaviour
 
     [Header("Effects")]
     [SerializeField] private GameObject defaultHitEffect;
-    [SerializeField] private GameObject woodHitEffect;
     [SerializeField] private GameObject wheatHitEffect;
+    [SerializeField] private GameObject rockHitEffect;
 
     [Space(10)]
 
@@ -37,9 +38,9 @@ public class Attacking : MonoBehaviour
     [SerializeField] private LayerMask enemyMask;
 
 
-    private Movement movement;
     private Transform nearestEnemy;
     private bool canAttack = true;
+    private bool canAttackAddition = true;
     private float attackCounter = 10000f;
 
     //private float checkForEnemyCounter = 0;
@@ -48,6 +49,7 @@ public class Attacking : MonoBehaviour
     private bool hasAttacked = false;
 
     public bool GetCanAttack => canAttack;
+    public void SetCanAttack(bool addition) => canAttackAddition = addition;
     public void SetNearestEnemy (Transform newEnemy) => nearestEnemy = newEnemy;
     public Transform GetNearestEnemy => nearestEnemy;
     public UnitStats GetStats => stats;
@@ -56,7 +58,6 @@ public class Attacking : MonoBehaviour
     private void Awake()
     {
         identifier = GetComponent<Identifier>();
-        movement = GetComponent<Movement>();
     }
 
     private void Update()
@@ -160,7 +161,7 @@ public class Attacking : MonoBehaviour
         attackAnimWaitTimeCounter -= Time.deltaTime;
 
         // can attack if your timer is ready and you're not moving
-        canAttack = attackCounter > stats.timeBetweenAttacks && (identifier.GetIsPlayer || movement.GetMoveSpeed01 < 0.01f); 
+        canAttack = canAttackAddition && attackCounter > stats.timeBetweenAttacks;
 
         if (attackAnimWaitTimeCounter < 0 && !hasAttacked)
             SendAttack();
@@ -210,28 +211,55 @@ public class Attacking : MonoBehaviour
 
     private void Shoot ()
     {
+        Transform target = nearestEnemy;
+
         // sometimes it's null. i don't think it matters too much if we don't fire every once in a while
-        if (movement.GetLookTarget == null)
+        if (target == null)
             return;
 
         Projectile projInstance = Instantiate(stats.projectile, firePoint.position, Quaternion.identity).GetComponent<Projectile>();
         projInstance.SetInfo(stats.damage, identifier.GetTeamID);
 
-        Projectile.SetTrajectory(projInstance.GetRigidbody, movement.GetLookTarget.position, stats.projectileForce, stats.accuracy, stats.projectileArch,
-            stats.leadsTarget ? movement.GetLookTarget.GetComponent<Rigidbody>() : null);
+        // attempt to find it's velocity
+        Rigidbody targetBody = target.GetComponent<Rigidbody>();
+
+        Projectile.SetTrajectory(projInstance.GetRigidbody, target.position, stats.projectileForce, stats.accuracy, stats.projectileArch,
+            stats.leadsTarget ? targetBody.velocity : null);
     }
 
     public void MeleeHit()
     {
         Collider[] hits = Physics.OverlapSphere(transform.position + transform.forward * stats.hitDistance, stats.hitRadius, stats.hitMask);
 
-        Collider firstTree = hits.FirstOrDefault(tree => tree.CompareTag("Tree"));
-        if (firstTree != null)
+        Collider resourceNode = hits.FirstOrDefault(hit => hit.TryGetComponent(out ResourceNode node));
+        if (resourceNode != null)
         {
-            Vector3 dir = Vector3.Cross(firstTree.transform.position - transform.position, Vector3.up).normalized;
-            firstTree.GetComponent<TreeShake>().ShakeOnce(-dir, stats.hitForce);
-            GameObject woodHitInstance = Instantiate(woodHitEffect, firstTree.transform.position + new Vector3(0f, 1f, 0f), Quaternion.identity);
-            Destroy(woodHitInstance, 5f);
+            ResourceNode node = resourceNode.GetComponent<ResourceNode>();
+            node.CollectResources(identifier.GetPlayerID);
+        }
+
+        Collider shakingObject = hits.FirstOrDefault(tree => tree.GetComponent <TreeShake>());
+        if (shakingObject != null)
+        {
+            Vector3 dir = Vector3.Cross(shakingObject.transform.position - transform.position, Vector3.up).normalized;
+            if (shakingObject.TryGetComponent (out TreeShake treeShake))
+            {
+                treeShake.ShakeOnce(-dir, stats.hitForce);
+                GameObject hitEffect = Instantiate(treeShake.GetHitEffect, shakingObject.transform.position + treeShake.GetHitEffectOffset, Quaternion.identity);
+                Destroy(hitEffect, 5f);
+            }
+        }
+
+        Collider rock = hits.FirstOrDefault(hit => hit.CompareTag("Rock"));
+        if (rock != null)
+        {
+            GameObject rockHitInstance = Instantiate(rockHitEffect, transform.position + transform.forward * stats.hitDistance,
+                Quaternion.LookRotation(-transform.forward));
+            Destroy(rockHitInstance, 2f);
+
+            GameObject hitEffectInstance = Instantiate(defaultHitEffect, transform.position + transform.forward * stats.hitDistance, Quaternion.identity);
+            Destroy(hitEffectInstance, 1f);
+
         }
 
         Collider wheat = hits.FirstOrDefault(hit => hit.CompareTag("Field"));

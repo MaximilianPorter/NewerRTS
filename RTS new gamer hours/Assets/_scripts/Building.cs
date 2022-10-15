@@ -89,7 +89,7 @@ public class Building : MonoBehaviour
         unitInstance.GetComponent<Identifier>().SetPlayerID(identifier.GetPlayerID);
 
         // first rally point
-        unitInstance.GetMovement.SetMoveTarget(rallyPoint.position + new Vector3(Random.Range(-.5f, 0.5f), 0f, Random.Range(-.5f, 0.5f)));
+        unitInstance.GetMovement.SetDestination(rallyPoint.position + new Vector3(Random.Range(-.5f, 0.5f), 0f, Random.Range(-.5f, 0.5f)));
 
         // unit is added to player list in UnitActions.Start()
     }

@@ -8,6 +8,10 @@ TagManager:
   - Tree
   - Sword
   - Field
+  - Bush
+  - Camera
+  - Canvas
+  - Rock
   layers:
   - Default
   - TransparentFX
@@ -22,7 +26,7 @@ TagManager:
   - Unit
   - POST Only Selected
   - Building
-  - 
+  - Obstacle
   - 
   - 
   - 

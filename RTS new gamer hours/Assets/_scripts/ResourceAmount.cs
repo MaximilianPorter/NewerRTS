@@ -55,4 +55,27 @@ public class ResourceAmount
         this.wood += wood;
         this.stone += stone;
     }
+
+
+    /// <summary>
+    /// returns true if the resources have the same values
+    /// </summary>
+    public bool CompareResources(ResourceAmount compareResources)
+    {
+        if (food != compareResources.GetFood)
+            return false;
+        if (wood != compareResources.GetWood)
+            return false;
+        if (stone != compareResources.GetStone)
+            return false;
+
+        return true;
+    }
+
+    public void SetResources (ResourceAmount resources)
+    {
+        food = resources.GetFood;
+        wood = resources.GetWood;
+        stone = resources.GetStone;
+    }
 }

@@ -152,6 +152,7 @@ public class UnitCellManager : MonoBehaviour
 
         Gizmos.color = Color.red;
         Gizmos.DrawWireCube(Vector3.zero, new Vector3(debugCellCount * debugCellWidth, 1f, 0.5f));
+        Gizmos.DrawWireCube(Vector3.zero, new Vector3(0.5f, 1f, debugCellCount * debugCellWidth));
 
         Gizmos.color = Color.blue;
         for (int x = 0; x < debugCellCount; x++)

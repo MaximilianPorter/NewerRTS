@@ -8,14 +8,6 @@ public class Movement : MonoBehaviour
 {
     [Header("Stats")]
     [SerializeField] private UnitStats stats;
-    [SerializeField] private float moveForce = 10f;
-    [SerializeField] private float maxMoveSpeed = 5f;
-    [SerializeField] private float stopMovingDist = 0.02f;
-
-    [Header("Collision Avoidance")]
-    [SerializeField] private LayerMask wallHitMask;
-    [SerializeField] private float castDist = 3f;
-    [SerializeField] private int rayCount = 10;
 
     [Space(10)]
 
@@ -55,24 +47,17 @@ public class Movement : MonoBehaviour
     public Vector3 GetVelocity => rb.velocity;
     public Transform GetLookTarget => lookAtTarget;
     public void SetInputJumpDown(bool newInput) => inputJumpDown = newInput;
-    public float GetMaxMoveSpeed => maxMoveSpeed;
+    public float GetMaxMoveSpeed => stats.maxMoveSpeed;
     public Vector3 GetMoveDir => moveInput;
     public bool GetIsGrounded => isGrounded;
     public bool GetCanMove => canMove;
     public Vector3 GetMoveTarget => moveTarget;
-    public float GetMoveSpeed01 => Mathf.Clamp01(rb.velocity.sqrMagnitude / (maxMoveSpeed * maxMoveSpeed));
+    public float GetMoveSpeed01 => Mathf.Clamp01(rb.velocity.sqrMagnitude / (stats.maxMoveSpeed * stats.maxMoveSpeed));
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
         col = GetComponent<CapsuleCollider>();
-
-        if (stats)
-        {
-            moveForce = stats.moveForce;
-            maxMoveSpeed = stats.maxMoveSpeed;
-            stopMovingDist = stats.stopMovingDist;
-        }
 
         SetMoveTarget(transform.position);
         //wheatTuft.SetActive(false);
@@ -100,7 +85,7 @@ public class Movement : MonoBehaviour
 
 
 
-        hasReachedMovePos = CloseToPos(moveTarget, stopMovingDist);
+        hasReachedMovePos = CloseToPos(moveTarget, stats.stopMovingDist);
 
         if (hasReachedMovePos)
             SetMoveTarget(transform.position);
@@ -127,10 +112,12 @@ public class Movement : MonoBehaviour
         // move
         if (canMove)
         {
-            rb.AddForce(transform.forward * moveForce, ForceMode.Force);
+            rb.AddForce(transform.forward * stats.moveForce, ForceMode.Force);
             Vector3 clampedVelocity = rb.velocity;
-            clampedVelocity.x = Mathf.Clamp(clampedVelocity.x, -maxMoveSpeed * slowMultiplier, maxMoveSpeed * slowMultiplier);
-            clampedVelocity.z = Mathf.Clamp(clampedVelocity.z, -maxMoveSpeed * slowMultiplier, maxMoveSpeed * slowMultiplier);
+            float maxSpeed = stats.maxMoveSpeed * slowMultiplier;
+
+            clampedVelocity.x = Mathf.Clamp(clampedVelocity.x, -maxSpeed, maxSpeed);
+            clampedVelocity.z = Mathf.Clamp(clampedVelocity.z, -maxSpeed, maxSpeed);
             clampedVelocity.y -= extraGravity * Time.fixedDeltaTime;
             rb.velocity = clampedVelocity;
         }
