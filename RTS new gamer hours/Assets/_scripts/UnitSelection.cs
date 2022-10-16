@@ -130,7 +130,7 @@ public class UnitSelection : MonoBehaviour
 
             float avgMoveSpeed = unitsToRally.Sum(unit => unit.GetStats.maxMoveSpeed) / unitsToRally.Length;
 
-            float boxWidth = Mathf.Clamp(unitsToRally.Length, 0, 10);
+            float boxWidth = Mathf.Clamp(unitsToRally.Length, 0, 20);
 
             if (patternIndex == 1)
                 boxWidth = Mathf.Clamp(Mathf.RoundToInt(Mathf.Sqrt((float)unitsToRally.Length)), 0, 20);

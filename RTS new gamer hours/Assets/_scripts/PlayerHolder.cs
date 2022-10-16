@@ -14,6 +14,9 @@ public class PlayerHolder : MonoBehaviour
     }
     public static void AddBuilding (int playerID, Building building)
     {
+        if (playerID < 0)
+            return;
+
         playerBuildings[playerID].Add(building);
 
         // if other buildings of this type have a rallypoint set, set the new building too
@@ -30,6 +33,9 @@ public class PlayerHolder : MonoBehaviour
     }
     public static void RemoveBuilding(int playerID, Building building)
     {
+        if (playerID < 0)
+            return;
+
         playerBuildings[playerID].Remove(building);
     }
 

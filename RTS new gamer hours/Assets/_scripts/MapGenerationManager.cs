@@ -87,7 +87,6 @@ public class MapGenerationManager : MonoBehaviour
         treeParent = new GameObject("Tree Parent");
         treeNoiseMap = Noise.GenerateNoiseMap(mapWidth, mapHeight, seed, noiseScale, octaves, persistance, lacunarity, offset);
         SpawnTrees();
-        AdjustTreeNoise();
 
         animalGroupParent = new GameObject("Animal Parent");
         SpawnAnimals();
@@ -136,7 +135,9 @@ public class MapGenerationManager : MonoBehaviour
                 }
 
             }
+
         }
+        AdjustTreeNoise();
     }
     private void AdjustTreeNoise ()
     {
@@ -161,6 +162,7 @@ public class MapGenerationManager : MonoBehaviour
         }
     }
 
+
     private void SpawnRocks ()
     {
         Bounds[] gridCubes = GenerateGridCubes(rockGridSize.x, rockGridSize.y, rockGridSquareWidth);
@@ -179,7 +181,6 @@ public class MapGenerationManager : MonoBehaviour
         }
     }
 
-
     private void SpawnAnimals ()
     {
         Bounds[] gridCubes = GenerateGridCubes(animalGridSize.x, animalGridSize.y, animalGridSquareWidth);
@@ -195,10 +196,10 @@ public class MapGenerationManager : MonoBehaviour
                 gridCube = gridCubes[i];
 
             SpawnObject spawnObject = animalGroups[Random.Range(0, animalGroups.Length)];
-            SpawnObjectWithBuffer(spawnObject.prefab, spawnObject.spacingBuffer, gridCube, animalGroupParent.transform, true);
+            SpawnObjectWithBuffer(spawnObject.prefab, spawnObject.spacingBuffer, gridCube, animalGroupParent.transform);
         }
     }
-    private void SpawnObjectWithBuffer(GameObject objectToSpawn, float buffer, Bounds gridCube, Transform parent, bool spawnOutsideOfTrees = false)
+    private void SpawnObjectWithBuffer(GameObject objectToSpawn, float buffer, Bounds gridCube, Transform parent, Quaternion? newRot = null)
     {
         // cast down from that point and place an object
         // I don't like while loops so this is a for loop with 1000 run times
@@ -228,7 +229,8 @@ public class MapGenerationManager : MonoBehaviour
                 }
 
                 // instantiate object with random rotation
-                Quaternion randomLookRot = Quaternion.Euler(0, Random.Range(0f, 360f), 0f);
+
+                Quaternion randomLookRot = newRot == null ? Quaternion.Euler(0, Random.Range(0f, 360f), 0f) : newRot.GetValueOrDefault();
                 GameObject objectInstance = Instantiate(
                     objectToSpawn,
                     hit.point,
@@ -470,6 +472,14 @@ public class MapGenerationManager : MonoBehaviour
 
     public void DeleteWorld ()
     {
+        // delete trees
+        for (int i = 0; i < spawnedTrees.Count; i++)
+        {
+            Destroy (spawnedTrees[i]);
+        }
+        spawnedTrees.Clear ();
+
+        // delete everything else
         for (int i = 0; i < spawnedObjects.Count; i++)
         {
             Destroy(spawnedObjects[i].prefab);

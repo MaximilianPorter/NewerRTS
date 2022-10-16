@@ -14,6 +14,7 @@ public class AnimalActions : MonoBehaviour
 
     [Header("Effects")]
     [SerializeField] private GameObject deathEffect;
+    [SerializeField] private GameObject spawnEffect;
 
     [Header("Animation")]
     [SerializeField] private Animator animator;
@@ -26,6 +27,7 @@ public class AnimalActions : MonoBehaviour
     private float decisionCounter = 0f;
     private Vector3 startPos;
     private float debugMoveSpeedDisplay;
+    private bool justSpawned = false;
 
     public void SetIsScared(bool isScared) => this.isScared = isScared;
 
@@ -34,15 +36,18 @@ public class AnimalActions : MonoBehaviour
         SetAnimations(animalOverrideController);
         agent = GetComponent<NavMeshAgent>();
         health = GetComponent<Health>();
-    }
-
-    private void Start()
-    {
         startPos = transform.position;
     }
 
     private void Update()
     {
+        if (!justSpawned)
+        {
+            GameObject spawnEffectInstance = Instantiate(spawnEffect, transform.position, Quaternion.identity);
+            Destroy(spawnEffectInstance, 5f);
+            justSpawned = true;
+        }
+
         debugMoveSpeedDisplay = agent.velocity.magnitude / (maxMoveSpeed * 2f);
 
         decisionCounter -= Time.deltaTime;
@@ -105,16 +110,26 @@ public class AnimalActions : MonoBehaviour
 
     public void Die()
     {
+        // if they have a health script
         if (health)
-            PlayerResourceManager.PlayerResourceAmounts[health.GetLastHitByPlayer].AddResources(new ResourceAmount(resourceGiveAmt, 0, 0));
+        {
+            if (health.GetLastHitByPlayer != -1)
+                PlayerResourceManager.PlayerResourceAmounts[health.GetLastHitByPlayer].AddResources(new ResourceAmount(resourceGiveAmt, 0, 0));
 
+            // reset health back to normal
+            health.ResetHealth();
+        }
+
+        // spawn effects
         GameObject deathEffectInstance = Instantiate(deathEffect, transform.position, Quaternion.identity);
         Vector3 dir = transform.position - health.GetLastHitFromPos;
         dir.y = 0f;
         deathEffectInstance.transform.rotation = Quaternion.LookRotation(dir, Vector3.up);
         Destroy(deathEffectInstance, 5f);
 
-        Destroy(gameObject);
+        justSpawned = false;
+        // set the gameobject inactive
+        gameObject.SetActive(false);
     }
 
     private void SetAnimations(AnimatorOverrideController newController)

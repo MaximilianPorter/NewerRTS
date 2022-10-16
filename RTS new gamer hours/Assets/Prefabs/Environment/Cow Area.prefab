@@ -57,7 +57,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f45c9857af226242bf0453d1c19e4b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  amountToTurnOn: 3
+  amountToTurnOn: {x: 3, y: 4}
   randomObjects:
   - {fileID: 542983763069381323}
   - {fileID: 542983764860580809}
@@ -65,6 +65,8 @@ MonoBehaviour:
   - {fileID: 542983764010236020}
   - {fileID: 542983763649823110}
   - {fileID: 542983763014403866}
+  ifOffTurnBackOn: 0
+  turnBackOnTime: 15
 --- !u!114 &542983764034271570
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -77,7 +79,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f45c9857af226242bf0453d1c19e4b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  amountToTurnOn: 3
+  amountToTurnOn: {x: 3, y: 4}
   randomObjects:
   - {fileID: 7340671827075505561}
   - {fileID: 7340671825984290462}
@@ -85,6 +87,8 @@ MonoBehaviour:
   - {fileID: 7340671827135799167}
   - {fileID: 7340671826754492951}
   - {fileID: 7340671826599577748}
+  ifOffTurnBackOn: 1
+  turnBackOnTime: 15
 --- !u!1001 &542983763014295462
 PrefabInstance:
   m_ObjectHideFlags: 0
