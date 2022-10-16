@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 [RequireComponent(typeof (Identifier))]
@@ -7,6 +8,7 @@ using UnityEngine;
 [RequireComponent(typeof (Movement))]
 public class PlayerActions : MonoBehaviour
 {
+    [SerializeField] private UnitStats stats;
     [SerializeField] private AnimatorOverrideController overrideController;
     [SerializeField] private Animator animator;
     [SerializeField] private float walkAnimSpeed = 1f;
@@ -34,14 +36,14 @@ public class PlayerActions : MonoBehaviour
 
     private void Update()
     {
-        moveInput = new Vector3(PlayerInput.players[identifier.GetPlayerID].GetAxis(PlayerInput.GetInputMoveHorizontal),
+        moveInput = new Vector3(PlayerInput.GetPlayers[identifier.GetPlayerID].GetAxis(PlayerInput.GetInputMoveHorizontal),
                 0f,
-                PlayerInput.players[identifier.GetPlayerID].GetAxis(PlayerInput.GetInputMoveVertical));
+                PlayerInput.GetPlayers[identifier.GetPlayerID].GetAxis(PlayerInput.GetInputMoveVertical));
         movement.SetMoveTarget(transform.position + moveInput);
 
         movement.SetCanMove(!PlayerInput.GetPlayerIsInMenu(identifier.GetPlayerID) && !isAttacking && !isBlocking);
 
-        movement.SetInputJumpDown(PlayerInput.players[identifier.GetPlayerID].GetButtonDown(PlayerInput.GetInputJump));
+        movement.SetInputJumpDown(PlayerInput.GetPlayers[identifier.GetPlayerID].GetButtonDown(PlayerInput.GetInputJump));
 
 
         if (animator)
@@ -51,22 +53,22 @@ public class PlayerActions : MonoBehaviour
 
             if (!isAttacking)
             {
-                if (attacking.GetCanAttack && PlayerInput.players[identifier.GetPlayerID].GetButton(PlayerInput.GetInputAttack))
+                if (attacking.GetCanAttack && PlayerInput.GetPlayers[identifier.GetPlayerID].GetButton(PlayerInput.GetInputAttack))
                 {
-                    animator.speed = attackAnimSpeed;
+                    animator.speed = attackAnimSpeed / (stats.timeBetweenAttacks < 1f ? stats.timeBetweenAttacks : 1f);
                     animator.SetTrigger("Attack");
-                    attacking.SetAttackWaitTime(attackFireWaitTime / animator.speed);
+                    attacking.SetAttackWaitTime(attackFireWaitTime / animator.speed * (stats.timeBetweenAttacks < 1f ? stats.timeBetweenAttacks : 1f));
                     return;
                 }
 
-                isBlocking = PlayerInput.players[identifier.GetPlayerID].GetButton(PlayerInput.GetInputBlock);
+                isBlocking = PlayerInput.GetPlayers[identifier.GetPlayerID].GetButton(PlayerInput.GetInputBlock);
                 animator.SetBool("isBlocking", isBlocking);
                 if (isBlocking)
                     return;
 
                 animator.SetBool("isMoving", movement.GetMoveSpeed01 > 0.01f);
                 if (animator.GetBool("isMoving"))
-                    animator.speed = walkAnimSpeed;
+                    animator.speed = walkAnimSpeed * movement.GetMaxMoveSpeed;
 
                 if (animator.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
                     animator.speed = 1f;

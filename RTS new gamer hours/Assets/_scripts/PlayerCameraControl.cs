@@ -17,9 +17,9 @@ public class PlayerCameraControl : MonoBehaviour
 
     private void Update()
     {
-        Vector3 lookDir = new Vector3(PlayerInput.players[identifier.GetPlayerID].GetAxisRaw(PlayerInput.GetInputLookHorizontal),
+        Vector3 lookDir = new Vector3(PlayerInput.GetPlayers[identifier.GetPlayerID].GetAxisRaw(PlayerInput.GetInputLookHorizontal),
             0f,
-            PlayerInput.players[identifier.GetPlayerID].GetAxisRaw(PlayerInput.GetInputLookVertical)).normalized;
+            PlayerInput.GetPlayers[identifier.GetPlayerID].GetAxisRaw(PlayerInput.GetInputLookVertical)).normalized;
 
         lookAheadDot.transform.position = transform.position + lookDir * lookAheadDist;
     }

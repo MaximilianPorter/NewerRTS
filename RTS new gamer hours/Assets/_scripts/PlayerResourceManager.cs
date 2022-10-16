@@ -12,6 +12,7 @@ public class PlayerResourceManager : MonoBehaviour
 
     private Canvas[] playerCanvases;
     private Camera[] playerCameras;
+    private Identifier[] playerIDs;
 
     private int[] debugFood = new int[4] { 0, 0, 0, 0 };
     private int[] debugWood = new int[4] { 0, 0, 0, 0 };
@@ -45,6 +46,7 @@ public class PlayerResourceManager : MonoBehaviour
     {
         playerCanvases = FindObjectsOfType<Canvas>().Where(canvas => canvas.GetComponent<Identifier>()).OrderBy(canvas => canvas.GetComponent<Identifier>().GetPlayerID).ToArray();
         playerCameras = Camera.allCameras.Where(cam => cam.GetComponent<Identifier>()).OrderBy(cam => cam.GetComponent<Identifier>().GetPlayerID).ToArray();
+        playerIDs = FindObjectsOfType<Identifier>().Where(identifier => identifier.GetIsPlayer == true).ToArray();
         
     }
 
@@ -57,6 +59,20 @@ public class PlayerResourceManager : MonoBehaviour
             debugStone[i] = PlayerResourceAmounts[i].GetStone;
 
             PopulationCap[i] = PlayerHolder.GetBuildings(i).Sum(building => building.GetStats.population);
+        }
+    }
+
+    /// <summary>
+    /// adds resources to every player on that team
+    /// </summary>
+    public void AddResourcesToTeam(int teamID, ResourceAmount amount)
+    {
+        for (int i = 0; i < playerIDs.Length; i++)
+        {
+            if (playerIDs[i].GetTeamID == teamID)
+            {
+                PlayerResourceAmounts[playerIDs[i].GetPlayerID].AddResources(amount);
+            }
         }
     }
 

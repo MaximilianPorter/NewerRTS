@@ -48,13 +48,13 @@ public class UnitSelection : MonoBehaviour
             return;
 
         // deselect units when you're selecting new ones
-        if (PlayerInput.players[identifier.GetPlayerID].GetButtonSinglePressDown(PlayerInput.GetInputSelectUnits))
+        if (PlayerInput.GetPlayers[identifier.GetPlayerID].GetButtonSinglePressDown(PlayerInput.GetInputSelectUnits))
         {
             DeselectUnits(); 
         }
 
         // select some units
-        if (PlayerInput.players[identifier.GetPlayerID].GetButtonSinglePressHold(PlayerInput.GetInputSelectUnits))
+        if (PlayerInput.GetPlayers[identifier.GetPlayerID].GetButtonSinglePressHold(PlayerInput.GetInputSelectUnits))
         {
             // increase radius and select units within
             unitSelectionVisual.gameObject.SetActive(true);
@@ -85,7 +85,7 @@ public class UnitSelection : MonoBehaviour
         }
         
         // select all units
-        if (PlayerInput.players[identifier.GetPlayerID].GetButtonDoublePressDown(PlayerInput.GetInputSelectUnits))
+        if (PlayerInput.GetPlayers[identifier.GetPlayerID].GetButtonDoublePressDown(PlayerInput.GetInputSelectUnits))
         {
             DeselectUnits();
             selectedUnits = PlayerHolder.GetUnits(identifier.GetPlayerID).ToArray();
@@ -99,7 +99,7 @@ public class UnitSelection : MonoBehaviour
 
 
         // deselect all units
-        if (PlayerInput.players[identifier.GetPlayerID].GetButtonDown(PlayerInput.GetInputDeselectUnits))
+        if (PlayerInput.GetPlayers[identifier.GetPlayerID].GetButtonDown(PlayerInput.GetInputDeselectUnits))
         {
             DeselectUnits();
         }
@@ -118,14 +118,14 @@ public class UnitSelection : MonoBehaviour
 
 
         // if you hold for a short time
-        if (PlayerInput.players[identifier.GetPlayerID].GetButtonShortPressDown(PlayerInput.GetInputRallyTroops))
+        if (PlayerInput.GetPlayers[identifier.GetPlayerID].GetButtonShortPressDown(PlayerInput.GetInputRallyTroops))
             patternIndex = 0;
-        if (PlayerInput.players[identifier.GetPlayerID].GetButtonShortPress(PlayerInput.GetInputRallyTroops))
+        if (PlayerInput.GetPlayers[identifier.GetPlayerID].GetButtonShortPress(PlayerInput.GetInputRallyTroops))
         {
             // change pattern number
-            if (PlayerInput.players[identifier.GetPlayerID].GetButtonDown(PlayerInput.GetCycleRight))
+            if (PlayerInput.GetPlayers[identifier.GetPlayerID].GetButtonDown(PlayerInput.GetCycleRight))
                 IncreasePatternIndex();
-            else if (PlayerInput.players[identifier.GetPlayerID].GetButtonDown(PlayerInput.GetCycleLeft))
+            else if (PlayerInput.GetPlayers[identifier.GetPlayerID].GetButtonDown(PlayerInput.GetCycleLeft))
                 DecreasePatternIndex();
 
             float avgMoveSpeed = unitsToRally.Sum(unit => unit.GetStats.maxMoveSpeed) / unitsToRally.Length;
@@ -216,7 +216,7 @@ public class UnitSelection : MonoBehaviour
             }
             
 
-            if (PlayerInput.players[identifier.GetPlayerID].GetButtonDown(PlayerInput.GetInputBack))
+            if (PlayerInput.GetPlayers[identifier.GetPlayerID].GetButtonDown(PlayerInput.GetInputBack))
             {
                 DeselectUnits();
             }
@@ -224,7 +224,7 @@ public class UnitSelection : MonoBehaviour
 
 
         // set the move target of each unit to whatever the final ordering object pos was based on the pattern
-        if (PlayerInput.players[identifier.GetPlayerID].GetButtonUp(PlayerInput.GetInputRallyTroops))
+        if (PlayerInput.GetPlayers[identifier.GetPlayerID].GetButtonUp(PlayerInput.GetInputRallyTroops))
         {
             GameObject rallyTroopsEffectInstance = Instantiate(rallyTroopsEffectPrefab, transform.position + new Vector3(0f, -1f, 0f), Quaternion.identity);
             Destroy(rallyTroopsEffectInstance, 3f);
@@ -277,7 +277,7 @@ public class UnitSelection : MonoBehaviour
 
     private void HandleSelectedUnitTypesUI ()
     {
-        if (PlayerInput.players[identifier.GetPlayerID].GetButton(PlayerInput.GetInputRallyTroops) || selectedUnitsUi.Length <= 0)
+        if (PlayerInput.GetPlayers[identifier.GetPlayerID].GetButton(PlayerInput.GetInputRallyTroops) || selectedUnitsUi.Length <= 0)
             return;
 
         for (int i = 0; i < selectedUnitsUi.Length; i++)
@@ -287,9 +287,9 @@ public class UnitSelection : MonoBehaviour
         }
 
         // change pattern number
-        if (PlayerInput.players[identifier.GetPlayerID].GetButtonDown(PlayerInput.GetInputDpadRight))
+        if (PlayerInput.GetPlayers[identifier.GetPlayerID].GetButtonDown(PlayerInput.GetInputDpadRight))
             IncreaseSelectedUnitIndex();
-        else if (PlayerInput.players[identifier.GetPlayerID].GetButtonDown(PlayerInput.GetInputDpadLeft))
+        else if (PlayerInput.GetPlayers[identifier.GetPlayerID].GetButtonDown(PlayerInput.GetInputDpadLeft))
             DecreaseSelectedUnitIndex();
 
         // if the selected unit index was actually changed

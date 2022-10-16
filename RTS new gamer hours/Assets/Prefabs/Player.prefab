@@ -5663,9 +5663,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b01e1c99999e9d41a761e004647698f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  stats: {fileID: 11400000, guid: 0aa38894e85d023409d6fd04b76fdd7c, type: 2}
   overrideController: {fileID: 22100000, guid: d588ff3dba0d42f4ab2ba5a9c0805ff6, type: 2}
   animator: {fileID: 2496803857556158098}
-  walkAnimSpeed: 1.5
+  walkAnimSpeed: 0.3
   attackAnimSpeed: 2
   attackFireWaitTime: 0.4
 --- !u!114 &8604555271138620348

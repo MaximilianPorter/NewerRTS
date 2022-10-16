@@ -17,7 +17,8 @@ public class Projectile : MonoBehaviour
     private ParentConstraint parentConstraint;
     private Rigidbody rb;
     private float damage = 0;
-    private int teamID = 10000;
+    private int teamID = -1;
+    private int playerID = -1;
     private Vector3 lastPos = Vector3.zero;
 
     public Rigidbody GetRigidbody => rb;
@@ -79,7 +80,7 @@ public class Projectile : MonoBehaviour
                 if (hit.transform.TryGetComponent(out Identifier identifier) && identifier.GetTeamID != teamID)
                 {
                     if (hit.transform.TryGetComponent(out Health health))
-                        health.TakeDamage(damage);
+                        health.TakeDamage(damage, playerID, transform.position);
                 }
 
                 if (burns && hit.transform.TryGetComponent (out BurningObject burnedObject))
@@ -101,9 +102,10 @@ public class Projectile : MonoBehaviour
         lastPos = transform.position;
     }
 
-    public void SetInfo (float damage, int teamID)
+    public void SetInfo (float damage, int playerID, int teamID)
     {
         this.damage = damage;
+        this.playerID = playerID;
         this.teamID = teamID;
     }
 

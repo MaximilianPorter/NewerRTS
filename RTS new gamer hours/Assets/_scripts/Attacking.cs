@@ -220,7 +220,7 @@ public class Attacking : MonoBehaviour
             return;
 
         Projectile projInstance = Instantiate(stats.projectile, firePoint.position, Quaternion.identity).GetComponent<Projectile>();
-        projInstance.SetInfo(stats.damage, identifier.GetTeamID);
+        projInstance.SetInfo(stats.damage, identifier.GetPlayerID, identifier.GetTeamID);
 
         // attempt to find it's velocity
         Rigidbody targetBody = target.GetComponent<Rigidbody>();
@@ -278,7 +278,7 @@ public class Attacking : MonoBehaviour
         {
             // damage enemy unit
             if (enemy.TryGetComponent(out Health enemyHealth))
-                enemyHealth.TakeDamage(stats.damage);
+                enemyHealth.TakeDamage(stats.damage, identifier.GetPlayerID, transform.position);
 
             // don't spawn effects if we have too many units on the field
             if (PlayerHolder.GetUnits(identifier.GetPlayerID).Count > 100)
@@ -297,7 +297,7 @@ public class Attacking : MonoBehaviour
     {
         if (!stats)
         {
-            Debug.Log(this + " needs a UnitStats assigned");
+            Debug.LogError(this + " needs a UnitStats assigned");
             return;
         }
 

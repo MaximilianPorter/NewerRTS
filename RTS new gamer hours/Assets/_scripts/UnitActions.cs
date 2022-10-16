@@ -108,7 +108,7 @@ public class UnitActions : MonoBehaviour
             if (isThrowing)
                 animator.speed = throwAnimSpeed;
             else if (isAttacking)
-                animator.speed = attackAnimSpeed;
+                animator.speed = attackAnimSpeed / (unitStats.timeBetweenAttacks < 1 ? unitStats.timeBetweenAttacks : 1f);
 
             if (!isAttacking && !isThrowing)
             {
@@ -286,7 +286,7 @@ public class UnitActions : MonoBehaviour
     private void Attack ()
     {
         animator.SetTrigger("Attack");
-        attacking.SetAttackWaitTime(attackFireWaitTime / animator.speed); // dont use Ienumerators, they suck
+        attacking.SetAttackWaitTime(attackFireWaitTime / animator.speed * (unitStats.timeBetweenAttacks < 1f ? unitStats.timeBetweenAttacks : 1f)); // dont use Ienumerators, they suck
     }
 
     private void StartThrow (Vector3 target)
@@ -303,7 +303,7 @@ public class UnitActions : MonoBehaviour
     {
         hasThrown = true;
         Projectile torchInstance = Instantiate(torch, transform.position, Quaternion.identity).GetComponent<Projectile>();
-        torchInstance.SetInfo(torchDamage, identifier.GetTeamID);
+        torchInstance.SetInfo(torchDamage, identifier.GetPlayerID, identifier.GetTeamID);
 
         Projectile.SetTrajectory(torchInstance.GetRigidbody, tempThrowTarget, torchThrowForce, 0, 1f);
     }

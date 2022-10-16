@@ -10,12 +10,17 @@ public class AnimalActions : MonoBehaviour
     [SerializeField] private Vector2 timeBetweenDecisions = new Vector2(0.5f, 10f);
     [SerializeField] private float roamRange = 5f;
     [SerializeField] private float maxMoveSpeed = 1f;
+    [SerializeField] private int resourceGiveAmt = 5;
+
+    [Header("Effects")]
+    [SerializeField] private GameObject deathEffect;
 
     [Header("Animation")]
     [SerializeField] private Animator animator;
     [SerializeField] private AnimatorOverrideController animalOverrideController;
     [SerializeField] private float walkAnimSpeed = 1f;
 
+    private Health health;
     private bool isScared = false;
     private NavMeshAgent agent;
     private float decisionCounter = 0f;
@@ -28,6 +33,7 @@ public class AnimalActions : MonoBehaviour
     {
         SetAnimations(animalOverrideController);
         agent = GetComponent<NavMeshAgent>();
+        health = GetComponent<Health>();
     }
 
     private void Start()
@@ -52,6 +58,11 @@ public class AnimalActions : MonoBehaviour
         if (decisionCounter < 0f && agent.velocity.magnitude <= 0f)
         {
             MakeDecision();
+        }
+
+        if (health && health.GetCurrentHealth <= 0)
+        {
+            Die();
         }
     }
 
@@ -92,6 +103,20 @@ public class AnimalActions : MonoBehaviour
         }
     }
 
+    public void Die()
+    {
+        if (health)
+            PlayerResourceManager.PlayerResourceAmounts[health.GetLastHitByPlayer].AddResources(new ResourceAmount(resourceGiveAmt, 0, 0));
+
+        GameObject deathEffectInstance = Instantiate(deathEffect, transform.position, Quaternion.identity);
+        Vector3 dir = transform.position - health.GetLastHitFromPos;
+        dir.y = 0f;
+        deathEffectInstance.transform.rotation = Quaternion.LookRotation(dir, Vector3.up);
+        Destroy(deathEffectInstance, 5f);
+
+        Destroy(gameObject);
+    }
+
     private void SetAnimations(AnimatorOverrideController newController)
     {
         animator.runtimeAnimatorController = newController;
@@ -99,7 +124,7 @@ public class AnimalActions : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
-        Gizmos.DrawWireSphere(transform.position, roamRange);
+        Gizmos.DrawWireSphere(Application.isPlaying ? startPos : transform.position, roamRange);
 
         if (!agent)
             return;

@@ -103,11 +103,11 @@ public class PlayerBuilding : MonoBehaviour
 
     private void ManageSelectedIcon ()
     {
-        if (PlayerInput.players[identifier.GetPlayerID].GetButtonDown(PlayerInput.GetCycleRight))
+        if (PlayerInput.GetPlayers[identifier.GetPlayerID].GetButtonDown(PlayerInput.GetCycleRight))
         {
             IncreaseIconIndex();
         }
-        else if (PlayerInput.players[identifier.GetPlayerID].GetButtonDown(PlayerInput.GetCycleLeft))
+        else if (PlayerInput.GetPlayers[identifier.GetPlayerID].GetButtonDown(PlayerInput.GetCycleLeft))
         {
             DecreaseIconIndex();
         }
@@ -198,7 +198,7 @@ public class PlayerBuilding : MonoBehaviour
     private void HandleOpeningCycleMenu ()
     {
         // don't open menu if we're cycleing through formations
-        if (!PlayerInput.players[identifier.GetPlayerID].GetButton(PlayerInput.GetInputRallyTroops))
+        if (!PlayerInput.GetPlayers[identifier.GetPlayerID].GetButton(PlayerInput.GetInputRallyTroops))
         {
             buttonMenu.SetActive(anyMenuOpen);
             PlayerInput.SetPlayerIsInMenu(identifier.GetPlayerID, buildingMenuIsOpen);
@@ -221,7 +221,7 @@ public class PlayerBuilding : MonoBehaviour
                 cancelUnits.gameObject.SetActive(false);
 
             // click the back button
-            if (PlayerInput.players[identifier.GetPlayerID].GetButtonDown(PlayerInput.GetInputBack))
+            if (PlayerInput.GetPlayers[identifier.GetPlayerID].GetButtonDown(PlayerInput.GetInputBack))
                 CloseMenu();
 
             if (buildingMenuIsOpen)
@@ -242,7 +242,7 @@ public class PlayerBuilding : MonoBehaviour
 
             buttonMenu.transform.position = playerCam.WorldToScreenPoint(transform.position + (Vector3)buttonMenuOffset);
 
-            if (PlayerInput.players[identifier.GetPlayerID].GetButtonDown(PlayerInput.GetInputSelect))
+            if (PlayerInput.GetPlayers[identifier.GetPlayerID].GetButtonDown(PlayerInput.GetInputSelect))
             {
                 yield return new WaitForSeconds(0.05f);
 
@@ -268,7 +268,7 @@ public class PlayerBuilding : MonoBehaviour
         if (!anyMenuOpen)
         {
             // open unit menu
-            if (PlayerInput.players[identifier.GetPlayerID].GetButtonDown(PlayerInput.GetInputOpenUnitMenu))
+            if (PlayerInput.GetPlayers[identifier.GetPlayerID].GetButtonDown(PlayerInput.GetInputOpenUnitMenu))
             {
                 // if we have no buildings, or all the buildings have no unit attached, return
                 if (PlayerHolder.GetBuildings(identifier.GetPlayerID).Count <= 0 ||
@@ -308,7 +308,7 @@ public class PlayerBuilding : MonoBehaviour
         if (!anyMenuOpen)
         {
             // build new building
-            if (PlayerInput.players[identifier.GetPlayerID].GetButtonDown(PlayerInput.GetInputOpenBuildMenu) && !hoveringBuilding)
+            if (PlayerInput.GetPlayers[identifier.GetPlayerID].GetButtonDown(PlayerInput.GetInputOpenBuildMenu) && !hoveringBuilding)
             {
                 // if any buildings are close enough to player
                 bool inRangeOfBuilding = PlayerHolder.GetBuildings(identifier.GetPlayerID).Any(building => (building.transform.position - transform.position).sqrMagnitude < building.GetStats.buildRadius * building.GetStats.buildRadius);
@@ -331,7 +331,7 @@ public class PlayerBuilding : MonoBehaviour
 
 
             // click on hover building
-            if (PlayerInput.players[identifier.GetPlayerID].GetButtonDown(PlayerInput.GetInputOpenBuildMenu) && hoveringBuilding 
+            if (PlayerInput.GetPlayers[identifier.GetPlayerID].GetButtonDown(PlayerInput.GetInputOpenBuildMenu) && hoveringBuilding 
                 && hoveringBuilding.GetStats.subsequentUpgrades.Length > 0)
             {
                 clickedOnBuilding = true;
@@ -554,10 +554,10 @@ public class PlayerBuilding : MonoBehaviour
             placeBuildingRallyVisual.position = playerCam.WorldToScreenPoint(transform.position + rallyVisualOffset);
 
             // place rally point or cancel
-            if (PlayerInput.players[identifier.GetPlayerID].GetButtonDown(PlayerInput.GetInputSelect))
+            if (PlayerInput.GetPlayers[identifier.GetPlayerID].GetButtonDown(PlayerInput.GetInputSelect))
                 PlaceRallyPoint();
-            else if (PlayerInput.players[identifier.GetPlayerID].GetButtonDown (PlayerInput.GetInputBack) ||
-                PlayerInput.players[identifier.GetPlayerID].GetButtonDown(PlayerInput.GetInputSelectUnits))
+            else if (PlayerInput.GetPlayers[identifier.GetPlayerID].GetButtonDown (PlayerInput.GetInputBack) ||
+                PlayerInput.GetPlayers[identifier.GetPlayerID].GetButtonDown(PlayerInput.GetInputSelectUnits))
                 CancelRallyPoint();
         }
     }

@@ -60,7 +60,7 @@ public class MeleeWeapon : MonoBehaviour
 
             // damage enemy unit
             if (enemy.TryGetComponent(out Health enemyHealth))
-                if (attacking) enemyHealth.TakeDamage(attacking.GetStats.damage);
+                if (attacking) enemyHealth.TakeDamage(attacking.GetStats.damage, -1, transform.position);
             //unit.attachedRigidbody.AddForce((unit.transform.position - transform.position).normalized * attackingKnockbackForce, ForceMode.Impulse);
         }
     }

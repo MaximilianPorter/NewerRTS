@@ -37,7 +37,7 @@ public class BurningObject : MonoBehaviour
 
             if (health)
             {
-                health.TakeDamage (Time.deltaTime * damagePerSecond);
+                health.TakeDamage (Time.deltaTime * damagePerSecond, -1, transform.position);
             }
         }
 
