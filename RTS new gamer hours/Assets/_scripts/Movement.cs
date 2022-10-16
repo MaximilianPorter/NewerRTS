@@ -42,7 +42,7 @@ public class Movement : MonoBehaviour
     private bool inputJumpDown = false;
     private Vector3 lookDirAddition = Vector3.zero;
     private float lookAdditionStrength = 0f;
-
+    
     public bool GetHasReachedMovePos => hasReachedMovePos;
     public Vector3 GetVelocity => rb.velocity;
     public Transform GetLookTarget => lookAtTarget;

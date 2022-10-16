@@ -492,7 +492,7 @@ MonoBehaviour:
   - {fileID: 3819548900109505567}
   unitOverrideController: {fileID: 22100000, guid: 177688c0ea202c8409db64cedf786bb2, type: 2}
   animator: {fileID: 3819548900121083419}
-  walkAnimSpeed: 1
+  walkAnimSpeed: 0.8
   attackAnimSpeed: 1
   attackFireWaitTime: 0.4
   torch: {fileID: 5640332772760401253, guid: 696cdb4dded55164ea4fd9ff66f75923, type: 3}

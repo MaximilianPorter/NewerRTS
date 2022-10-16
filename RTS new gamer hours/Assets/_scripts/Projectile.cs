@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Animations;
 using UnityEngine.UI;
 
 [RequireComponent(typeof (Rigidbody))]
@@ -13,6 +14,7 @@ public class Projectile : MonoBehaviour
     [SerializeField] private GameObject spawnOnHit;
     [SerializeField] private LayerMask hitMask;
 
+    private ParentConstraint parentConstraint;
     private Rigidbody rb;
     private float damage = 0;
     private int teamID = 10000;
@@ -24,6 +26,7 @@ public class Projectile : MonoBehaviour
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        parentConstraint = GetComponent<ParentConstraint>();
     }
 
     private void Start()
@@ -57,9 +60,20 @@ public class Projectile : MonoBehaviour
 
                 rb.isKinematic = true;
                 rb.velocity = Vector3.zero;
-                
-                if (hit.transform.gameObject.layer != LayerMask.NameToLayer ("Ground"))
+
+                // setting parent without setting parent
+                //ConstraintSource constraintSource = parentConstraint.GetSource(0);
+
+                if (hit.transform.gameObject.layer != LayerMask.NameToLayer("Ground"))
+                {
                     transform.SetParent(hit.transform);
+
+                    //constraintSource.sourceTransform = hit.transform;
+                    //parentConstraint.SetRotationOffset(0, new Vector3 (-transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y, -transform.rotation.eulerAngles.z));
+                    //parentConstraint.constraintActive = true;
+                }
+
+               //parentConstraint.SetSource(0, constraintSource);
 
                 // deal damage to different team
                 if (hit.transform.TryGetComponent(out Identifier identifier) && identifier.GetTeamID != teamID)
@@ -91,6 +105,15 @@ public class Projectile : MonoBehaviour
     {
         this.damage = damage;
         this.teamID = teamID;
+    }
+
+    public void ResetProjectile()
+    {
+        damage = 0f;
+        teamID = 10000;
+
+        rb.isKinematic = false;
+        parentConstraint.SetSource(0, new ConstraintSource());
     }
 
     private void OnDrawGizmosSelected()

@@ -27,7 +27,7 @@ MonoBehaviour:
   projectile: {fileID: 0}
   hitMask:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 8193
   hitDistance: 1
   hitRadius: 1
   hitForce: 0.1

@@ -53,6 +53,8 @@ public class UnitActions : MonoBehaviour
     private Cell lastCell;
     private Cell activeCell;
 
+
+    public void SetGroupMoveSpeed (float moveSpeed) => navMovement.SetGroupMoveSpeed (moveSpeed);
     public UnitStats GetStats => unitStats;
     public NavMeshMovement GetMovement => navMovement;
     public Attacking GetAttacking() => attacking;
@@ -112,7 +114,7 @@ public class UnitActions : MonoBehaviour
             {
                 animator.SetBool("isMoving", navMovement.GetMoveSpeed01 > 0.1f);
                 if (animator.GetBool("isMoving"))
-                    animator.speed = walkAnimSpeed;
+                    animator.speed = walkAnimSpeed * navMovement.GetCurrentMoveSpeed;
 
                 if (animator.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
                     animator.speed = 1f;
@@ -130,10 +132,10 @@ public class UnitActions : MonoBehaviour
         AssignActiveCell();
 
 
+        CellFindNearestEnemy();
         findNearestEnemyCounter -= Time.deltaTime;
         if (navMovement.GetMoveSpeed01 > 0.05f || findNearestEnemyCounter <= 0)
         {
-            CellFindNearestEnemy();
             findNearestEnemyCounter = Random.Range (0.1f, 0.3f);
         }
     }
@@ -227,6 +229,7 @@ public class UnitActions : MonoBehaviour
             else if (!navMovement.GetIsMoving && (moveTowardsPos - transform.position).sqrMagnitude > (unitStats.lookRange/2f * unitStats.lookRange/2f))
             {
                 navMovement.SetLookAt(null);
+                return;
             }
 
             // if we click and there's an enemy close to that clickPos (range / 2f) then we go to that enemy

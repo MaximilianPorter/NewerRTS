@@ -16,7 +16,7 @@ public class UnitSelection : MonoBehaviour
     private UnitActions[] selectedUnits = new UnitActions[0];
     private float currentSelectionRadius = 0f;
     private int patternIndex = -1;
-    private readonly int totalPatterns = 2;
+    private readonly int totalPatterns = 4;
     private Identifier identifier;
 
     private int selectedUnitIndex = -1;
@@ -128,39 +128,93 @@ public class UnitSelection : MonoBehaviour
             else if (PlayerInput.players[identifier.GetPlayerID].GetButtonDown(PlayerInput.GetCycleLeft))
                 DecreasePatternIndex();
 
+            float avgMoveSpeed = unitsToRally.Sum(unit => unit.GetStats.maxMoveSpeed) / unitsToRally.Length;
+
+            float boxWidth = Mathf.Clamp(unitsToRally.Length, 0, 10);
+
+            if (patternIndex == 1)
+                boxWidth = Mathf.Clamp(Mathf.RoundToInt(Mathf.Sqrt((float)unitsToRally.Length)), 0, 20);
+
+            float totalRows = Mathf.Ceil((float)unitsToRally.Length / (float)boxWidth);
+            float lastRowStartIndex = totalRows * boxWidth - boxWidth;
+            float remainderInLastRow = totalRows * boxWidth - unitsToRally.Length;
             if (patternIndex == 0)
             {
-                // pattern box
-                int boxWidth = Mathf.Clamp(Mathf.RoundToInt(Mathf.Sqrt((float)unitsToRally.Length)), 0, 20);
+                // pattern offset from current location
+                Vector3 avgGroupPos = new Vector3(unitsToRally.Sum(unit => unit.transform.position.x)/unitsToRally.Length,
+                    transform.position.y,
+                    unitsToRally.Sum(unit => unit.transform.position.z) / unitsToRally.Length);
+
                 for (int i = 0; i < unitsToRally.Length; i++)
                 {
-                    if (unitsToRally[i] == null)
-                        continue;
+                    Vector3 pos = unitsToRally[i].transform.position - avgGroupPos;
 
-                    int row = Mathf.FloorToInt(i / boxWidth);
-                    int column = i % boxWidth;
-                    Vector3 boxPos = transform.forward * (row + 1f) + transform.right * (column - boxWidth / 2f);
-                    unitsToRally[i].GetOrderingObject.SetActive(true);
-                    unitsToRally[i].GetOrderingObject.transform.rotation = Quaternion.LookRotation(Vector3.forward, Vector3.up);
-                    unitsToRally[i].GetOrderingObject.transform.position = transform.position + boxPos;
-                }
-            }else if (patternIndex == 1)
-            {
-                // pattern long line
-                int boxWidth = Mathf.Clamp (unitsToRally.Length, 0, 20);
-                for (int i = 0; i < unitsToRally.Length; i++)
-                {
-                    if (unitsToRally[i] == null)
-                        continue;
-
-                    int row = Mathf.FloorToInt(i / boxWidth);
-                    int column = i % boxWidth;
-                    Vector3 boxPos = transform.forward * (row + 1f) + transform.right * (column - boxWidth / 2f);
-                    unitsToRally[i].GetOrderingObject.SetActive(true);
-                    unitsToRally[i].GetOrderingObject.transform.rotation = Quaternion.LookRotation(Vector3.forward, Vector3.up);
-                    unitsToRally[i].GetOrderingObject.transform.position = transform.position + boxPos;
+                    SetUnitPos(unitsToRally[i], pos, avgMoveSpeed);
                 }
             }
+            else if (patternIndex == 1)
+            {
+                // pattern box
+                for (int i = 0; i < unitsToRally.Length; i++)
+                {
+                    if (unitsToRally[i] == null)
+                        continue;
+
+                    float row = Mathf.FloorToInt(i / boxWidth);
+                    float column = i % boxWidth;
+
+                    // only apply if unit is in the last row (centering)
+                    if (i >= lastRowStartIndex)
+                        column += remainderInLastRow / 2f;
+
+                    Vector3 pos = transform.forward * (row + 1f) + transform.right * (column - boxWidth / 2f);
+                    SetUnitPos(unitsToRally[i], pos, avgMoveSpeed);
+                }
+            }
+            else if (patternIndex == 2)
+            {
+                // pattern long line
+                for (int i = 0; i < unitsToRally.Length; i++)
+                {
+                    if (unitsToRally[i] == null)
+                        continue;
+                    float row = Mathf.FloorToInt(i / boxWidth);
+                    float column = i % boxWidth;
+
+                    // only apply if unit is in the last row (centering)
+                    if (i >= lastRowStartIndex)
+                        column += remainderInLastRow / 2f;
+
+                    Vector3 pos = transform.forward * (row + 1f) + transform.right * (column - boxWidth / 2f);
+                    SetUnitPos(unitsToRally[i], pos, avgMoveSpeed);
+                }
+            }
+            else if (patternIndex == 3)
+            {
+                // pattern arrow (basically just a line that's offset by column)
+                for (int i = 0; i < unitsToRally.Length; i++)
+                {
+                    if (unitsToRally[i] == null)
+                        continue;
+
+                    float row = Mathf.FloorToInt(i / boxWidth);
+                    float column = i % boxWidth;// + row * Mathf.Sign(i % (boxWidth + row) - boxWidth / 2f);
+
+                    // only apply if unit is in the last row (centering)
+                    if (i >= lastRowStartIndex)
+                        column += remainderInLastRow / 2f;
+
+                    //column += ;
+                    float arrowForwardOffset = Mathf.Abs (column - boxWidth / 2f) * 0.5f;
+
+                    Vector3 pos = 
+                        transform.forward * (row + 1f + arrowForwardOffset) + 
+                        transform.right * (column - boxWidth / 2f);
+
+                    SetUnitPos(unitsToRally[i], pos, avgMoveSpeed);
+                }
+            }
+            
 
             if (PlayerInput.players[identifier.GetPlayerID].GetButtonDown(PlayerInput.GetInputBack))
             {
@@ -194,6 +248,14 @@ public class UnitSelection : MonoBehaviour
             // reset pattern index
             patternIndex = -1;
         }
+    }
+
+    private void SetUnitPos(UnitActions unit, Vector3 pos, float moveSpeed)
+    {
+        unit.GetOrderingObject.SetActive(true);
+        unit.GetOrderingObject.transform.rotation = Quaternion.LookRotation(Vector3.forward, Vector3.up);
+        unit.GetOrderingObject.transform.position = transform.position + pos;
+        unit.SetGroupMoveSpeed(moveSpeed);
     }
 
     private void IncreasePatternIndex ()

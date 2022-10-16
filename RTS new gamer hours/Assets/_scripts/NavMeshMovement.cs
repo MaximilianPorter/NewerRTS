@@ -19,14 +19,21 @@ public class NavMeshMovement : MonoBehaviour
     private bool canTurn = true;
     private bool canMove = true;
     private bool isMoving = false;
+
+    private Vector3? loadedNextPos = null;
+
     private Vector3 debugDestinationPos;
     private float debugMoveSpeed01 = 0;
+    private float inGroupMoveSpeed = 0f;
 
+    public void SetGroupMoveSpeed(float moveSpeed) => inGroupMoveSpeed = moveSpeed;
+    public float GetCurrentMoveSpeed => agent.velocity.magnitude;
+    public UnitStats GetStats => stats;
     public bool GetIsMoving => isMoving;
     public void SetCanTurn (bool canTurn) => this.canTurn = canTurn;
     public void SetCanMove(bool canMove) => this.canMove = canMove;
     public Transform GetLookTarget => lookAtTransform;
-    public float GetMoveSpeed01 => Mathf.Clamp01(agent.velocity.sqrMagnitude / (stats.maxMoveSpeed * stats.maxMoveSpeed));
+    public float GetMoveSpeed01 => Mathf.Clamp01(agent.velocity.sqrMagnitude / (inGroupMoveSpeed * inGroupMoveSpeed));
     public Vector3 GetDestination => agent.destination;
 
     private void Awake()
@@ -39,6 +46,8 @@ public class NavMeshMovement : MonoBehaviour
     {
         agent.SetDestination(transform.position);
         agent.speed = stats.maxMoveSpeed;
+
+        inGroupMoveSpeed = stats.maxMoveSpeed;
     }
 
     private void Update()
@@ -46,6 +55,7 @@ public class NavMeshMovement : MonoBehaviour
         isMoving = GetMoveSpeed01 > 0.05f;
         debugDestinationPos = agent.destination;
         debugMoveSpeed01 = GetMoveSpeed01;
+        agent.speed = inGroupMoveSpeed;
 
         // look at enemy if standing still
         if (!isMoving && lookAtTransform)
@@ -57,13 +67,36 @@ public class NavMeshMovement : MonoBehaviour
     public void SetDestination (Vector3 target)
     {
         if (!canMove)
+        {
+            // we made the SetDestination call while we can't move
+            // so load the next position for when we can move
+            if (loadedNextPos == null)
+            {
+                loadedNextPos = target;
+            }
+
             return;
+        }
+
+        // if we have a loaded position, set the target to that and discard it
+        if (loadedNextPos != null)
+        {
+            target = loadedNextPos.GetValueOrDefault();
+            loadedNextPos = null;
+        }
 
         agent.SetDestination (target);
     }
 
     public void ResetDestination ()
     {
+        // if we have a loaded position, we can't reset the destination yet
+        if (loadedNextPos != null)
+        {
+            SetDestination(loadedNextPos.GetValueOrDefault());
+            return;
+        }
+
         agent.ResetPath();
     }
 

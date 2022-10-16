@@ -48,6 +48,8 @@ public class Attacking : MonoBehaviour
     private float attackAnimWaitTimeCounter = 1000f;
     private bool hasAttacked = false;
 
+    //private List<Projectile> firedProjectiles = new List<Projectile>(4);
+
     public bool GetCanAttack => canAttack;
     public void SetCanAttack(bool addition) => canAttackAddition = addition;
     public void SetNearestEnemy (Transform newEnemy) => nearestEnemy = newEnemy;

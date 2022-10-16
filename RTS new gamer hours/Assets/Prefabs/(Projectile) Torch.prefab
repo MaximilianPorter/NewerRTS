@@ -110,6 +110,7 @@ GameObject:
   - component: {fileID: 6595013870811925233}
   - component: {fileID: 1562646386943883582}
   - component: {fileID: 2558112283505710848}
+  - component: {fileID: 2423676787854130192}
   m_Layer: 0
   m_Name: (Projectile) Torch
   m_TagString: Untagged
@@ -168,6 +169,32 @@ MonoBehaviour:
   hitMask:
     serializedVersion: 2
     m_Bits: 4160
+--- !u!1773428102 &2423676787854130192
+ParentConstraint:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5640332772760401253}
+  m_Enabled: 1
+  m_Weight: 1
+  m_TranslationAtRest: {x: 15.719065, y: 2.46, z: 12.959}
+  m_RotationAtRest: {x: 0, y: 0, z: 0}
+  m_TranslationOffsets:
+  - {x: 0, y: 0, z: 0}
+  m_RotationOffsets:
+  - {x: 0, y: 0, z: 0}
+  m_AffectTranslationX: 1
+  m_AffectTranslationY: 1
+  m_AffectTranslationZ: 1
+  m_AffectRotationX: 1
+  m_AffectRotationY: 1
+  m_AffectRotationZ: 1
+  m_IsContraintActive: 0
+  m_IsLocked: 0
+  m_Sources:
+  - sourceTransform: {fileID: 0}
+    weight: 1
 --- !u!1001 &4728038322518176562
 PrefabInstance:
   m_ObjectHideFlags: 0
