@@ -6721,91 +6721,6 @@ MonoBehaviour:
   isPlayer: 0
   playerID: 0
   teamID: 0
---- !u!4 &299032149
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 299245643}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 16.797672, y: 0, z: 2.572506}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 46
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &299245643
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 299032149}
-  - component: {fileID: 300387839}
-  - component: {fileID: 301444661}
-  - component: {fileID: 1512233384}
-  - component: {fileID: 1512233385}
-  m_Layer: 13
-  m_Name: (Resource) Rock
-  m_TagString: Rock
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!33 &300387839
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 299245643}
-  m_Mesh: {fileID: 4300000, guid: 15606d706f811cd4eb0883b2cc5c53d3, type: 3}
---- !u!23 &301444661
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 299245643}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: d726a65f2eaae8847857d20bb327828e, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1001 &301498200
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13244,12 +13159,12 @@ MonoBehaviour:
   density: 1.5
   randomTreeOffset: 0.5
   spawnThreshold: 0.6
-  treeArea: {x: 23, y: 23}
+  treeArea: {x: 50, y: 50}
   mapWidth: 100
   mapHeight: 100
   randomSeed: 1
   seed: 0
-  noiseScale: 60
+  noiseScale: 130
   octaves: 4
   persistance: 7
   lacunarity: 2
@@ -13257,6 +13172,13 @@ MonoBehaviour:
   percentageToContinueLedge: 20
   flatTile: {fileID: 7692654392403249024, guid: 3c59f8f5d69f24b428425ad4121d7f6f, type: 3}
   slopeTile: {fileID: 718132210517437581, guid: 34cc2d745afc77b4dbbc62c904558c2c, type: 3}
+  rocks:
+  - {fileID: 5907444341663126198, guid: 5b60eece06033484d8863b712aa412ac, type: 3}
+  rockSpacingBuffer: 5
+  rocksToPlace: 10
+  showRockGrid: 1
+  rockGridSize: {x: 3, y: 3}
+  rockGridSquareWidth: 33
 --- !u!114 &606011161
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13317,7 +13239,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0efd944819aed7447a2218041932639c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  showGridLines: 1
+  showGridLines: 0
   debugCellCount: 50
   debugCellWidth: 5
 --- !u!114 &606011165
@@ -24277,7 +24199,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 47
+  m_RootOrder: 46
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!64 &1168744872
 MeshCollider:
@@ -31171,39 +31093,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   teamID: 0
   meshRendMaterialChange: 
---- !u!64 &1512233384
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 299245643}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 4300000, guid: 15606d706f811cd4eb0883b2cc5c53d3, type: 3}
---- !u!114 &1512233385
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 299245643}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 092f7d5b394932b4da65b2ef47ec8818, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  amount:
-    food: 0
-    wood: 0
-    stone: 1
-  resetTime: 0
-  resourceSpawnEffect: {fileID: 0}
-  resourceSpawnOffset: {x: 0, y: 0, z: 0}
 --- !u!1 &1524746370
 GameObject:
   m_ObjectHideFlags: 0
@@ -32056,7 +31945,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2519122173918393305, guid: 197e208e373752448a8eb352aa3896d9, type: 3}
       propertyPath: m_RootOrder
-      value: 48
+      value: 47
       objectReference: {fileID: 0}
     - target: {fileID: 2519122173918393305, guid: 197e208e373752448a8eb352aa3896d9, type: 3}
       propertyPath: m_LocalPosition.x
@@ -83168,6 +83057,63 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3b5d4fcf8c71cac4e9406c4beecb642f, type: 3}
+--- !u!1001 &7085955487546740362
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 7085955487418373004, guid: 5a45fcf8c4fd292499f08d55ec35d40a, type: 3}
+      propertyPath: m_RootOrder
+      value: 48
+      objectReference: {fileID: 0}
+    - target: {fileID: 7085955487418373004, guid: 5a45fcf8c4fd292499f08d55ec35d40a, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 15.85
+      objectReference: {fileID: 0}
+    - target: {fileID: 7085955487418373004, guid: 5a45fcf8c4fd292499f08d55ec35d40a, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.664
+      objectReference: {fileID: 0}
+    - target: {fileID: 7085955487418373004, guid: 5a45fcf8c4fd292499f08d55ec35d40a, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 17.46
+      objectReference: {fileID: 0}
+    - target: {fileID: 7085955487418373004, guid: 5a45fcf8c4fd292499f08d55ec35d40a, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7085955487418373004, guid: 5a45fcf8c4fd292499f08d55ec35d40a, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7085955487418373004, guid: 5a45fcf8c4fd292499f08d55ec35d40a, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7085955487418373004, guid: 5a45fcf8c4fd292499f08d55ec35d40a, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7085955487418373004, guid: 5a45fcf8c4fd292499f08d55ec35d40a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7085955487418373004, guid: 5a45fcf8c4fd292499f08d55ec35d40a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7085955487418373004, guid: 5a45fcf8c4fd292499f08d55ec35d40a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7085955487418373007, guid: 5a45fcf8c4fd292499f08d55ec35d40a, type: 3}
+      propertyPath: m_Name
+      value: (Animal) Cow
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 5a45fcf8c4fd292499f08d55ec35d40a, type: 3}
 --- !u!23 &7419466785413676039
 MeshRenderer:
   m_ObjectHideFlags: 0

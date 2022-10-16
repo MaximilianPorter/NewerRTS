@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.AI.Navigation;
 using UnityEngine;
 
@@ -11,6 +12,7 @@ public class MapGenerationManager : MonoBehaviour
     [Header("Trees")]
     [SerializeField] private GameObject[] trees;
     [SerializeField] private bool randomRotation = true;
+    [Tooltip("smaller the number, the more dense")]
     [SerializeField][Range(0.1f, 5f)] private float density = 1f;
     [SerializeField] private float randomTreeOffset = 0.5f;
     //[SerializeField] private int treeAmt = 100;
@@ -30,6 +32,7 @@ public class MapGenerationManager : MonoBehaviour
     public float persistance;
     public float lacunarity;
     public Vector2 offset;
+    private float[,] treeNoiseMap;
 
     [Header("Land Tiles")]
     [SerializeField] [Range(0f, 100)] private float percentageToContinueLedge = 20f;
@@ -42,6 +45,17 @@ public class MapGenerationManager : MonoBehaviour
     private int highPoints = 3;
     private readonly Vector3 TileSize = new Vector3(30f, 6f, 30f);
 
+    [Header("Rocks")]
+    [SerializeField] private GameObject[] rocks;
+    [SerializeField] private float rockSpacingBuffer = 5f;
+    [SerializeField] private int rocksToPlace = 10;
+    [SerializeField] private bool showRockGrid = false;
+    [SerializeField] private Vector2Int rockGridSize;
+    [SerializeField] private float rockGridSquareWidth = 10f;
+
+    private GameObject rockParent;
+    private List<GameObject> spawnedRocks = new List<GameObject>();
+
     private void Awake()
     {
         if (randomSeed)
@@ -49,8 +63,11 @@ public class MapGenerationManager : MonoBehaviour
 
         Random.InitState(seed);
 
+        rockParent = new GameObject("Rock Parent");
+        SpawnRocks();
 
         treeParent = new GameObject("Tree Parent");
+        treeNoiseMap = Noise.GenerateNoiseMap(mapWidth, mapHeight, seed, noiseScale, octaves, persistance, lacunarity, offset);
         SpawnTrees();
         AdjustTreeNoise();
 
@@ -99,7 +116,6 @@ public class MapGenerationManager : MonoBehaviour
     }
     private void AdjustTreeNoise ()
     {
-        float[,] noiseMap = Noise.GenerateNoiseMap(mapWidth, mapHeight, seed, noiseScale, octaves, persistance, lacunarity, offset);
         for (int i = 0; i < spawnedTrees.Count; i++)
         {
             if (spawnedTrees[i] == null)
@@ -108,10 +124,75 @@ public class MapGenerationManager : MonoBehaviour
                 break;
             }
 
-            if (noiseMap[(int)(spawnedTrees[i].transform.position.x + treeArea.x), (int)(spawnedTrees[i].transform.position.z + treeArea.y)] < spawnThreshold)
+            if (treeNoiseMap[(int)(spawnedTrees[i].transform.position.x + treeArea.x), (int)(spawnedTrees[i].transform.position.z + treeArea.y)] < spawnThreshold)
                 spawnedTrees[i].SetActive(false);
             else
                 spawnedTrees[i].SetActive(true);
+        }
+    }
+
+    private void SpawnRocks ()
+    {
+        Bounds[] gridCubes = new Bounds[rockGridSize.x * rockGridSize.y];
+
+        for (int i = 0, y = 0; y < rockGridSize.y; y++)
+        {
+            for (int x = 0; x < rockGridSize.x; x++)
+            {
+                // make grid and assign grid cube
+                Bounds gridCube = new Bounds(new Vector3(
+                    x * rockGridSquareWidth + rockGridSquareWidth / 2f - rockGridSize.x * rockGridSquareWidth / 2f,
+                    50f,
+                    y * rockGridSquareWidth + rockGridSquareWidth / 2f - rockGridSize.y * rockGridSquareWidth / 2f), Vector3.one * rockGridSquareWidth);
+
+                gridCubes[i] = gridCube;
+                i++;
+            }
+        }
+
+        for (int i = 0; i < rocksToPlace; i++)
+        {
+            // do 1 rock for each grid square, and then add them randomly
+            Bounds gridCube;
+            if (i >= gridCubes.Length)
+                gridCube = gridCubes[Random.Range(0, gridCubes.Length)];
+            else
+                gridCube = gridCubes[i];
+
+            // cast down from that point and place a rock
+            for (int j = 0; j < 1000; j++)
+            {
+                if (j > 990)
+                {
+                    Debug.Log("wtf, we reached the end");
+                    break;
+                }
+
+                // choose point in cube to cast from
+                Vector3 castPoint = gridCube.center + new Vector3(Random.Range(-gridCube.size.x / 2f, gridCube.size.x / 2f),
+                    0f,
+                    Random.Range(-gridCube.size.z / 2f, gridCube.size.z / 2f));
+
+                RaycastHit hit;
+                if (Physics.Raycast(castPoint, Vector3.down, out hit, Mathf.Infinity, groundMask))
+                {
+                    if (spawnedRocks.Any (rock => (rock.transform.position - hit.point).sqrMagnitude < rockSpacingBuffer * rockSpacingBuffer * 2f * 2f))
+                    {
+                        Debug.Log("placing rock too close to another rock");
+                        continue;
+                    }
+
+                    Quaternion randomLookRot = Quaternion.Euler(0, Random.Range(0f, 360f), 0f);
+                    GameObject rockInstance = Instantiate(
+                        rocks[Random.Range(0, rocks.Length)],
+                        hit.point,
+                        randomLookRot,
+                        rockParent.transform);
+
+                    spawnedRocks.Add(rockInstance);
+                    break;
+                }
+            }
         }
     }
 
@@ -336,9 +417,42 @@ public class MapGenerationManager : MonoBehaviour
     }
     #endregion
 
+    public void DeleteWorld ()
+    {
+        for (int i = 0; i < spawnedRocks.Count; i++)
+        {
+            Destroy(spawnedRocks[i]);
+        }
+        spawnedRocks.Clear();
+    }
+
     private void OnDrawGizmosSelected()
     {
         Gizmos.DrawWireCube(new Vector3(0f, 20f, 0f), new Vector3(treeArea.x * 2f, 5f, treeArea.y * 2f));
+
+        if (showRockGrid)
+        {
+            for (int y = 0; y < rockGridSize.y; y++)
+            {
+                for (int x = 0; x < rockGridSize.x; x++)
+                {
+                    Gizmos.color = Color.blue;
+                    Gizmos.DrawWireCube(new Vector3(
+                        x * rockGridSquareWidth + rockGridSquareWidth/2f - rockGridSize.x * rockGridSquareWidth/2f,
+                        50f,
+                        y * rockGridSquareWidth + rockGridSquareWidth / 2f - rockGridSize.y * rockGridSquareWidth / 2f), Vector3.one * rockGridSquareWidth);
+                }
+            }
+
+            if (Application.isPlaying)
+            {
+                for (int i = 0; i < spawnedRocks.Count; i++)
+                {
+                    Gizmos.color = Color.red;
+                    Gizmos.DrawWireSphere(spawnedRocks[i].transform.position, rockSpacingBuffer);
+                }
+            }
+        }
     }
 }
 

@@ -118,4 +118,12 @@ public class NavMeshMovement : MonoBehaviour
         newRotation.eulerAngles = new Vector3(0f, newRotation.eulerAngles.y, 0f);
         transform.rotation = newRotation;
     }
+
+    private void OnDrawGizmosSelected()
+    {
+        if (!agent)
+            return;
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(agent.destination, 0.2f);
+    }
 }
