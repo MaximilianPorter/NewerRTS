@@ -49,14 +49,15 @@ public class Projectile : MonoBehaviour
             // check for hits
             RaycastHit hit;
             //Vector3 lastDir = (lastPos - transform.position);
-            Vector3 castPos = transform.position - transform.forward * 2f;
-            if (Physics.Raycast(castPos, transform.forward, out hit, 2f, hitMask))
+            float castDistBack = 0.5f;
+            Vector3 castPos = transform.position - transform.forward * castDistBack;
+            if (Physics.Raycast(castPos, transform.forward, out hit, castDistBack, hitMask))
             {
                 // don't hit anything that's on our team
                 if (hit.transform.TryGetComponent(out Identifier testIdentifier) && testIdentifier.GetTeamID == teamID)
                     return;
 
-                float diff = 2f - hit.distance;
+                float diff = castDistBack - hit.distance;
                 transform.position += -transform.forward * diff;
 
                 rb.isKinematic = true;
@@ -124,7 +125,7 @@ public class Projectile : MonoBehaviour
         if (Application.isPlaying)
         {
             Vector3 lastDir = -transform.forward;
-            Gizmos.DrawRay(transform.position + lastDir.normalized * 2f, transform.forward * 2f);
+            Gizmos.DrawRay(transform.position + lastDir.normalized * .5f, transform.forward * .5f);
         }
         //Gizmos.DrawWireSphere(transform.position, hitRadius);
     }
@@ -136,14 +137,15 @@ public class Projectile : MonoBehaviour
     /// <param name="accuracy">determines between random[-accuracy, +accuracy] how far off the shot will be on the x and z axes</param>
     public static bool SetTrajectory(Rigidbody rigidbody, Vector3 target, float force, float accuracy = 0f, float arch = 0.5f, Vector3? targetVelocity = null)
     {
-        target += new Vector3(Random.Range(-accuracy, accuracy), 0f, Random.Range(-accuracy, accuracy));
+        target += new Vector3(Random.Range(-accuracy, accuracy), Random.Range(-accuracy, accuracy), Random.Range(-accuracy, accuracy));
         float targetVelX = targetVelocity != null ? targetVelocity.GetValueOrDefault().x : 0f;
+        float targetVelY = targetVelocity != null ? targetVelocity.GetValueOrDefault().y : 0f;
         float targetVelZ = targetVelocity != null ? targetVelocity.GetValueOrDefault().z : 0f;
         Mathf.Clamp(arch, 0, 1);
         var origin = rigidbody.position;
-        float x = target.x - origin.x + targetVelX*1.2f;
+        float x = target.x - origin.x;
         float y = target.y - origin.y;
-        float z = target.z - origin.z + targetVelZ*1.2f;
+        float z = target.z - origin.z;
         float gravity = -Physics.gravity.y;
         float b = force * force - y * gravity;
         float discriminant = b * b - gravity * gravity * (x * x + y * y);
@@ -155,9 +157,9 @@ public class Projectile : MonoBehaviour
         float minTime = Mathf.Sqrt((b - discriminantSquareRoot) * 2) / Mathf.Abs(gravity);
         float maxTime = Mathf.Sqrt((b + discriminantSquareRoot) * 2) / Mathf.Abs(gravity);
         float time = (maxTime - minTime) * arch + minTime;
-        float vx = x / time;
-        float vy = y / time + time * gravity / 2;
-        float vz = z / time;
+        float vx = x / time + targetVelX;
+        float vy = y / time + time * gravity / 2 + targetVelY;
+        float vz = z / time + targetVelZ;
         var trajectory = new Vector3(vx, vy, vz) * rigidbody.mass;
         rigidbody.AddForce(trajectory, ForceMode.Impulse);
         return true;

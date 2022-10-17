@@ -110,6 +110,15 @@ public class AnimalActions : MonoBehaviour
 
     public void Die()
     {
+
+        // spawn effects
+        GameObject deathEffectInstance = Instantiate(deathEffect, transform.position, Quaternion.identity);
+        Vector3 dir = transform.position - health.GetLastHitFromPos;
+        dir.y = 0f;
+        deathEffectInstance.transform.rotation = Quaternion.LookRotation(dir, Vector3.up);
+        Destroy(deathEffectInstance, 5f);
+
+
         // if they have a health script
         if (health)
         {
@@ -119,13 +128,6 @@ public class AnimalActions : MonoBehaviour
             // reset health back to normal
             health.ResetHealth();
         }
-
-        // spawn effects
-        GameObject deathEffectInstance = Instantiate(deathEffect, transform.position, Quaternion.identity);
-        Vector3 dir = transform.position - health.GetLastHitFromPos;
-        dir.y = 0f;
-        deathEffectInstance.transform.rotation = Quaternion.LookRotation(dir, Vector3.up);
-        Destroy(deathEffectInstance, 5f);
 
         justSpawned = false;
         // set the gameobject inactive

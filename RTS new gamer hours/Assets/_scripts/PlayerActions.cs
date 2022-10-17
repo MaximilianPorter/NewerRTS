@@ -5,7 +5,7 @@ using UnityEngine;
 
 [RequireComponent(typeof (Identifier))]
 [RequireComponent(typeof (Attacking))]
-[RequireComponent(typeof (Movement))]
+[RequireComponent(typeof (NavMeshMovement))]
 public class PlayerActions : MonoBehaviour
 {
     [SerializeField] private UnitStats stats;
@@ -15,8 +15,11 @@ public class PlayerActions : MonoBehaviour
     [SerializeField] private float attackAnimSpeed = 1f;
     [SerializeField] private float attackFireWaitTime = 0.4f;
 
+    [Space(10)]
+    [SerializeField] private Renderer[] bodyPartsNeedMaterial;
+
     private Identifier identifier;
-    private Movement movement;
+    private NavMeshMovement navMovement;
     private Attacking attacking;
 
 
@@ -28,10 +31,19 @@ public class PlayerActions : MonoBehaviour
     private void Awake()
     {
         identifier = GetComponent<Identifier>();
-        movement = GetComponent<Movement>();
+        navMovement = GetComponent<NavMeshMovement>();
         attacking = GetComponent<Attacking>();
 
         SetAnimations(overrideController);
+    }
+
+    private void Start()
+    {
+        // turn on correct body parts
+        for (int i = 0; i < bodyPartsNeedMaterial.Length; i++)
+        {
+            bodyPartsNeedMaterial[i].material = PlayerColorManager.GetUnitMaterial(identifier.GetTeamID);
+        }
     }
 
     private void Update()
@@ -39,11 +51,16 @@ public class PlayerActions : MonoBehaviour
         moveInput = new Vector3(PlayerInput.GetPlayers[identifier.GetPlayerID].GetAxis(PlayerInput.GetInputMoveHorizontal),
                 0f,
                 PlayerInput.GetPlayers[identifier.GetPlayerID].GetAxis(PlayerInput.GetInputMoveVertical));
-        movement.SetMoveTarget(transform.position + moveInput);
 
-        movement.SetCanMove(!PlayerInput.GetPlayerIsInMenu(identifier.GetPlayerID) && !isAttacking && !isBlocking);
+        navMovement.SetCanMove(!PlayerInput.GetPlayerIsInMenu(identifier.GetPlayerID) && !isAttacking && !isBlocking);
 
-        movement.SetInputJumpDown(PlayerInput.GetPlayers[identifier.GetPlayerID].GetButtonDown(PlayerInput.GetInputJump));
+        if (moveInput.magnitude > 0.05f)
+        {
+            navMovement.MoveTowards(transform.position + moveInput);
+            navMovement.SetLookAt(transform.position + moveInput);
+        }
+        else
+            navMovement.ResetDestination();
 
 
         if (animator)
@@ -66,9 +83,9 @@ public class PlayerActions : MonoBehaviour
                 if (isBlocking)
                     return;
 
-                animator.SetBool("isMoving", movement.GetMoveSpeed01 > 0.01f);
+                animator.SetBool("isMoving", navMovement.GetMoveSpeed01 > 0.01f);
                 if (animator.GetBool("isMoving"))
-                    animator.speed = walkAnimSpeed * movement.GetMaxMoveSpeed;
+                    animator.speed = walkAnimSpeed * navMovement.GetCurrentMoveSpeed;
 
                 if (animator.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
                     animator.speed = 1f;

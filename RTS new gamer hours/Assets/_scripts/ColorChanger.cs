@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -95,6 +96,17 @@ public class ColorChanger : MonoBehaviour
                 mats[meshRendMaterialChange[i]] = PlayerColorManager.GetPlayerMaterial(teamID);
             }
             smRend.materials = mats;
+        }
+
+        // SPRITE REND COLOR
+        if (TryGetComponent(out TMP_Text textRend))
+        {
+            Color colorNoAlpha = new Color(PlayerColorManager.GetPlayerColor(teamID).r,
+            PlayerColorManager.GetPlayerColor(teamID).g,
+            PlayerColorManager.GetPlayerColor(teamID).b,
+            textRend.color.a);
+
+            textRend.color = colorNoAlpha;
         }
     }
 }

@@ -1,9 +1,10 @@
 using UnityEngine;
 using TMPro;
+using Rewired.Utils.Classes.Data;
 
 public class FPSDisplay : MonoBehaviour
 {
-    public TMP_Text display_Text;
+    [SerializeField] private bool displayFPS = false;
     private int avgFrameRate;
 
     private readonly float timeBetweenUpdates = 0.2f;
@@ -15,10 +16,24 @@ public class FPSDisplay : MonoBehaviour
         if (timeBetweenUpdatesCounter > timeBetweenUpdates)
         {
             timeBetweenUpdatesCounter = 0f;
-            float current = 0;
-            current = (int)(1f / Time.unscaledDeltaTime);
-            avgFrameRate = (int)current;
-            display_Text.text = avgFrameRate.ToString() + " FPS";
+            avgFrameRate = (int)(1f / Time.unscaledDeltaTime);
+        }
+    }
+
+    private void OnGUI()
+    {
+        if (displayFPS)
+        {
+            Vector2 pos = new Vector2(Screen.width / 2f - 50f, 10f);
+            string fps = avgFrameRate.ToString() + " FPS";
+
+            // drop shadow
+            GUI.color = Color.black;
+            GUI.Label(new Rect (pos + Vector2.one, Vector2.one * 100f), fps);
+
+            // text color
+            GUI.color = Color.white;
+            GUI.Label(new Rect(pos, Vector2.one * 100f), fps);
         }
     }
 }

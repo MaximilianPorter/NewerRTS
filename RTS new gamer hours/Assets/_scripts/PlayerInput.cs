@@ -4,6 +4,7 @@ using UnityEngine;
 using Rewired;
 using System.Linq;
 using UnityEngine.Analytics;
+using System.Runtime.CompilerServices;
 
 public class PlayerInput : MonoBehaviour
 {

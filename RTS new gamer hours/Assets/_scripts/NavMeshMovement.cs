@@ -12,10 +12,12 @@ public class NavMeshMovement : MonoBehaviour
 {
     [SerializeField] private UnitStats stats;
     [SerializeField] private float standingRotSpeed = 25f;
+    [SerializeField] private bool onlyLookWhenStill = true;
 
     //private Rigidbody rb;
     private NavMeshAgent agent;
     private Transform lookAtTransform;
+    private Vector3? lookAtPos;
     private bool canTurn = true;
     private bool canMove = true;
     private bool isMoving = false;
@@ -44,7 +46,6 @@ public class NavMeshMovement : MonoBehaviour
 
     private void Start()
     {
-        agent.SetDestination(transform.position);
         agent.speed = stats.maxMoveSpeed;
 
         inGroupMoveSpeed = stats.maxMoveSpeed;
@@ -58,9 +59,12 @@ public class NavMeshMovement : MonoBehaviour
         agent.speed = inGroupMoveSpeed;
 
         // look at enemy if standing still
-        if (!isMoving && lookAtTransform)
+        if ((!onlyLookWhenStill || !isMoving) && (lookAtTransform || lookAtPos != null))
         {
-            LookTowards(lookAtTransform.position - transform.position);
+            if (lookAtTransform)
+                LookTowards(lookAtTransform.position - transform.position);
+            else if (lookAtPos != null)
+                LookTowards(lookAtPos.GetValueOrDefault() - transform.position);
         }
     }
 
@@ -88,6 +92,14 @@ public class NavMeshMovement : MonoBehaviour
         agent.SetDestination (target);
     }
 
+    public void MoveTowards (Vector3 target)
+    {
+        if (!canMove)
+            return;
+
+        agent.velocity = agent.speed * (target - transform.position).normalized;
+    }
+
     public void ResetDestination ()
     {
         // if we have a loaded position, we can't reset the destination yet
@@ -103,6 +115,10 @@ public class NavMeshMovement : MonoBehaviour
     public void SetLookAt (Transform lookAt)
     {
         lookAtTransform = lookAt;
+    }
+    public void SetLookAt (Vector3 lookAt)
+    {
+        lookAtPos = lookAt;
     }
 
     private void LookTowards(Vector3 dir)

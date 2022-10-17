@@ -184,6 +184,8 @@ public class UnitActions : MonoBehaviour
                     continue;
 
                 Vector3 unitDir = (unit.transform.position - transform.position);
+                unitDir.y = 0; // height doesn't matter
+
                 if (unitDir.sqrMagnitude > unitStats.lookRange * unitStats.lookRange)
                 {
                     continue;
@@ -218,15 +220,19 @@ public class UnitActions : MonoBehaviour
 
         if (enemy)
         {
+            Vector3 dirMoveTargetAndEnemy = (moveTowardsPos - enemy.position);
+            dirMoveTargetAndEnemy.y = 0f;
+            Vector3 dirMoveTargetAndMe = (moveTowardsPos - transform.position);
+            dirMoveTargetAndMe.y = 0f;
+
             // (MOVING) if we click far enough away from the enemy
-            if (navMovement.GetIsMoving && (moveTowardsPos - enemy.position).sqrMagnitude > (unitStats.lookRange/2f * unitStats.lookRange/2f))
+            if (navMovement.GetIsMoving && dirMoveTargetAndEnemy.sqrMagnitude > (unitStats.lookRange/2f * unitStats.lookRange/2f))
             {
                 navMovement.SetLookAt(null);
                 return;
             }
-            
             // (NOT MOVING) if we click far enough away from our own range
-            else if (!navMovement.GetIsMoving && (moveTowardsPos - transform.position).sqrMagnitude > (unitStats.lookRange/2f * unitStats.lookRange/2f))
+            else if (!navMovement.GetIsMoving && dirMoveTargetAndMe.sqrMagnitude > (unitStats.lookRange/2f * unitStats.lookRange/2f))
             {
                 navMovement.SetLookAt(null);
                 return;
@@ -236,7 +242,10 @@ public class UnitActions : MonoBehaviour
             // or we're standing still and the enemy is in our range
             else
             {
-                float sqrDistFromEnemy = (transform.position - enemy.position).sqrMagnitude;
+                Vector3 dirEnemyAndMe = (transform.position - enemy.position);
+                dirEnemyAndMe.y = 0f;
+
+                float sqrDistFromEnemy = dirEnemyAndMe.sqrMagnitude;
                 if (enemy.TryGetComponent (out Building enemyBuilding))
                 {
                     if (sqrDistFromEnemy > enemyBuilding.GetStats.interactionRadius * enemyBuilding.GetStats.interactionRadius)

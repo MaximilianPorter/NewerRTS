@@ -80,6 +80,11 @@ public class MapGenerationManager : MonoBehaviour
 
         Random.InitState(seed);
 
+        
+    }
+
+    private void Start()
+    {
         rockParent = new GameObject("Rock Parent");
         SpawnRocks();
 
@@ -92,10 +97,6 @@ public class MapGenerationManager : MonoBehaviour
         SpawnAnimals();
 
         navMeshSurface.BuildNavMesh();
-    }
-
-    private void Start()
-    {
 
         //InitializeGroundHeights();
         //PickGroundHeights();
@@ -184,7 +185,6 @@ public class MapGenerationManager : MonoBehaviour
     private void SpawnAnimals ()
     {
         Bounds[] gridCubes = GenerateGridCubes(animalGridSize.x, animalGridSize.y, animalGridSquareWidth);
-        Debug.Log(gridCubes.Length);
 
         for (int i = 0; i < animalGroupsToPlace; i++)
         {

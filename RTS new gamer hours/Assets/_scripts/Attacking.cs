@@ -222,11 +222,16 @@ public class Attacking : MonoBehaviour
         Projectile projInstance = Instantiate(stats.projectile, firePoint.position, Quaternion.identity).GetComponent<Projectile>();
         projInstance.SetInfo(stats.damage, identifier.GetPlayerID, identifier.GetTeamID);
 
-        // attempt to find it's velocity
-        Rigidbody targetBody = target.GetComponent<Rigidbody>();
+        // attempt to find it's velocity (nav mesh agent first, then rigidbody)
+        Vector3? targetVelocity = null;
+
+        if (target.TryGetComponent(out NavMeshAgent enemyAgent))
+            targetVelocity = enemyAgent.velocity;
+        else if (target.TryGetComponent(out Rigidbody enemyBody))
+            targetVelocity = enemyBody.velocity;
 
         Projectile.SetTrajectory(projInstance.GetRigidbody, target.position, stats.projectileForce, stats.accuracy, stats.projectileArch,
-            stats.leadsTarget ? targetBody.velocity : null);
+            stats.leadsTarget ? targetVelocity.GetValueOrDefault() : null);
     }
 
     public void MeleeHit()

@@ -2,18 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using TMPro;
 
 [RequireComponent(typeof (Identifier))]
 public class UnitSelection : MonoBehaviour
 {
+    [SerializeField] private Camera playerCam;
     [SerializeField] private LayerMask unitMask;
     [SerializeField] private Transform unitSelectionVisual;
     [SerializeField] private GameObject rallyTroopsEffectPrefab;
     [SerializeField] private float maxSelectionRadius = 10f;
     [SerializeField] private float radiusIncreaseSpeed = 4f;
     [SerializeField] private Transform selectedUnitsUiLayout;
+    [SerializeField] private TMP_Text patternNameText;
 
-    private UnitActions[] selectedUnits = new UnitActions[0];
+    private List<UnitActions> selectedUnits = new List<UnitActions>(0);
     private float currentSelectionRadius = 0f;
     private int patternIndex = -1;
     private readonly int totalPatterns = 4;
@@ -21,7 +24,7 @@ public class UnitSelection : MonoBehaviour
 
     private int selectedUnitIndex = -1;
     private QueuedUpUnitUi[] selectedUnitsUi;
-    private UnitActions[] tempSelectedUnits = new UnitActions[0];
+    private List<UnitActions> tempSelectedUnits = new List<UnitActions>(0);
 
     private void Awake()
     {
@@ -35,6 +38,8 @@ public class UnitSelection : MonoBehaviour
         {
             selectedUnitsUi[i].gameObject.SetActive(false);
         }
+
+        patternNameText.text = "";
     }
 
     private void Update()
@@ -70,14 +75,14 @@ public class UnitSelection : MonoBehaviour
         }
 
         // handle unit visuals for units selected (little dot over the unit)
-        if (selectedUnits.Length > 0)
+        if (selectedUnits.Count > 0)
         {
             // this loop is just for the visuals of units being selected
             foreach (UnitActions unit in PlayerHolder.GetUnits(identifier.GetPlayerID))
             {
-                if (selectedUnits.Contains(unit) && tempSelectedUnits.Length <= 0)
+                if (selectedUnits.Contains(unit) && tempSelectedUnits.Count <= 0)
                     unit.SetIsSelected(true);
-                else if (tempSelectedUnits.Length > 0 && tempSelectedUnits.Contains(unit))
+                else if (tempSelectedUnits.Count > 0 && tempSelectedUnits.Contains(unit))
                     unit.SetIsSelected(true);
                 else
                     unit.SetIsSelected(false);
@@ -88,7 +93,7 @@ public class UnitSelection : MonoBehaviour
         if (PlayerInput.GetPlayers[identifier.GetPlayerID].GetButtonDoublePressDown(PlayerInput.GetInputSelectUnits))
         {
             DeselectUnits();
-            selectedUnits = PlayerHolder.GetUnits(identifier.GetPlayerID).ToArray();
+            selectedUnits = PlayerHolder.GetUnits(identifier.GetPlayerID).ToList();
             for (int i = 0; i < PlayerHolder.GetUnits (identifier.GetPlayerID).Count; i++)
             {
                 PlayerHolder.GetUnits(identifier.GetPlayerID)[i].SetIsSelected(true);
@@ -104,16 +109,17 @@ public class UnitSelection : MonoBehaviour
             DeselectUnits();
         }
 
-
-        RallyTroopsOnPattern(tempSelectedUnits.Length > 0 ? tempSelectedUnits : selectedUnits);
+        tempSelectedUnits.RemoveAll(unit => unit == null);
+        selectedUnits.RemoveAll(unit => unit == null);
+        RallyTroopsOnPattern(tempSelectedUnits.Count > 0 ? tempSelectedUnits : selectedUnits);
 
         HandleSelectedUnitTypesUI();
         
     }
 
-    private void RallyTroopsOnPattern(UnitActions[] unitsToRally)
+    private void RallyTroopsOnPattern(List<UnitActions> unitsToRally)
     {
-        if (selectedUnits.Length <= 0)
+        if (selectedUnits.Count <= 0)
             return;
 
 
@@ -122,30 +128,33 @@ public class UnitSelection : MonoBehaviour
             patternIndex = 0;
         if (PlayerInput.GetPlayers[identifier.GetPlayerID].GetButtonShortPress(PlayerInput.GetInputRallyTroops))
         {
+            patternNameText.transform.position = playerCam.WorldToScreenPoint(transform.position + new Vector3(0f, 4f, 0f));
+
             // change pattern number
             if (PlayerInput.GetPlayers[identifier.GetPlayerID].GetButtonDown(PlayerInput.GetCycleRight))
                 IncreasePatternIndex();
             else if (PlayerInput.GetPlayers[identifier.GetPlayerID].GetButtonDown(PlayerInput.GetCycleLeft))
                 DecreasePatternIndex();
 
-            float avgMoveSpeed = unitsToRally.Sum(unit => unit.GetStats.maxMoveSpeed) / unitsToRally.Length;
+            float avgMoveSpeed = unitsToRally.Sum(unit => unit.GetStats.maxMoveSpeed) / unitsToRally.Count;
 
-            float boxWidth = Mathf.Clamp(unitsToRally.Length, 0, 20);
+            float boxWidth = Mathf.Clamp(unitsToRally.Count, 0, 20);
 
             if (patternIndex == 1)
-                boxWidth = Mathf.Clamp(Mathf.RoundToInt(Mathf.Sqrt((float)unitsToRally.Length)), 0, 20);
+                boxWidth = Mathf.Clamp(Mathf.RoundToInt(Mathf.Sqrt((float)unitsToRally.Count)), 0, 20);
 
-            float totalRows = Mathf.Ceil((float)unitsToRally.Length / (float)boxWidth);
+            float totalRows = Mathf.Ceil((float)unitsToRally.Count / (float)boxWidth);
             float lastRowStartIndex = totalRows * boxWidth - boxWidth;
-            float remainderInLastRow = totalRows * boxWidth - unitsToRally.Length;
+            float remainderInLastRow = totalRows * boxWidth - unitsToRally.Count;
             if (patternIndex == 0)
             {
                 // pattern offset from current location
-                Vector3 avgGroupPos = new Vector3(unitsToRally.Sum(unit => unit.transform.position.x)/unitsToRally.Length,
+                patternNameText.text = "CURRENT FORMATION";
+                Vector3 avgGroupPos = new Vector3(unitsToRally.Sum(unit => unit.transform.position.x)/unitsToRally.Count,
                     transform.position.y,
-                    unitsToRally.Sum(unit => unit.transform.position.z) / unitsToRally.Length);
+                    unitsToRally.Sum(unit => unit.transform.position.z) / unitsToRally.Count);
 
-                for (int i = 0; i < unitsToRally.Length; i++)
+                for (int i = 0; i < unitsToRally.Count; i++)
                 {
                     Vector3 pos = unitsToRally[i].transform.position - avgGroupPos;
 
@@ -155,7 +164,8 @@ public class UnitSelection : MonoBehaviour
             else if (patternIndex == 1)
             {
                 // pattern box
-                for (int i = 0; i < unitsToRally.Length; i++)
+                patternNameText.text = "BOX";
+                for (int i = 0; i < unitsToRally.Count; i++)
                 {
                     if (unitsToRally[i] == null)
                         continue;
@@ -174,7 +184,8 @@ public class UnitSelection : MonoBehaviour
             else if (patternIndex == 2)
             {
                 // pattern long line
-                for (int i = 0; i < unitsToRally.Length; i++)
+                patternNameText.text = "LINE";
+                for (int i = 0; i < unitsToRally.Count; i++)
                 {
                     if (unitsToRally[i] == null)
                         continue;
@@ -192,7 +203,8 @@ public class UnitSelection : MonoBehaviour
             else if (patternIndex == 3)
             {
                 // pattern arrow (basically just a line that's offset by column)
-                for (int i = 0; i < unitsToRally.Length; i++)
+                patternNameText.text = "ARROW";
+                for (int i = 0; i < unitsToRally.Count; i++)
                 {
                     if (unitsToRally[i] == null)
                         continue;
@@ -214,6 +226,10 @@ public class UnitSelection : MonoBehaviour
                     SetUnitPos(unitsToRally[i], pos, avgMoveSpeed);
                 }
             }
+            else
+            {
+                patternNameText.text = "";
+            }
             
 
             if (PlayerInput.GetPlayers[identifier.GetPlayerID].GetButtonDown(PlayerInput.GetInputBack))
@@ -226,10 +242,12 @@ public class UnitSelection : MonoBehaviour
         // set the move target of each unit to whatever the final ordering object pos was based on the pattern
         if (PlayerInput.GetPlayers[identifier.GetPlayerID].GetButtonUp(PlayerInput.GetInputRallyTroops))
         {
+            patternNameText.text = "";
+
             GameObject rallyTroopsEffectInstance = Instantiate(rallyTroopsEffectPrefab, transform.position + new Vector3(0f, -1f, 0f), Quaternion.identity);
             Destroy(rallyTroopsEffectInstance, 3f);
 
-            for (int i = 0; i < unitsToRally.Length; i++)
+            for (int i = 0; i < unitsToRally.Count; i++)
             {
                 if (unitsToRally[i] == null)
                     continue;
@@ -239,7 +257,7 @@ public class UnitSelection : MonoBehaviour
                 // if we never chose a pattern, just put the unit near the player
                 if (patternIndex == -1)
                 {
-                    float maxDistAway = Mathf.Lerp(0.5f, 3f, unitsToRally.Length / 10);
+                    float maxDistAway = Mathf.Lerp(0.5f, 3f, unitsToRally.Count / 10);
                     unitsToRally[i].GetOrderingObject.transform.position = transform.position + new Vector3(Random.Range(-maxDistAway, maxDistAway), 0f, Random.Range(-maxDistAway, maxDistAway));
                 }
 
@@ -295,7 +313,7 @@ public class UnitSelection : MonoBehaviour
         // if the selected unit index was actually changed
         if (selectedUnitIndex >= 0)
         {
-            tempSelectedUnits = selectedUnits.Where(unit => unit.GetStats.unitType == selectedUnitsUi[selectedUnitIndex].GetUnitType).ToArray();
+            tempSelectedUnits = selectedUnits.Where(unit => unit.GetStats.unitType == selectedUnitsUi[selectedUnitIndex].GetUnitType).ToList();
 
             selectedUnitsUi[selectedUnitIndex].SetDetails(selectedUnitsUi[selectedUnitIndex].GetUnitAmt, 1f);
         }
@@ -371,15 +389,17 @@ public class UnitSelection : MonoBehaviour
 
     private void SelectNearbyUnits()
     {
-        selectedUnits = PlayerHolder.GetUnits(identifier.GetPlayerID).Where(unit => (unit.transform.position - transform.position).sqrMagnitude < currentSelectionRadius * currentSelectionRadius).ToArray();
+        selectedUnits = PlayerHolder.GetUnits(identifier.GetPlayerID).Where(unit => (unit.transform.position - transform.position).sqrMagnitude < currentSelectionRadius * currentSelectionRadius).ToList();
     }
 
     public void DeselectUnits ()
     {
-        selectedUnitIndex = -1;
-        tempSelectedUnits = new UnitActions[0];
+        patternNameText.text = "";
 
-        for (int i = 0; i < selectedUnits.Length; i++)
+        selectedUnitIndex = -1;
+        tempSelectedUnits = new List<UnitActions>(0);
+
+        for (int i = 0; i < selectedUnits.Count; i++)
         {
             if (selectedUnits[i] == null)
                 continue;
@@ -387,6 +407,6 @@ public class UnitSelection : MonoBehaviour
             selectedUnits[i].GetOrderingObject.SetActive(false);
             selectedUnits[i].SetIsSelected(false);
         }
-        selectedUnits = new UnitActions[0];
+        selectedUnits = new List<UnitActions>(0);
     }
 }
