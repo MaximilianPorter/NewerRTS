@@ -8,6 +8,7 @@ public class MapGenerationManager : MonoBehaviour
 {
     [SerializeField] private LayerMask groundMask;
     [SerializeReference] private NavMeshSurface navMeshSurface;
+    [SerializeField] private bool generateOnlyNavMesh = false;
     [SerializeField] private bool showSpawnedObjectBuffers = false;
 
     [Header("Trees")]
@@ -75,26 +76,31 @@ public class MapGenerationManager : MonoBehaviour
 
     private void Awake()
     {
-        if (randomSeed)
-            seed = Random.Range(0, 100000000);
-
-        Random.InitState(seed);
+        
 
         
     }
 
     private void Start()
     {
-        rockParent = new GameObject("Rock Parent");
-        SpawnRocks();
+        if (!generateOnlyNavMesh)
+        {
+            if (randomSeed)
+                seed = Random.Range(0, 100000000);
+
+            Random.InitState(seed);
+
+            rockParent = new GameObject("Rock Parent");
+            SpawnRocks();
 
 
-        treeParent = new GameObject("Tree Parent");
-        treeNoiseMap = Noise.GenerateNoiseMap(mapWidth, mapHeight, seed, noiseScale, octaves, persistance, lacunarity, offset);
-        SpawnTrees();
+            treeParent = new GameObject("Tree Parent");
+            treeNoiseMap = Noise.GenerateNoiseMap(mapWidth, mapHeight, seed, noiseScale, octaves, persistance, lacunarity, offset);
+            SpawnTrees();
 
-        animalGroupParent = new GameObject("Animal Parent");
-        SpawnAnimals();
+            animalGroupParent = new GameObject("Animal Parent");
+            SpawnAnimals();
+        }
 
         navMeshSurface.BuildNavMesh();
 

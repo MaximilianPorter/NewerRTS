@@ -55,7 +55,6 @@ public class Attacking : MonoBehaviour
     public void SetNearestEnemy (Transform newEnemy) => nearestEnemy = newEnemy;
     public Transform GetNearestEnemy => nearestEnemy;
     public UnitStats GetStats => stats;
-    public float GetLookRange => stats.lookRange;
 
     private void Awake()
     {

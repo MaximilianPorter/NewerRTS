@@ -14,6 +14,8 @@ public class PlayerResourceManager : MonoBehaviour
     private Camera[] playerCameras;
     private Identifier[] playerIDs;
 
+    private bool[] usedCheatCode = new bool[4] { false, false, false, false };
+
     private int[] debugFood = new int[4] { 0, 0, 0, 0 };
     private int[] debugWood = new int[4] { 0, 0, 0, 0 };
     private int[] debugStone = new int[4] { 0, 0, 0, 0 };
@@ -60,6 +62,8 @@ public class PlayerResourceManager : MonoBehaviour
 
             PopulationCap[i] = PlayerHolder.GetBuildings(i).Sum(building => building.GetStats.population);
         }
+
+        HandleCheatCode();
     }
 
     /// <summary>
@@ -87,5 +91,34 @@ public class PlayerResourceManager : MonoBehaviour
         resourcesInstance.SetAmount(amount);
 
         Destroy(resourcesInstance.gameObject, 5f);
+    }
+
+    private void HandleCheatCode ()
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            if (usedCheatCode[i])
+                return;
+
+            if (PlayerInput.GetPlayers[i].GetButton(PlayerInput.GetInputDpadUp))
+            {
+                if (PlayerInput.GetPlayers[i].GetButton(PlayerInput.GetInputDpadRight))
+                {
+                    if (PlayerInput.GetPlayers[i].GetButton(PlayerInput.GetInputSelect))
+                    {
+                        if (PlayerInput.GetPlayers[i].GetButton(PlayerInput.GetInputOpenBuildMenu))
+                        {
+                            if (PlayerInput.GetPlayers[i].GetButtonDown(PlayerInput.GetInputOpenUnitMenu))
+                            {
+                                PlayerResourceAmounts[i].AddResources(1000, 1000, 1000);
+                                usedCheatCode[i] = true;
+                                return;
+                            }
+                        }
+
+                    }
+                }
+            }
+        }
     }
 }

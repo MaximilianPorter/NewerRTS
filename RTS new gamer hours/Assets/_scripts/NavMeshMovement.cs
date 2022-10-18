@@ -34,6 +34,7 @@ public class NavMeshMovement : MonoBehaviour
     public bool GetIsMoving => isMoving;
     public void SetCanTurn (bool canTurn) => this.canTurn = canTurn;
     public void SetCanMove(bool canMove) => this.canMove = canMove;
+    public float GetBaseOffset => agent.baseOffset;
     public Transform GetLookTarget => lookAtTransform;
     public float GetMoveSpeed01 => Mathf.Clamp01(agent.velocity.sqrMagnitude / (inGroupMoveSpeed * inGroupMoveSpeed));
     public Vector3 GetDestination => agent.destination;

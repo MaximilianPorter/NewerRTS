@@ -17,7 +17,7 @@ Shader "The Developer/MY Depth Based Outline"
 		_OutlineColor("Outline Color", Color) = (1,1,1,1)
 		_OutlineThreshold("Outline Threshold", Float) = 3
 		_OutlineWidth("Outline Width", Float) = 2
-		_DepthMultiplier("Depth Multiplier", Float) = 2
+        _DepthMultiplier("Depth Multiplier", Float) = 2
         _MainTex ("Texture", 2D) = "white" {}
     }
     SubShader
@@ -48,6 +48,7 @@ Shader "The Developer/MY Depth Based Outline"
             half _OutlineThreshold;
             half _OutlineWidth;
 			half _DepthMultiplier;
+            half _MinDistForRender;
             sampler2D _CameraDepthTexture;
             sampler2D _MainTex;
 

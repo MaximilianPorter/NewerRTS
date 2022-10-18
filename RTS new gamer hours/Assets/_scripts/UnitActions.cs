@@ -49,6 +49,8 @@ public class UnitActions : MonoBehaviour
     private float throwWaitTimer = 0f;
     private Vector3 tempThrowTarget;
     private bool hasThrown = true;
+    private float lookRangeWithHeight = 0f;
+    private float attackRangeWithHeight = 0f;
 
     private Cell lastCell;
     private Cell activeCell;
@@ -94,6 +96,19 @@ public class UnitActions : MonoBehaviour
     {
         selectedGO.SetActive(isSelected);
         attacking.SetCanAttack(navMovement.GetMoveSpeed01 < 0.01f);
+
+        // increase look distace and attack distance with height up to 3x
+        if (unitStats.isRanged)
+        {
+            float heightMultiplier = 1.8f;
+            lookRangeWithHeight = unitStats.lookRange + Mathf.Clamp((-navMovement.GetBaseOffset + transform.position.y) * heightMultiplier, 0f, unitStats.lookRange * 2f);
+            attackRangeWithHeight = unitStats.attackRange + Mathf.Clamp((-navMovement.GetBaseOffset + transform.position.y) * heightMultiplier, 0f, unitStats.attackRange * 2f);
+        }
+        else
+        {
+            lookRangeWithHeight = unitStats.lookRange;
+            attackRangeWithHeight = unitStats.attackRange;
+        }
 
         if (debugDie || health.GetIsDead)
             Die();
@@ -155,7 +170,7 @@ public class UnitActions : MonoBehaviour
 
     private void CellFindNearestEnemy()
     {
-        int cellsOutToCheck = Mathf.CeilToInt(unitStats.lookRange / UnitCellManager.cellWidth);
+        int cellsOutToCheck = Mathf.CeilToInt(lookRangeWithHeight / UnitCellManager.cellWidth);
 
         Vector2Int bottomLeft = new Vector2Int(activeCell.pos.x - cellsOutToCheck, activeCell.pos.y - cellsOutToCheck);
         Vector2Int topRight = new Vector2Int(activeCell.pos.x + cellsOutToCheck, activeCell.pos.y + cellsOutToCheck);
@@ -186,7 +201,7 @@ public class UnitActions : MonoBehaviour
                 Vector3 unitDir = (unit.transform.position - transform.position);
                 unitDir.y = 0; // height doesn't matter
 
-                if (unitDir.sqrMagnitude > unitStats.lookRange * unitStats.lookRange)
+                if (unitDir.sqrMagnitude > lookRangeWithHeight * lookRangeWithHeight)
                 {
                     continue;
                 }
@@ -265,7 +280,7 @@ public class UnitActions : MonoBehaviour
                 }
                 else
                 {
-                    if (sqrDistFromEnemy > unitStats.attackRange * unitStats.attackRange)
+                    if (sqrDistFromEnemy > attackRangeWithHeight * attackRangeWithHeight)
                     {
                         // if we're out of range of attacking
                         // move close enough to attack
@@ -336,5 +351,15 @@ public class UnitActions : MonoBehaviour
         animator.runtimeAnimatorController = newController;
     }
 
+    private void OnDrawGizmosSelected()
+    {
+        if (!Application.isPlaying)
+            return;
 
+        Gizmos.color = new Color (Color.cyan.r, Color.cyan.g, Color.cyan.b, 0.3f);
+        Gizmos.DrawWireSphere(transform.position, lookRangeWithHeight);
+
+        Gizmos.color = new Color(Color.blue.r, Color.blue.g, Color.blue.b, 0.3f);
+        Gizmos.DrawWireSphere(transform.position, attackRangeWithHeight);
+    }
 }

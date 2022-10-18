@@ -17,8 +17,8 @@ MonoBehaviour:
   damage: 0
   timeBetweenAttacks: 2
   slowMultiplierBlocking: 0.2
-  lookRange: 10
-  attackRange: 10
+  lookRange: 7
+  attackRange: 7
   isRanged: 1
   projectileForce: 10
   accuracy: 0

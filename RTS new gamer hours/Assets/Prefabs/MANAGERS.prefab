@@ -904,6 +904,7 @@ GameObject:
   - component: {fileID: 5424162428077050022}
   - component: {fileID: 5424162428077050017}
   - component: {fileID: 5424162428077050016}
+  - component: {fileID: 1375198206}
   m_Layer: 0
   m_Name: GameController
   m_TagString: Untagged
@@ -966,6 +967,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   navMeshSurface: {fileID: 5424162427457205172}
+  generateOnlyNavMesh: 0
   showSpawnedObjectBuffers: 0
   trees:
   - {fileID: 569620620683430136, guid: 399d466b69c9e094f9039c5908fb276d, type: 3}
@@ -992,6 +994,8 @@ MonoBehaviour:
   rocks:
   - spacingBuffer: 5
     prefab: {fileID: 5907444341663126198, guid: 5b60eece06033484d8863b712aa412ac, type: 3}
+  - spacingBuffer: 5
+    prefab: {fileID: 1723453629843921124, guid: 6a8827e6750422a46b342a12b99bc3b5, type: 3}
   rocksToPlace: 10
   showRockGrid: 0
   rockGridSize: {x: 3, y: 3}
@@ -1067,3 +1071,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   displayFPS: 1
+--- !u!114 &1375198206
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5424162428077050024}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7492286bb38d6e48adce675eeae0a7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  timeValue: 1
