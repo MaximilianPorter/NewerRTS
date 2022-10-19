@@ -157,7 +157,12 @@ public class SplitscreenAutoCamera : MonoBehaviour
         {
             playerCameras[i].rect = playerCameraRects[i];
 
+            // when cameras have the same viewport rect, it flips the camera
+            // idk why, but it does, so I have to change the ui camera to be a bit different
+            playerCameraRects[i].x += 0.00001f;
+
             playerUiCameras[i].rect = playerCameraRects[i];
+
         }
 
     }

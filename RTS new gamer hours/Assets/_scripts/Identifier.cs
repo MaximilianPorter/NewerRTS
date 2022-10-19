@@ -31,7 +31,7 @@ public class Identifier : MonoBehaviour
         {
             if (transform.parent == null)
             {
-                Debug.LogError("If this gameobject is a parent, check isParent");
+                Debug.LogError("If " + gameObject.name + " is a parent, check isParent");
                 return;
             }
 

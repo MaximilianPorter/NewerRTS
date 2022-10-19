@@ -1,3 +1,4 @@
+using Rewired;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,8 +18,7 @@ public class Projectile : MonoBehaviour
     private ParentConstraint parentConstraint;
     private Rigidbody rb;
     private float damage = 0;
-    private int teamID = -1;
-    private int playerID = -1;
+    private Identifier identifier;
     private Vector3 lastPos = Vector3.zero;
 
     public Rigidbody GetRigidbody => rb;
@@ -27,6 +27,7 @@ public class Projectile : MonoBehaviour
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
+        identifier = GetComponent<Identifier>();
         parentConstraint = GetComponent<ParentConstraint>();
     }
 
@@ -54,7 +55,7 @@ public class Projectile : MonoBehaviour
             if (Physics.Raycast(castPos, transform.forward, out hit, castDistBack, hitMask))
             {
                 // don't hit anything that's on our team
-                if (hit.transform.TryGetComponent(out Identifier testIdentifier) && testIdentifier.GetTeamID == teamID)
+                if (hit.transform.TryGetComponent(out Identifier testIdentifier) && testIdentifier.GetTeamID == identifier.GetTeamID)
                     return;
 
                 float diff = castDistBack - hit.distance;
@@ -78,10 +79,10 @@ public class Projectile : MonoBehaviour
                //parentConstraint.SetSource(0, constraintSource);
 
                 // deal damage to different team
-                if (hit.transform.TryGetComponent(out Identifier identifier) && identifier.GetTeamID != teamID)
+                if (hit.transform.TryGetComponent(out Identifier enemyIdentifier) && enemyIdentifier.GetTeamID != identifier.GetTeamID)
                 {
                     if (hit.transform.TryGetComponent(out Health health))
-                        health.TakeDamage(damage, playerID, transform.position);
+                        health.TakeDamage(damage, identifier, transform.position);
                 }
 
                 if (burns && hit.transform.TryGetComponent (out BurningObject burnedObject))
@@ -106,14 +107,15 @@ public class Projectile : MonoBehaviour
     public void SetInfo (float damage, int playerID, int teamID)
     {
         this.damage = damage;
-        this.playerID = playerID;
-        this.teamID = teamID;
+        identifier.SetPlayerID(playerID);
+        identifier.SetTeamID(teamID);
     }
 
     public void ResetProjectile()
     {
         damage = 0f;
-        teamID = 10000;
+        identifier.SetPlayerID(-1);
+        identifier.SetTeamID(-1);
 
         rb.isKinematic = false;
         parentConstraint.SetSource(0, new ConstraintSource());

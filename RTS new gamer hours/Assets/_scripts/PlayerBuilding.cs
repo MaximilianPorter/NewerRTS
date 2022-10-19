@@ -5,11 +5,13 @@ using System.Linq;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using Unity.VisualScripting;
 
 [RequireComponent (typeof (Identifier))]
 public class PlayerBuilding : MonoBehaviour
 {
     [SerializeField] private Camera playerCam;
+    [SerializeField] private RectTransform playerCanvas;
     [SerializeField] private GameObject buttonMenu;
     [SerializeField] private Vector2 buttonMenuOffset;
     [SerializeField] private Transform buttonUiLayoutGroup;
@@ -30,7 +32,7 @@ public class PlayerBuilding : MonoBehaviour
     #region private variables    
 
     private bool placingRallyPoint = false;
-    private BuyIcons rallyBuildingType = BuyIcons.NONE;
+    private Building rallyBuilding = null;
 
     private Identifier identifier;
     private UnitSelection unitSelection;
@@ -242,7 +244,11 @@ public class PlayerBuilding : MonoBehaviour
 
 
 
-            buttonMenu.transform.position = playerCam.WorldToScreenPoint(transform.position + (Vector3)buttonMenuOffset);
+            Vector2 screenPoint = playerCam.WorldToScreenPoint(transform.position + (Vector3)buttonMenuOffset);
+            if (RectTransformUtility.ScreenPointToLocalPointInRectangle(playerCanvas, screenPoint, playerCam, out Vector2 localPoint))
+            {
+                buttonMenu.transform.localPosition = localPoint;
+            }
 
             if (PlayerInput.GetPlayers[identifier.GetPlayerID].GetButtonDown(PlayerInput.GetInputSelect))
             {
@@ -382,9 +388,16 @@ public class PlayerBuilding : MonoBehaviour
 
             if (activeQueue.Count > 0)
             {
-                // use last building for stats and spawning
+                // use main spawn building for stats
                 Building activeBuilding = PlayerHolder.GetBuildings(identifier.GetPlayerID).
+                    LastOrDefault(building => building.GetStats.unitType == activeQueue.Peek() && building.GetIsMainSpawnBuilding);
+
+                // if we couldn't find a main spawn building use more recently placed building
+                if (activeBuilding == null)
+                {
+                    activeBuilding = PlayerHolder.GetBuildings(identifier.GetPlayerID).
                     LastOrDefault(building => building.GetStats.unitType == activeQueue.Peek());
+                }
 
                 // get total buildings (ie. total # of archer buildings)
                 int buildingsOfThisType = PlayerHolder.GetBuildings(identifier.GetPlayerID).
@@ -553,7 +566,11 @@ public class PlayerBuilding : MonoBehaviour
         placeBuildingRallyVisual.gameObject.SetActive(placingRallyPoint);
         if (placingRallyPoint)
         {
-            placeBuildingRallyVisual.position = playerCam.WorldToScreenPoint(transform.position + rallyVisualOffset);
+            Vector2 screenPoint = playerCam.WorldToScreenPoint(transform.position + rallyVisualOffset);
+            if (RectTransformUtility.ScreenPointToLocalPointInRectangle(playerCanvas, screenPoint, playerCam, out Vector2 localPoint))
+            {
+                placeBuildingRallyVisual.localPosition = localPoint;
+            }
 
             // place rally point or cancel
             if (PlayerInput.GetPlayers[identifier.GetPlayerID].GetButtonDown(PlayerInput.GetInputSelect))
@@ -566,7 +583,7 @@ public class PlayerBuilding : MonoBehaviour
 
     public void ActivateBuildingRallyPoint ()
     {
-        rallyBuildingType = hoveringBuilding.GetStats.buildingType;
+        rallyBuilding = hoveringBuilding;
         placingRallyPoint = true;
     }
     private void CancelRallyPoint ()
@@ -579,11 +596,17 @@ public class PlayerBuilding : MonoBehaviour
         GameObject rallyPointPlaceInstance = Instantiate(rallyPointPlaceEffect, transform.position + new Vector3 (0f, -0.5f, 0f), Quaternion.identity);
         Destroy(rallyPointPlaceInstance, 3f);
 
-        Building[] buildingsWithType = PlayerHolder.GetBuildings(identifier.GetPlayerID).Where(building => building.GetStats.buildingType == rallyBuildingType).ToArray();
+        rallyBuilding.SetMainSpawnBuilding(true);
+
+        Building[] buildingsWithType = PlayerHolder.GetBuildings(identifier.GetPlayerID).Where(building => building.GetStats.buildingType == rallyBuilding.GetStats.buildingType).ToArray();
         for (int i = 0; i < buildingsWithType.Length; i++)
         {
             buildingsWithType[i].SetRallyPoint(transform.position);
+            if (buildingsWithType[i] != rallyBuilding)
+                buildingsWithType[i].SetMainSpawnBuilding(false);
         }
+
+        rallyBuilding = null;
         placingRallyPoint = false;
     }
 }

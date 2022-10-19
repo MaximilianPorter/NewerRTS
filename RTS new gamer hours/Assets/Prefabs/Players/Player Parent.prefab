@@ -1777,8 +1777,8 @@ Camera:
   m_GameObject: {fileID: 5825349044866862459}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 3
-  m_BackGroundColor: {r: 0.6784888, g: 0.7077113, b: 0.745283, a: 0}
+  m_ClearFlags: 2
+  m_BackGroundColor: {r: 0.2735849, g: 0.2735849, b: 0.2735849, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -5715,6 +5715,10 @@ PrefabInstance:
       propertyPath: cancelUnits
       value: 
       objectReference: {fileID: 5825349045182492375}
+    - target: {fileID: 183182282, guid: 6b2cb75ee0aaae94cb4c0d66fbc3e774, type: 3}
+      propertyPath: playerCanvas
+      value: 
+      objectReference: {fileID: 5825349044624579912}
     - target: {fileID: 183182282, guid: 6b2cb75ee0aaae94cb4c0d66fbc3e774, type: 3}
       propertyPath: costAreaLayout
       value: 

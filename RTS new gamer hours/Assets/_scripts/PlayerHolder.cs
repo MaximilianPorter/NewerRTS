@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class PlayerHolder : MonoBehaviour
 {
+    //private static List<Identifier> players = new List<Identifier>();
 
     private static List<List<Building>> playerBuildings = new List<List<Building>>();
 
@@ -41,7 +42,6 @@ public class PlayerHolder : MonoBehaviour
 
         playerBuildings[playerID].Remove(building);
     }
-
 
 
     private static List<List<UnitActions>> playerUnits = new List<List<UnitActions>>();

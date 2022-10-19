@@ -73,6 +73,7 @@ public enum BuyIcons
     NONE = 0,
 
     // BUILDINGS
+    Building_CASTLE = 22,
     Building_House = 20,
     Building_Village = 1,
     Building_Archers = 2,
@@ -103,6 +104,6 @@ public enum BuyIcons
     Mage = 18,
     Spearman = 19,
 
-    // highest number: 21
-    // last changed on 10/9/22 - 11:05am
+    // highest number: 22
+    // last changed on 10/19/22 - 10:32am
 }

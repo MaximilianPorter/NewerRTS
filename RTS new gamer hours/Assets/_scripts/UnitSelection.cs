@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using TMPro;
+using System.Runtime.InteropServices.WindowsRuntime;
 
 [RequireComponent(typeof (Identifier))]
 public class UnitSelection : MonoBehaviour
@@ -50,7 +51,12 @@ public class UnitSelection : MonoBehaviour
 
         // if the player has no troops, we don't do unit selection updates
         if (PlayerHolder.GetUnits(identifier.GetPlayerID).Count <= 0)
+        {
+            tempSelectedUnits = new List<UnitActions>(0);
+            selectedUnits = new List<UnitActions>(0);
+            HandleSelectedUnitTypesUI();
             return;
+        }
 
         // deselect units when you're selecting new ones
         if (PlayerInput.GetPlayers[identifier.GetPlayerID].GetButtonSinglePressDown(PlayerInput.GetInputSelectUnits))
@@ -295,16 +301,20 @@ public class UnitSelection : MonoBehaviour
 
     private void HandleSelectedUnitTypesUI ()
     {
+        // if we're holding the 'A' button, we don't want to mess with selected unit types/numbers
         if (PlayerInput.GetPlayers[identifier.GetPlayerID].GetButton(PlayerInput.GetInputRallyTroops) || selectedUnitsUi.Length <= 0)
             return;
 
         for (int i = 0; i < selectedUnitsUi.Length; i++)
         {
             selectedUnitsUi[i].SetDetails(selectedUnits.Count(unit => unit.GetStats.unitType == selectedUnitsUi[i].GetUnitType), 0);
-            selectedUnitsUi[i].gameObject.SetActive(selectedUnits.Any(unit => unit.GetStats.unitType == selectedUnitsUi[i].GetUnitType));
+            selectedUnitsUi[i].gameObject.SetActive(selectedUnits.Any(unit => unit.GetStats.unitType == selectedUnitsUi[i].GetUnitType) && selectedUnits.Count > 0);
         }
 
-        // change pattern number
+        if (selectedUnits.Count <= 0)
+            return;
+
+        // change selected unit type
         if (PlayerInput.GetPlayers[identifier.GetPlayerID].GetButtonDown(PlayerInput.GetInputDpadRight))
             IncreaseSelectedUnitIndex();
         else if (PlayerInput.GetPlayers[identifier.GetPlayerID].GetButtonDown(PlayerInput.GetInputDpadLeft))

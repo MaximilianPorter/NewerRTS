@@ -282,7 +282,7 @@ public class Attacking : MonoBehaviour
         {
             // damage enemy unit
             if (enemy.TryGetComponent(out Health enemyHealth))
-                enemyHealth.TakeDamage(stats.damage, identifier.GetPlayerID, transform.position);
+                enemyHealth.TakeDamage(stats.damage, identifier, transform.position);
 
             // don't spawn effects if we have too many units on the field
             if (PlayerHolder.GetUnits(identifier.GetPlayerID).Count > 100)

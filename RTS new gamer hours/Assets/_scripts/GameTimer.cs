@@ -11,7 +11,13 @@ public class GameTimer : MonoBehaviour
 
     private void Update()
     {
-        counter += Time.deltaTime;
+        if (GameWinManager.instance != null)
+            if (GameWinManager.instance.GetWinnerID() != -1)
+            { 
+
+            }else
+                counter += Time.deltaTime;
+
         int seconds = Mathf.FloorToInt(counter % 60);
         int minutes = Mathf.FloorToInt(counter / 60f);
         string withZero = Mathf.FloorToInt((float)seconds / 10f) <= 0 ? "0" : "";

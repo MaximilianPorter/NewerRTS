@@ -8,22 +8,22 @@ public class Health : MonoBehaviour
     [SerializeField] private float maxHealth = 100;
     [SerializeField] private bool invincible = false;
 
-    private int lastHitByPlayer = -1;
+    private Identifier lastHitBy = null;
     private Vector3 lastHitFromPos = Vector3.zero;
 
     public float GetCurrentHealth => currentHealth;
     public float GetMaxHealth => maxHealth;
     public bool GetIsDead => currentHealth <= 0;
-    public int GetLastHitByPlayer => lastHitByPlayer;
+    public Identifier GetLastHitByPlayer => lastHitBy;
     public Vector3 GetLastHitFromPos => lastHitFromPos;
 
     public void SetValues (float maxHealth)
     {
         this.maxHealth = maxHealth;
     }
-    public void TakeDamage (float damageAmt, int hitByPlayerID, Vector3 hitFromPos)
+    public void TakeDamage (float damageAmt, Identifier hitBy, Vector3 hitFromPos)
     {
-        lastHitByPlayer = hitByPlayerID;
+        lastHitBy = hitBy;
         lastHitFromPos = hitFromPos;   
 
         if (invincible)
@@ -39,7 +39,7 @@ public class Health : MonoBehaviour
     public void ResetHealth ()
     {
         currentHealth = maxHealth;
-        lastHitByPlayer = -1;
+        lastHitBy = null;
         lastHitFromPos = Vector3.zero;
     }
 

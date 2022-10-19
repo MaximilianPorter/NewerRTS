@@ -52,6 +52,15 @@ public class PlayerActions : MonoBehaviour
                 0f,
                 PlayerInput.GetPlayers[identifier.GetPlayerID].GetAxis(PlayerInput.GetInputMoveVertical));
 
+
+        // if there's a game winner, don't update
+        if (GameWinManager.instance != null)
+            if (GameWinManager.instance.GetWinnerID() != -1)
+            {
+                moveInput = Vector3.zero;
+            }
+
+
         navMovement.SetCanMove(!PlayerInput.GetPlayerIsInMenu(identifier.GetPlayerID) && !isAttacking && !isBlocking);
 
         if (moveInput.magnitude > 0.05f)

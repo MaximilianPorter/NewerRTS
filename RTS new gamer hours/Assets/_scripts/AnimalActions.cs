@@ -122,8 +122,8 @@ public class AnimalActions : MonoBehaviour
         // if they have a health script
         if (health)
         {
-            if (health.GetLastHitByPlayer != -1)
-                PlayerResourceManager.PlayerResourceAmounts[health.GetLastHitByPlayer].AddResources(new ResourceAmount(resourceGiveAmt, 0, 0));
+            if (health.GetLastHitByPlayer != null)
+                PlayerResourceManager.PlayerResourceAmounts[health.GetLastHitByPlayer.GetPlayerID].AddResources(new ResourceAmount(resourceGiveAmt, 0, 0));
 
             // reset health back to normal
             health.ResetHealth();

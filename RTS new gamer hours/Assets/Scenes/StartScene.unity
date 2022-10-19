@@ -3694,14 +3694,6 @@ PrefabInstance:
       propertyPath: playerParents.Array.data[3]
       value: 
       objectReference: {fileID: 710403578}
-    - target: {fileID: 625748586, guid: ec2b5e3a80856a1449b7d4c2b4b4080a, type: 3}
-      propertyPath: playersJoinedOrder.Array.data[2]
-      value: -1
-      objectReference: {fileID: 0}
-    - target: {fileID: 625748586, guid: ec2b5e3a80856a1449b7d4c2b4b4080a, type: 3}
-      propertyPath: playersJoinedOrder.Array.data[3]
-      value: -1
-      objectReference: {fileID: 0}
     - target: {fileID: 5424162426904448804, guid: ec2b5e3a80856a1449b7d4c2b4b4080a, type: 3}
       propertyPath: m_RootOrder
       value: 4

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44fe55230886a964789777ffc795784a, type: 3}
   m_Name: CASTLE
   m_EditorClassIdentifier: 
-  buildingType: 0
+  buildingType: 22
   unitType: 0
   subsequentUpgrades: 
   interactionRadius: 3.5

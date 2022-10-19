@@ -24,11 +24,12 @@ MonoBehaviour:
     randomRotation: 1
     spawnWeight: 4
   - prefab: {fileID: 2957508515914854451, guid: 268ccd0ac70b0d541a2f0ca1d8f1574a, type: 3}
-    spacingBuffer: 10
+    spacingBuffer: 10.5
     randomRotation: 1
     spawnWeight: 2
   numberToPlace: 15
   showGrid: 0
   gridSize: {x: 3, y: 3}
   gridOffset: {x: 0, y: 0}
+  squareSpacing: {x: 0, y: 0}
   gridSquareSize: {x: 33, y: 33}

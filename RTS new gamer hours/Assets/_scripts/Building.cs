@@ -19,12 +19,15 @@ public class Building : MonoBehaviour
     private bool rallyPointMoved = false;
     private Identifier identifier;
     private bool playerIsHovering = false;
+    private bool isMainSpawnBuilding = false;
 
     private Cell lastCell;
     private Cell activeCell;
 
     private Health health;
 
+    public void SetMainSpawnBuilding(bool isMainSpawnBuilding) => this.isMainSpawnBuilding = isMainSpawnBuilding;
+    public bool GetIsMainSpawnBuilding => isMainSpawnBuilding;
     public bool GetRallyPointMoved => rallyPointMoved;
     public Vector3 GetRallyPointPos => rallyPoint.position;
     
@@ -106,6 +109,27 @@ public class Building : MonoBehaviour
         GameObject smokeInstance = Instantiate(smokeExplosion, transform.position, Quaternion.identity);
         Destroy(smokeInstance, 5f);
 
+        if(stats.buildingType == BuyIcons.Building_CASTLE && GameWinManager.instance && GameWinManager.instance.ModeDestroyMainBuilding)
+        {
+            health.Heal(1000000f);
+
+            SwitchAllBuidingTeams();
+            SwitchAllUnitTeams();
+
+            SwitchTeams(health.GetLastHitByPlayer.GetPlayerID, health.GetLastHitByPlayer.GetTeamID);
+            return;
+        }
+
+
+        DeleteBuilding();
+    }
+
+    public void SwitchTeams (int newPlayerID, int newTeamID)
+    {
+        Identifier newBuildingInstance = Instantiate(this.gameObject, transform.position, transform.rotation).GetComponent<Identifier>();
+        newBuildingInstance.SetPlayerID(newPlayerID);
+        newBuildingInstance.SetTeamID(newTeamID);
+
         DeleteBuilding();
     }
     public void DeleteBuilding ()
@@ -116,6 +140,45 @@ public class Building : MonoBehaviour
         Destroy(gameObject);
     }
 
+
+    private void SwitchAllBuidingTeams ()
+    {
+        int breakIndex = 0;
+        int firstIndex = 0;
+        while (PlayerHolder.GetBuildings(identifier.GetPlayerID).Count > 1)
+        {
+            breakIndex++;
+            if (breakIndex > 10000)
+                break;
+
+            Building building = PlayerHolder.GetBuildings(identifier.GetPlayerID)[firstIndex];
+
+            if (building != this)
+                building.SwitchTeams(health.GetLastHitByPlayer.GetPlayerID, health.GetLastHitByPlayer.GetTeamID);
+            else
+                firstIndex++;
+
+        }
+    }
+    private void SwitchAllUnitTeams()
+    {
+        int breakIndex = 0;
+        int firstIndex = 0;
+        while (PlayerHolder.GetUnits(identifier.GetPlayerID).Count > 0)
+        {
+            breakIndex++;
+            if (breakIndex > 10000)
+                break;
+
+            UnitActions unit = PlayerHolder.GetUnits(identifier.GetPlayerID)[firstIndex];
+
+            if (unit != null)
+                unit.SwitchTeams(health.GetLastHitByPlayer.GetPlayerID, health.GetLastHitByPlayer.GetTeamID);
+            else
+                firstIndex++;
+
+        }
+    }
     
 
     private void DestroySurroundings()

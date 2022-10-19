@@ -1,10 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
-using UnityEngine.AI;
-using UnityEngine.UIElements;
 
 [RequireComponent(typeof(NavMeshMovement))]
 [RequireComponent(typeof(Attacking))]
@@ -52,6 +46,8 @@ public class UnitActions : MonoBehaviour
     private float lookRangeWithHeight = 0f;
     private float attackRangeWithHeight = 0f;
 
+    private int lastTeamID = 0;
+
     private Cell lastCell;
     private Cell activeCell;
 
@@ -81,6 +77,8 @@ public class UnitActions : MonoBehaviour
 
     private void Start()
     {
+        lastTeamID = identifier.GetTeamID;
+
         // turn on correct body parts
         for (int i = 0; i < bodyPartsNeedMaterial.Length; i++)
         {
@@ -152,6 +150,11 @@ public class UnitActions : MonoBehaviour
         if (navMovement.GetMoveSpeed01 > 0.05f || findNearestEnemyCounter <= 0)
         {
             findNearestEnemyCounter = Random.Range (0.1f, 0.3f);
+        }
+
+        if (identifier.GetTeamID != lastTeamID)
+        {
+            SwitchTeams(identifier.GetPlayerID, identifier.GetTeamID);
         }
     }
 
@@ -342,6 +345,20 @@ public class UnitActions : MonoBehaviour
 
         GameObject goreInstance = Instantiate(bloodGoreEffect, transform.position, Quaternion.identity);
         Destroy(goreInstance, 5f);
+
+        Destroy(gameObject);
+    }
+
+    public void SwitchTeams (int newPlayerID, int newTeamID)
+    {
+        lastCell.unitsInCell.Remove(identifier);
+        PlayerHolder.RemoveUnit(identifier.GetPlayerID, this);
+
+        Identifier newUnitInstance = Instantiate(this.gameObject, transform.position, transform.rotation).GetComponent<Identifier>();
+        newUnitInstance.SetPlayerID(newPlayerID);
+        newUnitInstance.SetTeamID(newTeamID);
+
+        newUnitInstance.GetComponent<UnitActions>().navMovement.SetDestination(navMovement.GetDestination);
 
         Destroy(gameObject);
     }

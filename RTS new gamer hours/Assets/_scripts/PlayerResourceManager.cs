@@ -10,8 +10,8 @@ public class PlayerResourceManager : MonoBehaviour
     [SerializeField] private int debugStartResources = 0;
     [SerializeField] private GameObject giveResourcesUiPrefab;
 
-    private Canvas[] playerCanvases;
-    private Camera[] playerCameras;
+    private static Canvas[] playerCanvases;
+    private static Camera[] playerCameras;
     private Identifier[] playerIDs;
 
     private bool[] usedCheatCode = new bool[4] { false, false, false, false };
@@ -28,6 +28,9 @@ public class PlayerResourceManager : MonoBehaviour
         new ResourceAmount (),
         new ResourceAmount ()
     };
+
+    public static Canvas[] GetPlayerCanvas => playerCanvases;
+    public static Camera[] GetPlayerCamera => playerCameras;
 
 
 
@@ -98,7 +101,7 @@ public class PlayerResourceManager : MonoBehaviour
         for (int i = 0; i < 4; i++)
         {
             if (usedCheatCode[i])
-                return;
+                continue;
 
             if (PlayerInput.GetPlayers[i].GetButton(PlayerInput.GetInputDpadUp))
             {

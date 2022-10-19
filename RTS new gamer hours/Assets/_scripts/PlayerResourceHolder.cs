@@ -70,7 +70,7 @@ public class PlayerResourceHolder : MonoBehaviour
 
         for (int i = 0; i < 4; i++)
         {
-            fadeCounter[i] -= Time.deltaTime;
+            fadeCounter[i] = Mathf.Clamp(fadeCounter[i] - Time.deltaTime, 0f, Mathf.Infinity);
             if (fadeCounter[i] >= 0)
                 FadeColors(i);
         }
@@ -79,11 +79,11 @@ public class PlayerResourceHolder : MonoBehaviour
     private void FadeColors (int index)
     {
         Color textColor = changeText[index].color;
-        changeText[index].color = new Color(textColor.r, textColor.g, textColor.b, Mathf.Lerp (0f, 1, fadeCurve.Evaluate(fadeCounter[index]) / fadeTime));
+        changeText[index].color = new Color(textColor.r, textColor.g, textColor.b, Mathf.Lerp (0f, 1f, fadeCurve.Evaluate(fadeCounter[index]) / fadeTime));
 
 
         Color imageColor = changeImages[index].color;
-        changeImages[index].color = new Color(imageColor.r, imageColor.g, imageColor.b, Mathf.Lerp(0f, 1, fadeCurve.Evaluate (fadeCounter[index]) / fadeTime));
+        changeImages[index].color = new Color(imageColor.r, imageColor.g, imageColor.b, Mathf.Lerp(0f, 1f, fadeCurve.Evaluate (fadeCounter[index]) / fadeTime));
     }
 
     public void ChangeResources(int populationChange, int food, int wood, int stone)
