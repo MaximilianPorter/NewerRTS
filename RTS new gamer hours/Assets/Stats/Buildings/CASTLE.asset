@@ -15,6 +15,7 @@ MonoBehaviour:
   buildingType: 22
   unitType: 0
   subsequentUpgrades: 
+  health: 300
   interactionRadius: 3.5
   buildRadius: 10
   population: 5

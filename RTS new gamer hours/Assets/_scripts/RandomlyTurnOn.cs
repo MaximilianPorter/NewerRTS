@@ -19,14 +19,22 @@ public class RandomlyTurnOn : MonoBehaviour
         int randAmt = Random.Range(amountToTurnOn.x, amountToTurnOn.y);
         randomIndexes = new int[randAmt];
         counters = new float[randAmt];
+
+        // initialize random indexes with -1
         for (int i = 0; i < randomIndexes.Length; i++)
         {
-            if (randomIndexes.Length <= 1)
+            randomIndexes[i] = -1;
+        }
+
+        // foreach random index, choose a number from 0 - randomObjects.len
+        for (int i = 0; i < randomIndexes.Length; i++)
+        {
+            if (randomObjects.Length <= 1)
             {
                 randomIndexes[0] = 0;
                 break;
             }
-            int randIndex = Random.Range(0, randomObjects.Length);
+            int randIndex;
             do
             {
                 randIndex = Random.Range(0, randomObjects.Length);

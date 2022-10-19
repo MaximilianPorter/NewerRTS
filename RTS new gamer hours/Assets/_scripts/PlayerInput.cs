@@ -29,6 +29,7 @@ public class PlayerInput : MonoBehaviour
     private static readonly string inputDpadLeft = "DPAD LEFT";
     private static readonly string inputDpadRight = "DPAD RIGHT";
     private static readonly string inputInteract = "Interact";
+    private static readonly string inputPause = "Pause";
 
     public static string GetInputMoveHorizontal => inputMoveHorizontal;
     public static string GetInputMoveVertical => inputMoveVertical;
@@ -51,6 +52,7 @@ public class PlayerInput : MonoBehaviour
     public static string GetInputDpadLeft => inputDpadLeft;
     public static string GetInputDpadRight => inputDpadRight;
     public static string GetInputInteract => inputInteract;
+    public static string GetInputPause => inputPause;
 
     private static List<Player> players;
     public static List<Player> GetPlayers => players;

@@ -63,7 +63,7 @@ public class PlayerActions : MonoBehaviour
 
         navMovement.SetCanMove(!PlayerInput.GetPlayerIsInMenu(identifier.GetPlayerID) && !isAttacking && !isBlocking);
 
-        if (moveInput.magnitude > 0.05f)
+        if (moveInput.magnitude > 0.1f)
         {
             navMovement.MoveTowards(transform.position + moveInput);
             navMovement.SetLookAt(transform.position + moveInput);

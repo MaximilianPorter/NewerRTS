@@ -532,8 +532,10 @@ public class PlayerBuilding : MonoBehaviour
     private void CheckForHoveringBuilding ()
     {
         Building[] closestBuildings = PlayerHolder.GetBuildings(identifier.GetPlayerID).
-            Where(building => building != null && (building.transform.position - transform.position).sqrMagnitude < building.GetStats.interactionRadius * building.GetStats.interactionRadius).ToArray();
-            //OrderBy(building => (building.transform.position - transform.position).sqrMagnitude).ToArray();
+            Where(building => building != null &&  // building isn't null
+            building.GetStats.buildingType != BuyIcons.Building_CASTLE && // building isn't castle
+            (building.transform.position - transform.position).sqrMagnitude < building.GetStats.interactionRadius * building.GetStats.interactionRadius) // building is in range
+            .ToArray();
 
         if (closestBuildings.Length > 0)
         {

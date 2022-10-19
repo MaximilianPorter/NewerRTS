@@ -19,6 +19,7 @@ public class Health : MonoBehaviour
 
     public void SetValues (float maxHealth)
     {
+        this.currentHealth = maxHealth;
         this.maxHealth = maxHealth;
     }
     public void TakeDamage (float damageAmt, Identifier hitBy, Vector3 hitFromPos)

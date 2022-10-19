@@ -37,6 +37,8 @@ public class Building : MonoBehaviour
     {
         identifier = GetComponent<Identifier>();
         health = GetComponent<Health>();
+
+        health.SetValues(stats.health);
     }
 
     private void Start()

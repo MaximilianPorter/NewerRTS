@@ -9,6 +9,7 @@ public class BuildingStats : ScriptableObject
     public BuyIcons buildingType;
     public BuyIcons unitType;
     public BuyIcons[] subsequentUpgrades;
+    public float health = 100f;
     public float interactionRadius = 2f;
     public float buildRadius = 5;
     public int population = 5;
