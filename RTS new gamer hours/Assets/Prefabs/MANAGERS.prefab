@@ -1,5 +1,57 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &625748584
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 625748585}
+  - component: {fileID: 625748586}
+  m_Layer: 0
+  m_Name: Splitscreen Auto Camera
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &625748585
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 625748584}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5424162426904448804}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &625748586
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 625748584}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e5f5c3f838de2074babb0dfab80f1236, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playersJoined: 4
+  playerParents:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  vertLine: {fileID: 0}
+  horLine: {fileID: 0}
 --- !u!1 &5424162426904448805
 GameObject:
   m_ObjectHideFlags: 0
@@ -29,6 +81,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5424162428077050026}
+  - {fileID: 625748585}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -114,16 +167,26 @@ MonoBehaviour:
   generateOnlyNavMesh: 0
   showSpawnedObjectBuffers: 0
   preplacedObjects:
-  - spacingBuffer: 5
-    prefab: {fileID: 0}
-  - spacingBuffer: 5
-    prefab: {fileID: 0}
-  - spacingBuffer: 5
-    prefab: {fileID: 0}
-  - spacingBuffer: 5
-    prefab: {fileID: 0}
-  - spacingBuffer: 5
-    prefab: {fileID: 0}
+  - prefab: {fileID: 0}
+    spacingBuffer: 5
+    randomRotation: 0
+    spawnWeight: 0
+  - prefab: {fileID: 0}
+    spacingBuffer: 5
+    randomRotation: 0
+    spawnWeight: 0
+  - prefab: {fileID: 0}
+    spacingBuffer: 5
+    randomRotation: 0
+    spawnWeight: 0
+  - prefab: {fileID: 0}
+    spacingBuffer: 5
+    randomRotation: 0
+    spawnWeight: 0
+  - prefab: {fileID: 0}
+    spacingBuffer: 5
+    randomRotation: 0
+    spawnWeight: 0
   trees:
   - {fileID: 569620620683430136, guid: 399d466b69c9e094f9039c5908fb276d, type: 3}
   - {fileID: 2661433650908776029, guid: 74bc95d445b5c3e4f8b6988d38f33ee8, type: 3}
@@ -146,24 +209,11 @@ MonoBehaviour:
   percentageToContinueLedge: 20
   flatTile: {fileID: 7692654392403249024, guid: 3c59f8f5d69f24b428425ad4121d7f6f, type: 3}
   slopeTile: {fileID: 718132210517437581, guid: 34cc2d745afc77b4dbbc62c904558c2c, type: 3}
-  rocks:
-  - spacingBuffer: 2
-    prefab: {fileID: 2607453296531604415, guid: 9a4ae73cfa38bc5459982a7e9bfc2847, type: 3}
-  - spacingBuffer: 6
-    prefab: {fileID: 8013269102591934101, guid: 33ab96db00823ca41a674da91e55c294, type: 3}
-  - spacingBuffer: 8
-    prefab: {fileID: 2957508515914854451, guid: 268ccd0ac70b0d541a2f0ca1d8f1574a, type: 3}
-  rocksToPlace: 10
-  showRockGrid: 0
-  rockGridSize: {x: 3, y: 3}
-  rockGridSquareWidth: 33
-  animalGroups:
-  - spacingBuffer: 5
-    prefab: {fileID: 542983764034271599, guid: 8579fa8e32d9fb34f9ce3e867b6040be, type: 3}
-  animalGroupsToPlace: 4
-  showAnimalGrid: 0
-  animalGridSize: {x: 2, y: 2}
-  animalGridSquareWidth: 50
+  spawnGroups:
+  - {fileID: 11400000, guid: 4fe6c54d5b024f04da0feca7e8ecb5fb, type: 2}
+  - {fileID: 11400000, guid: 267598114aa02404f98e84c460498358, type: 2}
+  - {fileID: 11400000, guid: 6ac0c51e9763e5b4d9cace0da89bd2c8, type: 2}
+  - {fileID: 11400000, guid: 369271ec00c6e4441bb7ec4a9f3a958c, type: 2}
 --- !u!114 &5424162428077050023
 MonoBehaviour:
   m_ObjectHideFlags: 0
