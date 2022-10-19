@@ -24,6 +24,9 @@ public class PlayerHolder : MonoBehaviour
         for (int i = 0; i < buildingsWithType.Length; i++)
         {
             Building checkBuilding = buildingsWithType[i];
+            if (checkBuilding == null)
+                continue;
+
             if (checkBuilding.GetRallyPointMoved)
             {
                 building.SetRallyPoint(checkBuilding.GetRallyPointPos);

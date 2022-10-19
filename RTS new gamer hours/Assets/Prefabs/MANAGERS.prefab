@@ -44,7 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5f5c3f838de2074babb0dfab80f1236, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playersJoined: 4
+  playersJoinedOrder: 00000000010000000200000003000000
   playerParents:
   - {fileID: 0}
   - {fileID: 0}

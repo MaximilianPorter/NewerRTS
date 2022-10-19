@@ -133,7 +133,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5353273651224036228, guid: fa699411551854341a1f39f308a27953, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -34.59
+      value: -34.589996
       objectReference: {fileID: 0}
     - target: {fileID: 5353273651224036228, guid: fa699411551854341a1f39f308a27953, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -169,7 +169,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5353273651381708385, guid: fa699411551854341a1f39f308a27953, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 30.623
+      value: 30.623001
       objectReference: {fileID: 0}
     - target: {fileID: 5353273651381708386, guid: fa699411551854341a1f39f308a27953, type: 3}
       propertyPath: m_ChildAlignment
@@ -409,7 +409,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5825349044866862463, guid: fa699411551854341a1f39f308a27953, type: 3}
       propertyPath: m_CullingMask.m_Bits
-      value: 8402943
+      value: 8402911
       objectReference: {fileID: 0}
     - target: {fileID: 5825349044866862463, guid: fa699411551854341a1f39f308a27953, type: 3}
       propertyPath: m_NormalizedViewPortRect.x
@@ -762,6 +762,14 @@ PrefabInstance:
     - target: {fileID: 5825349045934945210, guid: fa699411551854341a1f39f308a27953, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5825349046005474109, guid: fa699411551854341a1f39f308a27953, type: 3}
+      propertyPath: m_NormalizedViewPortRect.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5825349046005474109, guid: fa699411551854341a1f39f308a27953, type: 3}
+      propertyPath: m_NormalizedViewPortRect.y
+      value: -0.5
       objectReference: {fileID: 0}
     - target: {fileID: 5825349046005474111, guid: fa699411551854341a1f39f308a27953, type: 3}
       propertyPath: m_Layer

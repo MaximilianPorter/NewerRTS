@@ -1011,7 +1011,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_TargetDisplay: 0
 --- !u!224 &275279732
 RectTransform:
@@ -1396,7 +1396,7 @@ GameObject:
   - component: {fileID: 617481671}
   - component: {fileID: 617481673}
   - component: {fileID: 617481672}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Text (TMP) (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2147,6 +2147,14 @@ PrefabInstance:
     - target: {fileID: 800069271576968614, guid: 974a542cdc6c8f343948f1c82c90462b, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1262979119642622385, guid: 974a542cdc6c8f343948f1c82c90462b, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -34.589996
+      objectReference: {fileID: 0}
+    - target: {fileID: 1262979120022871124, guid: 974a542cdc6c8f343948f1c82c90462b, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 30.623001
       objectReference: {fileID: 0}
     - target: {fileID: 7294308117614066397, guid: 974a542cdc6c8f343948f1c82c90462b, type: 3}
       propertyPath: m_AnchorMax.y
@@ -3565,7 +3573,7 @@ GameObject:
   - component: {fileID: 994247807}
   - component: {fileID: 994247806}
   - component: {fileID: 994247805}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: World Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3686,6 +3694,14 @@ PrefabInstance:
       propertyPath: playerParents.Array.data[3]
       value: 
       objectReference: {fileID: 710403578}
+    - target: {fileID: 625748586, guid: ec2b5e3a80856a1449b7d4c2b4b4080a, type: 3}
+      propertyPath: playersJoinedOrder.Array.data[2]
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 625748586, guid: ec2b5e3a80856a1449b7d4c2b4b4080a, type: 3}
+      propertyPath: playersJoinedOrder.Array.data[3]
+      value: -1
+      objectReference: {fileID: 0}
     - target: {fileID: 5424162426904448804, guid: ec2b5e3a80856a1449b7d4c2b4b4080a, type: 3}
       propertyPath: m_RootOrder
       value: 4
@@ -5222,6 +5238,14 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4003101247132002714, guid: dbd43a3d90c2a294b8c49b673195e3b7, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 364.16003
+      objectReference: {fileID: 0}
+    - target: {fileID: 4003101247132002714, guid: dbd43a3d90c2a294b8c49b673195e3b7, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 30.621002
+      objectReference: {fileID: 0}
     - target: {fileID: 4841449969187222802, guid: dbd43a3d90c2a294b8c49b673195e3b7, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -5320,7 +5344,7 @@ GameObject:
   - component: {fileID: 1544343186}
   - component: {fileID: 1544343188}
   - component: {fileID: 1544343187}
-  m_Layer: 5
+  m_Layer: 0
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
