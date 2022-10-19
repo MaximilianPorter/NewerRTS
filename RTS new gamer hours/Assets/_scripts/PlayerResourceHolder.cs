@@ -33,7 +33,7 @@ public class PlayerResourceHolder : MonoBehaviour
         changeText = changeResourcesLayout.GetComponentsInChildren<TMP_Text>();
         changeImages = changeResourcesLayout.GetComponentsInChildren<Image>();
 
-        ChangeResources(1, 0, 0, 0); // this is here so the 500/500 for population goes away
+        ChangeResources(1, 1, 1, 1); // this is here so the 500/500 for population goes away as well as the others when switching scenes
     }
 
     private void Update()

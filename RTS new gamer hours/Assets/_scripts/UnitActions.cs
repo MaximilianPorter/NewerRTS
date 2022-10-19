@@ -266,7 +266,7 @@ public class UnitActions : MonoBehaviour
                     if (sqrDistFromEnemy > enemyBuilding.GetStats.interactionRadius * enemyBuilding.GetStats.interactionRadius)
                     {
                         // if we're out of range to throw shit on the building
-                        navMovement.SetDestination (enemy.position);
+                        navMovement.SetDestination (enemy.position + dirEnemyAndMe.normalized * (enemyBuilding.GetStats.interactionRadius - 0.1f));
                     }
                     else
                     {

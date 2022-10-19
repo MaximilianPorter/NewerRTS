@@ -88,7 +88,7 @@ MonoBehaviour:
   - {fileID: 7340671826754492951}
   - {fileID: 7340671826599577748}
   ifOffTurnBackOn: 1
-  turnBackOnTime: 15
+  turnBackOnTime: 45
 --- !u!1001 &542983763014295462
 PrefabInstance:
   m_ObjectHideFlags: 0

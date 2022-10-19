@@ -6,6 +6,7 @@ public class Health : MonoBehaviour
 {
     [SerializeField] private float currentHealth = 100;
     [SerializeField] private float maxHealth = 100;
+    [SerializeField] private bool invincible = false;
 
     private int lastHitByPlayer = -1;
     private Vector3 lastHitFromPos = Vector3.zero;
@@ -22,17 +23,17 @@ public class Health : MonoBehaviour
     }
     public void TakeDamage (float damageAmt, int hitByPlayerID, Vector3 hitFromPos)
     {
-        currentHealth -= damageAmt;
         lastHitByPlayer = hitByPlayerID;
         lastHitFromPos = hitFromPos;   
+
+        if (invincible)
+            return;
+        currentHealth -= damageAmt;
     }
 
-    /// <summary>
-    /// doesn't overheal
-    /// </summary>
-    public void Heal (float amtToHeal)
+    public void Heal (float amtToHeal, bool overheal = false)
     {
-        currentHealth = Mathf.Clamp(currentHealth + amtToHeal, 0f, maxHealth);
+        currentHealth = Mathf.Clamp(currentHealth + amtToHeal, 0f, overheal ? Mathf.Infinity : maxHealth);
     }
 
     public void ResetHealth ()

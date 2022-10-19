@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.ProBuilder.MeshOperations;
 using static UnityEditor.Experimental.GraphView.GraphView;
 
 [RequireComponent(typeof(Identifier))]
@@ -120,7 +121,7 @@ public class Building : MonoBehaviour
     private void DestroySurroundings()
     {
         Collider[] hits = Physics.OverlapSphere(transform.position, stats.interactionRadius);
-        string[] tagsToHit = new string[] { "Tree" };
+        string[] tagsToHit = new string[] { "Tree", "Field" };
         for (int i = 0; i < hits.Length; i++)
         {
             if (tagsToHit.Contains(hits[i].tag))
@@ -129,7 +130,13 @@ public class Building : MonoBehaviour
                 {
                     tree.KillTree();
                 }
+
+                if (hits[i].TryGetComponent (out Field field))
+                {
+                    field.KillField();
+                }
             }
+
         }
     }
 

@@ -14,13 +14,18 @@ public class RandomlyTurnOn : MonoBehaviour
     private float[] counters;
     private int[] randomIndexes;
 
-    private void Start()
+    private void Awake()
     {
         int randAmt = Random.Range(amountToTurnOn.x, amountToTurnOn.y);
         randomIndexes = new int[randAmt];
         counters = new float[randAmt];
         for (int i = 0; i < randomIndexes.Length; i++)
         {
+            if (randomIndexes.Length <= 1)
+            {
+                randomIndexes[0] = 0;
+                break;
+            }
             int randIndex = Random.Range(0, randomObjects.Length);
             do
             {

@@ -12,11 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 44fe55230886a964789777ffc795784a, type: 3}
   m_Name: CASTLE
   m_EditorClassIdentifier: 
-  buildingName: CASTLE
-  buildingDescription: The base of operations
-  cost:
-    food: 0
-    wood: 100
-    stone: 100
+  buildingType: 0
+  unitType: 0
+  subsequentUpgrades: 
+  interactionRadius: 3.5
   buildRadius: 10
+  population: 5
   unit: {fileID: 0}
+  initialUnitSpawnTime: 5
+  spawnTimeMultiPerBuilding: 0.7

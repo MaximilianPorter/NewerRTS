@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SlowMotionController : MonoBehaviour
 {
-    [Range(0f, 1f)]public float timeValue = 1f;
+    [Range(0f, 3f)]public float timeValue = 1f;
 
     private float lastTimeValue = 1f;
 

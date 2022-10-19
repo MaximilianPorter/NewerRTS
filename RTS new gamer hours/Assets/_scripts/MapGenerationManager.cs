@@ -2,14 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.AI.Navigation;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class MapGenerationManager : MonoBehaviour
 {
     [SerializeField] private LayerMask groundMask;
-    [SerializeReference] private NavMeshSurface navMeshSurface;
     [SerializeField] private bool generateOnlyNavMesh = false;
     [SerializeField] private bool showSpawnedObjectBuffers = false;
+
+    private NavMeshSurface navMeshSurface;
+
+    [Header("Preplaced Objects")]
+    [SerializeField] private SpawnObject[] preplacedObjects;
 
     [Header("Trees")]
     [SerializeField] private GameObject[] trees;
@@ -47,32 +52,10 @@ public class MapGenerationManager : MonoBehaviour
     private int highPoints = 3;
     private readonly Vector3 TileSize = new Vector3(30f, 6f, 30f);
 
-    [Header("Rocks")]
-    [SerializeField] private SpawnObject[] rocks;
-    [SerializeField] private int rocksToPlace = 10;
-    [SerializeField] private bool showRockGrid = false;
-    [SerializeField] private Vector2Int rockGridSize;
-    [SerializeField] private float rockGridSquareWidth = 10f;
-
-    private GameObject rockParent;
-
-    [Header("Animals")]
-    [SerializeField] private SpawnObject[] animalGroups;
-    [SerializeField] private int animalGroupsToPlace = 3;
-    [SerializeField] private bool showAnimalGrid = false;
-    [SerializeField] private Vector2Int animalGridSize = new Vector2Int(2, 2);
-    [SerializeField] private float animalGridSquareWidth = 10f;
-
-    private GameObject animalGroupParent;
+    [SerializeField] private MapSpawnGroup[] spawnGroups;
 
     private List<SpawnObject> spawnedObjects = new List<SpawnObject>();
 
-    [System.Serializable]
-    private struct SpawnObject
-    {
-        public float spacingBuffer;
-        public GameObject prefab;
-    }
 
     private void Awake()
     {
@@ -90,18 +73,30 @@ public class MapGenerationManager : MonoBehaviour
 
             Random.InitState(seed);
 
-            rockParent = new GameObject("Rock Parent");
-            SpawnRocks();
+            InitializePreplacedObjects();
+
+            // spawn before trees
+            for (int i = 0; i < spawnGroups.Length; i++)
+            {
+                if (spawnGroups[i].spawnBeforeTrees)
+                    SpawnGroup(spawnGroups[i]);
+            }
 
 
             treeParent = new GameObject("Tree Parent");
             treeNoiseMap = Noise.GenerateNoiseMap(mapWidth, mapHeight, seed, noiseScale, octaves, persistance, lacunarity, offset);
             SpawnTrees();
 
-            animalGroupParent = new GameObject("Animal Parent");
-            SpawnAnimals();
+            // spawn after trees
+            for (int i = 0; i < spawnGroups.Length; i++)
+            {
+                if (!spawnGroups[i].spawnBeforeTrees)
+                    SpawnGroup(spawnGroups[i]);
+            }
         }
 
+        if (navMeshSurface == null)
+            navMeshSurface = FindObjectOfType<NavMeshSurface>();
         navMeshSurface.BuildNavMesh();
 
         //InitializeGroundHeights();
@@ -115,6 +110,36 @@ public class MapGenerationManager : MonoBehaviour
 
         // remove null objects (destroyed objects)
         spawnedObjects.Remove(spawnedObjects.FirstOrDefault(spawnedObject => spawnedObject.prefab == null));
+    }
+
+    private void SpawnGroup (MapSpawnGroup group)
+    {
+        GameObject groupParent = new GameObject(group.parentName);
+        Bounds[] gridCubes = GenerateGridCubes(group.gridSize.x, group.gridSize.y, group.gridOffset, group.squareSpacing, group.gridSquareSize);
+
+        // create list for the weight of the object (higher weight, more likely to spawn)
+        List<SpawnObject> weightedObjectList = new List<SpawnObject>();
+        for (int i = 0; i < group.spawnObjects.Length; i++)
+        {
+            for (int j = 0; j < group.spawnObjects[i].spawnWeight; j++)
+            {
+                weightedObjectList.Add(group.spawnObjects[i]);
+            }
+        }
+
+        // place the number we want to spawn
+        for (int i = 0; i < group.numberToPlace; i++)
+        {
+            // do 1 object for each grid square, and then add them randomly
+            Bounds gridCube;
+            if (i >= gridCubes.Length)
+                gridCube = gridCubes[Random.Range(0, gridCubes.Length)];
+            else
+                gridCube = gridCubes[i];
+
+            SpawnObject chosenObject = weightedObjectList[Random.Range(0, weightedObjectList.Count)];
+            SpawnObjectWithBuffer(chosenObject, gridCube, groupParent.transform);
+        }
     }
 
     private void SpawnTrees ()
@@ -161,51 +186,13 @@ public class MapGenerationManager : MonoBehaviour
             else
             {
                 spawnedTrees[i].SetActive(true);
-                SpawnObject objectWithBuffer = new SpawnObject();
-                objectWithBuffer.prefab = spawnedTrees[i];
-                objectWithBuffer.spacingBuffer = 1f;
+                SpawnObject objectWithBuffer = new SpawnObject(spawnedTrees[i], 1f, true, 1);
                 spawnedObjects.Add(objectWithBuffer);
             }
         }
     }
 
-
-    private void SpawnRocks ()
-    {
-        Bounds[] gridCubes = GenerateGridCubes(rockGridSize.x, rockGridSize.y, rockGridSquareWidth);
-
-        for (int i = 0; i < rocksToPlace; i++)
-        {
-            // do 1 rock for each grid square, and then add them randomly
-            Bounds gridCube;
-            if (i >= gridCubes.Length)
-                gridCube = gridCubes[Random.Range(0, gridCubes.Length)];
-            else
-                gridCube = gridCubes[i];
-
-            SpawnObject spawnObject = rocks[Random.Range(0, rocks.Length)];
-            SpawnObjectWithBuffer(spawnObject.prefab, spawnObject.spacingBuffer, gridCube, rockParent.transform);
-        }
-    }
-
-    private void SpawnAnimals ()
-    {
-        Bounds[] gridCubes = GenerateGridCubes(animalGridSize.x, animalGridSize.y, animalGridSquareWidth);
-
-        for (int i = 0; i < animalGroupsToPlace; i++)
-        {
-            // do 1 rock for each grid square, and then add them randomly
-            Bounds gridCube;
-            if (i >= gridCubes.Length)
-                gridCube = gridCubes[Random.Range(0, gridCubes.Length)];
-            else
-                gridCube = gridCubes[i];
-
-            SpawnObject spawnObject = animalGroups[Random.Range(0, animalGroups.Length)];
-            SpawnObjectWithBuffer(spawnObject.prefab, spawnObject.spacingBuffer, gridCube, animalGroupParent.transform);
-        }
-    }
-    private void SpawnObjectWithBuffer(GameObject objectToSpawn, float buffer, Bounds gridCube, Transform parent, Quaternion? newRot = null)
+    private void SpawnObjectWithBuffer(SpawnObject spawnObject, Bounds gridCube, Transform parent)
     {
         // cast down from that point and place an object
         // I don't like while loops so this is a for loop with 1000 run times
@@ -227,31 +214,36 @@ public class MapGenerationManager : MonoBehaviour
             if (Physics.Raycast(randomCastPoint, Vector3.down, out hit, Mathf.Infinity, groundMask))
             {
                 // if we are too close to any other object, redo
-                float thisBuffer = buffer * 2f;
-                if (spawnedObjects.Any(existingObject => (existingObject.prefab.transform.position - hit.point).sqrMagnitude < (thisBuffer * existingObject.spacingBuffer * 2f)))// &&
-                    //(!spawnOutsideOfTrees || treeNoiseMap[(int)(hit.point.x + treeArea.x), (int)(hit.point.z + treeArea.y)] > spawnThreshold - 0.5f))
+                if (spawnedObjects.Any(existingObject => (existingObject.prefab.transform.position - hit.point).sqrMagnitude < 
+                (spawnObject.spacingBuffer * spawnObject.spacingBuffer + existingObject.spacingBuffer * existingObject.spacingBuffer) * 2f))
                 {
                     continue;
                 }
 
                 // instantiate object with random rotation
 
-                Quaternion randomLookRot = newRot == null ? Quaternion.Euler(0, Random.Range(0f, 360f), 0f) : newRot.GetValueOrDefault();
+                Quaternion randomLookRot = spawnObject.randomRotation ? Quaternion.Euler(0, Random.Range(0f, 360f), 0f) : Quaternion.identity;
                 GameObject objectInstance = Instantiate(
-                    objectToSpawn,
+                    spawnObject.prefab,
                     hit.point,
                     randomLookRot,
                     parent);
 
                 // set details for the object that will be added to spawnedObjects (this is because you can't have constructors for structs)
-                SpawnObject instantiatedSpawnObject = new SpawnObject();
-                instantiatedSpawnObject.prefab = objectInstance;
-                instantiatedSpawnObject.spacingBuffer = buffer;
+                SpawnObject instantiatedSpawnObject = new SpawnObject(objectInstance, spawnObject.spacingBuffer, spawnObject.randomRotation, spawnObject.spawnWeight);
 
                 // add instance of spawned object to the list
                 spawnedObjects.Add(instantiatedSpawnObject);
                 break;
             }
+        }
+    }
+
+    private void InitializePreplacedObjects ()
+    {
+        for (int i = 0; i < preplacedObjects.Length; i++)
+        {
+            spawnedObjects.Add(preplacedObjects[i]);
         }
     }
 
@@ -493,7 +485,7 @@ public class MapGenerationManager : MonoBehaviour
         spawnedObjects.Clear();
     }
 
-    private Bounds[] GenerateGridCubes(int sizeX, int sizeZ, float cubeWidth)
+    private Bounds[] GenerateGridCubes(int sizeX, int sizeZ, Vector2 offset, Vector2 spacing, Vector2 cubeSize)
     {
         Bounds[] gridCubes = new Bounds[sizeX * sizeZ];
 
@@ -503,9 +495,9 @@ public class MapGenerationManager : MonoBehaviour
             {
                 // make grid and assign grid cube
                 Bounds gridCube = new Bounds(new Vector3(
-                    x * cubeWidth + cubeWidth / 2f - sizeX * cubeWidth / 2f,
+                    x * cubeSize.x + cubeSize.x / 2f - sizeX * cubeSize.x / 2f + offset.x + x * spacing.x,
                     50f,
-                    y * cubeWidth + cubeWidth / 2f - sizeZ * cubeWidth / 2f), Vector3.one * cubeWidth);
+                    y * cubeSize.y + cubeSize.y / 2f - sizeZ * cubeSize.y / 2f + offset.y + y * spacing.y), new Vector3(cubeSize.x, 5, cubeSize.y));
 
                 gridCubes[i] = gridCube;
                 i++;
@@ -515,29 +507,19 @@ public class MapGenerationManager : MonoBehaviour
         return gridCubes;
     }
 
-    private void OnDrawGizmosSelected()
+    private void OnDrawGizmos()
     {
-        Gizmos.DrawWireCube(new Vector3(0f, 20f, 0f), new Vector3(treeArea.x * 2f, 5f, treeArea.y * 2f));
-
-        if (showRockGrid)
+        for (int i = 0; i < spawnGroups.Length; i++)
         {
-            Bounds[] gridCubes = GenerateGridCubes(rockGridSize.x, rockGridSize.y, rockGridSquareWidth);
-            for (int i = 0; i < gridCubes.Length; i++)
+            if (spawnGroups[i] != null && spawnGroups[i].showGrid)
             {
-                Gizmos.color = Color.blue;
-                Gizmos.DrawWireCube(gridCubes[i].center, gridCubes[i].size);
+                Bounds[] gridCubes = GenerateGridCubes(spawnGroups[i].gridSize.x, spawnGroups[i].gridSize.y, spawnGroups[i].gridOffset, spawnGroups[i].squareSpacing, spawnGroups[i].gridSquareSize);
+                for (int j = 0; j < gridCubes.Length; j++)
+                {
+                    Gizmos.color = Color.blue;
+                    Gizmos.DrawWireCube(gridCubes[j].center, gridCubes[j].size);
+                }
             }
-
-        }
-        if (showAnimalGrid)
-        {
-            Bounds[] gridCubes = GenerateGridCubes(animalGridSize.x, animalGridSize.y, animalGridSquareWidth);
-            for (int i = 0; i < gridCubes.Length; i++)
-            {
-                Gizmos.color = Color.blue;
-                Gizmos.DrawWireCube(gridCubes[i].center, gridCubes[i].size);
-            }
-
         }
 
 
@@ -552,6 +534,10 @@ public class MapGenerationManager : MonoBehaviour
                 Gizmos.DrawWireSphere(spawnedObjects[i].prefab.transform.position, spawnedObjects[i].spacingBuffer);
             }
         }
+    }
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.DrawWireCube(new Vector3(0f, 20f, 0f), new Vector3(treeArea.x * 2f, 5f, treeArea.y * 2f));
     }
 }
 
