@@ -16,6 +16,10 @@ MonoBehaviour:
   health: 100
   damage: 20
   timeBetweenAttacks: 1
+  cost:
+    food: 8
+    wood: 0
+    stone: 0
   slowMultiplierBlocking: 0.2
   lookRange: 5
   attackRange: 1

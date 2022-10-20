@@ -12,6 +12,8 @@ public class BuyIconUI : MonoBehaviour
 
     [SerializeField] private BuyIcons buttonType;
     [SerializeField] private ResourceAmount cost;
+    [SerializeField] private UnitStats overrideUnitCost;
+    [SerializeField] private BuildingStats overrideBuildingCost;
     [SerializeField] private Color normalColor = Color.white;
     [SerializeField] private Color disabledColor = new Color(0, 0, 0, 0.5f);
     [SerializeField] private Button.ButtonClickedEvent buttonAction = new Button.ButtonClickedEvent();
@@ -35,6 +37,14 @@ public class BuyIconUI : MonoBehaviour
     private void Start()
     {
         images = GetComponentsInChildren<Image>();
+
+        if (overrideUnitCost)
+        {
+            cost = overrideUnitCost.cost;
+        }else if (overrideBuildingCost)
+        {
+            cost = overrideBuildingCost.cost;
+        }
     }
 
     private void Update()

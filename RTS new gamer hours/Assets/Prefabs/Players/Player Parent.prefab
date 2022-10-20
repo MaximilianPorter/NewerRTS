@@ -219,6 +219,8 @@ MonoBehaviour:
     food: 0
     wood: 0
     stone: 0
+  overrideUnitCost: {fileID: 0}
+  overrideBuildingCost: {fileID: 11400000, guid: fc751a1384ed24f43af7db4ab253d0c5, type: 2}
   normalColor: {r: 1, g: 1, b: 1, a: 1}
   disabledColor: {r: 0, g: 0, b: 0, a: 0.5019608}
   buttonAction:
@@ -349,6 +351,8 @@ MonoBehaviour:
     food: 0
     wood: 0
     stone: 0
+  overrideUnitCost: {fileID: 0}
+  overrideBuildingCost: {fileID: 0}
   normalColor: {r: 1, g: 1, b: 1, a: 1}
   disabledColor: {r: 0, g: 0, b: 0, a: 0.5019608}
   buttonAction:
@@ -1592,6 +1596,8 @@ MonoBehaviour:
     food: 0
     wood: 0
     stone: 0
+  overrideUnitCost: {fileID: 0}
+  overrideBuildingCost: {fileID: 11400000, guid: 9a2ad679f26676743b87895407fee63b, type: 2}
   normalColor: {r: 1, g: 1, b: 1, a: 1}
   disabledColor: {r: 0, g: 0, b: 0, a: 0.5019608}
   buttonAction:
@@ -1722,6 +1728,8 @@ MonoBehaviour:
     food: 0
     wood: 0
     stone: 0
+  overrideUnitCost: {fileID: 0}
+  overrideBuildingCost: {fileID: 0}
   normalColor: {r: 1, g: 1, b: 1, a: 1}
   disabledColor: {r: 0, g: 0, b: 0, a: 0.5019608}
   buttonAction:
@@ -2134,6 +2142,8 @@ MonoBehaviour:
     food: 0
     wood: 0
     stone: 0
+  overrideUnitCost: {fileID: 0}
+  overrideBuildingCost: {fileID: 11400000, guid: 41bf42c6e55faea42af515d8e73f7a51, type: 2}
   normalColor: {r: 1, g: 1, b: 1, a: 1}
   disabledColor: {r: 0, g: 0, b: 0, a: 0.5019608}
   buttonAction:
@@ -2264,6 +2274,8 @@ MonoBehaviour:
     food: 0
     wood: 0
     stone: 0
+  overrideUnitCost: {fileID: 0}
+  overrideBuildingCost: {fileID: 11400000, guid: ce07f3135db4dba4a8d6234301a3d6ed, type: 2}
   normalColor: {r: 1, g: 1, b: 1, a: 1}
   disabledColor: {r: 0, g: 0, b: 0, a: 0.5019608}
   buttonAction:
@@ -2315,9 +2327,9 @@ RectTransform:
   m_Father: {fileID: 5825349045714806860}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 74.0259, y: -17.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 74.0259, y: 0}
   m_SizeDelta: {x: 0, y: 40}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!222 &5825349044888031204
@@ -2544,6 +2556,8 @@ MonoBehaviour:
     food: 20
     wood: 0
     stone: 0
+  overrideUnitCost: {fileID: 0}
+  overrideBuildingCost: {fileID: 0}
   normalColor: {r: 1, g: 1, b: 1, a: 1}
   disabledColor: {r: 0, g: 0, b: 0, a: 0.5019608}
   buttonAction:
@@ -2674,6 +2688,8 @@ MonoBehaviour:
     food: 8
     wood: 0
     stone: 0
+  overrideUnitCost: {fileID: 11400000, guid: a327a27b7fdc47e4893823bdf00332b4, type: 2}
+  overrideBuildingCost: {fileID: 0}
   normalColor: {r: 1, g: 1, b: 1, a: 1}
   disabledColor: {r: 0, g: 0, b: 0, a: 0.5019608}
   buttonAction:
@@ -3172,6 +3188,8 @@ MonoBehaviour:
     food: 0
     wood: 0
     stone: 0
+  overrideUnitCost: {fileID: 0}
+  overrideBuildingCost: {fileID: 0}
   normalColor: {r: 1, g: 1, b: 1, a: 1}
   disabledColor: {r: 0, g: 0, b: 0, a: 0.5019608}
   buttonAction:
@@ -3223,9 +3241,9 @@ RectTransform:
   m_Father: {fileID: 5825349046120944572}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 74.0259, y: -17.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 74.0259, y: 0}
   m_SizeDelta: {x: 0, y: 40}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!222 &5825349045203311685
@@ -3422,6 +3440,8 @@ MonoBehaviour:
     food: 6
     wood: 0
     stone: 0
+  overrideUnitCost: {fileID: 0}
+  overrideBuildingCost: {fileID: 0}
   normalColor: {r: 1, g: 1, b: 1, a: 1}
   disabledColor: {r: 0, g: 0, b: 0, a: 0.5019608}
   buttonAction:
@@ -3703,6 +3723,8 @@ MonoBehaviour:
     food: 6
     wood: 0
     stone: 0
+  overrideUnitCost: {fileID: 11400000, guid: 9267eb36c574b344793bc6dbf7853576, type: 2}
+  overrideBuildingCost: {fileID: 0}
   normalColor: {r: 1, g: 1, b: 1, a: 1}
   disabledColor: {r: 0, g: 0, b: 0, a: 0.5019608}
   buttonAction:
@@ -3805,6 +3827,8 @@ MonoBehaviour:
     food: 0
     wood: 0
     stone: 0
+  overrideUnitCost: {fileID: 0}
+  overrideBuildingCost: {fileID: 11400000, guid: 24180a627a78ec24eb5a386defeea526, type: 2}
   normalColor: {r: 1, g: 1, b: 1, a: 1}
   disabledColor: {r: 0, g: 0, b: 0, a: 0.5019608}
   buttonAction:
@@ -4532,6 +4556,8 @@ MonoBehaviour:
     food: 0
     wood: 0
     stone: 0
+  overrideUnitCost: {fileID: 0}
+  overrideBuildingCost: {fileID: 11400000, guid: cdcb55d044e50cd498e62c095113f336, type: 2}
   normalColor: {r: 1, g: 1, b: 1, a: 1}
   disabledColor: {r: 0, g: 0, b: 0, a: 0.5019608}
   buttonAction:
@@ -4942,6 +4968,8 @@ MonoBehaviour:
     food: 20
     wood: 0
     stone: 0
+  overrideUnitCost: {fileID: 0}
+  overrideBuildingCost: {fileID: 0}
   normalColor: {r: 1, g: 1, b: 1, a: 1}
   disabledColor: {r: 0, g: 0, b: 0, a: 0.5019608}
   buttonAction:
@@ -5321,6 +5349,8 @@ MonoBehaviour:
     food: 0
     wood: 0
     stone: 0
+  overrideUnitCost: {fileID: 0}
+  overrideBuildingCost: {fileID: 11400000, guid: 9fec0b9d4df2e284182d4d15bf24b74c, type: 2}
   normalColor: {r: 1, g: 1, b: 1, a: 1}
   disabledColor: {r: 0, g: 0, b: 0, a: 0.5019608}
   buttonAction:
@@ -5554,6 +5584,8 @@ MonoBehaviour:
     food: 8
     wood: 0
     stone: 0
+  overrideUnitCost: {fileID: 0}
+  overrideBuildingCost: {fileID: 0}
   normalColor: {r: 1, g: 1, b: 1, a: 1}
   disabledColor: {r: 0, g: 0, b: 0, a: 0.5019608}
   buttonAction:

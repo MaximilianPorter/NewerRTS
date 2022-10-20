@@ -14,6 +14,7 @@ public class UnitStats : ScriptableObject
     public float health;
     public float damage;
     public float timeBetweenAttacks;
+    public ResourceAmount cost;
 
     [Space(10)]
 
