@@ -1,3 +1,5 @@
+using Firebase.Database;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,9 +8,15 @@ using UnityEngine;
 public class UnitStats : ScriptableObject
 {
     public BuyIcons unitType;
+
+    // change these variables in database https://console.firebase.google.com/u/3/project/rts-castles/database/rts-castles-default-rtdb/data
+    [Header("Changed in Database")]
     public float health;
     public float damage;
     public float timeBetweenAttacks;
+
+    [Space(10)]
+
     public float slowMultiplierBlocking = 0.2f;
     public float lookRange = 5f;
     public float attackRange = 1f;
@@ -34,4 +42,6 @@ public class UnitStats : ScriptableObject
     public float maxStepDistance = 0.2f;
     public float legSwitchSpeed = 3.8f;
     public float stopMovingDist = 0.02f;
+
 }
+

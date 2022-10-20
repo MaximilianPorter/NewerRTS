@@ -13,14 +13,17 @@ MonoBehaviour:
   m_Name: Archer
   m_EditorClassIdentifier: 
   unitType: 14
+  databaseValues:
+  - statName: health
+    value: 100
   health: 70
-  damage: 30
+  damage: 20
   timeBetweenAttacks: 2
   slowMultiplierBlocking: 0.2
   lookRange: 7
   attackRange: 7
   isRanged: 1
-  projectileForce: 10
+  projectileForce: 15
   accuracy: 0
   leadsTarget: 1
   projectileArch: 0.5
