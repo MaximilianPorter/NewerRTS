@@ -9,8 +9,14 @@ public class BuildingStats : ScriptableObject
     public BuyIcons buildingType;
     public BuyIcons unitType;
     public BuyIcons[] subsequentUpgrades;
+
+    // change these variables in database https://console.firebase.google.com/u/3/project/rts-castles/database/rts-castles-default-rtdb/data
+    [Header("Changed in Database")]
     public float health = 100f;
     public ResourceAmount cost;
+
+    [Space(10)]
+
     public float interactionRadius = 2f;
     public float buildRadius = 5;
     public int population = 5;
