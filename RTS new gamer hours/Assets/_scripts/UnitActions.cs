@@ -5,6 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(Health))]
 public class UnitActions : MonoBehaviour
 {
+    [SerializeField] private bool isSelectable = true;
     [SerializeField] private GameObject selectedGO;
     [SerializeField] private GameObject orderingObject;
     [SerializeField] private UnitStats unitStats;
@@ -52,6 +53,8 @@ public class UnitActions : MonoBehaviour
     private Cell activeCell;
 
 
+    public void SetIsSelectable(bool isSelectable) => this.isSelectable = isSelectable;
+    public bool GetIsSelectable => isSelectable;
     public void SetGroupMoveSpeed (float moveSpeed) => navMovement.SetGroupMoveSpeed (moveSpeed);
     public UnitStats GetStats => unitStats;
     public NavMeshMovement GetMovement => navMovement;

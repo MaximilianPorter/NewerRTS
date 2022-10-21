@@ -99,10 +99,10 @@ public class UnitSelection : MonoBehaviour
         if (PlayerInput.GetPlayers[identifier.GetPlayerID].GetButtonDoublePressDown(PlayerInput.GetInputSelectUnits))
         {
             DeselectUnits();
-            selectedUnits = PlayerHolder.GetUnits(identifier.GetPlayerID).ToList();
-            for (int i = 0; i < PlayerHolder.GetUnits (identifier.GetPlayerID).Count; i++)
+            selectedUnits = PlayerHolder.GetUnits(identifier.GetPlayerID).Where (unit => unit.GetIsSelectable).ToList();
+            for (int i = 0; i < selectedUnits.Count; i++)
             {
-                PlayerHolder.GetUnits(identifier.GetPlayerID)[i].SetIsSelected(true);
+                selectedUnits[i].SetIsSelected(true);
 
             }
         }
@@ -399,7 +399,9 @@ public class UnitSelection : MonoBehaviour
 
     private void SelectNearbyUnits()
     {
-        selectedUnits = PlayerHolder.GetUnits(identifier.GetPlayerID).Where(unit => (unit.transform.position - transform.position).sqrMagnitude < currentSelectionRadius * currentSelectionRadius).ToList();
+        selectedUnits = PlayerHolder.GetUnits(identifier.GetPlayerID)
+            .Where(unit => (unit.transform.position - transform.position).sqrMagnitude < currentSelectionRadius * currentSelectionRadius &&
+        unit.GetIsSelectable).ToList();
     }
 
     public void DeselectUnits ()

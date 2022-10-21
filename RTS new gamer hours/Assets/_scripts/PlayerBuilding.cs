@@ -521,6 +521,7 @@ public class PlayerBuilding : MonoBehaviour
         BuildBuilding(building);
     }
 
+
     private void DisableAllIcons()
     {
         for (int i = 0; i < allIcons.Length; i++)

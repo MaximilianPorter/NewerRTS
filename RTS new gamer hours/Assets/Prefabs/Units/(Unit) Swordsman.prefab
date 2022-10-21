@@ -480,6 +480,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffd228ecd1deaa1479d38db5ae9eeb9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isSelectable: 1
   selectedGO: {fileID: 1462805977683875834}
   orderingObject: {fileID: 7331517528706905602}
   unitStats: {fileID: 11400000, guid: 9267eb36c574b344793bc6dbf7853576, type: 2}
@@ -536,6 +537,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentHealth: 100
   maxHealth: 100
+  invincible: 0
 --- !u!114 &8011053019397688160
 MonoBehaviour:
   m_ObjectHideFlags: 0

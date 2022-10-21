@@ -113,7 +113,7 @@ public class PlayerResourceManager : MonoBehaviour
                         {
                             if (PlayerInput.GetPlayers[i].GetButtonDown(PlayerInput.GetInputOpenUnitMenu))
                             {
-                                PlayerResourceAmounts[i].AddResources(1000, 1000, 1000);
+                                PlayerResourceAmounts[i].AddResources(1000, 10000, 10000);
                                 usedCheatCode[i] = true;
                                 return;
                             }
