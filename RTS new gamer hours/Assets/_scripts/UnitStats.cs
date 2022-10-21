@@ -38,11 +38,11 @@ public class UnitStats : ScriptableObject
     public float hitForce = 0.1f;
 
     [Header("Movement")]
-    public float moveForce = 1000f;
+    //public float moveForce = 1000f;
     public float maxMoveSpeed = 1f;
-    public float maxStepDistance = 0.2f;
-    public float legSwitchSpeed = 3.8f;
-    public float stopMovingDist = 0.02f;
+    //public float maxStepDistance = 0.2f;
+    //public float legSwitchSpeed = 3.8f;
+    //public float stopMovingDist = 0.02f;
 
 }
 

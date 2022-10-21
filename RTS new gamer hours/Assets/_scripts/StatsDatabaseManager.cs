@@ -40,10 +40,11 @@ public class StatsDatabaseManager : MonoBehaviour
         tempUnitDatabaseValues = new DatabaseValue[unitStats.Length][];
         for (int i = 0; i < tempUnitDatabaseValues.GetLength(0); i++)
         {
-            tempUnitDatabaseValues[i] = new DatabaseValue[4]
+            tempUnitDatabaseValues[i] = new DatabaseValue[5]
             {
                 new DatabaseValue ("Health", unitStats[i].health),
                 new DatabaseValue ("Damage", unitStats[i].damage),
+                new DatabaseValue ("Move Speed", unitStats[i].maxMoveSpeed),
                 new DatabaseValue ("Time Between Attacks", unitStats[i].timeBetweenAttacks),
                 new DatabaseValue ("Cost", new Vector3(unitStats[i].cost.GetFood, unitStats[i].cost.GetWood, unitStats[i].cost.GetStone)),
             };
@@ -70,6 +71,10 @@ public class StatsDatabaseManager : MonoBehaviour
         // damage
         yield return StartCoroutine(UpdateUnitFloatDetails("Units", "Damage", unitStats[i].damage, i, unitStats[i].unitType, tempUnitDatabaseValues));
         unitStats[i].damage = tempUnitDatabaseValues[i].FirstOrDefault(databaseValue => databaseValue.statName == "Damage").floatValue;
+
+        // move speed
+        yield return StartCoroutine(UpdateUnitFloatDetails("Units", "Move Speed", unitStats[i].maxMoveSpeed, i, unitStats[i].unitType, tempUnitDatabaseValues));
+        unitStats[i].maxMoveSpeed = tempUnitDatabaseValues[i].FirstOrDefault(databaseValue => databaseValue.statName == "Move Speed").floatValue;
 
         // time between attacks
         yield return StartCoroutine(UpdateUnitFloatDetails("Units", "Time Between Attacks", unitStats[i].timeBetweenAttacks, i, unitStats[i].unitType, tempUnitDatabaseValues));
