@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
-using UnityEditor.TerrainTools;
 
 public class Identifier : MonoBehaviour
 {
@@ -11,10 +10,14 @@ public class Identifier : MonoBehaviour
     [SerializeField] private int playerID;
     [SerializeField] private int teamID;
 
+    public void SetIsParent(bool isParent) => this.isParent = isParent;
     public bool GetIsParent => isParent;
     public bool GetIsPlayer => isPlayer;
     public int GetPlayerID => playerID;
     public int GetTeamID => teamID;
+
+    private bool isTargetable = true;
+    public bool GetIsTargetable => isTargetable;
 
     public void SetPlayerID (int newPlayerID)
     {
@@ -61,5 +64,10 @@ public class Identifier : MonoBehaviour
                 currentCheckedTransform = currentCheckedTransform.parent;
             }
         }
+
+        if (TryGetComponent(out UnitActions attachedUnit))
+            isTargetable = attachedUnit.GetIsTargetable;
+        else if (TryGetComponent(out Building attachedBuilding))
+            isTargetable = attachedBuilding.GetIsTargetable;
     }
 }

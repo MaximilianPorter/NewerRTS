@@ -20,8 +20,8 @@ MonoBehaviour:
     randomRotation: 0
     spawnWeight: 1
   numberToPlace: 5
-  showGrid: 1
+  showGrid: 0
   gridSize: {x: 2, y: 2}
   gridOffset: {x: 0, y: 0}
   squareSpacing: {x: 0, y: 0}
-  gridSquareSize: {x: 40, y: 40}
+  gridSquareSize: {x: 35, y: 35}

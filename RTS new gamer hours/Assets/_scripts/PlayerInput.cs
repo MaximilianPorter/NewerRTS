@@ -30,6 +30,7 @@ public class PlayerInput : MonoBehaviour
     private static readonly string inputDpadRight = "DPAD RIGHT";
     private static readonly string inputInteract = "Interact";
     private static readonly string inputPause = "Pause";
+    private static readonly string inputSprint = "Sprint";
 
     public static string GetInputMoveHorizontal => inputMoveHorizontal;
     public static string GetInputMoveVertical => inputMoveVertical;
@@ -53,6 +54,7 @@ public class PlayerInput : MonoBehaviour
     public static string GetInputDpadRight => inputDpadRight;
     public static string GetInputInteract => inputInteract;
     public static string GetInputPause => inputPause;
+    public static string GetInputSprint => inputSprint;
 
     private static List<Player> players;
     public static List<Player> GetPlayers => players;

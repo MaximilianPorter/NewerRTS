@@ -13,6 +13,7 @@ public class NavMeshMovement : MonoBehaviour
     [SerializeField] private UnitStats stats;
     [SerializeField] private float standingRotSpeed = 25f;
     [SerializeField] private bool onlyLookWhenStill = true;
+    [SerializeField] private bool disableMovement = false;
 
     //private Rigidbody rb;
     private NavMeshAgent agent;
@@ -26,9 +27,9 @@ public class NavMeshMovement : MonoBehaviour
 
     private Vector3 debugDestinationPos;
     private float debugMoveSpeed01 = 0;
-    private float inGroupMoveSpeed = 0f;
+    private float moveSpeed = 0f;
 
-    public void SetGroupMoveSpeed(float moveSpeed) => inGroupMoveSpeed = moveSpeed;
+    public void SetMoveSpeed(float moveSpeed) => this.moveSpeed = moveSpeed;
     public float GetCurrentMoveSpeed => agent.velocity.magnitude;
     public UnitStats GetStats => stats;
     public bool GetIsMoving => isMoving;
@@ -36,7 +37,7 @@ public class NavMeshMovement : MonoBehaviour
     public void SetCanMove(bool canMove) => this.canMove = canMove;
     public float GetBaseOffset => agent.baseOffset;
     public Transform GetLookTarget => lookAtTransform;
-    public float GetMoveSpeed01 => Mathf.Clamp01(agent.velocity.sqrMagnitude / (inGroupMoveSpeed * inGroupMoveSpeed));
+    public float GetMoveSpeed01 => Mathf.Clamp01(agent.velocity.sqrMagnitude / (moveSpeed * moveSpeed));
     public Vector3 GetDestination => agent.destination;
 
     private void Awake()
@@ -49,7 +50,7 @@ public class NavMeshMovement : MonoBehaviour
     {
         agent.speed = stats.maxMoveSpeed;
 
-        inGroupMoveSpeed = stats.maxMoveSpeed;
+        moveSpeed = stats.maxMoveSpeed;
     }
 
     private void Update()
@@ -57,7 +58,7 @@ public class NavMeshMovement : MonoBehaviour
         isMoving = GetMoveSpeed01 > 0.05f;
         debugDestinationPos = agent.destination;
         debugMoveSpeed01 = GetMoveSpeed01;
-        agent.speed = inGroupMoveSpeed;
+        agent.speed = moveSpeed;
 
         // look at enemy if standing still
         if ((!onlyLookWhenStill || !isMoving) && (lookAtTransform || lookAtPos != null))
@@ -71,6 +72,9 @@ public class NavMeshMovement : MonoBehaviour
 
     public void SetDestination (Vector3 target)
     {
+        if (disableMovement)
+            return;
+
         if (!canMove)
         {
             // we made the SetDestination call while we can't move

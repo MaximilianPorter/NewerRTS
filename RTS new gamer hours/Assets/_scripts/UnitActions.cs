@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(NavMeshMovement))]
@@ -6,12 +7,18 @@ using UnityEngine;
 public class UnitActions : MonoBehaviour
 {
     [SerializeField] private bool isSelectable = true;
+    [SerializeField] private bool isTargetable = true;
+    [SerializeField] private bool diesOnTeamSwitch = false;
     [SerializeField] private GameObject selectedGO;
     [SerializeField] private GameObject orderingObject;
     [SerializeField] private UnitStats unitStats;
     [SerializeField] private bool debugDie = false;
     [SerializeField] private GameObject bloodSplatterImage;
     [SerializeField] private GameObject bloodGoreEffect;
+
+    [Header("Physics")]
+    [SerializeField] private LayerMask enemyMask;
+
 
     [Header("Animated")]
     [SerializeField] private Renderer[] bodyPartsNeedMaterial;
@@ -53,9 +60,11 @@ public class UnitActions : MonoBehaviour
     private Cell activeCell;
 
 
+    public void SetIsTargetable(bool isTargetable) => this.isTargetable = isTargetable;
+    public bool GetIsTargetable => isTargetable;
     public void SetIsSelectable(bool isSelectable) => this.isSelectable = isSelectable;
     public bool GetIsSelectable => isSelectable;
-    public void SetGroupMoveSpeed (float moveSpeed) => navMovement.SetGroupMoveSpeed (moveSpeed);
+    public void SetGroupMoveSpeed (float moveSpeed) => navMovement.SetMoveSpeed (moveSpeed);
     public UnitStats GetStats => unitStats;
     public NavMeshMovement GetMovement => navMovement;
     public Attacking GetAttacking() => attacking;
@@ -89,8 +98,14 @@ public class UnitActions : MonoBehaviour
         }
 
 
-        // add unit to list of all units for player
-        PlayerHolder.AddUnit(identifier.GetPlayerID, this);
+        if (isSelectable)
+        {
+            // add unit to list of all units for player
+            PlayerHolder.AddUnit(identifier.GetPlayerID, this);
+        }
+
+        transform.SetParent(null);
+        identifier.SetIsParent(true);
     }
 
     private void Update()
@@ -148,10 +163,10 @@ public class UnitActions : MonoBehaviour
         AssignActiveCell();
 
 
-        CellFindNearestEnemy();
         findNearestEnemyCounter -= Time.deltaTime;
-        if (navMovement.GetMoveSpeed01 > 0.05f || findNearestEnemyCounter <= 0)
+        if (navMovement.GetMoveSpeed01 > 0.1f || findNearestEnemyCounter <= 0)
         {
+            CellFindNearestEnemy();
             findNearestEnemyCounter = Random.Range (0.1f, 0.3f);
         }
 
@@ -190,6 +205,8 @@ public class UnitActions : MonoBehaviour
     {
         Transform closestEnemy = null;
 
+        //int totalUnitsAroundMe = cellsToCheck.Sum(cell => cell.unitsInCell.Count);
+
         for (int i = 0; i < cellsToCheck.Length; i++)
         {
             if (cellsToCheck[i] == null)
@@ -202,6 +219,9 @@ public class UnitActions : MonoBehaviour
                     continue;
 
                 if (unit == identifier) // don't look for self
+                    continue;
+
+                if (unit.GetIsTargetable == false)
                     continue;
 
                 Vector3 unitDir = (unit.transform.position - transform.position);
@@ -233,6 +253,27 @@ public class UnitActions : MonoBehaviour
 
         return closestEnemy;
     }
+
+    //private Transform FindNearestEnemyPhysics(Vector3 fromPoint)
+    //{
+    //    Transform closestEnemy = null;
+
+    //    Collider[] nearbyUnits = Physics.OverlapSphere(fromPoint, unitStats.lookRange, enemyMask).Where(unit => unit.GetComponent<Identifier>().GetTeamID != identifier.GetTeamID).ToArray();
+
+    //    if (nearbyUnits.Length <= 0)
+    //    {
+    //        return null;
+    //    }
+
+    //    foreach (Collider enemyCol in nearbyUnits)
+    //    {
+    //        if (closestEnemy == null || (enemyCol.transform.position - fromPoint).sqrMagnitude <
+    //            (nearestEnemy.position - fromPoint).sqrMagnitude)
+    //        {
+    //            nearestEnemy = enemyCol.transform;
+    //        }
+    //    }
+    //}
 
     private void HandleMoveTowardsEnemies ()
     {
@@ -299,7 +340,7 @@ public class UnitActions : MonoBehaviour
                         navMovement.ResetDestination();
                         navMovement.SetLookAt(enemy);
 
-                        if (attacking.GetCanAttack && !isAttacking)
+                        if (attacking.GetCanAttack && !isAttacking && !isThrowing)
                         {
                             Attack();
                         }
@@ -340,8 +381,7 @@ public class UnitActions : MonoBehaviour
 
     public void Die ()
     {
-        lastCell.unitsInCell.Remove(identifier);
-        PlayerHolder.RemoveUnit(identifier.GetPlayerID, this);
+        RemoveUnitFromLists();
 
         //GameObject bloodInstance = Instantiate(bloodSplatterImage, new Vector3(transform.position.x, 0.01f, transform.position.z),
         //    Quaternion.LookRotation(Vector3.down, Vector3.Lerp(Vector3.forward, Vector3.right, Random.Range(0f, 1f))));
@@ -354,16 +394,33 @@ public class UnitActions : MonoBehaviour
 
     public void SwitchTeams (int newPlayerID, int newTeamID)
     {
-        lastCell.unitsInCell.Remove(identifier);
-        PlayerHolder.RemoveUnit(identifier.GetPlayerID, this);
+        if (diesOnTeamSwitch)
+        {
+            Die();
+            return;
+        }
+
+        RemoveUnitFromLists();
 
         Identifier newUnitInstance = Instantiate(this.gameObject, transform.position, transform.rotation).GetComponent<Identifier>();
         newUnitInstance.SetPlayerID(newPlayerID);
         newUnitInstance.SetTeamID(newTeamID);
 
-        newUnitInstance.GetComponent<UnitActions>().navMovement.SetDestination(navMovement.GetDestination);
+        if (newUnitInstance.TryGetComponent (out UnitActions newUnitActions))
+        {
+            newUnitActions.navMovement.SetDestination(navMovement.GetDestination);
+        }
 
         Destroy(gameObject);
+    }
+
+    private void RemoveUnitFromLists ()
+    {
+        if (!isSelectable)
+            return;
+
+        lastCell.unitsInCell.Remove(identifier);
+        PlayerHolder.RemoveUnit(identifier.GetPlayerID, this);
     }
 
     private void SetAnimations (AnimatorOverrideController newController)

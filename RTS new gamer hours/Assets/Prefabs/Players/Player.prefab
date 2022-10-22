@@ -5664,6 +5664,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stats: {fileID: 11400000, guid: 0aa38894e85d023409d6fd04b76fdd7c, type: 2}
+  sprintFill: {fileID: 0}
+  sprintTimeMulti: 2
+  timeToRegenSprint: 6
+  refreshSprintWaitTime: 1
   overrideController: {fileID: 22100000, guid: d588ff3dba0d42f4ab2ba5a9c0805ff6, type: 2}
   animator: {fileID: 2496803857556158098}
   walkAnimSpeed: 0.3
@@ -5692,9 +5696,6 @@ MonoBehaviour:
   rockHitEffect: {fileID: 5724799227821769488, guid: 20339093db9987044bcc227f46d139e9, type: 3}
   debugShoot: 0
   firePoint: {fileID: 2958760975621421679}
-  enemyMask:
-    serializedVersion: 2
-    m_Bits: 1024
 --- !u!114 &8604555271138620339
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5729,7 +5730,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2a18f18e9cbf7f4782519854117c6e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerCam: {fileID: 0}
   buttonMenu: {fileID: 0}
   buttonMenuOffset: {x: 0, y: 0}
   buttonUiLayoutGroup: {fileID: 0}
@@ -5744,6 +5744,11 @@ MonoBehaviour:
   placeBuildingRallyVisual: {fileID: 0}
   rallyPointPlaceEffect: {fileID: 5800903921319017751, guid: 743a854488746394e999828854aec38f, type: 3}
   rallyVisualOffset: {x: 0, y: 10, z: 0}
+  placingBuildingVisual: {fileID: 0}
+  buildingVisualToChangeColor: {fileID: 0}
+  canPlaceMat: {fileID: 0}
+  canNOTPlaceMat: {fileID: 0}
+  grid: {fileID: 0}
   cancelUnits: {fileID: 0}
 --- !u!114 &183182291
 MonoBehaviour:

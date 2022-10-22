@@ -8,7 +8,7 @@ public class PlayerResourceManager : MonoBehaviour
     public static PlayerResourceManager instance;
 
     [SerializeField] private int debugStartResources = 0;
-    [SerializeField] private GameObject giveResourcesUiPrefab;
+    //[SerializeField] private GameObject giveResourcesUiPrefab;
 
     private static Canvas[] playerCanvases;
     private static Camera[] playerCameras;
@@ -37,7 +37,6 @@ public class PlayerResourceManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
-
 
         for (int i = 0; i < 4; i++)
         {
@@ -83,18 +82,20 @@ public class PlayerResourceManager : MonoBehaviour
         }
     }
 
-    public void AddResourcesWithUI (int playerID, ResourceAmount amount, Vector3 worldPos)
-    {
-        PlayerResourceAmounts[playerID].AddResources(amount);
+    //public void AddResourcesWithUI (int playerID, ResourceAmount amount, Vector3 worldPos)
+    //{
+    //    PlayerResourceAmounts[playerID].AddResources(amount);
 
-        ResourceUiFloating resourcesInstance = Instantiate(giveResourcesUiPrefab, playerCameras[playerID].WorldToScreenPoint(worldPos),
-            Quaternion.identity, playerCanvases[playerID].transform).
-            GetComponent<ResourceUiFloating>();
+    //    ResourceUiFloating resourcesInstance = Instantiate(giveResourcesUiPrefab, playerCanvases[playerID].transform).GetComponent<ResourceUiFloating>();
+    //    //resourcesInstance.SetTarget(worldPos, playerID);
 
-        resourcesInstance.SetAmount(amount);
+    //    Vector3 spawnPos = PlayerHolder.WorldToCanvasLocalPoint(worldPos, playerID);
+    //    resourcesInstance.transform.localPosition = spawnPos;
 
-        Destroy(resourcesInstance.gameObject, 5f);
-    }
+    //    resourcesInstance.SetAmount(amount);
+
+    //    Destroy(resourcesInstance.gameObject, 5f);
+    //}
 
     private void HandleCheatCode ()
     {

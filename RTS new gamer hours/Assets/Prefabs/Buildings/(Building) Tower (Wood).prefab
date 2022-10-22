@@ -413,8 +413,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b428a7242bb5671409b98e3cd8cc8b86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buildNavMeshOnSpawn: 1
-  buildNavMeshOnDestroy: 1
   debugConnectionTower: {fileID: 0}
   activeConnectedTowers: []
   showWallSectionGizmos: 0
@@ -429,6 +427,21 @@ MonoBehaviour:
   wallWidth: 1
   wallHeight: 2
   stoneSpacing: 0.5
+--- !u!114 &803651991902887826
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1473080375886499521}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0087d2710628d6d4db87ebcfbec6f123, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buildNavMeshOnSpawn: 1
+  buildNavMeshOnDisable: 0
+  buildNavMeshOnDestroy: 1
 --- !u!4 &1473080375886499526 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8956819731846260277, guid: 7444a2888946a634ba879ce630db7727, type: 3}

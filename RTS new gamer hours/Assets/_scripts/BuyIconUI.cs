@@ -57,7 +57,7 @@ public class BuyIconUI : MonoBehaviour
     }
 
     /// <summary>
-    /// returns true if the player has enough resources
+    /// returns true if the player has enough resources, and it subtracts the resources from the player
     /// </summary>
     /// <returns></returns>
     public bool TryClickButton ()
@@ -71,6 +71,21 @@ public class BuyIconUI : MonoBehaviour
         }
 
         return false;
+    }
+
+    /// <summary>
+    /// returns the cost if we have enough resources to click, returns null if not
+    /// </summary>
+    /// <returns></returns>
+    public ResourceAmount TryClickButtonReturnCost()
+    {
+        if (PlayerResourceManager.PlayerResourceAmounts[identifier.GetPlayerID].HasResources(cost))
+        {
+            buttonAction.Invoke();
+            return cost;
+        }
+
+        return null;
     }
 }
 

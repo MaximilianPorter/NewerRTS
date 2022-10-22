@@ -8,11 +8,6 @@ using UnityEngine.AI;
 
 public class Tower : MonoBehaviour
 {
-
-    [SerializeField] private bool buildNavMeshOnSpawn = false;
-    [SerializeField] private bool buildNavMeshOnDestroy = false;
-    private NavMeshSurface navSurface;
-
     [SerializeField] private Tower debugConnectionTower;
     [SerializeField] private List<Tower> activeConnectedTowers;
 
@@ -33,26 +28,7 @@ public class Tower : MonoBehaviour
     [SerializeField] private float stoneSpacing = 0.5f;
 
     private List<GameObject> wallParents = new List<GameObject>();
-    private Identifier identifier;
-    private bool builtOnDestroyAlready = false;
-
-    private void Awake()
-    {
-        identifier = GetComponent<Identifier>();
-    }
-
-    private void Start()
-    {
-        navSurface = FindObjectOfType<NavMeshSurface>();
-        if (buildNavMeshOnSpawn)
-        {
-            if (navSurface)
-            {
-                navSurface.BuildNavMesh();
-            }
-        }
-    }
-
+    
     private void Update()
     {
         if (placeWallsBetween)
@@ -180,24 +156,6 @@ public class Tower : MonoBehaviour
         //Gizmos.color = Color.blue;
         //Gizmos.DrawWireSphere(middleBetweenWalls + otherTowerDir.normalized * (wallsFromMiddle), 1f);
         //Gizmos.DrawWireSphere(middleBetweenWalls - otherTowerDir.normalized * (wallsFromMiddle), 1f);
-    }
-
-    private void OnDisable()
-    {
-        if (buildNavMeshOnDestroy && !builtOnDestroyAlready && navSurface != null)
-        {
-            builtOnDestroyAlready = true;
-            navSurface.BuildNavMesh();
-        }
-    }
-
-    private void OnDestroy()
-    {
-        if (buildNavMeshOnDestroy && !builtOnDestroyAlready && navSurface != null)
-        {
-            builtOnDestroyAlready = true;
-            navSurface.BuildNavMesh();
-        }
     }
 
     private void OnDrawGizmos()

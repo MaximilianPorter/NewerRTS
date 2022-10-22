@@ -27,6 +27,8 @@ public class UnitSelection : MonoBehaviour
     private QueuedUpUnitUi[] selectedUnitsUi;
     private List<UnitActions> tempSelectedUnits = new List<UnitActions>(0);
 
+    public bool GetHasTroopsSelected => selectedUnits.Count > 0;
+
     private void Awake()
     {
         identifier = GetComponent<Identifier>();

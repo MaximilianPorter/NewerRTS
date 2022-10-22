@@ -2,12 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.ProBuilder.MeshOperations;
-using static UnityEditor.Experimental.GraphView.GraphView;
 
 [RequireComponent(typeof(Identifier))]
 public class Building : MonoBehaviour
 {
+    [SerializeField] private bool isTargetable = true;
     [SerializeField] private BuildingStats stats;
     [SerializeField] private bool debugSpawnUnit = false;
     [SerializeField] private Transform rallyPoint;
@@ -26,6 +25,8 @@ public class Building : MonoBehaviour
 
     private Health health;
 
+    public void SetIsTargetable(bool isTargetable) => this.isTargetable = isTargetable;
+    public bool GetIsTargetable => isTargetable;
     public void SetMainSpawnBuilding(bool isMainSpawnBuilding) => this.isMainSpawnBuilding = isMainSpawnBuilding;
     public bool GetIsMainSpawnBuilding => isMainSpawnBuilding;
     public bool GetRallyPointMoved => rallyPointMoved;

@@ -12,6 +12,7 @@ TagManager:
   - Camera
   - Canvas
   - Rock
+  - Main Canvas
   layers:
   - Default
   - TransparentFX

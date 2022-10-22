@@ -35,7 +35,6 @@ public class Attacking : MonoBehaviour
 
     [SerializeField] private bool debugShoot = false;
     [SerializeField] private Transform firePoint;
-    [SerializeField] private LayerMask enemyMask;
 
 
     private Transform nearestEnemy;
@@ -189,26 +188,6 @@ public class Attacking : MonoBehaviour
         }
         //FindNearestEnemy(transform.position);
     }
-
-    //private void FindNearestEnemy (Vector3 fromPoint)
-    //{
-    //    Collider[] nearbyUnits = Physics.OverlapSphere(fromPoint, stats.lookRange, enemyMask).Where(unit => unit.GetComponent<Identifier>().GetTeamID != identifier.GetTeamID).ToArray();
-
-    //    if (nearbyUnits.Length <= 0)
-    //    {
-    //        nearestEnemy = null;
-    //        return;
-    //    }
-
-    //    foreach (Collider enemyCol in nearbyUnits)
-    //    {
-    //        if (nearestEnemy == null || (enemyCol.transform.position - fromPoint).sqrMagnitude <
-    //            (nearestEnemy.position - fromPoint).sqrMagnitude)
-    //        {
-    //            nearestEnemy = enemyCol.transform;
-    //        }
-    //    }
-    //}
 
     private void Shoot ()
     {

@@ -10,19 +10,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 44fe55230886a964789777ffc795784a, type: 3}
-  m_Name: Archer Hut
+  m_Name: Farm
   m_EditorClassIdentifier: 
-  buildingType: 2
-  unitType: 14
-  subsequentUpgrades: 0d000000
+  buildingType: 11
+  unitType: 0
+  subsequentUpgrades: 
   health: 100
   cost:
-    food: 0
-    wood: 20
-    stone: 50
+    food: 40
+    wood: 10
+    stone: 10
   interactionRadius: 2
   buildRadius: 5
-  population: 2
-  unit: {fileID: 6806056615238588080, guid: 197e208e373752448a8eb352aa3896d9, type: 3}
+  population: 0
+  unit: {fileID: 0}
   initialUnitSpawnTime: 5
   spawnTimeMultiPerBuilding: 0.7

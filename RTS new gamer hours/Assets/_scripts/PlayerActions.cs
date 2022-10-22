@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UI;
 
 [RequireComponent(typeof (Identifier))]
 [RequireComponent(typeof (Attacking))]
@@ -9,6 +10,17 @@ using UnityEngine;
 public class PlayerActions : MonoBehaviour
 {
     [SerializeField] private UnitStats stats;
+
+    [Header("Sprint")]
+    [SerializeField] private Image sprintFill;
+    [SerializeField] private float sprintTimeMulti = 2f;
+    [SerializeField] private float timeToRegenSprint = 3f;
+    [SerializeField] private float refreshSprintWaitTime = 1f;
+
+    private float sprintCounter = 0f;
+    private float refreshSprintCounter = 0f;
+
+    [Header("Animated")]
     [SerializeField] private AnimatorOverrideController overrideController;
     [SerializeField] private Animator animator;
     [SerializeField] private float walkAnimSpeed = 1f;
@@ -21,18 +33,24 @@ public class PlayerActions : MonoBehaviour
     private Identifier identifier;
     private NavMeshMovement navMovement;
     private Attacking attacking;
+    private UnitSelection unitSelection;
+
+    private Image[] sprintRenderers;
+    private Color[] startSprintRendColors;
+    private float sprintFullColorCounter = 0f;
 
 
     private Vector3 moveInput;
     private bool isAttacking = false;
     private bool isBlocking = false;
-
+    private bool isSprinting = false;
 
     private void Awake()
     {
         identifier = GetComponent<Identifier>();
         navMovement = GetComponent<NavMeshMovement>();
         attacking = GetComponent<Attacking>();
+        unitSelection = GetComponent<UnitSelection>();
 
         SetAnimations(overrideController);
     }
@@ -44,6 +62,10 @@ public class PlayerActions : MonoBehaviour
         {
             bodyPartsNeedMaterial[i].material = PlayerColorManager.GetUnitMaterial(identifier.GetTeamID);
         }
+
+        sprintCounter = timeToRegenSprint;
+        sprintRenderers = new Image[2] { sprintFill, sprintFill.transform.parent.GetComponent<Image>() };
+        startSprintRendColors = new Color[2] { sprintFill.color, sprintFill.transform.parent.GetComponent<Image>().color };
     }
 
     private void Update()
@@ -52,7 +74,6 @@ public class PlayerActions : MonoBehaviour
                 0f,
                 PlayerInput.GetPlayers[identifier.GetPlayerID].GetAxis(PlayerInput.GetInputMoveVertical));
 
-
         // if there's a game winner, don't update
         if (GameWinManager.instance != null)
             if (GameWinManager.instance.GetWinnerID() != -1)
@@ -60,7 +81,10 @@ public class PlayerActions : MonoBehaviour
                 moveInput = Vector3.zero;
             }
 
+        HandleSprint();
 
+
+        navMovement.SetMoveSpeed(Mathf.Clamp01 (moveInput.magnitude) * stats.maxMoveSpeed * (isSprinting ? 2f : 1f));
         navMovement.SetCanMove(!PlayerInput.GetPlayerIsInMenu(identifier.GetPlayerID) && !isAttacking && !isBlocking);
 
         if (moveInput.magnitude > 0.1f)
@@ -101,30 +125,54 @@ public class PlayerActions : MonoBehaviour
 
             }
         }
+    }
 
-        //if (attacking.GetCanAttack && PlayerInput.players[identifier.GetPlayerID].GetButton(PlayerInput.GetInputAttack) && !shieldAnimator.GetBool("isBlocking"))
-        //{
-        //    swordAnimator.SetTrigger("Attack");
-        //    PlayerInput.VibrateController(identifier.GetPlayerID, .5f, .2f);
-        //    StartCoroutine(attacking.Attack(0f));
-        //}
+    private void HandleSprint ()
+    {
+        // Fade in and out when full or when using
+        bool sprintFull = sprintCounter >= timeToRegenSprint;
+        if (sprintFull)
+        {
+            sprintFullColorCounter = Mathf.Clamp(sprintFullColorCounter - Time.deltaTime * 3f, 0f, 1f);
+        }
+        for (int i = 0; i < sprintRenderers.Length; i++)
+        {
+            Color normal = sprintRenderers[i].color;
+            sprintRenderers[i].color = new Color(normal.r, normal.g, normal.b, startSprintRendColors[i].a * (sprintFullColorCounter / 1f));
+        }
 
-        //bool isBlocking = PlayerInput.players[identifier.GetPlayerID].GetButton(PlayerInput.GetInputBlock);
+        // adjust fill meter to visually represent sprint
+        sprintFill.fillAmount = sprintCounter / timeToRegenSprint;
+        sprintFill.transform.parent.localPosition = PlayerHolder.WorldToCanvasLocalPoint(transform.position + new Vector3(0f, -5f, 0f), identifier.GetPlayerID);
 
-        //swordAnimator.SetBool("isBlocking", isBlocking);
-        //shieldAnimator.SetBool("isBlocking", isBlocking);
+        if (isSprinting)
+        {
+            sprintFullColorCounter = Mathf.Clamp(sprintFullColorCounter + Time.deltaTime * 3f, 0f, 1f);
+            sprintCounter = Mathf.Clamp(sprintCounter - Time.deltaTime * sprintTimeMulti, 0f, timeToRegenSprint);
+            refreshSprintCounter = refreshSprintWaitTime;
+        }
+        else 
+        {
+            refreshSprintCounter -= Time.deltaTime;
+        }
 
-        //if (isBlocking)
-        //    movement.SetSlowMultiplier(0, stats.slowMultiplierBlocking);
-        //else
-        //    movement.SetSlowMultiplier(0, 1f);
+        // we waited long enough, we can recharge our sprint
+        if (refreshSprintCounter <= 0)
+        {
+            sprintCounter = Mathf.Clamp(sprintCounter + Time.deltaTime, 0f, timeToRegenSprint);
+        }
 
+        if (unitSelection.GetHasTroopsSelected)
+            return;
 
-        //rightHandTarget.position = swordHolder.position;
-        //rightHandTarget.rotation = swordHolder.rotation;
-
-        //leftHandTarget.position = shieldHolder.position;
-        //leftHandTarget.rotation = shieldHolder.rotation;
+        if (PlayerInput.GetPlayers[identifier.GetPlayerID].GetButtonShortPress(PlayerInput.GetInputSprint) && sprintCounter > 0 && navMovement.GetMoveSpeed01 > 0.1f)
+        {
+            isSprinting = true;
+        }
+        else
+        {
+            isSprinting = false;
+        }
     }
 
     private void SetAnimations(AnimatorOverrideController newController)

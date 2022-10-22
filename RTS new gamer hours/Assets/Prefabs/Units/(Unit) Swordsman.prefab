@@ -481,12 +481,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isSelectable: 1
+  isTargetable: 1
+  diesOnTeamSwitch: 0
   selectedGO: {fileID: 1462805977683875834}
   orderingObject: {fileID: 7331517528706905602}
   unitStats: {fileID: 11400000, guid: 9267eb36c574b344793bc6dbf7853576, type: 2}
   debugDie: 0
   bloodSplatterImage: {fileID: 3758024593050388391, guid: 7f803312f365dcd408609b38989a661d, type: 3}
   bloodGoreEffect: {fileID: 7442719172150680357, guid: ded24b2bedd49f9409b5a3d3ef418441, type: 3}
+  enemyMask:
+    serializedVersion: 2
+    m_Bits: 5120
   bodyPartsNeedMaterial:
   - {fileID: 3819548900116704623}
   - {fileID: 3819548900109495827}
@@ -520,9 +525,6 @@ MonoBehaviour:
   rockHitEffect: {fileID: 0}
   debugShoot: 0
   firePoint: {fileID: 1871431924477064749}
-  enemyMask:
-    serializedVersion: 2
-    m_Bits: 5120
 --- !u!114 &1556448994491191459
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -553,6 +555,7 @@ MonoBehaviour:
   stats: {fileID: 11400000, guid: 9267eb36c574b344793bc6dbf7853576, type: 2}
   standingRotSpeed: 25
   onlyLookWhenStill: 1
+  disableMovement: 0
 --- !u!195 &3555590683824183388
 NavMeshAgent:
   m_ObjectHideFlags: 0
