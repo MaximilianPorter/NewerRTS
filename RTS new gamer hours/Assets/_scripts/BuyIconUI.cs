@@ -116,8 +116,8 @@ public enum BuyIcons
     Building_StorageYard = 26,
     Building_Farm = 11,
     Building_FarmPlus = 12,
-    Building_Mine = 24,
     Building_LoggingCamp = 25,
+    Building_Mine = 24,
 
 
     // OTHER UI BUTTONS
