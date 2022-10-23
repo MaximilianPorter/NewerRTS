@@ -2187,7 +2187,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh3034986
+  m_Name: pb_Mesh26414
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -2547,7 +2547,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh3035258
+  m_Name: pb_Mesh26686
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -7967,8 +7967,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d969e5bbb9e89224684f632fb2173fca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ModeDestroyMainBuilding: 1
-  ModeDestroyAllBuildings: 0
+  ModeDestroyMainBuilding: 0
+  ModeDestroyAllBuildings: 1
   playerCastles:
   - {fileID: 265484900}
   - {fileID: 33150557}

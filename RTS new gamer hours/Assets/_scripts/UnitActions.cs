@@ -8,7 +8,6 @@ public class UnitActions : MonoBehaviour
 {
     [SerializeField] private bool isSelectable = true;
     [SerializeField] private bool isTargetable = true;
-    [SerializeField] private bool diesOnTeamSwitch = false;
     [SerializeField] private GameObject selectedGO;
     [SerializeField] private GameObject orderingObject;
     [SerializeField] private UnitStats unitStats;
@@ -98,11 +97,8 @@ public class UnitActions : MonoBehaviour
         }
 
 
-        if (isSelectable)
-        {
-            // add unit to list of all units for player
-            PlayerHolder.AddUnit(identifier.GetPlayerID, this);
-        }
+        // add unit to list of all units for player
+        PlayerHolder.AddUnit(identifier.GetPlayerID, this);
 
         transform.SetParent(null);
         identifier.SetIsParent(true);
@@ -394,12 +390,6 @@ public class UnitActions : MonoBehaviour
 
     public void SwitchTeams (int newPlayerID, int newTeamID)
     {
-        if (diesOnTeamSwitch)
-        {
-            Die();
-            return;
-        }
-
         RemoveUnitFromLists();
 
         Identifier newUnitInstance = Instantiate(this.gameObject, transform.position, transform.rotation).GetComponent<Identifier>();
@@ -416,8 +406,8 @@ public class UnitActions : MonoBehaviour
 
     private void RemoveUnitFromLists ()
     {
-        if (!isSelectable)
-            return;
+        //if (!isselectable)
+        //    return;
 
         lastCell.unitsInCell.Remove(identifier);
         PlayerHolder.RemoveUnit(identifier.GetPlayerID, this);

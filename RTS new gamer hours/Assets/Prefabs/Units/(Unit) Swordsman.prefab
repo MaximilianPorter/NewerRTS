@@ -466,7 +466,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isParent: 1
   isPlayer: 0
-  playerID: 0
+  playerID: 1
   teamID: 1
 --- !u!114 &4258379125407079058
 MonoBehaviour:

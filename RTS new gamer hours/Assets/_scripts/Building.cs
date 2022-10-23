@@ -116,7 +116,7 @@ public class Building : MonoBehaviour
         {
             health.Heal(1000000f);
 
-            SwitchAllBuidingTeams();
+            SwitchAllBuildingTeams();
             SwitchAllUnitTeams();
 
             SwitchTeams(health.GetLastHitByPlayer.GetPlayerID, health.GetLastHitByPlayer.GetTeamID);
@@ -144,7 +144,7 @@ public class Building : MonoBehaviour
     }
 
 
-    private void SwitchAllBuidingTeams ()
+    private void SwitchAllBuildingTeams ()
     {
         int breakIndex = 0;
         int firstIndex = 0;
