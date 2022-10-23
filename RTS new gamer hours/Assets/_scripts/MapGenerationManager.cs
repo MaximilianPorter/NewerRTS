@@ -196,11 +196,11 @@ public class MapGenerationManager : MonoBehaviour
     {
         // cast down from that point and place an object
         // I don't like while loops so this is a for loop with 1000 run times
-        for (int j = 0; j < 1000; j++)
+        for (int j = 0; j < 10000; j++)
         {
-            if (j > 990)
+            if (j > 9900)
             {
-                Debug.LogError("SOMETHING IS WRONG, THE PLACING OBJECT LOOP SHOULD NOT RUN THIS MANY TIMES");
+                Debug.LogError($"SOMETHING IS WRONG WITH {spawnObject.prefab.name}, THE PLACING OBJECT LOOP SHOULD NOT RUN THIS MANY TIMES");
                 break;
             }
 
@@ -231,6 +231,11 @@ public class MapGenerationManager : MonoBehaviour
 
                 // set details for the object that will be added to spawnedObjects (this is because you can't have constructors for structs)
                 SpawnObject instantiatedSpawnObject = new SpawnObject(objectInstance, spawnObject.spacingBuffer, spawnObject.randomRotation, spawnObject.spawnWeight);
+
+
+                // don't add to spawned objects if there's no spacing buffer
+                if (spawnObject.spacingBuffer <= 0)
+                    break;
 
                 // add instance of spawned object to the list
                 spawnedObjects.Add(instantiatedSpawnObject);

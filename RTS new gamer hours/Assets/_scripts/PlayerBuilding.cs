@@ -577,7 +577,7 @@ public class PlayerBuilding : MonoBehaviour
         if (isPlacingBuilding)
         {
 
-            placingBuildingVisual.transform.position = new Vector3(transform.position.x, 0f, transform.position.z);
+            placingBuildingVisual.transform.position = new Vector3(Mathf.Round (transform.position.x * 2f) / 2f, 0f, Mathf.Round (transform.position.z * 2f) / 2f);
 
             bool inRangeOfBuilding = PlayerHolder.GetBuildings(identifier.GetPlayerID)
                 .Any(building => (building.transform.position - transform.position).sqrMagnitude < building.GetStats.buildRadius * building.GetStats.buildRadius);

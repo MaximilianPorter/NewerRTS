@@ -220,7 +220,16 @@ public class Attacking : MonoBehaviour
         if (resourceNode != null)
         {
             ResourceNode node = resourceNode.GetComponent<ResourceNode>();
-            node.CollectResources(identifier.GetPlayerID);
+            if (node.TryCollectResources(out ResourceAmount returnedAmount))
+            {
+                int storageYardCount = PlayerHolder.GetBuildings(identifier.GetPlayerID).Count(building => building.GetStats.buildingType == BuyIcons.Building_StorageYard);
+                PlayerResourceManager.PlayerResourceAmounts[identifier.GetPlayerID].AddResources(
+                    returnedAmount.GetFood + (returnedAmount.GetFood > 0 ? storageYardCount : 0),
+                    returnedAmount.GetWood + (returnedAmount.GetWood > 0 ? storageYardCount : 0),
+                    returnedAmount.GetStone + (returnedAmount.GetStone > 0 ? storageYardCount : 0)
+                    );
+            }
+            //node.CollectResources(identifier.GetPlayerID);
         }
 
         Collider shakingObject = hits.FirstOrDefault(tree => tree.GetComponent <TreeShake>());

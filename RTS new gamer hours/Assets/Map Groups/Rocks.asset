@@ -24,7 +24,7 @@ MonoBehaviour:
     randomRotation: 1
     spawnWeight: 4
   - prefab: {fileID: 2957508515914854451, guid: 268ccd0ac70b0d541a2f0ca1d8f1574a, type: 3}
-    spacingBuffer: 10.5
+    spacingBuffer: 11
     randomRotation: 1
     spawnWeight: 2
   numberToPlace: 15

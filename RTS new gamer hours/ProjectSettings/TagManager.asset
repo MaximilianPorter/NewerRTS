@@ -13,6 +13,7 @@ TagManager:
   - Canvas
   - Rock
   - Main Canvas
+  - Animal
   layers:
   - Default
   - TransparentFX

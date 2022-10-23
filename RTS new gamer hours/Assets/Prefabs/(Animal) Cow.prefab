@@ -15,9 +15,10 @@ GameObject:
   - component: {fileID: 7085955487418373005}
   - component: {fileID: 875463911598884354}
   - component: {fileID: 656590705}
+  - component: {fileID: -2691473227363190047}
   m_Layer: 0
   m_Name: (Animal) Cow
-  m_TagString: Untagged
+  m_TagString: Animal
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -125,6 +126,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentHealth: 100
   maxHealth: 100
+  invincible: 0
 --- !u!114 &656590705
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -141,6 +143,25 @@ MonoBehaviour:
   isPlayer: 0
   playerID: -1
   teamID: -1
+--- !u!114 &-2691473227363190047
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7085955487418373007}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 092f7d5b394932b4da65b2ef47ec8818, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  amount:
+    food: 5
+    wood: 0
+    stone: 0
+  resetTime: 0
+  resourceSpawnEffect: {fileID: 0}
+  resourceSpawnOffset: {x: 0, y: 0, z: 0}
 --- !u!1001 &7085955488504776180
 PrefabInstance:
   m_ObjectHideFlags: 0

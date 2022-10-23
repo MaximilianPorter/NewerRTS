@@ -261,6 +261,7 @@ GameObject:
   - component: {fileID: 5093730485458195871}
   - component: {fileID: 5093730485458195868}
   - component: {fileID: 7240510453040099010}
+  - component: {fileID: 1603905756965896378}
   m_Layer: 0
   m_Name: Wheat Field Cube
   m_TagString: Field
@@ -359,6 +360,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   killEffect: {fileID: 7606790733841186228, guid: fbb215b16e2f7ab4b9920f8beac2bde4, type: 3}
+--- !u!114 &1603905756965896378
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5093730485458195874}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 092f7d5b394932b4da65b2ef47ec8818, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  amount:
+    food: 1
+    wood: 0
+    stone: 0
+  resetTime: 0
+  resourceSpawnEffect: {fileID: 0}
+  resourceSpawnOffset: {x: 0, y: 0, z: 0}
 --- !u!1 &5093730485483934493
 GameObject:
   m_ObjectHideFlags: 0
@@ -936,6 +956,7 @@ GameObject:
   - component: {fileID: 5093730485602267578}
   - component: {fileID: 5093730485602267579}
   - component: {fileID: 3594206828027878353}
+  - component: {fileID: 5418142264241024930}
   m_Layer: 0
   m_Name: Wheat Field Cube
   m_TagString: Field
@@ -1034,6 +1055,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   killEffect: {fileID: 7606790733841186228, guid: fbb215b16e2f7ab4b9920f8beac2bde4, type: 3}
+--- !u!114 &5418142264241024930
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5093730485602267577}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 092f7d5b394932b4da65b2ef47ec8818, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  amount:
+    food: 1
+    wood: 0
+    stone: 0
+  resetTime: 0
+  resourceSpawnEffect: {fileID: 0}
+  resourceSpawnOffset: {x: 0, y: 0, z: 0}
 --- !u!1 &5093730485607151143
 GameObject:
   m_ObjectHideFlags: 0
@@ -3601,6 +3641,7 @@ GameObject:
   - component: {fileID: 5093730486558435346}
   - component: {fileID: 5093730486558435347}
   - component: {fileID: 8859971821387316406}
+  - component: {fileID: 8241084665956669551}
   m_Layer: 0
   m_Name: Wheat Field Cube
   m_TagString: Field
@@ -3699,6 +3740,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   killEffect: {fileID: 7606790733841186228, guid: fbb215b16e2f7ab4b9920f8beac2bde4, type: 3}
+--- !u!114 &8241084665956669551
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5093730486558435344}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 092f7d5b394932b4da65b2ef47ec8818, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  amount:
+    food: 1
+    wood: 0
+    stone: 0
+  resetTime: 0
+  resourceSpawnEffect: {fileID: 0}
+  resourceSpawnOffset: {x: 0, y: 0, z: 0}
 --- !u!1 &5093730486582189853
 GameObject:
   m_ObjectHideFlags: 0
@@ -4784,6 +4844,7 @@ GameObject:
   - component: {fileID: 5093730487052839596}
   - component: {fileID: 5093730487052839597}
   - component: {fileID: 8419423465018927208}
+  - component: {fileID: 4810828219257880977}
   m_Layer: 0
   m_Name: Wheat Field Cube
   m_TagString: Field
@@ -4882,6 +4943,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   killEffect: {fileID: 7606790733841186228, guid: fbb215b16e2f7ab4b9920f8beac2bde4, type: 3}
+--- !u!114 &4810828219257880977
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5093730487052839603}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 092f7d5b394932b4da65b2ef47ec8818, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  amount:
+    food: 1
+    wood: 0
+    stone: 0
+  resetTime: 0
+  resourceSpawnEffect: {fileID: 0}
+  resourceSpawnOffset: {x: 0, y: 0, z: 0}
 --- !u!1 &5093730487073504941
 GameObject:
   m_ObjectHideFlags: 0

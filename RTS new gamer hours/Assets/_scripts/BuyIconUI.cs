@@ -100,7 +100,7 @@ public enum BuyIcons
     // BUILDINGS
     Building_CASTLE = 22,
     Building_House = 20,
-    Building_Village = 1,
+    Building_VillageHouse = 1,
     Building_Archers = 2,
     Building_ArchersPlus = 3,
     Building_Mage = 4,
@@ -113,8 +113,11 @@ public enum BuyIcons
     Building_Tower = 9,
     Building_TowerPlus = 10,
 
+    Building_StorageYard = 26,
     Building_Farm = 11,
     Building_FarmPlus = 12,
+    Building_Mine = 24,
+    Building_LoggingCamp = 25,
 
 
     // OTHER UI BUTTONS
@@ -130,6 +133,6 @@ public enum BuyIcons
     Mage = 18,
     Spearman = 19,
 
-    // highest number: 23
-    // last changed on 10/20/22 - 7:58pm
+    // highest number: 26
+    // last changed on 10/23/22 - 12:54am
 }

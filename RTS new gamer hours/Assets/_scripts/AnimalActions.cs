@@ -10,7 +10,7 @@ public class AnimalActions : MonoBehaviour
     [SerializeField] private Vector2 timeBetweenDecisions = new Vector2(0.5f, 10f);
     [SerializeField] private float roamRange = 5f;
     [SerializeField] private float maxMoveSpeed = 1f;
-    [SerializeField] private int resourceGiveAmt = 5;
+    //[SerializeField] private int resourceGiveAmt = 5;
 
     [Header("Effects")]
     [SerializeField] private GameObject deathEffect;
@@ -122,8 +122,8 @@ public class AnimalActions : MonoBehaviour
         // if they have a health script
         if (health)
         {
-            if (health.GetLastHitByPlayer != null)
-                PlayerResourceManager.PlayerResourceAmounts[health.GetLastHitByPlayer.GetPlayerID].AddResources(new ResourceAmount(resourceGiveAmt, 0, 0));
+            //if (health.GetLastHitByPlayer != null)
+            //    PlayerResourceManager.PlayerResourceAmounts[health.GetLastHitByPlayer.GetPlayerID].AddResources(new ResourceAmount(resourceGiveAmt, 0, 0));
 
             // reset health back to normal
             health.ResetHealth();

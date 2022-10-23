@@ -1,3 +1,4 @@
+using Rewired;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,7 +13,11 @@ public class ResourceNode : MonoBehaviour
     private float resetCounter = 0f;
 
     public bool GetHasResources => resetCounter < 0;
-    public void CollectResources (int playerID, Vector3? effectSpawnPos = null)
+
+    /// <summary>
+    /// doensn't add resources by itself, and returns false if the resource counter is not ready
+    /// </summary>
+    public bool TryCollectResources(out ResourceAmount returnedAmount, Vector3? effectSpawnPos = null)
     {
         if (effectSpawnPos == null)
             effectSpawnPos = transform.position;
@@ -25,10 +30,14 @@ public class ResourceNode : MonoBehaviour
                 GameObject resourceSpawnInstance = Instantiate(resourceSpawnEffect, effectSpawnPos.GetValueOrDefault() + resourceSpawnOffset, Quaternion.identity);
                 Destroy(resourceSpawnInstance, 5f);
             }
-            PlayerResourceManager.PlayerResourceAmounts[playerID].AddResources(amount);
-            //PlayerResourceManager.instance.AddResourcesWithUI(playerID, amount, transform.position);
+            returnedAmount = amount;
+            return true;
         }
+
+        returnedAmount = null;
+        return false;
     }
+
 
     private void Update()
     {
