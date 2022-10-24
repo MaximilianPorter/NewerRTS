@@ -1,12 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
+using UnityEngine.UI;
 
 public class PlayerPauseController : MonoBehaviour
 {
+
     [SerializeField] private GameObject pauseMenu;
     [SerializeField] private MyUiButton[] pauseMenuButtons;
+
+    private Identifier identifier;
 
     public void Pause()
     {
@@ -19,30 +22,35 @@ public class PlayerPauseController : MonoBehaviour
 
     private int selectedButtonIndex = 0;
     private bool isPaused = false;
-    private int playerThatPaused = -1;
 
     private bool movedIndex = false;
 
+    public bool GetIsPaused => isPaused;
+
+    private void Awake()
+    {
+        identifier = GetComponent<Identifier>();
+    }
+
+    private void Start()
+    {
+        //pauseMenuButtons = GetComponentsInChildren<MyUiButton>();
+    }
+
     private void Update()
     {
-        
-
         if (isPaused)
         {
             HandlePauseMenuOpen();
         }
         else
         {
-            for (int i = 0; i < PlayerInput.GetPlayers.Count; i++)
+            if (PlayerInput.GetPlayers[identifier.GetPlayerID].GetButtonDown(PlayerInput.GetInputPause))
             {
-                if (PlayerInput.GetPlayers[i].GetButtonDown(PlayerInput.GetInputPause))
-                {
-                    DeSelectAllButtons();
-                    playerThatPaused = i;
-                    selectedButtonIndex = 0;
-                    pauseMenuButtons[selectedButtonIndex].SelectButton();
-                    Pause();
-                }
+                DeSelectAllButtons();
+                selectedButtonIndex = 0;
+                pauseMenuButtons[selectedButtonIndex].SelectButton();
+                Pause();
             }
         }
 
@@ -50,40 +58,35 @@ public class PlayerPauseController : MonoBehaviour
 
         if (pauseMenu)
             pauseMenu.SetActive(isPaused);
-
-        if (isPaused)
-        {
-            Time.timeScale = 0f;
-            Time.fixedDeltaTime = Time.timeScale * 0.02f;
-        }
-        else
-        {
-            playerThatPaused = -1;
-            Time.timeScale = 1f;
-            Time.fixedDeltaTime = Time.timeScale * 0.02f;
-        }
     }
 
     private void HandlePauseMenuOpen ()
     {
-        if (playerThatPaused != -1 &&
-            (PlayerInput.GetPlayers[playerThatPaused].GetButtonDown(PlayerInput.GetInputBack)))
+
+        if (PlayerInput.GetPlayers[identifier.GetPlayerID].GetButtonDown(PlayerInput.GetInputBack))
         {
             UnPause();
         }
 
-        pauseMenuButtons[selectedButtonIndex].SetIsClicking(PlayerInput.GetPlayers[playerThatPaused].GetButton(PlayerInput.GetInputSelect));
 
-        if ((!movedIndex && PlayerInput.GetPlayers[playerThatPaused].GetAxis(PlayerInput.GetInputMoveVertical) > 0.5f) ||
-            PlayerInput.GetPlayers[playerThatPaused].GetButtonDown(PlayerInput.GetInputDpadUp))
+        ButtonType buttonType = pauseMenuButtons[selectedButtonIndex].GetButtonType;
+        pauseMenuButtons[selectedButtonIndex].SetIsClicking(buttonType == ButtonType.Hold ? 
+            PlayerInput.GetPlayers[identifier.GetPlayerID].GetButton(PlayerInput.GetInputSelect) :
+            PlayerInput.GetPlayers[identifier.GetPlayerID].GetButtonDown(PlayerInput.GetInputSelect));
+
+        // go up
+        if ((!movedIndex && PlayerInput.GetPlayers[identifier.GetPlayerID].GetAxis(PlayerInput.GetInputMoveVertical) > 0.5f) ||
+            PlayerInput.GetPlayers[identifier.GetPlayerID].GetButtonDown(PlayerInput.GetInputDpadUp))
         {
             if (selectedButtonIndex - 1 >= 0)
             {
                 ChangeButtonIndex(-1);
             }
         }
-        if ((!movedIndex && PlayerInput.GetPlayers[playerThatPaused].GetAxis(PlayerInput.GetInputMoveVertical) < -0.5f) ||
-            PlayerInput.GetPlayers[playerThatPaused].GetButtonDown(PlayerInput.GetInputDpadDown))
+
+        // go down
+        if ((!movedIndex && PlayerInput.GetPlayers[identifier.GetPlayerID].GetAxis(PlayerInput.GetInputMoveVertical) < -0.5f) ||
+            PlayerInput.GetPlayers[identifier.GetPlayerID].GetButtonDown(PlayerInput.GetInputDpadDown))
         {
             if (selectedButtonIndex + 1 < pauseMenuButtons.Length)
             {
@@ -91,8 +94,9 @@ public class PlayerPauseController : MonoBehaviour
             }
         }
 
-        // reset the movement
-        if (PlayerInput.GetPlayers[playerThatPaused].GetAxis(PlayerInput.GetInputMoveVertical) < 0.5 && PlayerInput.GetPlayers[playerThatPaused].GetAxis(PlayerInput.GetInputMoveVertical) > -0.5)
+        // reset the movement (stick is in the middle)
+        if (PlayerInput.GetPlayers[identifier.GetPlayerID].GetAxis(PlayerInput.GetInputMoveVertical) < 0.5 && 
+            PlayerInput.GetPlayers[identifier.GetPlayerID].GetAxis(PlayerInput.GetInputMoveVertical) > -0.5)
             movedIndex = false;
     }
 
@@ -111,6 +115,17 @@ public class PlayerPauseController : MonoBehaviour
         {
             pauseMenuButtons[i].DeSelectButton();
         }
+    }
+
+    public void MainMenuButton ()
+    {
+        SceneController.ChangeScene(0);
+    }
+
+    public void ToggleHealthBars (Toggle toggle)
+    {
+        HealthBarManager.SetHealthBarsOn(identifier.GetPlayerID, !HealthBarManager.GetHealthBarsOn[identifier.GetPlayerID]);
+        toggle.isOn = HealthBarManager.GetHealthBarsOn[identifier.GetPlayerID];
     }
 
     public void QuitGame ()

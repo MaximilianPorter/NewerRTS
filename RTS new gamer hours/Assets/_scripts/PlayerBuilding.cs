@@ -19,6 +19,9 @@ public class PlayerBuilding : MonoBehaviour
     [SerializeField] private Animator selectAnim;
     [SerializeField] private Transform queuedUnitsLayoutGroup;
     [SerializeField] private Image costAreaLayout;
+    [SerializeField] private Transform requiredBuildingLayout;
+
+    private Image[] requiredBuildingImageContainers;
 
     [Header("Building")]
     [SerializeField] private BuyIconUI[] initialIcons;
@@ -83,7 +86,6 @@ public class PlayerBuilding : MonoBehaviour
 
         // find ui icons in the layout group
         allIcons = buttonUiLayoutGroup.GetComponentsInChildren<BuyIconUI>();
-        DisableAllIcons();
         allQueuedUnits = queuedUnitsLayoutGroup.GetComponentsInChildren<QueuedUpUnitUi>();
 
         costResourceTransforms = new Transform[costAreaLayout.transform.childCount];
@@ -92,6 +94,13 @@ public class PlayerBuilding : MonoBehaviour
             costResourceTransforms[i] = costAreaLayout.transform.GetChild(i);
         }
         costTexts = costAreaLayout.GetComponentsInChildren<TMP_Text>();
+        requiredBuildingImageContainers = requiredBuildingLayout.GetComponentsInChildren<Image>().Where(image => image.transform != requiredBuildingLayout).ToArray();
+    }
+
+    private void Start()
+    {
+        DisableAllIcons();
+        
     }
 
     private void Update()
@@ -140,73 +149,143 @@ public class PlayerBuilding : MonoBehaviour
         costTexts[0].text = cost.GetFood.ToString();
         costTexts[1].text = cost.GetWood.ToString();
         costTexts[2].text = cost.GetStone.ToString();
+
+
+        // adjust the required building layout images
+        if (allIcons[selectedIconIndex].GetOverrideBuilding == null 
+            || (allIcons[selectedIconIndex].GetOverrideBuilding != null && allIcons[selectedIconIndex].GetOverrideBuilding.requiredBuildings.Length <= 0))
+        {
+            requiredBuildingLayout.gameObject.SetActive(false);
+            return;
+        }
+        else
+        {
+            requiredBuildingLayout.gameObject.SetActive(true);
+        }
+
+        BuyIcons[] requiredBuildings = allIcons[selectedIconIndex].GetOverrideBuilding.requiredBuildings;
+        for (int i = 0; i < requiredBuildingImageContainers.Length; i++)
+        {
+            if (i >= requiredBuildings.Length)
+            {
+                requiredBuildingImageContainers[i].gameObject.SetActive(false);
+                continue;
+            }
+            requiredBuildingImageContainers[i].gameObject.SetActive(true);
+            requiredBuildingImageContainers[i].sprite = BuyIconSpriteManager.GetTypeOfIcon(requiredBuildings[i]);
+            requiredBuildingImageContainers[i].color = PlayerHolder.GetBuildings(identifier.GetPlayerID).Any(building => building.GetStats.buildingType == requiredBuildings[i])
+                ? allIcons[selectedIconIndex].GetNormalColor
+                : allIcons[selectedIconIndex].GetDisabledColor;
+        }
     }
 
     private void IncreaseIconIndex ()
     {
         // if the gameobject is active and we can increase
+
+
+        // DOESN'T LOOP
+        int nextAvailableIndex = selectedIconIndex;
         if (selectedIconIndex + 1 < allIcons.Length)
         {
-            for (int i = 0; i < allIcons.Length; i++)
+            for (int i = selectedIconIndex; i < allIcons.Length; i++)
             {
-                if (selectedIconIndex + 1 < allIcons.Length)
-                    selectedIconIndex++;
-                else
-                    selectedIconIndex = 0;
-
-                if (allIcons[selectedIconIndex].gameObject.activeSelf)
+                if (i + 1 < allIcons.Length && allIcons[i + 1].gameObject.activeSelf)
                 {
-                    break;
-                }
-            }
-        }
-        else
-        {
-            selectedIconIndex = 0;
-            for (int i = 0; i < allIcons.Length; i++)
-            {
-                if (allIcons[selectedIconIndex].gameObject.activeSelf)
-                {
+                    nextAvailableIndex = i + 1;
                     break;
                 }
 
-                selectedIconIndex++;
             }
         }
+        selectedIconIndex = nextAvailableIndex;
+
+
+
+
+        //// LOOPS
+        //if (selectedIconIndex + 1 < allIcons.Length)
+        //{
+        //    for (int i = 0; i < allIcons.Length; i++)
+        //    {
+        //        if (selectedIconIndex + 1 < allIcons.Length)
+        //            selectedIconIndex++;
+        //        else
+        //            selectedIconIndex = 0;
+
+        //        if (allIcons[selectedIconIndex].gameObject.activeSelf)
+        //        {
+        //            break;
+        //        }
+
+        //    }
+        //}
+        //else
+        //{
+        //    selectedIconIndex = 0;
+        //    for (int i = 0; i < allIcons.Length; i++)
+        //    {
+        //        if (allIcons[selectedIconIndex].gameObject.activeSelf)
+        //        {
+        //            break;
+        //        }
+
+        //        selectedIconIndex++;
+        //    }
+        //}
     }
     private void DecreaseIconIndex()
     {
         // if the gameobject is active and we can decrease
+
+        // DOESN'T LOOP
+        int nextAvailableIndex = selectedIconIndex;
         if (selectedIconIndex - 1 >= 0)
         {
-            for (int i = 0; i < allIcons.Length; i++)
+            for (int i = selectedIconIndex; i > 0; i--)
             {
-                if (selectedIconIndex - 1 >= 0)
-                    selectedIconIndex--;
-                else
-                    selectedIconIndex = allIcons.Length - 1;
-
-                if (allIcons[selectedIconIndex].gameObject.activeSelf)
+                if (i - 1 >= 0 && allIcons[i - 1].gameObject.activeSelf)
                 {
-                    break;
-                }
-            }
-        }
-        else
-        {
-            selectedIconIndex = allIcons.Length - 1;
-
-            for (int i = 0; i < allIcons.Length; i++)
-            {
-                if (allIcons[selectedIconIndex].gameObject.activeSelf)
-                {
+                    nextAvailableIndex = i - 1;
                     break;
                 }
 
-                selectedIconIndex--;
             }
-
         }
+        selectedIconIndex = nextAvailableIndex;
+
+
+        //// LOOPS
+        //if (selectedIconIndex - 1 >= 0)
+        //{
+        //    for (int i = 0; i < allIcons.Length; i++)
+        //    {
+        //        if (selectedIconIndex - 1 >= 0)
+        //            selectedIconIndex--;
+        //        else
+        //            selectedIconIndex = allIcons.Length - 1;
+
+        //        if (allIcons[selectedIconIndex].gameObject.activeSelf)
+        //        {
+        //            break;
+        //        }
+        //    }
+        //}
+        //else
+        //{
+        //    selectedIconIndex = allIcons.Length - 1;
+
+        //    for (int i = 0; i < allIcons.Length; i++)
+        //    {
+        //        if (allIcons[selectedIconIndex].gameObject.activeSelf)
+        //        {
+        //            break;
+        //        }
+
+        //        selectedIconIndex--;
+        //    }
+
+        //}
     }
 
     private void HandleOpeningCycleMenu ()

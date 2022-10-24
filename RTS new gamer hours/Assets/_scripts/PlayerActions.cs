@@ -195,8 +195,10 @@ public class PlayerActions : MonoBehaviour
 
         if (respawnHoldCounter > 5)
         {
+            navMovement.SetNavAgentEnabled(false);
             transform.position = startPos;
             respawnHoldCounter = 0f;
+            navMovement.SetNavAgentEnabled(true);
         }
     }
 

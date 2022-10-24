@@ -21,6 +21,8 @@ public class MyUiButton : MonoBehaviour
     private float fillTimer = 0f;
     private bool isSelected = false;
     private bool isClicking = false;
+
+    public ButtonType GetButtonType => buttonType;
     public void SelectButton() => isSelected = true;
     public void DeSelectButton() => isSelected = false;
     public void SetIsClicking(bool isClicking) => this.isClicking = isClicking;

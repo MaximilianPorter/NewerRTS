@@ -19,8 +19,10 @@ public class UnitActions : MonoBehaviour
     [SerializeField] private LayerMask enemyMask;
 
 
-    [Header("Animated")]
+    [Header("Visuals")]
     [SerializeField] private Renderer[] bodyPartsNeedMaterial;
+
+    private GameObject healthBarInstance;
 
     [Header("Animations")]
     [SerializeField] private AnimatorOverrideController unitOverrideController;
@@ -68,6 +70,7 @@ public class UnitActions : MonoBehaviour
     public NavMeshMovement GetMovement => navMovement;
     public Attacking GetAttacking() => attacking;
     public Identifier GetIdentifier() => identifier;
+    public Health GetHealth => health;
     public GameObject GetOrderingObject => orderingObject;
     public bool GetIsSelected => isSelected;
     public void SetIsSelected(bool select) => isSelected = select;
@@ -173,6 +176,8 @@ public class UnitActions : MonoBehaviour
         {
             SwitchTeams(identifier.GetPlayerID, identifier.GetTeamID);
         }
+
+        
     }
 
     private void AssignActiveCell ()
@@ -358,7 +363,6 @@ public class UnitActions : MonoBehaviour
         animator.SetTrigger("Attack");
         attacking.SetAttackWaitTime(attackFireWaitTime / animator.speed * (unitStats.timeBetweenAttacks < 1f ? unitStats.timeBetweenAttacks : 1f)); // dont use Ienumerators, they suck
     }
-
     private void StartThrow (Vector3 target)
     {
         throwCounter = 0f;
@@ -368,16 +372,14 @@ public class UnitActions : MonoBehaviour
 
         tempThrowTarget = target;
     }
-
     private void Throw ()
     {
         hasThrown = true;
         Projectile torchInstance = Instantiate(torch, transform.position, Quaternion.identity).GetComponent<Projectile>();
         torchInstance.SetInfo(torchDamage, identifier.GetPlayerID, identifier.GetTeamID);
 
-        Projectile.SetTrajectory(torchInstance.GetRigidbody, tempThrowTarget, torchThrowForce, 0, 1f);
+        Projectile.SetTrajectory(torchInstance.GetRigidbody, tempThrowTarget, torchThrowForce, 100, 1f);
     }
-
     public void Die ()
     {
         RemoveUnitFromLists();
@@ -388,6 +390,7 @@ public class UnitActions : MonoBehaviour
         GameObject goreInstance = Instantiate(bloodGoreEffect, transform.position, Quaternion.identity);
         Destroy(goreInstance, 5f);
 
+        Destroy(healthBarInstance);
         Destroy(gameObject);
     }
 
@@ -415,7 +418,6 @@ public class UnitActions : MonoBehaviour
         lastCell.unitsInCell.Remove(identifier);
         PlayerHolder.RemoveUnit(identifier.GetPlayerID, this);
     }
-
     private void SetAnimations (AnimatorOverrideController newController)
     {
         animator.runtimeAnimatorController = newController;

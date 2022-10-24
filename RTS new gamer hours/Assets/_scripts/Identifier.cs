@@ -65,9 +65,14 @@ public class Identifier : MonoBehaviour
             }
         }
 
+    }
+
+    private void Start()
+    {
         if (TryGetComponent(out UnitActions attachedUnit))
             isTargetable = attachedUnit.GetIsTargetable;
         else if (TryGetComponent(out Building attachedBuilding))
             isTargetable = attachedBuilding.GetIsTargetable;
+        
     }
 }

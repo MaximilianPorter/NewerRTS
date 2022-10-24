@@ -126,6 +126,9 @@ public class MapGenerationManager : MonoBehaviour
 
     private void HandleChestSpawns ()
     {
+        if (!canSpawnChests)
+            return;
+
         chestSpawnCounter -= Time.deltaTime;
 
         if (chestSpawnCounter < 0)

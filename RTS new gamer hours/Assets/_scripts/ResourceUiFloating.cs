@@ -11,7 +11,6 @@ public class ResourceUiFloating : MonoBehaviour
     [SerializeField] private float moveUpSpeed = 3f;
 
     private float fadeCounter = 0f;
-    public bool isDoneFading => fadeCounter <= 0f;
 
     private TMP_Text[] amountTexts;
     private Image[] images;
@@ -19,7 +18,11 @@ public class ResourceUiFloating : MonoBehaviour
     private List<Color> textStartColors = new List<Color>();
     private List<Color> imageStartColors = new List<Color>();
 
-    private Vector3 startPos;
+    private Vector3 startWorldPos;
+    private float moveUpCounter = 0f;
+    private int playerCanvasID = -1;
+
+    public bool isDoneFading => fadeCounter <= 0f;
 
     public void RestartFade ()
     {
@@ -35,13 +38,11 @@ public class ResourceUiFloating : MonoBehaviour
             amountTexts[i].color = textStartColors[i];
         }
 
-        transform.position = startPos;
+        transform.position = startWorldPos;
     }
 
     private void Start()
     {
-        startPos = transform.position;
-
         for (int i = 0; i < amountTexts.Length; i++)
         {
             textStartColors.Add(amountTexts[i].color);
@@ -55,7 +56,14 @@ public class ResourceUiFloating : MonoBehaviour
 
     private void Update()
     {
-        transform.position += transform.up * Time.deltaTime * moveUpSpeed;
+        moveUpCounter += Time.deltaTime * moveUpSpeed;
+        if (playerCanvasID != -1)
+        {
+            transform.localPosition = PlayerHolder.WorldToCanvasLocalPoint(startWorldPos + Vector3.up * moveUpCounter, playerCanvasID);
+            transform.localScale = Vector3.one * PlayerHolder.ScaleWithScreenOrthoSizeMultiplier(playerCanvasID);
+        }
+
+        //transform.position += transform.up * Time.deltaTime * moveUpSpeed;
 
         fadeCounter -= Time.deltaTime;
 
@@ -70,10 +78,13 @@ public class ResourceUiFloating : MonoBehaviour
         }
 
     }
-    public void SetAmount(ResourceAmount amount)
+    public void SetDetails(ResourceAmount amount, Vector3 startWorldPos, int playerCanvasID = -1)
     {
         images = GetComponentsInChildren<Image>();
         amountTexts = GetComponentsInChildren<TMP_Text>();
+
+        this.startWorldPos = startWorldPos;
+        this.playerCanvasID = playerCanvasID;
 
 
         if (amount.GetFood <= 0)

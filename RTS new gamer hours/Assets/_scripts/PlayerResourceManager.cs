@@ -7,6 +7,7 @@ public class PlayerResourceManager : MonoBehaviour
 {
     public static PlayerResourceManager instance;
 
+    [SerializeField] private ResourceUiFloating floatingResourcePrefab;
     [SerializeField] private int debugStartResources = 0;
     //[SerializeField] private GameObject giveResourcesUiPrefab;
 
@@ -82,20 +83,19 @@ public class PlayerResourceManager : MonoBehaviour
         }
     }
 
-    //public void AddResourcesWithUI (int playerID, ResourceAmount amount, Vector3 worldPos)
-    //{
-    //    PlayerResourceAmounts[playerID].AddResources(amount);
+    public void AddResourcesWithUI(int playerID, ResourceAmount amount, Vector3 worldPos)
+    {
+        PlayerResourceAmounts[playerID].AddResources(amount);
 
-    //    ResourceUiFloating resourcesInstance = Instantiate(giveResourcesUiPrefab, playerCanvases[playerID].transform).GetComponent<ResourceUiFloating>();
-    //    //resourcesInstance.SetTarget(worldPos, playerID);
+        ResourceUiFloating resourcesInstance = Instantiate(floatingResourcePrefab, playerCanvases[playerID].transform.GetChild (0)); // .GetComponent<ResourceUiFloating>();
+        resourcesInstance.SetDetails(amount, worldPos, playerID);
 
-    //    Vector3 spawnPos = PlayerHolder.WorldToCanvasLocalPoint(worldPos, playerID);
-    //    resourcesInstance.transform.localPosition = spawnPos;
+        Destroy(resourcesInstance.gameObject, 5f);
 
-    //    resourcesInstance.SetAmount(amount);
+        //Vector3 spawnPos = PlayerHolder.WorldToCanvasLocalPoint(worldPos, playerID);
+        //resourcesInstance.transform.localPosition = spawnPos;
 
-    //    Destroy(resourcesInstance.gameObject, 5f);
-    //}
+    }
 
     private void HandleCheatCode ()
     {

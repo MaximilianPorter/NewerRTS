@@ -25,7 +25,8 @@ public class ResourceGenerator : MonoBehaviour
         if (counter < 0)
         {
             resourceVisualEffect.Play();
-            PlayerResourceManager.PlayerResourceAmounts[identifier.GetPlayerID].AddResources(amountToGive);
+            //PlayerResourceManager.PlayerResourceAmounts[identifier.GetPlayerID].AddResources(amountToGive);
+            PlayerResourceManager.instance.AddResourcesWithUI(identifier.GetPlayerID, amountToGive, transform.position);
 
             counter = timeToGive;
         }

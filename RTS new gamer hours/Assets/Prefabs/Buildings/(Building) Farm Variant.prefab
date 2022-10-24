@@ -2357,7 +2357,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   amountToGive:
-    food: 1
+    food: 5
     wood: 0
     stone: 0
   timeToGive: 5

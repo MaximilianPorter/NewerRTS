@@ -14,13 +14,13 @@ public class UnitStats : ScriptableObject
     public float health;
     public float damage;
     public float timeBetweenAttacks;
+    public float lookRange = 5f;
+    public float attackRange = 1f;
     public ResourceAmount cost;
 
     [Space(10)]
 
     public float slowMultiplierBlocking = 0.2f;
-    public float lookRange = 5f;
-    public float attackRange = 1f;
 
     [Header("Ranged")]
     public bool isRanged = false;

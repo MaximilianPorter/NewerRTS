@@ -377,7 +377,7 @@ MonoBehaviour:
   amountToGive:
     food: 0
     wood: 0
-    stone: 1
+    stone: 5
   timeToGive: 5
   resourceVisualEffect: {fileID: 6326366972244839618}
 --- !u!1001 &349429173150785011

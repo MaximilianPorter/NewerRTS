@@ -184,8 +184,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: RESUME
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 9fbbda2c23e1b334cb2fd0f8abee12aa, type: 2}
-  m_sharedMaterial: {fileID: 8375621965011977372, guid: 9fbbda2c23e1b334cb2fd0f8abee12aa, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: c5de7ad379ae8b84cbb4839dd6a9e939, type: 2}
+  m_sharedMaterial: {fileID: -7113903413108106197, guid: c5de7ad379ae8b84cbb4839dd6a9e939, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -209,8 +209,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 55.6
-  m_fontSizeBase: 55.6
+  m_fontSize: 40
+  m_fontSizeBase: 40
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18

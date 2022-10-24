@@ -16,13 +16,13 @@ MonoBehaviour:
   health: 0
   damage: 1000
   timeBetweenAttacks: 1
+  lookRange: 2
+  attackRange: 2
   cost:
     food: 0
     wood: 0
     stone: 0
   slowMultiplierBlocking: 0.2
-  lookRange: 5
-  attackRange: 1
   isRanged: 0
   projectileForce: 0
   accuracy: 0

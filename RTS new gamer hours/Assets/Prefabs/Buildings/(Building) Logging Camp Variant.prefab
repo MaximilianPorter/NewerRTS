@@ -218,7 +218,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   amountToGive:
     food: 0
-    wood: 1
+    wood: 5
     stone: 0
   timeToGive: 5
   resourceVisualEffect: {fileID: 8855432173476987549}

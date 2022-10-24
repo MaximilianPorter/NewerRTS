@@ -15,6 +15,7 @@ MonoBehaviour:
   buildingType: 9
   unitType: 0
   subsequentUpgrades: 0a000000
+  requiredBuildings: 19000000
   health: 1000
   cost:
     food: 0

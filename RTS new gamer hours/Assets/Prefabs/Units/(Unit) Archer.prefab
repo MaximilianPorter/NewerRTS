@@ -34,7 +34,7 @@ PrefabInstance:
     - target: {fileID: 4258379125407079058, guid: d14c90c55a5aa6b4293e3c16f01004b4, type: 3}
       propertyPath: bodyPartsNeedMaterial.Array.data[1]
       value: 
-      objectReference: {fileID: 8861966883770767057}
+      objectReference: {fileID: 8861966883770431725}
     - target: {fileID: 4258379125407079058, guid: d14c90c55a5aa6b4293e3c16f01004b4, type: 3}
       propertyPath: bodyPartsNeedMaterial.Array.data[2]
       value: 
@@ -45,7 +45,7 @@ PrefabInstance:
       objectReference: {fileID: 8861966883773693719}
     - target: {fileID: 5160717717918629767, guid: d14c90c55a5aa6b4293e3c16f01004b4, type: 3}
       propertyPath: m_Name
-      value: (Unit) Archer Variant
+      value: (Unit) Archer
       objectReference: {fileID: 0}
     - target: {fileID: 5160717717918629872, guid: d14c90c55a5aa6b4293e3c16f01004b4, type: 3}
       propertyPath: stats
@@ -121,6 +121,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 129660, guid: 04c79b5f6e9ebab48af48fdcf7b6d570, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 160892, guid: 04c79b5f6e9ebab48af48fdcf7b6d570, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -129,9 +133,17 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 165794, guid: 04c79b5f6e9ebab48af48fdcf7b6d570, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 179124, guid: 04c79b5f6e9ebab48af48fdcf7b6d570, type: 3}
       propertyPath: m_Name
       value: TT_Archer
+      objectReference: {fileID: 0}
+    - target: {fileID: 189178, guid: 04c79b5f6e9ebab48af48fdcf7b6d570, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 494462, guid: 04c79b5f6e9ebab48af48fdcf7b6d570, type: 3}
       propertyPath: m_RootOrder
@@ -195,14 +207,14 @@ PrefabInstance:
       objectReference: {fileID: 9100000, guid: b715938cc747b6e4a9768f423e81b88b, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 04c79b5f6e9ebab48af48fdcf7b6d570, type: 3}
+--- !u!23 &8861966883770431725 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 2356476, guid: 04c79b5f6e9ebab48af48fdcf7b6d570, type: 3}
+  m_PrefabInstance: {fileID: 8861966883768405009}
+  m_PrefabAsset: {fileID: 0}
 --- !u!23 &8861966883770765199 stripped
 MeshRenderer:
   m_CorrespondingSourceObject: {fileID: 2360222, guid: 04c79b5f6e9ebab48af48fdcf7b6d570, type: 3}
-  m_PrefabInstance: {fileID: 8861966883768405009}
-  m_PrefabAsset: {fileID: 0}
---- !u!23 &8861966883770767057 stripped
-MeshRenderer:
-  m_CorrespondingSourceObject: {fileID: 2366144, guid: 04c79b5f6e9ebab48af48fdcf7b6d570, type: 3}
   m_PrefabInstance: {fileID: 8861966883768405009}
   m_PrefabAsset: {fileID: 0}
 --- !u!23 &8861966883770775673 stripped

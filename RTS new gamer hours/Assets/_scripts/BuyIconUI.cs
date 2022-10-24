@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,12 +9,17 @@ using UnityEngine.UI;
 public class BuyIconUI : MonoBehaviour
 {
     [SerializeField] private string buttonName = "Name thing";
-    [SerializeField] private string buttonDescription = "Description of that same thing";
+    [SerializeField] [TextArea] private string buttonDescription = "Description of that same thing";
 
-    [SerializeField] private BuyIcons buttonType;
-    [SerializeField] private ResourceAmount cost;
     [SerializeField] private UnitStats overrideUnitCost;
     [SerializeField] private BuildingStats overrideBuildingCost;
+
+    [Header("Overridden Values")]
+    [SerializeField] private BuyIcons buttonType;
+    [SerializeField] private ResourceAmount cost;
+
+    [Space(10)]
+
     [SerializeField] private Color normalColor = Color.white;
     [SerializeField] private Color disabledColor = new Color(0, 0, 0, 0.5f);
     [SerializeField] private Button.ButtonClickedEvent buttonAction = new Button.ButtonClickedEvent();
@@ -22,6 +28,7 @@ public class BuyIconUI : MonoBehaviour
     private Image[] images;
     private Identifier identifier;
 
+    public BuildingStats GetOverrideBuilding => overrideBuildingCost;
     public bool GetIsAffordable => isAffordable;
     public ResourceAmount GetCost => cost;
     public string GetButtonName => buttonName;
@@ -29,9 +36,14 @@ public class BuyIconUI : MonoBehaviour
     //public Resources GetCost => cost;
     public BuyIcons GetButtonType => buttonType;
 
+    public Color GetNormalColor => normalColor;
+    public Color GetDisabledColor => disabledColor;
+
     private void Awake()
     {
         identifier = GetComponent<Identifier>();
+
+        BuyIconSpriteManager.AddTypeOfSprite(buttonType, GetComponent<Image>().sprite);
     }
 
     private void Start()
@@ -49,11 +61,32 @@ public class BuyIconUI : MonoBehaviour
 
     private void Update()
     {
-        isAffordable = PlayerResourceManager.PlayerResourceAmounts[identifier.GetPlayerID].HasResources(cost);
+        bool hasRequiredBuildings = overrideBuildingCost == null ? true : HasRequiredBuildings();
+
+
+        isAffordable = PlayerResourceManager.PlayerResourceAmounts[identifier.GetPlayerID].HasResources(cost) && hasRequiredBuildings;
+
         for (int i = 0; i < images.Length; i++)
         {
             images[i].color = isAffordable ? normalColor : disabledColor;
         }
+    }
+
+    private bool HasRequiredBuildings ()
+    {
+        int hasBuildingAmount = 0;
+        for (int i = 0; i < overrideBuildingCost.requiredBuildings.Length; i++)
+        {
+            if (PlayerHolder.GetBuildings(identifier.GetPlayerID).Any(building => building.GetStats.buildingType == overrideBuildingCost.requiredBuildings[i]))
+            {
+                hasBuildingAmount++;
+            }
+        }
+
+        if (hasBuildingAmount == overrideBuildingCost.requiredBuildings.Length)
+            return true;
+
+        return false;
     }
 
     /// <summary>
@@ -62,6 +95,9 @@ public class BuyIconUI : MonoBehaviour
     /// <returns></returns>
     public bool TryClickButton ()
     {
+        if (!isAffordable)
+            return false;
+
         if (PlayerResourceManager.PlayerResourceAmounts[identifier.GetPlayerID].HasResources (cost))
         {
             PlayerResourceManager.PlayerResourceAmounts[identifier.GetPlayerID].SubtractResoruces(cost);
@@ -79,6 +115,9 @@ public class BuyIconUI : MonoBehaviour
     /// <returns></returns>
     public ResourceAmount TryClickButtonReturnCost()
     {
+        if (!isAffordable)
+            return null;
+
         if (PlayerResourceManager.PlayerResourceAmounts[identifier.GetPlayerID].HasResources(cost))
         {
             buttonAction.Invoke();

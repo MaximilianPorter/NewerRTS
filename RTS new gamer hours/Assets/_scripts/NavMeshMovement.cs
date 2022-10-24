@@ -38,12 +38,17 @@ public class NavMeshMovement : MonoBehaviour
     public float GetBaseOffset => agent.baseOffset;
     public Transform GetLookTarget => lookAtTransform;
     public float GetMoveSpeed01 => Mathf.Clamp01(agent.velocity.sqrMagnitude / (moveSpeed * moveSpeed));
-    public Vector3 GetDestination => agent.destination;
+    public Vector3 GetDestination => agent == null || agent.enabled == false ? transform.position : agent.destination;
+    public void SetNavAgentEnabled(bool isEnabled) => agent.enabled = isEnabled;
 
     private void Awake()
     {
         //rb = GetComponent<Rigidbody>();
         agent = GetComponent<NavMeshAgent>();
+        if (disableMovement)
+        {
+            agent.enabled = false;
+        }
     }
 
     private void Start()
@@ -72,6 +77,9 @@ public class NavMeshMovement : MonoBehaviour
 
     public void SetDestination (Vector3 target)
     {
+        if (agent == null || agent.enabled == false)
+            return;
+
         if (disableMovement)
             return;
 
@@ -107,6 +115,10 @@ public class NavMeshMovement : MonoBehaviour
 
     public void ResetDestination ()
     {
+        if (agent == null || agent.enabled == false)
+            return;
+
+
         // if we have a loaded position, we can't reset the destination yet
         if (loadedNextPos != null)
         {

@@ -42,11 +42,11 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 955535181653416307}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 2, y: 1, z: 1}
-  m_Center: {x: 0, y: 0.5, z: 0}
+  m_Size: {x: 1, y: 0.7, z: 0.7}
+  m_Center: {x: 0, y: 0.35, z: 0}
 --- !u!114 &955535181653416304
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -64,7 +64,7 @@ MonoBehaviour:
     wood: 5
     stone: 5
   resetTime: 0
-  resourceSpawnEffect: {fileID: 0}
+  resourceSpawnEffect: {fileID: 2919648099748449460, guid: 348a20da6c9163547bc0f0c0afbaf25a, type: 3}
   resourceSpawnOffset: {x: 0, y: 0, z: 0}
   canBeDestroyed: 1
   destroyAfterHits: 1
@@ -82,6 +82,18 @@ PrefabInstance:
     - target: {fileID: 412872, guid: f5df14fae1373f14db8344cb2024e81f, type: 3}
       propertyPath: m_RootOrder
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 412872, guid: f5df14fae1373f14db8344cb2024e81f, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 412872, guid: f5df14fae1373f14db8344cb2024e81f, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 412872, guid: f5df14fae1373f14db8344cb2024e81f, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 412872, guid: f5df14fae1373f14db8344cb2024e81f, type: 3}
       propertyPath: m_LocalPosition.x

@@ -388,15 +388,16 @@ GameObject:
   m_Component:
   - component: {fileID: 5160717717918629883}
   - component: {fileID: 8316945602792400177}
-  - component: {fileID: 82781383405419297}
+  - component: {fileID: 5160717717918629884}
   - component: {fileID: 5160717717918629887}
   - component: {fileID: 4258379125407079058}
+  - component: {fileID: 5160717717918629886}
   - component: {fileID: 5160717717918629872}
   - component: {fileID: 1556448994491191459}
   - component: {fileID: 8011053019397688160}
   - component: {fileID: 3555590683824183388}
   m_Layer: 10
-  m_Name: (Unit) Swordsman
+  m_Name: (Unit) [DEPRICATED] Swordsman old
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -436,7 +437,7 @@ CapsuleCollider:
   m_Height: 1.1
   m_Direction: 1
   m_Center: {x: 0, y: -0.2, z: 0}
---- !u!54 &82781383405419297
+--- !u!54 &5160717717918629884
 Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -444,10 +445,10 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5160717717918629767}
   serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 1
+  m_Mass: 50
+  m_Drag: 2
   m_AngularDrag: 1
-  m_UseGravity: 0
+  m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
   m_Constraints: 80
@@ -466,7 +467,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isParent: 1
   isPlayer: 0
-  playerID: 1
+  playerID: 0
   teamID: 1
 --- !u!114 &4258379125407079058
 MonoBehaviour:
@@ -480,25 +481,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffd228ecd1deaa1479d38db5ae9eeb9e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isSelectable: 1
-  isTargetable: 1
-  diesOnTeamSwitch: 0
   selectedGO: {fileID: 1462805977683875834}
   orderingObject: {fileID: 7331517528706905602}
   unitStats: {fileID: 11400000, guid: 9267eb36c574b344793bc6dbf7853576, type: 2}
   debugDie: 0
   bloodSplatterImage: {fileID: 3758024593050388391, guid: 7f803312f365dcd408609b38989a661d, type: 3}
   bloodGoreEffect: {fileID: 7442719172150680357, guid: ded24b2bedd49f9409b5a3d3ef418441, type: 3}
-  enemyMask:
-    serializedVersion: 2
-    m_Bits: 5120
+  keepDistFromOthers: 0.5
   bodyPartsNeedMaterial:
   - {fileID: 3819548900116704623}
   - {fileID: 3819548900109495827}
   - {fileID: 3819548900109505567}
   unitOverrideController: {fileID: 22100000, guid: 177688c0ea202c8409db64cedf786bb2, type: 2}
   animator: {fileID: 3819548900121083419}
-  walkAnimSpeed: 0.8
+  walkAnimSpeed: 1
   attackAnimSpeed: 1
   attackFireWaitTime: 0.4
   torch: {fileID: 5640332772760401253, guid: 696cdb4dded55164ea4fd9ff66f75923, type: 3}
@@ -507,6 +503,34 @@ MonoBehaviour:
   timeBetweenThrows: 3
   throwAnimSpeed: 1.5
   throwFireWaitTime: 1.1
+--- !u!114 &5160717717918629886
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5160717717918629767}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5223adbcc609f32419ada2ff090c3c56, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  stats: {fileID: 11400000, guid: 9267eb36c574b344793bc6dbf7853576, type: 2}
+  wallHitMask:
+    serializedVersion: 2
+    m_Bits: 64
+  castDist: 3
+  rayCount: 10
+  rotationSpeed: 10
+  jumpForce: 30
+  inAirDrag: 0
+  groundedDrag: 5
+  extraGravity: 20
+  groundMask:
+    serializedVersion: 2
+    m_Bits: 576
+  groundedMat: {fileID: 13400000, guid: ba57af77d73e98341882b5109378deb2, type: 2}
+  inAirMat: {fileID: 13400000, guid: e1627cd15cd8fa24ebfd3a1951c282aa, type: 2}
 --- !u!114 &5160717717918629872
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -525,6 +549,9 @@ MonoBehaviour:
   rockHitEffect: {fileID: 0}
   debugShoot: 0
   firePoint: {fileID: 1871431924477064749}
+  enemyMask:
+    serializedVersion: 2
+    m_Bits: 5120
 --- !u!114 &1556448994491191459
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -539,7 +566,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentHealth: 100
   maxHealth: 100
-  invincible: 0
 --- !u!114 &8011053019397688160
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -552,10 +578,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f25e431ff0de78a4ab313e6178c066dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stats: {fileID: 11400000, guid: 9267eb36c574b344793bc6dbf7853576, type: 2}
-  standingRotSpeed: 25
-  onlyLookWhenStill: 1
-  disableMovement: 0
 --- !u!195 &3555590683824183388
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -565,16 +587,16 @@ NavMeshAgent:
   m_GameObject: {fileID: 5160717717918629767}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.3
+  m_Radius: 0.5
   m_Speed: 3.5
   m_Acceleration: 20
   avoidancePriority: 50
-  m_AngularSpeed: 359
+  m_AngularSpeed: 1000
   m_StoppingDistance: 0.02
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
-  m_Height: 1.2
+  m_Height: 2
   m_BaseOffset: 0.75
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4

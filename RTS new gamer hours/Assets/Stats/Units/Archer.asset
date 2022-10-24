@@ -14,15 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   unitType: 14
   health: 75
-  damage: 20
+  damage: 5
   timeBetweenAttacks: 2
   cost:
-    food: 8
+    food: 15
     wood: 0
     stone: 0
   slowMultiplierBlocking: 0.2
-  lookRange: 7
-  attackRange: 7
+  lookRange: 6
+  attackRange: 6
   isRanged: 1
   projectileForce: 15
   accuracy: 70

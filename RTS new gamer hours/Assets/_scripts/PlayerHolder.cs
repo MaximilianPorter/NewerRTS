@@ -1,3 +1,4 @@
+using Rewired;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,9 @@ public class PlayerHolder : MonoBehaviour
 
     // THESE NEED TO BE A CHILD OF 1 GAMEOBJECT OR ELSE IT WILL REORDER THEM
     private static Camera[] playerCams = new Camera[4];
+    private static float[] playerCamStartOrthoSize = new float[4];
     private static RectTransform[] playerCanvasRects = new RectTransform[4];
+    public static RectTransform[] GetPlayerCanvasRects => playerCanvasRects;
 
     private static List<List<Building>> playerBuildings = new List<List<Building>>();
     public static List<Building> GetBuildings (int playerID)
@@ -80,6 +83,8 @@ public class PlayerHolder : MonoBehaviour
 
             playerCanvasRects[i] = playerGameObjects.FirstOrDefault(player => player.transform.parent.GetComponent<Identifier>().GetPlayerID == i)
                 .transform.parent.GetComponentInChildren<Canvas>().GetComponent<RectTransform>();
+
+            playerCamStartOrthoSize[i] = playerCams[i].orthographicSize;
         }
     }
 
@@ -106,9 +111,14 @@ public class PlayerHolder : MonoBehaviour
         Vector2 screenPoint = playerCams[playerID].WorldToScreenPoint(worldPos);
         if (RectTransformUtility.ScreenPointToLocalPointInRectangle(playerCanvasRects[playerID], screenPoint, playerCams[playerID], out Vector2 localPoint))
         {
-            return localPoint;
+            return localPoint / (playerCams[playerID].orthographicSize / playerCamStartOrthoSize[playerID]);
         }
 
         return Vector2.zero;
+    }
+
+    public static float ScaleWithScreenOrthoSizeMultiplier (int playerID)
+    {
+        return (playerCamStartOrthoSize[playerID] / playerCams[playerID].orthographicSize);
     }
 }

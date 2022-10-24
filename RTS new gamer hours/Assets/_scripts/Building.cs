@@ -4,6 +4,7 @@ using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(Identifier))]
+[RequireComponent(typeof(Health))]
 public class Building : MonoBehaviour
 {
     [SerializeField] private bool isTargetable = true;
@@ -25,6 +26,8 @@ public class Building : MonoBehaviour
 
     private Health health;
 
+
+    public Health GetHealth => health;
     public void SetIsTargetable(bool isTargetable) => this.isTargetable = isTargetable;
     public bool GetIsTargetable => isTargetable;
     public void SetMainSpawnBuilding(bool isMainSpawnBuilding) => this.isMainSpawnBuilding = isMainSpawnBuilding;
