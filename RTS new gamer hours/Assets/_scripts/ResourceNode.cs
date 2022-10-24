@@ -9,6 +9,10 @@ public class ResourceNode : MonoBehaviour
     [SerializeField] private float resetTime = 0f;
     [SerializeField] private GameObject resourceSpawnEffect;
     [SerializeField] private Vector3 resourceSpawnOffset;
+    [SerializeField] private bool canBeDestroyed = false;
+    [SerializeField] private int destroyAfterHits = 3;
+
+    private int currentHits = 0;
 
     private float resetCounter = 0f;
 
@@ -31,6 +35,7 @@ public class ResourceNode : MonoBehaviour
                 Destroy(resourceSpawnInstance, 5f);
             }
             returnedAmount = amount;
+            currentHits++;
             return true;
         }
 
@@ -42,5 +47,15 @@ public class ResourceNode : MonoBehaviour
     private void Update()
     {
         resetCounter -= Time.deltaTime;
+
+        if (currentHits >= destroyAfterHits && canBeDestroyed)
+        {
+            if (TryGetComponent(out TreeShake tree))
+            {
+                tree.KillTree();
+                return;
+            }
+            Destroy(gameObject);
+        }
     }
 }

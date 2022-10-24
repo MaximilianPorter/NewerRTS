@@ -25,7 +25,7 @@ public class UnitStats : ScriptableObject
     [Header("Ranged")]
     public bool isRanged = false;
     public float projectileForce;
-    [Tooltip("at most how far off the projectile will be")]
+    [Tooltip("a percentage chance for if they will hit")]
     public float accuracy = 0f;
     public bool leadsTarget = false;
     [Range(0f, 1f)]public float projectileArch = 0.5f;

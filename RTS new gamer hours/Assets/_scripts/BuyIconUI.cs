@@ -96,6 +96,7 @@ public enum BuyIcons
 
     // DEFAULT
     NONE = 0,
+    PLAYER = 27,
 
     // BUILDINGS
     Building_CASTLE = 22,
@@ -110,8 +111,8 @@ public enum BuyIcons
 
     Building_Workshop = 8,
 
-    Building_Tower = 9,
-    Building_TowerPlus = 10,
+    Building_TowerWood = 9,
+    Building_TowerStone = 10,
 
     Building_StorageYard = 26,
     Building_Farm = 11,
@@ -133,6 +134,6 @@ public enum BuyIcons
     Mage = 18,
     Spearman = 19,
 
-    // highest number: 26
-    // last changed on 10/23/22 - 12:54am
+    // highest number: 27
+    // last changed on 10/23/22 - 2:51 am
 }

@@ -15,7 +15,7 @@ MonoBehaviour:
   buildingType: 26
   unitType: 0
   subsequentUpgrades: 0b0000001900000018000000
-  health: 100
+  health: 200
   cost:
     food: 40
     wood: 10

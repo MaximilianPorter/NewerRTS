@@ -562,7 +562,7 @@ public class PlayerBuilding : MonoBehaviour
     private void BuildBuilding (Building building)
     {
         // place building
-        Vector3 buildingPos = hoveringBuilding ? hoveringBuilding.transform.position : new Vector3(transform.position.x, 0f, transform.position.z);
+        Vector3 buildingPos = hoveringBuilding ? hoveringBuilding.transform.position : new Vector3(placingBuildingVisual.transform.position.x, 0f, placingBuildingVisual.transform.position.z);
         Identifier placedBuildingIdentity = Instantiate(building.gameObject, buildingPos, Quaternion.identity).GetComponent<Identifier>();
 
         // set team and player ID of building

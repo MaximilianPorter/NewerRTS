@@ -15,6 +15,11 @@ MonoBehaviour:
   buildingType: 6
   unitType: 17
   subsequentUpgrades: 0d000000
+  health: 200
+  cost:
+    food: 0
+    wood: 1000
+    stone: 1000
   interactionRadius: 2
   buildRadius: 5
   population: 2

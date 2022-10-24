@@ -45,6 +45,9 @@ public class PlayerActions : MonoBehaviour
     private bool isBlocking = false;
     private bool isSprinting = false;
 
+    private Vector3 startPos;
+    private float respawnHoldCounter = 0f;
+
     private void Awake()
     {
         identifier = GetComponent<Identifier>();
@@ -66,6 +69,8 @@ public class PlayerActions : MonoBehaviour
         sprintCounter = timeToRegenSprint;
         sprintRenderers = new Image[2] { sprintFill, sprintFill.transform.parent.GetComponent<Image>() };
         startSprintRendColors = new Color[2] { sprintFill.color, sprintFill.transform.parent.GetComponent<Image>().color };
+
+        startPos = transform.position;
     }
 
     private void Update()
@@ -73,6 +78,8 @@ public class PlayerActions : MonoBehaviour
         moveInput = new Vector3(PlayerInput.GetPlayers[identifier.GetPlayerID].GetAxis(PlayerInput.GetInputMoveHorizontal),
                 0f,
                 PlayerInput.GetPlayers[identifier.GetPlayerID].GetAxis(PlayerInput.GetInputMoveVertical));
+
+        HandleRespawn();
 
         // if there's a game winner, don't update
         if (GameWinManager.instance != null)
@@ -165,13 +172,31 @@ public class PlayerActions : MonoBehaviour
         if (unitSelection.GetHasTroopsSelected)
             return;
 
-        if (PlayerInput.GetPlayers[identifier.GetPlayerID].GetButtonShortPress(PlayerInput.GetInputSprint) && sprintCounter > 0 && navMovement.GetMoveSpeed01 > 0.1f)
+        if (PlayerInput.GetPlayers[identifier.GetPlayerID].GetButtonDown(PlayerInput.GetInputSprint) && sprintCounter > 0 && navMovement.GetMoveSpeed01 > 0.5f)
         {
-            isSprinting = true;
+            isSprinting = !isSprinting;
+        }
+        else if (moveInput.magnitude <= 0.5f || sprintCounter <= 0)
+        {
+            isSprinting = false;
+        }
+    }
+
+    private void HandleRespawn ()
+    {
+        if (PlayerInput.GetPlayers[identifier.GetPlayerID].GetButton(PlayerInput.GetInputRespawn))
+        {
+            respawnHoldCounter += Time.deltaTime;
         }
         else
         {
-            isSprinting = false;
+            respawnHoldCounter = 0f;
+        }
+
+        if (respawnHoldCounter > 5)
+        {
+            transform.position = startPos;
+            respawnHoldCounter = 0f;
         }
     }
 

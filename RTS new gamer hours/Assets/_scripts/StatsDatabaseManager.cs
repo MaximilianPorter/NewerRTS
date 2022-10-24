@@ -65,24 +65,24 @@ public class StatsDatabaseManager : MonoBehaviour
     private IEnumerator SetUnitDetails(int i)
     {
         // health
-        yield return StartCoroutine(UpdateUnitFloatDetails("Units", "Health", unitStats[i].health, i, unitStats[i].unitType, tempUnitDatabaseValues));
+        yield return StartCoroutine(UpdateFloatDetails("Units", "Health", unitStats[i].health, i, unitStats[i].unitType, tempUnitDatabaseValues));
         unitStats[i].health = tempUnitDatabaseValues[i].FirstOrDefault(databaseValue => databaseValue.statName == "Health").floatValue;
 
         // damage
-        yield return StartCoroutine(UpdateUnitFloatDetails("Units", "Damage", unitStats[i].damage, i, unitStats[i].unitType, tempUnitDatabaseValues));
+        yield return StartCoroutine(UpdateFloatDetails("Units", "Damage", unitStats[i].damage, i, unitStats[i].unitType, tempUnitDatabaseValues));
         unitStats[i].damage = tempUnitDatabaseValues[i].FirstOrDefault(databaseValue => databaseValue.statName == "Damage").floatValue;
 
         // move speed
-        yield return StartCoroutine(UpdateUnitFloatDetails("Units", "Move Speed", unitStats[i].maxMoveSpeed, i, unitStats[i].unitType, tempUnitDatabaseValues));
+        yield return StartCoroutine(UpdateFloatDetails("Units", "Move Speed", unitStats[i].maxMoveSpeed, i, unitStats[i].unitType, tempUnitDatabaseValues));
         unitStats[i].maxMoveSpeed = tempUnitDatabaseValues[i].FirstOrDefault(databaseValue => databaseValue.statName == "Move Speed").floatValue;
 
         // time between attacks
-        yield return StartCoroutine(UpdateUnitFloatDetails("Units", "Time Between Attacks", unitStats[i].timeBetweenAttacks, i, unitStats[i].unitType, tempUnitDatabaseValues));
+        yield return StartCoroutine(UpdateFloatDetails("Units", "Time Between Attacks", unitStats[i].timeBetweenAttacks, i, unitStats[i].unitType, tempUnitDatabaseValues));
         unitStats[i].timeBetweenAttacks = tempUnitDatabaseValues[i].FirstOrDefault(databaseValue => databaseValue.statName == "Time Between Attacks").floatValue;
 
         // cost
         Vector3 costToVector3 = new Vector3(unitStats[i].cost.GetFood, unitStats[i].cost.GetWood, unitStats[i].cost.GetStone);
-        yield return StartCoroutine(UpdateUnitVector3Details("Units", "Cost", costToVector3, i, unitStats[i].unitType, tempUnitDatabaseValues));
+        yield return StartCoroutine(UpdateVector3Details("Units", "Cost", costToVector3, i, unitStats[i].unitType, tempUnitDatabaseValues));
         Vector3 costVector = tempUnitDatabaseValues[i].FirstOrDefault(databaseValue => databaseValue.statName == "Cost").vectorValue;
         unitStats[i].cost = new ResourceAmount((int)costVector.x, (int)costVector.y, (int)costVector.z);
     }
@@ -90,17 +90,17 @@ public class StatsDatabaseManager : MonoBehaviour
     private IEnumerator SetBuildingDetails(int i)
     {
         // health
-        yield return StartCoroutine(UpdateUnitFloatDetails("Buildings", "Health", buildingStats[i].health, i, buildingStats[i].buildingType, tempBuildingDatabaseValues));
+        yield return StartCoroutine(UpdateFloatDetails("Buildings", "Health", buildingStats[i].health, i, buildingStats[i].buildingType, tempBuildingDatabaseValues));
         buildingStats[i].health = tempBuildingDatabaseValues[i].FirstOrDefault(databaseValue => databaseValue.statName == "Health").floatValue;
 
         // cost
         Vector3 costToVector3 = new Vector3(buildingStats[i].cost.GetFood, buildingStats[i].cost.GetWood, buildingStats[i].cost.GetStone);
-        yield return StartCoroutine(UpdateUnitVector3Details("Buildings", "Cost", costToVector3, i, buildingStats[i].buildingType, tempBuildingDatabaseValues));
+        yield return StartCoroutine(UpdateVector3Details("Buildings", "Cost", costToVector3, i, buildingStats[i].buildingType, tempBuildingDatabaseValues));
         Vector3 costVector = tempBuildingDatabaseValues[i].FirstOrDefault(databaseValue => databaseValue.statName == "Cost").vectorValue;
         buildingStats[i].cost = new ResourceAmount((int)costVector.x, (int)costVector.y, (int)costVector.z);
     }
 
-    public IEnumerator UpdateUnitFloatDetails(string categoryName, string variableName, float defaultValue, int index, BuyIcons statsType, DatabaseValue[][] tempDatabase)
+    public IEnumerator UpdateFloatDetails(string categoryName, string variableName, float defaultValue, int index, BuyIcons statsType, DatabaseValue[][] tempDatabase)
     {
         // try to get the value from the database
         var GetDBTask = reference.Child(categoryName).Child(statsType.ToString()).Child(variableName).GetValueAsync();
@@ -140,7 +140,7 @@ public class StatsDatabaseManager : MonoBehaviour
         }
     }
 
-    public IEnumerator UpdateUnitVector3Details(string categoryName, string variableName, Vector3 defaultValue, int index, BuyIcons statsType, DatabaseValue[][] tempDatabase)
+    public IEnumerator UpdateVector3Details(string categoryName, string variableName, Vector3 defaultValue, int index, BuyIcons statsType, DatabaseValue[][] tempDatabase)
     {
         // try to get the value from the database
         var GetDBTask = reference.Child(categoryName).Child(statsType.ToString()).Child(variableName).GetValueAsync();

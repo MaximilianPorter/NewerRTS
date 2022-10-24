@@ -52,6 +52,14 @@ public class MapGenerationManager : MonoBehaviour
     private int highPoints = 3;
     private readonly Vector3 TileSize = new Vector3(30f, 6f, 30f);
 
+    [Header("Chests")]
+    [SerializeField] private bool canSpawnChests = true;
+    [SerializeField] private GameObject chestPrefab;
+    [SerializeField] private Vector2 timeBetweenChestSpawns = new Vector2(15f, 30f);
+    [SerializeField] private Vector2 spawnArea = new Vector2(50f, 50f);
+
+    private float chestSpawnCounter = 0f;
+
     [SerializeField] private MapSpawnGroup[] spawnGroups;
 
     private List<SpawnObject> spawnedObjects = new List<SpawnObject>();
@@ -110,6 +118,23 @@ public class MapGenerationManager : MonoBehaviour
 
         // remove null objects (destroyed objects)
         spawnedObjects.Remove(spawnedObjects.FirstOrDefault(spawnedObject => spawnedObject.prefab == null));
+
+        // spawn chests
+        HandleChestSpawns();
+
+    }
+
+    private void HandleChestSpawns ()
+    {
+        chestSpawnCounter -= Time.deltaTime;
+
+        if (chestSpawnCounter < 0)
+        {
+            // spawn chest
+            chestSpawnCounter = Random.Range(timeBetweenChestSpawns.x, timeBetweenChestSpawns.y);
+            Vector3 pos = new Vector3(Random.Range(-spawnArea.x, spawnArea.x), 0f, Random.Range(-spawnArea.y, spawnArea.y));
+            GameObject chestInstance = Instantiate(chestPrefab, pos, Quaternion.identity);
+        }
     }
 
     private void SpawnGroup (MapSpawnGroup group)

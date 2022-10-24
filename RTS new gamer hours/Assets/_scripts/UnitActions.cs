@@ -97,11 +97,14 @@ public class UnitActions : MonoBehaviour
         }
 
 
-        // add unit to list of all units for player
-        PlayerHolder.AddUnit(identifier.GetPlayerID, this);
+        if (isSelectable)
+        {
+            // add unit to list of all units for player
+            PlayerHolder.AddUnit(identifier.GetPlayerID, this);
+        }
 
-        transform.SetParent(null);
-        identifier.SetIsParent(true);
+        //transform.SetParent(null);
+        //identifier.SetIsParent(true);
     }
 
     private void Update()
@@ -406,8 +409,8 @@ public class UnitActions : MonoBehaviour
 
     private void RemoveUnitFromLists ()
     {
-        //if (!isselectable)
-        //    return;
+        if (!isSelectable)
+            return;
 
         lastCell.unitsInCell.Remove(identifier);
         PlayerHolder.RemoveUnit(identifier.GetPlayerID, this);

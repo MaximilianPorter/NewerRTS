@@ -43,15 +43,19 @@ public class RespawnUnit : MonoBehaviour
     {
         // spawn unit
 
-        UnitActions unitInstance = Instantiate(unitPrefab, spawnPoint.position, Quaternion.identity).GetComponent<UnitActions>();
+        UnitActions unitInstance = Instantiate(unitPrefab, spawnPoint.position, Quaternion.identity, transform).GetComponent<UnitActions>();
         spawnUnitInstances.Add(unitInstance);
 
         unitInstance.gameObject.SetActive(true); // i think when i spawn them as UnitActions, they spawn disabled
 
+        Identifier unitID = unitInstance.GetComponent<Identifier>();
+
         // set team / ownership stuff
-        unitInstance.GetComponent<Identifier>().SetTeamID(identifier.GetTeamID);
-        unitInstance.GetComponent<Identifier>().SetPlayerID(identifier.GetPlayerID);
+        unitID.SetTeamID(identifier.GetTeamID);
+        unitID.SetPlayerID(identifier.GetPlayerID);
+        unitID.SetIsParent(false);
         unitInstance.SetIsSelectable(false);
+        unitInstance.SetIsTargetable(false);
 
         // first rally point
         unitInstance.GetMovement.SetDestination(spawnPoint.position + new Vector3(Random.Range(-0.01f, 0.01f), 0f, Random.Range(-0.01f, 0.01f)));

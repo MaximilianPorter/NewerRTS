@@ -15,7 +15,6 @@ public class PlayerHolder : MonoBehaviour
     private static RectTransform[] playerCanvasRects = new RectTransform[4];
 
     private static List<List<Building>> playerBuildings = new List<List<Building>>();
-
     public static List<Building> GetBuildings (int playerID)
     {
         return playerBuildings[playerID];
@@ -64,7 +63,6 @@ public class PlayerHolder : MonoBehaviour
     {
         playerUnits[playerID].Remove(unit);
     }
-
 
 
 

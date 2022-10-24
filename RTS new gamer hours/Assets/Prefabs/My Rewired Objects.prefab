@@ -533,6 +533,15 @@ MonoBehaviour:
       _behaviorId: 0
       _userAssignable: 1
       _categoryId: 0
+    - _id: 23
+      _name: Respawn
+      _type: 1
+      _descriptiveName: Respawn
+      _positiveDescriptiveName: 
+      _negativeDescriptiveName: 
+      _behaviorId: 0
+      _userAssignable: 1
+      _categoryId: 0
     actionCategories:
     - _name: Default
       _descriptiveName: Default
@@ -542,7 +551,7 @@ MonoBehaviour:
     actionCategoryMap:
       list:
       - categoryId: 0
-        actionIds: 000000000100000002000000030000000e000000040000000500000006000000070000000800000009000000130000000a0000000b0000000c0000000d0000000f000000120000001100000010000000140000001500000016000000
+        actionIds: 000000000100000002000000030000000e000000040000000500000006000000070000000800000009000000130000000a0000000b0000000c0000000d0000000f00000012000000110000001000000014000000150000001600000017000000
     inputBehaviors:
     - _id: 0
       _name: Default
@@ -833,7 +842,18 @@ MonoBehaviour:
       - _actionCategoryId: 0
         _actionId: 22
         _elementType: 1
-        _elementIdentifierId: 4
+        _elementIdentifierId: 17
+        _axisRange: 0
+        _invert: 0
+        _axisContribution: 0
+        _keyboardKeyCode: 0
+        _modifierKey1: 0
+        _modifierKey2: 0
+        _modifierKey3: 0
+      - _actionCategoryId: 0
+        _actionId: 23
+        _elementType: 1
+        _elementIdentifierId: 18
         _axisRange: 0
         _invert: 0
         _axisContribution: 0
@@ -848,7 +868,7 @@ MonoBehaviour:
     controllerMapLayoutManagerRuleSets: []
     controllerMapEnablerRuleSets: []
     playerIdCounter: 5
-    actionIdCounter: 23
+    actionIdCounter: 24
     actionCategoryIdCounter: 1
     inputBehaviorIdCounter: 1
     mapCategoryIdCounter: 1

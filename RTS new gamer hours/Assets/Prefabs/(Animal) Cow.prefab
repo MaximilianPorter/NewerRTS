@@ -84,7 +84,6 @@ MonoBehaviour:
   timeBetweenDecisions: {x: 3, y: 10}
   roamRange: 5
   maxMoveSpeed: 1
-  resourceGiveAmt: 5
   deathEffect: {fileID: 2027223507947095810, guid: 76dd049680ad83042b2b2cc4c15c5286, type: 3}
   spawnEffect: {fileID: 4071796513243966190, guid: 58d364a7c08926c4cbe455f3f53b29ef, type: 3}
   animator: {fileID: 7134645102791613346}
@@ -156,7 +155,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   amount:
-    food: 5
+    food: 3
     wood: 0
     stone: 0
   resetTime: 0

@@ -136,10 +136,15 @@ public class Projectile : MonoBehaviour
     /// <summary>
     /// Applies the force to the Rigidbody such that it will land, if unobstructed, at the target position.  The arch [0, 1] determines the percent of arch to provide between the minimum and maximum arch.  If target is out of range, it will fail to launch and return false; otherwise, it will launch and return true.  This only takes the Y gravity into account, and X gravity will not affect the trajectory.
     /// </summary>
-    /// <param name="accuracy">determines between random[-accuracy, +accuracy] how far off the shot will be on the x and z axes</param>
+    /// <param name="accuracy">a percentage value between [0, 100] that randomly determins if the shot will hit</param>
     public static bool SetTrajectory(Rigidbody rigidbody, Vector3 target, float force, float accuracy = 0f, float arch = 0.5f, Vector3? targetVelocity = null)
     {
-        target += new Vector3(Random.Range(-accuracy, accuracy), Random.Range(-accuracy, accuracy), Random.Range(-accuracy, accuracy));
+        Vector3 distanceMissed = new Vector3(Random.Range(-2f, 2f), Random.Range(-2f, 2f), Random.Range(-2f, 2f));
+
+        if (Random.Range(0f, 100f) < accuracy)
+            distanceMissed = Vector3.zero;
+
+        target += distanceMissed;
         float targetVelX = targetVelocity != null ? targetVelocity.GetValueOrDefault().x : 0f;
         float targetVelY = targetVelocity != null ? targetVelocity.GetValueOrDefault().y : 0f;
         float targetVelZ = targetVelocity != null ? targetVelocity.GetValueOrDefault().z : 0f;
