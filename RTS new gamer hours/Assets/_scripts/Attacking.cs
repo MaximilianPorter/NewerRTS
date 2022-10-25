@@ -223,11 +223,17 @@ public class Attacking : MonoBehaviour
             if (node.TryCollectResources(out ResourceAmount returnedAmount))
             {
                 int storageYardCount = PlayerHolder.GetBuildings(identifier.GetPlayerID).Count(building => building.GetStats.buildingType == BuyIcons.Building_StorageYard);
-                PlayerResourceManager.PlayerResourceAmounts[identifier.GetPlayerID].AddResources(
+                ResourceAmount amtToAdd = new ResourceAmount(
                     returnedAmount.GetFood + (returnedAmount.GetFood > 0 ? storageYardCount : 0),
                     returnedAmount.GetWood + (returnedAmount.GetWood > 0 ? storageYardCount : 0),
                     returnedAmount.GetStone + (returnedAmount.GetStone > 0 ? storageYardCount : 0)
                     );
+                PlayerResourceManager.instance.AddResourcesWithUI(identifier.GetPlayerID, amtToAdd, transform.position);
+                //PlayerResourceManager.PlayerResourceAmounts[identifier.GetPlayerID].AddResources(
+                //    returnedAmount.GetFood + (returnedAmount.GetFood > 0 ? storageYardCount : 0),
+                //    returnedAmount.GetWood + (returnedAmount.GetWood > 0 ? storageYardCount : 0),
+                //    returnedAmount.GetStone + (returnedAmount.GetStone > 0 ? storageYardCount : 0)
+                //    );
             }
             //node.CollectResources(identifier.GetPlayerID);
         }
