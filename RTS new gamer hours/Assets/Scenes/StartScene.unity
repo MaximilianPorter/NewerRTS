@@ -1211,12 +1211,12 @@ GameObject:
   - component: {fileID: 296368976}
   - component: {fileID: 296368975}
   m_Layer: 0
-  m_Name: Database Manager
+  m_Name: DATABASE MANAGER
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &296368975
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3531,10 +3531,6 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -143.93167
       objectReference: {fileID: 0}
-    - target: {fileID: 5424162428077050021, guid: ec2b5e3a80856a1449b7d4c2b4b4080a, type: 3}
-      propertyPath: chestPrefab
-      value: 
-      objectReference: {fileID: 955535181653416307, guid: a064e43ff9436b44aac843dc1768f285, type: 3}
     - target: {fileID: 5424162428077050021, guid: ec2b5e3a80856a1449b7d4c2b4b4080a, type: 3}
       propertyPath: rocksToPlace
       value: 0
