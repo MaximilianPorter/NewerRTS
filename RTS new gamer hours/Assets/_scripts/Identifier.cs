@@ -30,45 +30,59 @@ public class Identifier : MonoBehaviour
 
     private void Awake()
     {
-        if (!isParent)
-        {
-            if (transform.parent == null)
-            {
-                Debug.LogError("If " + gameObject.name + " is a parent, check isParent");
-                return;
-            }
-
-
-            // find an identifier in parents
-            Transform currentCheckedTransform = transform.parent;
-
-            while (currentCheckedTransform)
-            {
-                if (currentCheckedTransform.TryGetComponent(out Identifier identifier))
-                {
-                    if (identifier.GetIsParent)
-                    {
-                        teamID = identifier.GetTeamID;
-                        playerID = identifier.GetPlayerID;
-                        break;
-
-                    }
-                }
-
-                if (currentCheckedTransform.parent == null)
-                {
-                    Debug.LogError("Never found a Identifier with bool=isParent set to true");
-                    break;
-                }
-
-                currentCheckedTransform = currentCheckedTransform.parent;
-            }
-        }
-
+        
     }
 
     private void Start()
     {
+
+        if (!isParent)
+        {
+            //if (transform.parent == null)
+            //{
+            //    Debug.LogError("If " + gameObject.name + " is a parent, check isParent");
+            //    return;
+            //}
+
+
+            //// find an identifier in parents
+            //Transform currentCheckedTransform = transform.parent;
+
+            //while (currentCheckedTransform)
+            //{
+            //    if (currentCheckedTransform.TryGetComponent(out Identifier identifier))
+            //    {
+            //        if (identifier.GetIsParent)
+            //        {
+            //            teamID = identifier.GetTeamID;
+            //            playerID = identifier.GetPlayerID;
+            //            break;
+
+            //        }
+            //    }
+
+            //    if (currentCheckedTransform.parent == null)
+            //    {
+            //        Debug.LogError("Never found a Identifier with bool=isParent set to true");
+            //        break;
+            //    }
+
+            //    currentCheckedTransform = currentCheckedTransform.parent;
+            //}
+        }
+        else
+        {
+            Identifier[] childrenIdentifiers = GetComponentsInChildren<Identifier>(true);
+            for (int i = 0; i < childrenIdentifiers.Length; i++)
+            {
+                childrenIdentifiers[i].SetPlayerID(playerID);
+                childrenIdentifiers[i].SetTeamID(teamID);
+            }
+
+        }
+
+
+
         if (TryGetComponent(out UnitActions attachedUnit))
             isTargetable = attachedUnit.GetIsTargetable;
         else if (TryGetComponent(out Building attachedBuilding))
