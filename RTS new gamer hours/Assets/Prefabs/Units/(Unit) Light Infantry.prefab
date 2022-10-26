@@ -483,10 +483,10 @@ MonoBehaviour:
   isSelectable: 1
   isTargetable: 1
   selectedGO: {fileID: 1462805977683875834}
-  orderingObject: {fileID: 7331517528706905602}
+  movementTargetVisual: {fileID: 7331517528706905602}
   unitStats: {fileID: 11400000, guid: 9267eb36c574b344793bc6dbf7853576, type: 2}
   debugDie: 0
-  bloodSplatterImage: {fileID: 3758024593050388391, guid: 7f803312f365dcd408609b38989a661d, type: 3}
+  bloodSplatterImage: {fileID: 0}
   bloodGoreEffect: {fileID: 7442719172150680357, guid: ded24b2bedd49f9409b5a3d3ef418441, type: 3}
   enemyMask:
     serializedVersion: 2
@@ -495,7 +495,6 @@ MonoBehaviour:
   - {fileID: 3819548900116704623}
   - {fileID: 3819548900109495827}
   - {fileID: 3819548900109505567}
-  healthBar: {fileID: 6777682273884229454, guid: ba7a60c88fdd0df4da677549d980edea, type: 3}
   unitOverrideController: {fileID: 22100000, guid: 177688c0ea202c8409db64cedf786bb2, type: 2}
   animator: {fileID: 3819548900121083419}
   walkAnimSpeed: 0.8

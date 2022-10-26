@@ -67,7 +67,7 @@ public class UnitSelection : MonoBehaviour
         }
 
         // select some units
-        if (PlayerInput.GetPlayers[identifier.GetPlayerID].GetButton(PlayerInput.GetInputSelectUnits))
+        if (PlayerInput.GetPlayers[identifier.GetPlayerID].GetButtonSinglePressHold(PlayerInput.GetInputSelectUnits))
         {
             // increase radius and select units within
             unitSelectionVisual.gameObject.SetActive(true);
@@ -186,7 +186,7 @@ public class UnitSelection : MonoBehaviour
                         column += remainderInLastRow / 2f;
 
                     Vector3 pos = transform.forward * (row + 1f) + transform.right * (column - boxWidth / 2f);
-                    SetUnitPos(unitsToRally[i], pos, avgMoveSpeed);
+                    SetUnitPos(unitsToRally[i], pos, unitsToRally[i].GetStats.maxMoveSpeed);
                 }
             }
             else if (patternIndex == 2)
@@ -205,7 +205,7 @@ public class UnitSelection : MonoBehaviour
                         column += remainderInLastRow / 2f;
 
                     Vector3 pos = transform.forward * (row + 1f) + transform.right * (column - boxWidth / 2f);
-                    SetUnitPos(unitsToRally[i], pos, avgMoveSpeed);
+                    SetUnitPos(unitsToRally[i], pos, unitsToRally[i].GetStats.maxMoveSpeed);
                 }
             }
             else if (patternIndex == 3)
@@ -231,7 +231,7 @@ public class UnitSelection : MonoBehaviour
                         transform.forward * (row + 1f + arrowForwardOffset) + 
                         transform.right * (column - boxWidth / 2f);
 
-                    SetUnitPos(unitsToRally[i], pos, avgMoveSpeed);
+                    SetUnitPos(unitsToRally[i], pos, unitsToRally[i].GetStats.maxMoveSpeed);
                 }
             }
             else

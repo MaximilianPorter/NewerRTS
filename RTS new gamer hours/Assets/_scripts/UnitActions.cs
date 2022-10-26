@@ -9,7 +9,7 @@ public class UnitActions : MonoBehaviour
     [SerializeField] private bool isSelectable = true;
     [SerializeField] private bool isTargetable = true;
     [SerializeField] private GameObject selectedGO;
-    [SerializeField] private GameObject orderingObject;
+    [SerializeField] private GameObject movementTargetVisual;
     [SerializeField] private UnitStats unitStats;
     [SerializeField] private bool debugDie = false;
     [SerializeField] private GameObject bloodSplatterImage;
@@ -71,7 +71,7 @@ public class UnitActions : MonoBehaviour
     public Attacking GetAttacking() => attacking;
     public Identifier GetIdentifier() => identifier;
     public Health GetHealth => health;
-    public GameObject GetOrderingObject => orderingObject;
+    public GameObject GetOrderingObject => movementTargetVisual;
     public bool GetIsSelected => isSelected;
     public void SetIsSelected(bool select) => isSelected = select;
 
@@ -83,7 +83,6 @@ public class UnitActions : MonoBehaviour
         health = GetComponent<Health>();
 
         health.SetValues(unitStats.health);
-        orderingObject.SetActive(false);
 
 
         SetAnimations(unitOverrideController);
@@ -106,6 +105,8 @@ public class UnitActions : MonoBehaviour
             PlayerHolder.AddUnit(identifier.GetPlayerID, this);
         }
 
+        movementTargetVisual.SetActive(false);
+        SetMovementTargetLayer(identifier.GetPlayerID);
         //transform.SetParent(null);
         //identifier.SetIsParent(true);
     }
@@ -393,6 +394,7 @@ public class UnitActions : MonoBehaviour
         if (newUnitInstance.TryGetComponent (out UnitActions newUnitActions))
         {
             newUnitActions.navMovement.SetDestination(navMovement.GetDestination);
+            newUnitActions.SetMovementTargetLayer(newPlayerID);
         }
 
         Destroy(gameObject);
@@ -409,6 +411,16 @@ public class UnitActions : MonoBehaviour
     private void SetAnimations (AnimatorOverrideController newController)
     {
         animator.runtimeAnimatorController = newController;
+    }
+
+    public void SetMovementTargetLayer (int playerID)
+    {
+        movementTargetVisual.layer = RuntimeLayerController.GetLayer(playerID);
+        Transform[] children = movementTargetVisual.GetComponentsInChildren<Transform>();
+        for (int i = 0; i < children.Length; i++)
+        {
+            children[i].gameObject.layer = RuntimeLayerController.GetLayer(playerID);
+        }
     }
 
     private void OnDrawGizmosSelected()
