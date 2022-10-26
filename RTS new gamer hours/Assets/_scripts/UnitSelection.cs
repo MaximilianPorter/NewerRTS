@@ -67,7 +67,7 @@ public class UnitSelection : MonoBehaviour
         }
 
         // select some units
-        if (PlayerInput.GetPlayers[identifier.GetPlayerID].GetButtonSinglePressHold(PlayerInput.GetInputSelectUnits))
+        if (PlayerInput.GetPlayers[identifier.GetPlayerID].GetButton(PlayerInput.GetInputSelectUnits))
         {
             // increase radius and select units within
             unitSelectionVisual.gameObject.SetActive(true);

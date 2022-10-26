@@ -98,11 +98,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f500d2e44312bf042b0064f8948e09d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isTargetable: 1
   stats: {fileID: 0}
   debugSpawnUnit: 0
   rallyPoint: {fileID: 8956819731203436766}
   playerHoverEffect: {fileID: 3936105976378229163}
   smokeExplosion: {fileID: 4912207008319035513, guid: a498eae963f771c40bde5122922062ce, type: 3}
+  sellBuildingEffect: {fileID: 2919648099748449460, guid: 348a20da6c9163547bc0f0c0afbaf25a, type: 3}
 --- !u!114 &8956819731846260279
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -117,6 +119,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentHealth: 100
   maxHealth: 100
+  invincible: 0
 --- !u!114 &8956819731846260276
 MonoBehaviour:
   m_ObjectHideFlags: 0

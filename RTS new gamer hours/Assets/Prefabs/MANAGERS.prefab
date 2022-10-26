@@ -739,16 +739,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 754da649bde019b4fab8df74c48ccb8d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerColors:
+  - {r: 0, g: 0.7647059, b: 0.7921569, a: 1}
+  - {r: 0.9529412, g: 0.3647059, b: 0.22352941, a: 1}
+  - {r: 0.25882354, g: 0.84313726, b: 0.32156864, a: 1}
+  - {r: 0.8039216, g: 0.85882354, b: 0.101960786, a: 1}
   playerMaterials:
   - {fileID: 2100000, guid: 4291ccdb114aba3439ec6341f62ec2b8, type: 2}
   - {fileID: 2100000, guid: 425731b92b8fe174cb1fb78e14f3cc1d, type: 2}
   - {fileID: 2100000, guid: 78a1616352e90f648ba7330330592120, type: 2}
   - {fileID: 2100000, guid: f41993e7f2b01ae45af42df41cb87fa7, type: 2}
+  playerProjectorMaterials:
+  - {fileID: 2100000, guid: 7e4c27a707697eb48942a4e7c4bbd5da, type: 2}
+  - {fileID: 2100000, guid: 6d248255875d0c64c8fe4b6cb682aa26, type: 2}
+  - {fileID: 2100000, guid: 8def8d88990554d46aa626a227c51531, type: 2}
+  - {fileID: 2100000, guid: b128dfdad3de62e42aefe2d15373f2f2, type: 2}
   unitMaterials:
-  - {fileID: 2100000, guid: 792a4bad9e08b8e41bfbd3f0b8aac1ab, type: 2}
-  - {fileID: 2100000, guid: 98a7fdcb4ebb44344b4afe0424d44b82, type: 2}
-  - {fileID: 2100000, guid: f9ec407a080d408459742617c9dc6607, type: 2}
-  - {fileID: 2100000, guid: 26fed0ad2288580409bf94257121cd0f, type: 2}
+  - {fileID: 2100000, guid: 9fd99e27152b70b40bfb3b84ed1a994f, type: 2}
+  - {fileID: 2100000, guid: 82d2fa1228da26c48b622239c19ed82f, type: 2}
+  - {fileID: 2100000, guid: 334180f414b320447aaf010984f52c04, type: 2}
+  - {fileID: 2100000, guid: bed4ba2a0d312c440bbc356288b63aa8, type: 2}
 --- !u!114 &5424162428077050022
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -882,52 +892,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 48ff02b3f5a97104da4fff152e7201b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  typesOfIcons:
-  - typeOfIcon: 20
-    icon: {fileID: 21300000, guid: 32123d4a595b642458d26b11e173b918, type: 3}
-  - typeOfIcon: 1
-    icon: {fileID: 21300000, guid: 306047b0aaea84645bbf35d0de3de78b, type: 3}
-  - typeOfIcon: 2
-    icon: {fileID: 21300000, guid: d0952ae7258b9b14e975dbb43f02dbea, type: 3}
-  - typeOfIcon: 3
-    icon: {fileID: 21300000, guid: e25fe501d2c1aa9458266903acd3d8fd, type: 3}
-  - typeOfIcon: 4
-    icon: {fileID: 0}
-  - typeOfIcon: 5
-    icon: {fileID: 21300000, guid: 94f3ae3560cb1e04f9e4e98aebc1e3f4, type: 3}
-  - typeOfIcon: 6
-    icon: {fileID: 0}
-  - typeOfIcon: 8
-    icon: {fileID: 0}
-  - typeOfIcon: 9
-    icon: {fileID: 21300000, guid: b15c66823a73bc645a777be38f1be6e2, type: 3}
-  - typeOfIcon: 10
-    icon: {fileID: 21300000, guid: 1453da91e7433f043b07158ab8eb41c4, type: 3}
-  - typeOfIcon: 26
-    icon: {fileID: 21300000, guid: 15b424eac46906e4cb958f87dd09de06, type: 3}
-  - typeOfIcon: 11
-    icon: {fileID: 21300000, guid: 38cdd6c2aafa0334ea12a73715468111, type: 3}
-  - typeOfIcon: 12
-    icon: {fileID: 0}
-  - typeOfIcon: 25
-    icon: {fileID: 21300000, guid: 2c15c94deac3c334a84da6b452c63c76, type: 3}
-  - typeOfIcon: 24
-    icon: {fileID: 21300000, guid: dbf8cb3e86c630e439d5008eadacf022, type: 3}
-  - typeOfIcon: 13
-    icon: {fileID: 21300000, guid: 77b89595e0b6b9d4b8bc396754861334, type: 3}
-  - typeOfIcon: 23
-    icon: {fileID: 21300000, guid: 5e86e313eb2c1d5488a8a4cc277aa999, type: 3}
-  - typeOfIcon: 21
-    icon: {fileID: 21300000, guid: 4f394328660d05b48a54c182241a0d27, type: 3}
-  - typeOfIcon: 14
-    icon: {fileID: 21300000, guid: 1646a15f71bc58c4d898c0272d24d160, type: 3}
-  - typeOfIcon: 15
-    icon: {fileID: 21300000, guid: 668adda72ebb62b419629a5343ec1b0d, type: 3}
-  - typeOfIcon: 16
-    icon: {fileID: 21300000, guid: 361baaf662549ff4b8b890170e999535, type: 3}
-  - typeOfIcon: 17
-    icon: {fileID: 21300000, guid: 70c7ad93ce550a647913f1e31ba19905, type: 3}
-  - typeOfIcon: 18
-    icon: {fileID: 21300000, guid: 3be5f50ceb558fe40b772546ae176f5b, type: 3}
-  - typeOfIcon: 19
-    icon: {fileID: 21300000, guid: 61973f7ae2a46c14e819e7e948f29a9b, type: 3}

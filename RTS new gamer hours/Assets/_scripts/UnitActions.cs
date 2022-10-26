@@ -58,7 +58,7 @@ public class UnitActions : MonoBehaviour
     private int lastTeamID = 0;
 
     private Cell lastCell;
-    private Cell activeCell;
+    //private Cell activeCell;
 
 
     public void SetIsTargetable(bool isTargetable) => this.isTargetable = isTargetable;
@@ -162,7 +162,7 @@ public class UnitActions : MonoBehaviour
         HandleMoveTowardsEnemies();
 
 
-        AssignActiveCell();
+        UnitCellManager.UpdateActiveCell (identifier, transform.position, ref lastCell);
 
 
         findNearestEnemyCounter -= Time.deltaTime;
@@ -180,22 +180,10 @@ public class UnitActions : MonoBehaviour
         
     }
 
-    private void AssignActiveCell ()
-    {
-        activeCell = UnitCellManager.GetCell(transform.position);
-        if (lastCell == null || lastCell != activeCell)
-        {
-            if (lastCell != null)
-                lastCell.unitsInCell.Remove(identifier);
-
-            activeCell.unitsInCell.Add(identifier);
-            lastCell = activeCell;
-        }
-    }
-
     private void CellFindNearestEnemy()
     {
         int cellsOutToCheck = Mathf.CeilToInt(lookRangeWithHeight / UnitCellManager.cellWidth);
+        Cell activeCell = UnitCellManager.GetCell(transform.position);
 
         Vector2Int bottomLeft = new Vector2Int(activeCell.pos.x - cellsOutToCheck, activeCell.pos.y - cellsOutToCheck);
         Vector2Int topRight = new Vector2Int(activeCell.pos.x + cellsOutToCheck, activeCell.pos.y + cellsOutToCheck);

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buildingType: 26
   unitType: 0
-  subsequentUpgrades: 0b0000001900000018000000
+  subsequentUpgrades: 1c0000000b0000001900000018000000
   requiredBuildings: 
   health: 200
   cost:
@@ -22,7 +22,7 @@ MonoBehaviour:
     wood: 10
     stone: 10
   interactionRadius: 2
-  buildRadius: 5
+  buildRadius: 10
   population: 0
   unit: {fileID: 0}
   initialUnitSpawnTime: 5

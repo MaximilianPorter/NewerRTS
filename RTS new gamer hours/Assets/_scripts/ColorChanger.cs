@@ -108,5 +108,12 @@ public class ColorChanger : MonoBehaviour
 
             textRend.color = colorNoAlpha;
         }
+
+
+        // PROJECTOR
+        if (TryGetComponent (out Projector projRend))
+        {
+            projRend.material = PlayerColorManager.GetPlayerProjectorMaterial (teamID);
+        }
     }
 }

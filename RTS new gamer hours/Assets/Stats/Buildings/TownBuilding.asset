@@ -15,8 +15,14 @@ MonoBehaviour:
   buildingType: 0
   unitType: 0
   subsequentUpgrades: 
+  requiredBuildings: 
+  health: 100
+  cost:
+    food: 0
+    wood: 0
+    stone: 0
   interactionRadius: 2
-  buildRadius: 5
+  buildRadius: 10
   population: 5
   unit: {fileID: 0}
   initialUnitSpawnTime: 5

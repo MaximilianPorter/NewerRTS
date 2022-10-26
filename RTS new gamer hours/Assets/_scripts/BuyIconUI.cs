@@ -162,6 +162,7 @@ public enum BuyIcons
 
     // OTHER UI BUTTONS
     BuildingRallyPoint = 13,
+    SellBuilding = 28,
     BuildWallNoDoor = 23,
 
     // UNITS
@@ -173,6 +174,6 @@ public enum BuyIcons
     Mage = 18,
     Spearman = 19,
 
-    // highest number: 27
-    // last changed on 10/23/22 - 2:51 am
+    // highest number: 28
+    // last changed on 10/25/22 - 4:35pm
 }

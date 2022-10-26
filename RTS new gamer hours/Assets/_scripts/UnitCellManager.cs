@@ -142,6 +142,19 @@ public class UnitCellManager : MonoBehaviour
         return cells;
     }
 
+    public static void UpdateActiveCell(Identifier identifier, Vector3 pos, ref Cell lastCell)
+    {
+        Cell activeCell = UnitCellManager.GetCell(pos);
+        if (lastCell == null || lastCell != activeCell)
+        {
+            if (lastCell != null)
+                lastCell.unitsInCell.Remove(identifier);
+
+            activeCell.unitsInCell.Add(identifier);
+            lastCell = activeCell;
+        }
+    }
+
     private void OnDrawGizmosSelected()
     {
         //Vector3 pos = transform.position / debugCellWidth;

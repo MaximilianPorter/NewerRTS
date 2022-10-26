@@ -14,14 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buildingType: 24
   unitType: 0
-  subsequentUpgrades: 
+  subsequentUpgrades: 1c000000
+  requiredBuildings: 
   health: 200
   cost:
     food: 40
     wood: 10
     stone: 10
   interactionRadius: 2
-  buildRadius: 5
+  buildRadius: 10
   population: 0
   unit: {fileID: 0}
   initialUnitSpawnTime: 5

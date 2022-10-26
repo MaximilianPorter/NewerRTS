@@ -313,6 +313,7 @@ public class PlayerBuilding : MonoBehaviour
             else
                 cancelUnits.gameObject.SetActive(false);
 
+
             // click the back button
             if (PlayerInput.GetPlayers[identifier.GetPlayerID].GetButtonDown(PlayerInput.GetInputBack))
                 CloseMenu();
@@ -462,6 +463,7 @@ public class PlayerBuilding : MonoBehaviour
                 clickedOnBuilding = true;
                 buildingMenuIsOpen = true;
 
+
                 bool runOnce = false;
                 for (int i = 0; i < allIcons.Length; i++)
                 {
@@ -476,6 +478,9 @@ public class PlayerBuilding : MonoBehaviour
                         allIcons[i].gameObject.SetActive(true);
                     }
                 }
+
+                if (allIcons[selectedIconIndex].GetButtonType == BuyIcons.SellBuilding)
+                    IncreaseIconIndex();
             }
         }
     }
@@ -583,12 +588,6 @@ public class PlayerBuilding : MonoBehaviour
     {
         for (int i = 0; i < typesOfUnitsToSpawn.Count; i++)
         {
-            //ResourceAmount cost = allIcons.FirstOrDefault(icon => icon.GetButtonType == typesOfUnitsToSpawn[i].Peek().GetStats.unitType).GetCost;
-
-            //// refunt cost of unit
-            //PlayerResourceManager.Food[identifier.GetPlayerID] += cost.GetFood * typesOfUnitsToSpawn[i].Count;
-            //PlayerResourceManager.Wood[identifier.GetPlayerID] += cost.GetWood * typesOfUnitsToSpawn[i].Count;
-            //PlayerResourceManager.Stone[identifier.GetPlayerID] += cost.GetStone * typesOfUnitsToSpawn[i].Count;
             CancelUnits(typesOfUnitsToSpawn[i].Peek());
 
             typesOfUnitsToSpawn[i].Clear();
@@ -636,6 +635,11 @@ public class PlayerBuilding : MonoBehaviour
         hoveringBuilding.DeleteBuilding();
 
         BuildBuilding(building);
+    }
+    // used by UI buttons
+    public void SellBuilding ()
+    {
+        hoveringBuilding.SellBuilding();
     }
 
     private void BuildBuilding (Building building)

@@ -2356,12 +2356,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c01ca3e92f2db647a12cf60de9ba80e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  amountToGive:
+  amountPerSurroundingHit:
     food: 5
     wood: 0
     stone: 0
+  amountMultiplier: 1
   timeToGive: 5
   resourceVisualEffect: {fileID: 7672210810295618285}
+  tagsCounted: []
+  hitLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
+  radius: 5
+  projector: {fileID: 0}
 --- !u!1001 &85115511775288831
 PrefabInstance:
   m_ObjectHideFlags: 0

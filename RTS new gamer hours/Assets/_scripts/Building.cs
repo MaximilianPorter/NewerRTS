@@ -13,6 +13,7 @@ public class Building : MonoBehaviour
     [SerializeField] private Transform rallyPoint;
     [SerializeField] private GameObject playerHoverEffect;
     [SerializeField] private GameObject smokeExplosion;
+    [SerializeField] private GameObject sellBuildingEffect;
 
 
     private float scaleUpCounter = 0f;
@@ -144,6 +145,19 @@ public class Building : MonoBehaviour
         PlayerHolder.RemoveBuilding(identifier.GetPlayerID, this);
 
         Destroy(gameObject);
+    }
+
+    public void SellBuilding ()
+    {
+        // give back resources worth half the cost of the building
+        ResourceAmount sellPrice = new ResourceAmount(GetStats.cost.GetFood / 2, GetStats.cost.GetWood / 2, GetStats.cost.GetStone / 2);
+        PlayerResourceManager.instance.AddResourcesWithUI(identifier.GetPlayerID, sellPrice, transform.position);
+
+        // play sell building effect
+        GameObject sellEffectInstance = Instantiate(sellBuildingEffect, transform.position, Quaternion.identity);
+        Destroy(sellEffectInstance, 5f);
+
+        DeleteBuilding();
     }
 
 

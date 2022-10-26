@@ -210,7 +210,10 @@ public class MapGenerationManager : MonoBehaviour
             }
 
             if (treeNoiseMap[(int)(spawnedTrees[i].transform.position.x + treeArea.x), (int)(spawnedTrees[i].transform.position.z + treeArea.y)] < spawnThreshold)
-                spawnedTrees[i].SetActive(false);
+            {
+                Destroy(spawnedTrees[i]);
+                //spawnedTrees[i].SetActive(false);
+            }
             else
             {
                 spawnedTrees[i].SetActive(true);
