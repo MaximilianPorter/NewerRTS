@@ -33,7 +33,6 @@ public class PlayerActions : MonoBehaviour
     private Identifier identifier;
     private NavMeshMovement navMovement;
     private Attacking attacking;
-    private UnitSelection unitSelection;
 
     private Image[] sprintRenderers;
     private Color[] startSprintRendColors;
@@ -53,7 +52,6 @@ public class PlayerActions : MonoBehaviour
         identifier = GetComponent<Identifier>();
         navMovement = GetComponent<NavMeshMovement>();
         attacking = GetComponent<Attacking>();
-        unitSelection = GetComponent<UnitSelection>();
 
         SetAnimations(overrideController);
     }
@@ -168,9 +166,6 @@ public class PlayerActions : MonoBehaviour
         {
             sprintCounter = Mathf.Clamp(sprintCounter + Time.deltaTime, 0f, timeToRegenSprint);
         }
-
-        if (unitSelection.GetHasTroopsSelected)
-            return;
 
         if (PlayerInput.GetPlayers[identifier.GetPlayerID].GetButtonDown(PlayerInput.GetInputSprint) && sprintCounter > 0 && navMovement.GetMoveSpeed01 > 0.5f)
         {

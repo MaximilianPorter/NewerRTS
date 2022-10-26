@@ -193,7 +193,7 @@ GameObject:
   - component: {fileID: 3739446090108866825}
   - component: {fileID: 6671952140017576758}
   - component: {fileID: 479687541}
-  m_Layer: 0
+  m_Layer: 20
   m_Name: Selection Ring
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5716,6 +5716,7 @@ MonoBehaviour:
   rallyTroopsEffectPrefab: {fileID: 8450968138510638528, guid: ea9ac5282c5e6674dac7a7a636a2c21f, type: 3}
   maxSelectionRadius: 30
   radiusIncreaseSpeed: 4
+  patternSpacingMulti: 1.2
   selectedUnitsUiLayout: {fileID: 0}
   patternNameText: {fileID: 0}
 --- !u!114 &183182282
@@ -5737,6 +5738,7 @@ MonoBehaviour:
   selectAnim: {fileID: 0}
   queuedUnitsLayoutGroup: {fileID: 0}
   costAreaLayout: {fileID: 0}
+  requiredBuildingLayout: {fileID: 0}
   initialIcons:
   - {fileID: 0}
   - {fileID: 0}
@@ -5782,6 +5784,7 @@ MonoBehaviour:
   stats: {fileID: 11400000, guid: 0aa38894e85d023409d6fd04b76fdd7c, type: 2}
   standingRotSpeed: 25
   onlyLookWhenStill: 0
+  disableMovement: 0
 --- !u!195 &8720680486734298955
 NavMeshAgent:
   m_ObjectHideFlags: 0

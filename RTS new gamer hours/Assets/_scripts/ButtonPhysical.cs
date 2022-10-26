@@ -18,6 +18,7 @@ public class ButtonPhysical : MonoBehaviour
     private float startHeight;
     private bool pressingButton = false;
     private bool hasCorrectID = false;
+    private int buttonLastClickedBy = -1;
 
 
 
@@ -40,14 +41,33 @@ public class ButtonPhysical : MonoBehaviour
         
     }
 
+    public void Give1000Food()
+    {
+        PlayerResourceManager.PlayerResourceAmounts[buttonLastClickedBy].AddResources(1000, 0, 0);
+    }
+    public void Give1000Wood()
+    {
+        PlayerResourceManager.PlayerResourceAmounts[buttonLastClickedBy].AddResources(0, 1000, 0);
+    }
+    public void Give1000Stone()
+    {
+        PlayerResourceManager.PlayerResourceAmounts[buttonLastClickedBy].AddResources(0, 0, 1000);
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.TryGetComponent (out Identifier playerPressing))
         {
             pressingButton = true;
+            buttonLastClickedBy = playerPressing.GetPlayerID;
             if (playerPressing.GetPlayerID == requiredID)
             {
                 hasCorrectID = true;
+                buttonCompleteEffect.Stop();
+                buttonCompleteEffect.Play();
+                onButtonComplete.Invoke();
+            }else if (requiredID == -1)
+            {
                 buttonCompleteEffect.Stop();
                 buttonCompleteEffect.Play();
                 onButtonComplete.Invoke();
@@ -57,7 +77,6 @@ public class ButtonPhysical : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-
         if (other.TryGetComponent(out Identifier playerPressing))
         {
             if (hasCorrectID)
@@ -67,6 +86,7 @@ public class ButtonPhysical : MonoBehaviour
                 hasCorrectID = false;
             }
             pressingButton = false;
+            buttonLastClickedBy = -1;
         }
     }
 }

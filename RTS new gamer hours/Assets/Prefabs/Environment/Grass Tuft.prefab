@@ -16,7 +16,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8953046619908304085
 Transform:
   m_ObjectHideFlags: 0
@@ -184,7 +184,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8953046620591268655
 Transform:
   m_ObjectHideFlags: 0
@@ -261,7 +261,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8953046621054037099}
-  - component: {fileID: 8953046621054037098}
   m_Layer: 0
   m_Name: Grass Tuft
   m_TagString: Untagged
@@ -287,22 +286,3 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8953046621054037098
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8953046621054037100}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2f45c9857af226242bf0453d1c19e4b8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  amountToTurnOn: {x: 1, y: 1}
-  randomObjects:
-  - {fileID: 8953046620459956713}
-  - {fileID: 8953046619908304086}
-  - {fileID: 8953046620591268640}
-  ifOffTurnBackOn: 0
-  turnBackOnTime: 15

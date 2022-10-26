@@ -201,7 +201,7 @@ MonoBehaviour:
   resourceSpawnEffect: {fileID: 0}
   resourceSpawnOffset: {x: 0, y: 0, z: 0}
   canBeDestroyed: 1
-  destroyAfterHits: 5
+  destroyAfterHits: 3
 --- !u!1 &3844988140306365133
 GameObject:
   m_ObjectHideFlags: 0

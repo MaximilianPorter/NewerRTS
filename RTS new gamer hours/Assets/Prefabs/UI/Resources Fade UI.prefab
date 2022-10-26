@@ -212,7 +212,7 @@ MonoBehaviour:
   m_ChildForceExpandHeight: 1
   m_ChildControlWidth: 0
   m_ChildControlHeight: 0
-  m_ChildScaleWidth: 0
+  m_ChildScaleWidth: 1
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
 --- !u!1 &5243718728944590228
@@ -276,6 +276,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fadeTime: 2
   moveUpSpeed: 2
+  layoutGroups:
+  - {fileID: 5243718728742479360}
+  - {fileID: 5243718729336213744}
+  - {fileID: 5243718729459601728}
 --- !u!1 &5243718729152185359
 GameObject:
   m_ObjectHideFlags: 0

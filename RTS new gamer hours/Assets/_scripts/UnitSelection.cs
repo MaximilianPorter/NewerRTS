@@ -14,6 +14,7 @@ public class UnitSelection : MonoBehaviour
     [SerializeField] private GameObject rallyTroopsEffectPrefab;
     [SerializeField] private float maxSelectionRadius = 10f;
     [SerializeField] private float radiusIncreaseSpeed = 4f;
+    [SerializeField] private float patternSpacingMulti = 2f;
     [SerializeField] private Transform selectedUnitsUiLayout;
     [SerializeField] private TMP_Text patternNameText;
 
@@ -185,7 +186,9 @@ public class UnitSelection : MonoBehaviour
                     if (i >= lastRowStartIndex)
                         column += remainderInLastRow / 2f;
 
-                    Vector3 pos = transform.forward * (row + 1f) + transform.right * (column - boxWidth / 2f);
+                    Vector3 pos = 
+                        transform.forward * (row + 1f) * patternSpacingMulti + 
+                        transform.right * (column - boxWidth / 2f) * patternSpacingMulti;
                     SetUnitPos(unitsToRally[i], pos, unitsToRally[i].GetStats.maxMoveSpeed);
                 }
             }
@@ -204,7 +207,9 @@ public class UnitSelection : MonoBehaviour
                     if (i >= lastRowStartIndex)
                         column += remainderInLastRow / 2f;
 
-                    Vector3 pos = transform.forward * (row + 1f) + transform.right * (column - boxWidth / 2f);
+                    Vector3 pos =
+                        transform.forward * (row + 1f) * patternSpacingMulti + 
+                        transform.right * (column - boxWidth / 2f) * patternSpacingMulti;
                     SetUnitPos(unitsToRally[i], pos, unitsToRally[i].GetStats.maxMoveSpeed);
                 }
             }
@@ -228,8 +233,8 @@ public class UnitSelection : MonoBehaviour
                     float arrowForwardOffset = Mathf.Abs (column - boxWidth / 2f) * 0.5f;
 
                     Vector3 pos = 
-                        transform.forward * (row + 1f + arrowForwardOffset) + 
-                        transform.right * (column - boxWidth / 2f);
+                        transform.forward * (row + 1f + arrowForwardOffset) * patternSpacingMulti + 
+                        transform.right * (column - boxWidth / 2f) * patternSpacingMulti;
 
                     SetUnitPos(unitsToRally[i], pos, unitsToRally[i].GetStats.maxMoveSpeed);
                 }

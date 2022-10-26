@@ -88,7 +88,8 @@ public class PlayerResourceManager : MonoBehaviour
         PlayerResourceAmounts[playerID].AddResources(amount);
 
         Vector3 pos = PlayerHolder.WorldToCanvasLocalPoint(worldPos, playerID);
-        ResourceUiFloating resourcesInstance = Instantiate(floatingResourcePrefab, pos, playerCanvases[playerID].transform.rotation, playerCanvases[playerID].transform.GetChild (0)); // .GetComponent<ResourceUiFloating>();
+        ResourceUiFloating resourcesInstance = Instantiate(floatingResourcePrefab, playerCanvases[playerID].transform.GetChild (0), false); // .GetComponent<ResourceUiFloating>();
+        resourcesInstance.transform.localPosition = pos;
         resourcesInstance.SetDetails(amount, worldPos, playerID);
 
         Destroy(resourcesInstance.gameObject, 5f);

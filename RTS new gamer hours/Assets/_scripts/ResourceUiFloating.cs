@@ -43,6 +43,8 @@ public class ResourceUiFloating : MonoBehaviour
 
     private void Start()
     {
+        
+
         for (int i = 0; i < amountTexts.Length; i++)
         {
             textStartColors.Add(amountTexts[i].color);
@@ -59,7 +61,7 @@ public class ResourceUiFloating : MonoBehaviour
         moveUpCounter += Time.deltaTime * moveUpSpeed;
         if (playerCanvasID != -1)
         {
-            transform.localPosition = PlayerHolder.WorldToCanvasLocalPoint(startWorldPos + Vector3.up * moveUpCounter, playerCanvasID);
+            transform.localPosition = PlayerHolder.WorldToCanvasLocalPoint(startWorldPos + transform.up * moveUpCounter, playerCanvasID);
             transform.localScale = Vector3.one * PlayerHolder.ScaleWithScreenOrthoSizeMultiplier(playerCanvasID);
         }
 
@@ -83,9 +85,9 @@ public class ResourceUiFloating : MonoBehaviour
         images = GetComponentsInChildren<Image>();
         amountTexts = GetComponentsInChildren<TMP_Text>();
 
+
         this.startWorldPos = startWorldPos;
         this.playerCanvasID = playerCanvasID;
-
 
         if (amount.GetFood <= 0)
             amountTexts[0].transform.parent.gameObject.SetActive(false);

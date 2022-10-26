@@ -106,7 +106,7 @@ public class UnitActions : MonoBehaviour
         }
 
         movementTargetVisual.SetActive(false);
-        SetMovementTargetLayer(identifier.GetPlayerID);
+        SetUnitSpecificPlayerLayers(identifier.GetPlayerID);
         //transform.SetParent(null);
         //identifier.SetIsParent(true);
     }
@@ -394,7 +394,7 @@ public class UnitActions : MonoBehaviour
         if (newUnitInstance.TryGetComponent (out UnitActions newUnitActions))
         {
             newUnitActions.navMovement.SetDestination(navMovement.GetDestination);
-            newUnitActions.SetMovementTargetLayer(newPlayerID);
+            newUnitActions.SetUnitSpecificPlayerLayers(newPlayerID);
         }
 
         Destroy(gameObject);
@@ -413,9 +413,12 @@ public class UnitActions : MonoBehaviour
         animator.runtimeAnimatorController = newController;
     }
 
-    public void SetMovementTargetLayer (int playerID)
+    public void SetUnitSpecificPlayerLayers (int playerID)
     {
+        selectedGO.layer = RuntimeLayerController.GetLayer(playerID);
         movementTargetVisual.layer = RuntimeLayerController.GetLayer(playerID);
+
+
         Transform[] children = movementTargetVisual.GetComponentsInChildren<Transform>();
         for (int i = 0; i < children.Length; i++)
         {
