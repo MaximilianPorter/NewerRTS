@@ -68,26 +68,7 @@ public class Attacking : MonoBehaviour
             debugShoot = false;
         }
 
-        if (!identifier.GetIsPlayer)
-        {
-            //NonPlayerBehaviour();
-        }
-
         HandleAttackingTime();
-    }
-
-    private void FixedUpdate()
-    {
-        if (!identifier.GetIsPlayer)
-        {
-            //checkForEnemyCounter += Time.fixedDeltaTime;
-            //if (checkForEnemyCounter > checkForEnemyTime)// || nearestEnemy == null)
-            //{
-            //    FindNearestEnemy(movement.GetMoveTarget);
-            //    checkForEnemyCounter = 0f;
-            //    checkForEnemyTime = Random.Range(0.1f, 0.3f);
-            //}
-        }
     }
 
     //private void NonPlayerBehaviour()

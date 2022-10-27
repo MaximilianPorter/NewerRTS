@@ -109,13 +109,25 @@ public class Identifier : MonoBehaviour
 
     public void UpdateInfo (int playerID, int teamID, int colorID)
     {
-        Debug.Log($"Something changed in the identifier for {gameObject.name}, updating values...");
+        //Debug.Log($"Something changed in the identifier for {gameObject.name}, updating values...");
         Identifier[] childrenIdentifiers = GetComponentsInChildren<Identifier>(true);
         for (int i = 0; i < childrenIdentifiers.Length; i++)
         {
             childrenIdentifiers[i].SetPlayerID(playerID);
             childrenIdentifiers[i].SetTeamID(teamID);
             childrenIdentifiers[i].SetColorID(colorID);
+        }
+    }
+
+    public void UpdateTeamAndEverythingElse (int teamID)
+    {
+        //Debug.Log($"Something changed in the identifier for {gameObject.name}, updating values...");
+        Identifier[] childrenIdentifiers = GetComponentsInChildren<Identifier>(true);
+        for (int i = 0; i < childrenIdentifiers.Length; i++)
+        {
+            childrenIdentifiers[i].SetPlayerID(this.playerID);
+            childrenIdentifiers[i].SetTeamID(teamID);
+            childrenIdentifiers[i].SetColorID(this.colorID);
         }
     }
 }

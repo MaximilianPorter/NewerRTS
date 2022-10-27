@@ -37,7 +37,7 @@ public class Town : MonoBehaviour
         projector.material = teamWithin == -1 ? PlayerColorManager.GetNonPlayerProjectorMaterial : PlayerColorManager.GetPlayerProjectorMaterial(mainPlayerID);
         flagRend.material = teamWithin == -1 ? PlayerColorManager.GetNonPlayerMaterial : PlayerColorManager.GetPlayerMaterial(mainPlayerID);
 
-        if (giveCounter > timeToGive && teamWithin != -1)
+        if (giveCounter > timeToGive && teamWithin != -1 && allSameTeam)
         {
             for (int i = 0; i < PlayerHolder.GetPlayerIdentifiers.Length; i++)
             {

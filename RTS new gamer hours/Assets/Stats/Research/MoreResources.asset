@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: MoreResources
   m_EditorClassIdentifier: 
   researchType: 34
-  timeToResearch: 10
+  timeToResearch: 60
   cost:
     food: 200
     wood: 200

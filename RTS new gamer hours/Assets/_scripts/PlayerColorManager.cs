@@ -61,7 +61,6 @@ public class PlayerColorManager : MonoBehaviour
         // if there is already an instance of this, take it's colors
         if (instance != null)
         {
-            Debug.LogWarning("Taking colors then destroying old one...");
             for (int i = 0; i < playerColors.Length; i++)
             {
                 this.playerColors[i] = instance.playerColors[i];

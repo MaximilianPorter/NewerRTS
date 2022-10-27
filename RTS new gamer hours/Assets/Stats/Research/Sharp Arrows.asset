@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Sharp Arrows
   m_EditorClassIdentifier: 
   researchType: 30
-  timeToResearch: 10
+  timeToResearch: 60
   cost:
     food: 0
     wood: 100

@@ -41,11 +41,6 @@ public class Tower : MonoBehaviour
         {
             placeBigWall = false;
             PlaceBigWall(debugConnectionTower);
-
-            for (int i = 0; i < 4; i++)
-            {
-                Debug.Log(PlayerHolder.GetBuildings(i)[0].gameObject.name);
-            }
         }
     }
 

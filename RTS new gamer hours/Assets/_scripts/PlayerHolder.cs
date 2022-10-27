@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class PlayerHolder : MonoBehaviour
 {
-    //private static List<Identifier> players = new List<Identifier>();
+    public static PlayerHolder instance;
 
     private GameObject[] playerGameObjects;
 
@@ -106,6 +106,7 @@ public class PlayerHolder : MonoBehaviour
 
             playerCamStartOrthoSize[i] = playerCams[i].orthographicSize;
         }
+        instance = this;
     }
 
     private void Update()
@@ -123,11 +124,6 @@ public class PlayerHolder : MonoBehaviour
     /// </summary>
     public static Vector2 WorldToCanvasLocalPoint(Vector3 worldPos, int playerID)
     {
-        if (playerCams[playerID] == null)
-            Debug.Log("cam is null");
-        if (playerCanvasRects[playerID] == null)
-            Debug.Log("canvas is null");
-
         Vector2 screenPoint = playerCams[playerID].WorldToScreenPoint(worldPos);
         if (RectTransformUtility.ScreenPointToLocalPointInRectangle(playerCanvasRects[playerID], screenPoint, playerCams[playerID], out Vector2 localPoint))
         {

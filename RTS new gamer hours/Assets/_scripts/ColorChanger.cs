@@ -47,7 +47,7 @@ public class ColorChanger : MonoBehaviour
     {
         if (!PlayerColorManager.GetPlayerColor (myColorID).CompareRGB (assignedColor) || foundIdentifier.GetColorID != myColorID)
         {
-            Debug.Log($"We have the wrong color for {gameObject.name}, changing color...");
+            //Debug.Log($"We have the wrong color for {gameObject.name}, changing color...");
             ChangeColor(foundIdentifier.GetColorID, foundIdentifier.GetPlayerID);
         }
     }
