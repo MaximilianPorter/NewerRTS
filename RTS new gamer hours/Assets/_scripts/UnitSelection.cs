@@ -25,7 +25,7 @@ public class UnitSelection : MonoBehaviour
 
     [Header("Micro")]
     [SerializeField] private Transform microGroupUiLayout;
-    private GameObject[] microUiObjects;
+    private Animator[] microUiObjects;
 
     private List<UnitActions> selectedUnits = new List<UnitActions>(0);
     private float currentSelectionRadius = 0f;
@@ -60,10 +60,10 @@ public class UnitSelection : MonoBehaviour
             microGroups[i] = new UnitActions[0];
         }
 
-        microUiObjects = new GameObject[microGroupUiLayout.childCount];
+        microUiObjects = new Animator[microGroupUiLayout.childCount];
         for (int i = 0; i < microGroupUiLayout.childCount; i++)
         {
-            microUiObjects[i] = microGroupUiLayout.GetChild(i).gameObject;
+            microUiObjects[i] = microGroupUiLayout.GetChild(i).GetComponent<Animator>();
         }
         patternNameText.text = "";
         rallyTroopsEffect.Stop();
@@ -78,14 +78,34 @@ public class UnitSelection : MonoBehaviour
         HandleMircroGroups();
         ChangeUnitMovementType();
 
+        // handle unit visuals for units selected (little dot over the unit)
+        if (selectedUnits.Count > 0)
+        {
+            // this loop is just for the visuals of units being selected
+            foreach (UnitActions unit in PlayerHolder.GetUnits(identifier.GetPlayerID))
+            {
+                if (selectedUnits.Contains(unit) && tempSelectedUnits.Count <= 0)
+                    unit.SetIsSelected(true);
+                else if (tempSelectedUnits.Count > 0 && tempSelectedUnits.Contains(unit))
+                    unit.SetIsSelected(true);
+                else
+                    unit.SetIsSelected(false);
+            }
+        }
+
         // if the player has no troops, we don't do unit selection updates
         if (PlayerHolder.GetUnits(identifier.GetPlayerID).Count <= 0)
         {
             tempSelectedUnits = new List<UnitActions>(0);
             selectedUnits = new List<UnitActions>(0);
+            unitSelectionVisual.gameObject.SetActive(false);
             HandleSelectedUnitTypesUI();
             return;
         }
+
+        // if you're assigning a selection group, don't do anything
+        if (PlayerInput.GetPlayers[identifier.GetPlayerID].GetButton(PlayerInput.GetInputBlock))
+            return;
 
         // deselect units when you're selecting new ones
         if (PlayerInput.GetPlayers[identifier.GetPlayerID].GetButtonSinglePressDown(PlayerInput.GetInputSelectUnits))
@@ -108,21 +128,6 @@ public class UnitSelection : MonoBehaviour
             currentSelectionRadius = 0f;
             unitSelectionVisual.gameObject.SetActive(false);
         }
-
-        // handle unit visuals for units selected (little dot over the unit)
-        if (selectedUnits.Count > 0)
-        {
-            // this loop is just for the visuals of units being selected
-            foreach (UnitActions unit in PlayerHolder.GetUnits(identifier.GetPlayerID))
-            {
-                if (selectedUnits.Contains(unit) && tempSelectedUnits.Count <= 0)
-                    unit.SetIsSelected(true);
-                else if (tempSelectedUnits.Count > 0 && tempSelectedUnits.Contains(unit))
-                    unit.SetIsSelected(true);
-                else
-                    unit.SetIsSelected(false);
-            }
-        }
         
         // select all units
         if (PlayerInput.GetPlayers[identifier.GetPlayerID].GetButtonDoublePressDown(PlayerInput.GetInputSelectUnits))
@@ -136,6 +141,7 @@ public class UnitSelection : MonoBehaviour
             }
         }
 
+        
 
 
         // deselect all units
@@ -152,6 +158,8 @@ public class UnitSelection : MonoBehaviour
                 selectedUnits[i].GetMovement.ResetDestination();
             }
         }
+
+
 
         tempSelectedUnits.RemoveAll(unit => unit == null);
         selectedUnits.RemoveAll(unit => unit == null);
@@ -420,14 +428,14 @@ public class UnitSelection : MonoBehaviour
     {
         for (int i = 0; i < microUiObjects.Length; i++)
         {
-            microUiObjects[i].SetActive(microGroups[i].Length >= 1);
+            microUiObjects[i].gameObject.SetActive(microGroups[i].Length >= 1);
         }
         // THESE WORK, I JUST HAVE THEM TURNED OFF UNTIL I FEEL LIKE USING MICRO GROUPS
         if (PlayerInput.GetPlayers[identifier.GetPlayerID].GetButton(PlayerInput.GetInputBlock))
         {
             CreateMicroGroup(PlayerInput.GetInputSelect, 0);
             CreateMicroGroup(PlayerInput.GetInputInteract, 1);
-            CreateMicroGroup(PlayerInput.GetInputSelectUnits, 2);
+            //CreateMicroGroup(PlayerInput.GetInputSelectUnits, 2);
             CreateMicroGroup(PlayerInput.GetInputBack, 3);
         }
     }
@@ -438,6 +446,7 @@ public class UnitSelection : MonoBehaviour
         if (PlayerInput.GetPlayers[identifier.GetPlayerID].GetButtonLongPressDown(buttonName))
         {
             microGroups[microGroupIndex] = new UnitActions[0];
+            microUiObjects[microGroupIndex].SetTrigger("Select");
 
             if (selectedUnits.Count > 0 || tempSelectedUnits.Count > 0)
             {

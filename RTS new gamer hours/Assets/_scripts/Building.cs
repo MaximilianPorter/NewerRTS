@@ -83,6 +83,10 @@ public class Building : MonoBehaviour
             buildingRallyPointLine.SetPosition(0, transform.position);
             buildingRallyPointLine.SetPosition(1, rallyPoint.position);
         }
+        else
+        {
+            buildingRallyPointLine.enabled = false;
+        }
 
     }
 

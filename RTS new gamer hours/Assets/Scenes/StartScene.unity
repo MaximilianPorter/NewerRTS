@@ -450,7 +450,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1369029557201535773, guid: fa699411551854341a1f39f308a27953, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 25.029968
+      value: -20.199997
       objectReference: {fileID: 0}
     - target: {fileID: 1420293298780204295, guid: fa699411551854341a1f39f308a27953, type: 3}
       propertyPath: m_AnchorMax.y
@@ -2024,7 +2024,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &296368975
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4138,7 +4138,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5274388015301556520, guid: 974a542cdc6c8f343948f1c82c90462b, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 25.03003
+      value: -20.199997
       objectReference: {fileID: 0}
     - target: {fileID: 5433965306433451067, guid: 974a542cdc6c8f343948f1c82c90462b, type: 3}
       propertyPath: m_SizeDelta.x
@@ -5712,6 +5712,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -32.34204
       objectReference: {fileID: 0}
+    - target: {fileID: 3619267676295978045, guid: ec2b5e3a80856a1449b7d4c2b4b4080a, type: 3}
+      propertyPath: PS4ControllerIcons.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5424162426904448804, guid: ec2b5e3a80856a1449b7d4c2b4b4080a, type: 3}
       propertyPath: m_RootOrder
       value: 3
@@ -6428,7 +6432,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3058404648407531582, guid: 2aeae342c19de294d91a46b8c39c99a0, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 25.029968
+      value: -20.199997
       objectReference: {fileID: 0}
     - target: {fileID: 3115227366068547108, guid: 2aeae342c19de294d91a46b8c39c99a0, type: 3}
       propertyPath: m_AnchorMax.y
@@ -9726,7 +9730,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8014362773090421990, guid: dbd43a3d90c2a294b8c49b673195e3b7, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 25.029968
+      value: -20.199997
       objectReference: {fileID: 0}
     - target: {fileID: 8271133042406660410, guid: dbd43a3d90c2a294b8c49b673195e3b7, type: 3}
       propertyPath: m_AnchorMax.y

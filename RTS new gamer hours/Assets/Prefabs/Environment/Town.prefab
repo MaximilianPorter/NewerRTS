@@ -565,8 +565,8 @@ MonoBehaviour:
   radius: 5
   amountToGive:
     food: 10
-    wood: 10
-    stone: 10
+    wood: 0
+    stone: 0
   projector: {fileID: 3620786917868156484}
   flagRend: {fileID: 6835568127693028839}
 --- !u!1 &6835568126886733619
