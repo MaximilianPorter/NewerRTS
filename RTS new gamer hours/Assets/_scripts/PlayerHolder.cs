@@ -122,7 +122,7 @@ public class PlayerHolder : MonoBehaviour
     /// <summary>
     /// returns Vector3.zero if the point is outside of the bounds of the canvas, else, returns the local point
     /// </summary>
-    public static Vector2 WorldToCanvasLocalPoint(Vector3 worldPos, int playerID)
+    public static Vector2? WorldToCanvasLocalPoint(Vector3 worldPos, int playerID)
     {
         Vector2 screenPoint = playerCams[playerID].WorldToScreenPoint(worldPos);
         if (RectTransformUtility.ScreenPointToLocalPointInRectangle(playerCanvasRects[playerID], screenPoint, playerCams[playerID], out Vector2 localPoint))
@@ -130,7 +130,7 @@ public class PlayerHolder : MonoBehaviour
             return localPoint / (playerCams[playerID].orthographicSize / playerCamStartOrthoSize[playerID]);
         }
 
-        return Vector2.zero;
+        return null;
     }
 
     public static float ScaleWithScreenOrthoSizeMultiplier (int playerID)

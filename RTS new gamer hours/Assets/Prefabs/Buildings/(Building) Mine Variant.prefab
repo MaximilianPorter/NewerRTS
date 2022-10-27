@@ -374,11 +374,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c01ca3e92f2db647a12cf60de9ba80e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  amountPerSurroundingHit:
+  flatAmtToGive:
     food: 0
     wood: 0
-    stone: 5
-  amountMultiplier: 1
+    stone: 0
+  amountMultiplier: 2
   timeToGive: 5
   resourceVisualEffect: {fileID: 6326366972244839618}
   tagsCounted:

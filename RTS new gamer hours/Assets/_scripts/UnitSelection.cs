@@ -12,12 +12,16 @@ public class UnitSelection : MonoBehaviour
     [SerializeField] private LayerMask unitMask;
     [SerializeField] private LayerMask obstacleMask;
     [SerializeField] private Transform unitSelectionVisual;
-    [SerializeField] private GameObject rallyTroopsEffectPrefab;
+    [SerializeField] private ParticleSystem rallyTroopsEffect;
     [SerializeField] private float maxSelectionRadius = 10f;
     [SerializeField] private float radiusIncreaseSpeed = 4f;
     [SerializeField] private float patternSpacingMulti = 2f;
     [SerializeField] private Transform selectedUnitsUiLayout;
     [SerializeField] private TMP_Text patternNameText;
+
+    [Header("Micro")]
+    [SerializeField] private Transform microGroupUiLayout;
+    private GameObject[] microUiObjects;
 
     private List<UnitActions> selectedUnits = new List<UnitActions>(0);
     private float currentSelectionRadius = 0f;
@@ -28,6 +32,8 @@ public class UnitSelection : MonoBehaviour
     private int selectedUnitIndex = -1;
     private QueuedUpUnitUi[] selectedUnitsUi;
     private List<UnitActions> tempSelectedUnits = new List<UnitActions>(0);
+    private UnitActions[][] microGroups = new UnitActions[4][];
+    private Vector3 lastRallyPointWorldPos;
 
     public bool GetHasTroopsSelected => selectedUnits.Count > 0;
 
@@ -44,7 +50,18 @@ public class UnitSelection : MonoBehaviour
             selectedUnitsUi[i].gameObject.SetActive(false);
         }
 
+        for (int i = 0; i < microGroups.GetLength(0); i++)
+        {
+            microGroups[i] = new UnitActions[0];
+        }
+
+        microUiObjects = new GameObject[microGroupUiLayout.childCount];
+        for (int i = 0; i < microGroupUiLayout.childCount; i++)
+        {
+            microUiObjects[i] = microGroupUiLayout.GetChild(i).gameObject;
+        }
         patternNameText.text = "";
+        rallyTroopsEffect.Stop();
     }
 
     private void Update()
@@ -52,6 +69,8 @@ public class UnitSelection : MonoBehaviour
         // if the player is in a menu, we don't do unit selection updates
         if (PlayerInput.GetPlayerIsInMenu(identifier.GetPlayerID))
             return;
+
+        HandleMircroGroups();
 
         // if the player has no troops, we don't do unit selection updates
         if (PlayerHolder.GetUnits(identifier.GetPlayerID).Count <= 0)
@@ -119,9 +138,20 @@ public class UnitSelection : MonoBehaviour
             DeselectUnits();
         }
 
+        // stop unit movement
+        if (PlayerInput.GetPlayers[identifier.GetPlayerID].GetButtonDown(PlayerInput.GetInputStopUnitMovement))
+        {
+            for (int i = 0; i < selectedUnits.Count; i++)
+            {
+                selectedUnits[i].GetMovement.ResetDestination();
+            }
+        }
+
         tempSelectedUnits.RemoveAll(unit => unit == null);
         selectedUnits.RemoveAll(unit => unit == null);
+
         RallyTroopsOnPattern(tempSelectedUnits.Count > 0 ? tempSelectedUnits : selectedUnits);
+        rallyTroopsEffect.transform.position = lastRallyPointWorldPos;
 
         HandleSelectedUnitTypesUI();
         
@@ -354,8 +384,8 @@ public class UnitSelection : MonoBehaviour
         {
             patternNameText.text = "";
 
-            GameObject rallyTroopsEffectInstance = Instantiate(rallyTroopsEffectPrefab, transform.position + new Vector3(0f, -1f, 0f), Quaternion.identity);
-            Destroy(rallyTroopsEffectInstance, 3f);
+            rallyTroopsEffect.Play();
+            lastRallyPointWorldPos = transform.position + new Vector3 (0f, -0.75f, 0f);
 
             for (int i = 0; i < unitsToRally.Count; i++)
             {
@@ -367,14 +397,54 @@ public class UnitSelection : MonoBehaviour
                 // if we never chose a pattern, just put the unit near the player
                 if (patternIndex == -1)
                 {
-                    float maxDistAway = Mathf.Lerp(0.5f, 3f, unitsToRally.Count / 10);
-                    unitsToRally[i].GetOrderingObject.transform.position = transform.position + new Vector3(Random.Range(-maxDistAway, maxDistAway), 0f, Random.Range(-maxDistAway, maxDistAway));
+                    float maxDistAway = Mathf.Lerp(0.5f, 3f, (float)unitsToRally.Count / 15f);
+                    Vector3 pos = new Vector3(Random.Range(-maxDistAway, maxDistAway), 0f, Random.Range(-maxDistAway, maxDistAway));
+                    SetUnitPos(unitsToRally[i], pos, unitsToRally[i].GetStats.maxMoveSpeed);
+                    unitsToRally[i].GetOrderingObject.SetActive(false);
                 }
 
-                unitsToRally[i].GetMovement.SetDestination(unitsToRally[i].GetOrderingObject.transform.position);
+                if (patternIndex == -1)
+                    unitsToRally[i].HardSetDestination(unitsToRally[i].GetOrderingObject.transform.position);
+                else
+                    unitsToRally[i].GetMovement.SetDestination(unitsToRally[i].GetOrderingObject.transform.position);
             }
             // reset pattern index
             patternIndex = -1;
+        }
+    }
+
+    private void HandleMircroGroups ()
+    {
+        for (int i = 0; i < microUiObjects.Length; i++)
+        {
+            microUiObjects[i].SetActive(microGroups[i].Length >= 1);
+        }
+
+        CreateMicroGroup(PlayerInput.GetInputDpadUp, 0);
+        CreateMicroGroup(PlayerInput.GetInputDpadDown, 1);
+        //CreateMicroGroup(PlayerInput.GetInputDpadLeft, 2);
+        //CreateMicroGroup(PlayerInput.GetInputDpadRight, 3);
+    }
+
+    private void CreateMicroGroup (string buttonName, int microGroupIndex)
+    {
+        // CREATING MICRO GROUPS
+        if (PlayerInput.GetPlayers[identifier.GetPlayerID].GetButtonLongPressDown(buttonName))
+        {
+            microGroups[microGroupIndex] = new UnitActions[0];
+
+            if (selectedUnits.Count > 0 || tempSelectedUnits.Count > 0)
+            {
+                if (tempSelectedUnits.Count > 0)
+                    microGroups[microGroupIndex] = tempSelectedUnits.ToArray();
+                else
+                    microGroups[microGroupIndex] = selectedUnits.ToArray();
+            }
+        }
+        else if (PlayerInput.GetPlayers[identifier.GetPlayerID].GetButtonUp(buttonName) && microGroups[microGroupIndex].Length > 0)
+        {
+            tempSelectedUnits.Clear();
+            selectedUnits = microGroups[microGroupIndex].ToList();
         }
     }
 

@@ -2356,8 +2356,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c01ca3e92f2db647a12cf60de9ba80e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  amountPerSurroundingHit:
-    food: 5
+  flatAmtToGive:
+    food: 2
     wood: 0
     stone: 0
   amountMultiplier: 1

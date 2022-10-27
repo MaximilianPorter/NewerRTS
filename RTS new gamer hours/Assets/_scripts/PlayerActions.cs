@@ -149,7 +149,7 @@ public class PlayerActions : MonoBehaviour
 
         // adjust fill meter to visually represent sprint
         sprintFill.fillAmount = sprintCounter / timeToRegenSprint;
-        sprintFill.transform.parent.localPosition = PlayerHolder.WorldToCanvasLocalPoint(transform.position + new Vector3(0f, -5f, 0f), identifier.GetPlayerID);
+        sprintFill.transform.parent.localPosition = PlayerHolder.WorldToCanvasLocalPoint(transform.position + new Vector3(0f, -5f, 0f), identifier.GetPlayerID).GetValueOrDefault(Vector2.zero);
 
         if (isSprinting)
         {

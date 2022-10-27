@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using Unity.VisualScripting;
+using UnityEditor.PackageManager;
 using UnityEngine;
 
 public class StatsDatabaseManager : MonoBehaviour
@@ -23,21 +24,38 @@ public class StatsDatabaseManager : MonoBehaviour
     // if you don't have the download, you can find it online in your firebase project settings
     private DatabaseReference reference;
 
-    private void Start()
+    private IEnumerator Start()
     {
+        reference = FirebaseDatabase.DefaultInstance.RootReference;
+
+
+        PauseGameManager.ForcePause = true;
+
+        bool isConnected = false;
+        yield return StartCoroutine(CheckIsConnected(connected => isConnected = connected));
+        if (!isConnected)
+        {
+            Debug.LogWarning("could not connect, continuing with game...");
+            PauseGameManager.ForcePause = false;
+            yield break;
+        }
+
+
+
         InitializeTempArrays();
 
-        reference = FirebaseDatabase.DefaultInstance.RootReference;
 
         for (int i = 0; i < unitStats.Length; i++)
         {
-            StartCoroutine(SetUnitDetails(i));
+            yield return StartCoroutine(SetUnitDetails(i));
         }
 
         for (int i = 0; i < buildingStats.Length; i++)
         {
-            StartCoroutine(SetBuildingDetails(i));
+            yield return StartCoroutine(SetBuildingDetails(i));
         }
+
+        PauseGameManager.ForcePause = false;
     }
 
     private void InitializeTempArrays ()
@@ -145,9 +163,9 @@ public class StatsDatabaseManager : MonoBehaviour
             }
 
             // if we find a current existing value (there's no exceptions), set it from the database
-            Debug.Log("found a variable for " + variableName + " on " + statsType.ToString() + " getting it's value...");
             DataSnapshot snapshot = GetDBTask.Result;
             float value = float.Parse(Convert.ToString (snapshot.Value));
+            Debug.Log("found a variable for " + variableName + " on " + statsType.ToString() + " with value " + value);
 
             // set the value to the tempDatabase to retrieve from later
             tempDatabase[index].FirstOrDefault (databaseValue => databaseValue.statName == variableName).floatValue = value;
@@ -195,8 +213,8 @@ public class StatsDatabaseManager : MonoBehaviour
                 Debug.LogError($"READ is disabled, YOU NEED TO ENABLE READ ON {gameObject.name}");
             }
             // if we find a current existing value (there's no exceptions), set it FROM the database
-            Debug.Log("found a variable for " + variableName + " on " + statsType.ToString() + " getting it's value...");
             DataSnapshot snapshot = GetDBTask.Result;
+            Debug.Log("found a variable for " + variableName + " on " + statsType.ToString() + " with value " + Convert.ToString(snapshot.Value));
 
             // remove things that I might add to vector3's when entering new values into the database
             char[] charactersToTrim = { '{', '}', '(', ')', '[', ']' };
@@ -243,6 +261,29 @@ public class StatsDatabaseManager : MonoBehaviour
                 // database is now updated
             }
         }
+    }
+
+
+    private IEnumerator CheckIsConnected(System.Action<bool> callback)
+    {
+        bool isConnected = false;
+        //DatabaseReference connectedRef = FirebaseDatabase.DefaultInstance.GetReference(".info/connected");
+        var task = reference.GetValueAsync().ContinueWith (task =>
+        {
+            isConnected = task.IsCompletedSuccessfully;
+        });
+
+        Debug.Log("start wait for task completion...");
+        yield return new WaitForSecondsRealtime(3f);// (predicate: () => task.IsCompleted || task.IsFaulted || task.IsCanceled);
+
+        if (isConnected)
+            Debug.Log("connected.");
+        else
+            Debug.Log("NOT connected.");
+
+        yield return null;
+        callback(isConnected);
+
     }
 }
 

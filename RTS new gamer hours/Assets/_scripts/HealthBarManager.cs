@@ -68,9 +68,15 @@ public class HealthBarManager : MonoBehaviour
                     continue;
                 }
 
+                Vector2? localPos = PlayerHolder.WorldToCanvasLocalPoint(PlayerHolder.GetUnits(i)[j].transform.position + new Vector3(0f, 1f, 0f), i);
+                if (localPos == null)
+                {
+                    unitHealthBarInstances[i][j].gameObject.SetActive(false);
+                    continue;
+                }
                 unitHealthBarInstances[i][j].gameObject.SetActive(true);
                 unitHealthBarInstances[i][j].color = healthGradient.Evaluate (PlayerHolder.GetUnits(i)[j].GetHealth.GetCurrentHealth / PlayerHolder.GetUnits(i)[j].GetHealth.GetMaxHealth);
-                unitHealthBarInstances[i][j].transform.localPosition = PlayerHolder.WorldToCanvasLocalPoint(PlayerHolder.GetUnits(i)[j].transform.position + new Vector3(0f, 1f, 0f), i);
+                unitHealthBarInstances[i][j].transform.localPosition = localPos.GetValueOrDefault();
                 unitHealthBarInstances[i][j].transform.localScale = Vector3.one * PlayerHolder.ScaleWithScreenOrthoSizeMultiplier(i);
             }
 
@@ -95,9 +101,17 @@ public class HealthBarManager : MonoBehaviour
                     break;
                 }
 
+                Vector2? localPos = PlayerHolder.WorldToCanvasLocalPoint(PlayerHolder.GetBuildings(i)[j].transform.position + new Vector3(0f, 1f, 0f), i);
 
+                if (localPos == null)
+                {
+                    buildingHealthBarInstances[i][j].gameObject.SetActive(false);
+                    continue;
+                }
+
+                buildingHealthBarInstances[i][j].gameObject.SetActive(true);
                 buildingHealthBarInstances[i][j].color = healthGradient.Evaluate (PlayerHolder.GetBuildings(i)[j].GetHealth.GetCurrentHealth / PlayerHolder.GetBuildings(i)[j].GetHealth.GetMaxHealth);
-                buildingHealthBarInstances[i][j].transform.localPosition = PlayerHolder.WorldToCanvasLocalPoint(PlayerHolder.GetBuildings(i)[j].transform.position + new Vector3 (0f, 1f, 0f), i);
+                buildingHealthBarInstances[i][j].transform.localPosition = localPos.GetValueOrDefault();
                 buildingHealthBarInstances[i][j].transform.localScale = Vector3.one * PlayerHolder.ScaleWithScreenOrthoSizeMultiplier(i);
 
             }

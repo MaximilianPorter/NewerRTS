@@ -5,7 +5,12 @@ using UnityEngine;
 
 public class PauseGameManager : MonoBehaviour
 {
+    [SerializeField] private GameObject loadingAssetsMenu;
     private PlayerPauseController[] playerPauseControllers;
+
+    public static bool ForcePause = false;
+    public static bool GetIsPaused => isPaused;
+    private static bool isPaused = false;
 
     private void Start()
     {
@@ -17,18 +22,22 @@ public class PauseGameManager : MonoBehaviour
 
     private void Update()
     {
+        loadingAssetsMenu.SetActive(ForcePause);
+
         // pause if any player is paused
-        if (playerPauseControllers.Any(player => player.GetIsPaused))
+        if (playerPauseControllers.Any(player => player.GetIsPaused) || ForcePause)
         {
             Time.timeScale = 0f;
             Time.fixedDeltaTime = Time.timeScale * 0.02f;
+            isPaused = true;
         }
 
         // unpause if all players aren't paused
-        if (playerPauseControllers.All (player => !player.GetIsPaused))
+        if (playerPauseControllers.All (player => !player.GetIsPaused) && !ForcePause)
         {
             Time.timeScale = 1f;
             Time.fixedDeltaTime = Time.timeScale * 0.02f;
+            isPaused = false;
         }
     }
 }

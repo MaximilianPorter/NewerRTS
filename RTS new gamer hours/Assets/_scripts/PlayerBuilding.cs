@@ -100,11 +100,14 @@ public class PlayerBuilding : MonoBehaviour
     private void Start()
     {
         DisableAllIcons();
-        
+        buttonMenu.SetActive(false);
     }
 
     private void Update()
     {
+        if (PauseGameManager.GetIsPaused)
+            return;
+
         anyMenuOpen = buildingMenuIsOpen || unitMenuIsOpen;
 
         if (anyMenuOpen)
@@ -333,7 +336,7 @@ public class PlayerBuilding : MonoBehaviour
             }
 
 
-            buttonMenu.transform.localPosition = PlayerHolder.WorldToCanvasLocalPoint(transform.position + (Vector3)buttonMenuOffset, identifier.GetPlayerID);
+            buttonMenu.transform.localPosition = PlayerHolder.WorldToCanvasLocalPoint(transform.position + (Vector3)buttonMenuOffset, identifier.GetPlayerID).GetValueOrDefault(Vector2.zero);
             //Vector2 screenPoint = playerCam.WorldToScreenPoint(transform.position + (Vector3)buttonMenuOffset);
             //if (RectTransformUtility.ScreenPointToLocalPointInRectangle(playerCanvas, screenPoint, playerCam, out Vector2 localPoint))
             //{
@@ -737,7 +740,7 @@ public class PlayerBuilding : MonoBehaviour
         placeBuildingRallyVisual.gameObject.SetActive(placingRallyPoint);
         if (placingRallyPoint)
         {
-            placeBuildingRallyVisual.localPosition = PlayerHolder.WorldToCanvasLocalPoint(transform.position + rallyVisualOffset, identifier.GetPlayerID);
+            placeBuildingRallyVisual.localPosition = PlayerHolder.WorldToCanvasLocalPoint(transform.position + rallyVisualOffset, identifier.GetPlayerID).GetValueOrDefault (Vector2.zero);
             //Vector2 screenPoint = playerCam.WorldToScreenPoint(transform.position + rallyVisualOffset);
             //if (RectTransformUtility.ScreenPointToLocalPointInRectangle(playerCanvas, screenPoint, playerCam, out Vector2 localPoint))
             //{

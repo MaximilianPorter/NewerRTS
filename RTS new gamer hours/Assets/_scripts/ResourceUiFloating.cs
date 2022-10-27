@@ -61,7 +61,12 @@ public class ResourceUiFloating : MonoBehaviour
         moveUpCounter += Time.deltaTime * moveUpSpeed;
         if (playerCanvasID != -1)
         {
-            transform.localPosition = PlayerHolder.WorldToCanvasLocalPoint(startWorldPos + transform.up * moveUpCounter, playerCanvasID);
+            Vector2? localPos = PlayerHolder.WorldToCanvasLocalPoint(startWorldPos + transform.up * moveUpCounter, playerCanvasID);
+            if (localPos == null)
+            {
+                Destroy(gameObject);
+            }
+            transform.localPosition = localPos.GetValueOrDefault();
             transform.localScale = Vector3.one * PlayerHolder.ScaleWithScreenOrthoSizeMultiplier(playerCanvasID);
         }
 

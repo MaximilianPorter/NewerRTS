@@ -55,6 +55,7 @@ public class UnitActions : MonoBehaviour
     private bool hasThrown = true;
     private float lookRangeWithHeight = 0f;
     private float attackRangeWithHeight = 0f;
+    private bool hardsetDestination = false;
 
     private int lastTeamID = 0;
 
@@ -75,6 +76,11 @@ public class UnitActions : MonoBehaviour
     public GameObject GetOrderingObject => movementTargetVisual;
     public bool GetIsSelected => isSelected;
     public void SetIsSelected(bool select) => isSelected = select;
+    public void HardSetDestination(Vector3 destination)
+    {
+        navMovement.SetDestination(destination);
+        hardsetDestination = true;
+    }
 
     private void Awake()
     {
@@ -108,8 +114,6 @@ public class UnitActions : MonoBehaviour
 
         movementTargetVisual.SetActive(false);
         SetUnitSpecificPlayerLayers(identifier.GetPlayerID);
-        //transform.SetParent(null);
-        //identifier.SetIsParent(true);
     }
 
     private void Update()
@@ -283,6 +287,13 @@ public class UnitActions : MonoBehaviour
 
     private void HandleMoveTowardsEnemies ()
     {
+        if (hardsetDestination)
+        {
+            if (!navMovement.GetIsMoving)
+                hardsetDestination = false;
+            return;
+        }
+
         Vector3 moveTowardsPos = navMovement.GetDestination;
         Transform enemy = attacking.GetNearestEnemy;
 

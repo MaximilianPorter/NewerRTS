@@ -32,6 +32,8 @@ public class PlayerInput : MonoBehaviour
     private static readonly string inputPause = "Pause";
     private static readonly string inputSprint = "Sprint";
     private static readonly string inputRespawn = "Respawn";
+    private static readonly string inputStopUnitMovement = "Stop Unit Movement";
+
 
     public static string GetInputMoveHorizontal => inputMoveHorizontal;
     public static string GetInputMoveVertical => inputMoveVertical;
@@ -57,6 +59,7 @@ public class PlayerInput : MonoBehaviour
     public static string GetInputPause => inputPause;
     public static string GetInputSprint => inputSprint;
     public static string GetInputRespawn => inputRespawn;
+    public static string GetInputStopUnitMovement => inputStopUnitMovement;
 
     private static List<Player> players;
     public static List<Player> GetPlayers => players;
