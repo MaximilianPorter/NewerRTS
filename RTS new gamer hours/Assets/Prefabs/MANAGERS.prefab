@@ -565,6 +565,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8024509099828509917}
+  - component: {fileID: 7401059219296183239}
   m_Layer: 0
   m_Name: Player Color Change Manager
   m_TagString: Untagged
@@ -587,6 +588,40 @@ Transform:
   m_Father: {fileID: 5424162426904448804}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7401059219296183239
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 698828583497372503}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 754da649bde019b4fab8df74c48ccb8d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerColors:
+  - {r: 0, g: 0.7647059, b: 0.7921569, a: 1}
+  - {r: 0.9529412, g: 0.3647059, b: 0.22352941, a: 1}
+  - {r: 0.25882354, g: 0.84313726, b: 0.32156864, a: 1}
+  - {r: 0.8039216, g: 0.85882354, b: 0.101960786, a: 1}
+  nonPlayerMaterial: {fileID: 2100000, guid: 8ce371d862a84a642872f44976b8e2de, type: 2}
+  playerMaterials:
+  - {fileID: 2100000, guid: 4291ccdb114aba3439ec6341f62ec2b8, type: 2}
+  - {fileID: 2100000, guid: 425731b92b8fe174cb1fb78e14f3cc1d, type: 2}
+  - {fileID: 2100000, guid: 78a1616352e90f648ba7330330592120, type: 2}
+  - {fileID: 2100000, guid: f41993e7f2b01ae45af42df41cb87fa7, type: 2}
+  nonPlayerProjectorMaterial: {fileID: 2100000, guid: e69a8ac245f04e544891d71425562b3f, type: 2}
+  playerProjectorMaterials:
+  - {fileID: 2100000, guid: 7e4c27a707697eb48942a4e7c4bbd5da, type: 2}
+  - {fileID: 2100000, guid: 6d248255875d0c64c8fe4b6cb682aa26, type: 2}
+  - {fileID: 2100000, guid: 8def8d88990554d46aa626a227c51531, type: 2}
+  - {fileID: 2100000, guid: b128dfdad3de62e42aefe2d15373f2f2, type: 2}
+  unitMaterials:
+  - {fileID: 2100000, guid: 9fd99e27152b70b40bfb3b84ed1a994f, type: 2}
+  - {fileID: 2100000, guid: 82d2fa1228da26c48b622239c19ed82f, type: 2}
+  - {fileID: 2100000, guid: 334180f414b320447aaf010984f52c04, type: 2}
+  - {fileID: 2100000, guid: bed4ba2a0d312c440bbc356288b63aa8, type: 2}
 --- !u!1 &5424162426904448805
 GameObject:
   m_ObjectHideFlags: 0
@@ -634,7 +669,6 @@ GameObject:
   - component: {fileID: 5424162428077050027}
   - component: {fileID: 5424162428077050020}
   - component: {fileID: 5424162428077050021}
-  - component: {fileID: 5424162428077050023}
   - component: {fileID: 5424162428077050022}
   - component: {fileID: 5424162428077050017}
   - component: {fileID: 5424162428077050016}
@@ -760,40 +794,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 267598114aa02404f98e84c460498358, type: 2}
   - {fileID: 11400000, guid: 6ac0c51e9763e5b4d9cace0da89bd2c8, type: 2}
   - {fileID: 11400000, guid: 369271ec00c6e4441bb7ec4a9f3a958c, type: 2}
---- !u!114 &5424162428077050023
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5424162428077050024}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 754da649bde019b4fab8df74c48ccb8d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  playerColors:
-  - {r: 0, g: 0.7647059, b: 0.7921569, a: 1}
-  - {r: 0.9529412, g: 0.3647059, b: 0.22352941, a: 1}
-  - {r: 0.25882354, g: 0.84313726, b: 0.32156864, a: 1}
-  - {r: 0.8039216, g: 0.85882354, b: 0.101960786, a: 1}
-  nonPlayerMaterial: {fileID: 2100000, guid: 8ce371d862a84a642872f44976b8e2de, type: 2}
-  playerMaterials:
-  - {fileID: 2100000, guid: 4291ccdb114aba3439ec6341f62ec2b8, type: 2}
-  - {fileID: 2100000, guid: 425731b92b8fe174cb1fb78e14f3cc1d, type: 2}
-  - {fileID: 2100000, guid: 78a1616352e90f648ba7330330592120, type: 2}
-  - {fileID: 2100000, guid: f41993e7f2b01ae45af42df41cb87fa7, type: 2}
-  nonPlayerProjectorMaterial: {fileID: 2100000, guid: e69a8ac245f04e544891d71425562b3f, type: 2}
-  playerProjectorMaterials:
-  - {fileID: 2100000, guid: 7e4c27a707697eb48942a4e7c4bbd5da, type: 2}
-  - {fileID: 2100000, guid: 6d248255875d0c64c8fe4b6cb682aa26, type: 2}
-  - {fileID: 2100000, guid: 8def8d88990554d46aa626a227c51531, type: 2}
-  - {fileID: 2100000, guid: b128dfdad3de62e42aefe2d15373f2f2, type: 2}
-  unitMaterials:
-  - {fileID: 2100000, guid: 9fd99e27152b70b40bfb3b84ed1a994f, type: 2}
-  - {fileID: 2100000, guid: 82d2fa1228da26c48b622239c19ed82f, type: 2}
-  - {fileID: 2100000, guid: 334180f414b320447aaf010984f52c04, type: 2}
-  - {fileID: 2100000, guid: bed4ba2a0d312c440bbc356288b63aa8, type: 2}
 --- !u!114 &5424162428077050022
 MonoBehaviour:
   m_ObjectHideFlags: 0

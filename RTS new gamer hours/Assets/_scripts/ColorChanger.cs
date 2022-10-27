@@ -14,6 +14,15 @@ public class ColorChanger : MonoBehaviour
     //[SerializeField] private int playerID;
     [SerializeField] private int[] meshRendMaterialChange;
 
+    private int lastColorID = -1;
+    private int lastPlayerID = -1;
+    private int myColorID = -1;
+    private int myPlayerID = -1;
+    private Color assignedColor;
+    private Identifier foundIdentifier;
+
+
+
     private void Start()
     {
         // find an identifier in self or parents
@@ -22,6 +31,7 @@ public class ColorChanger : MonoBehaviour
         {
             if (currentCheckedTransform.TryGetComponent (out Identifier identifier))
             {
+                foundIdentifier = identifier;
                 ChangeColor(identifier.GetColorID, identifier.GetPlayerID);
                 break;
             }
@@ -31,13 +41,26 @@ public class ColorChanger : MonoBehaviour
 
             currentCheckedTransform = currentCheckedTransform.parent;
         }
+    }
 
-
-        
+    private void Update()
+    {
+        if (!PlayerColorManager.GetPlayerColor (myColorID).CompareRGB (assignedColor) || foundIdentifier.GetColorID != myColorID)
+        {
+            Debug.Log($"We have the wrong color for {gameObject.name}, changing color...");
+            ChangeColor(foundIdentifier.GetColorID, foundIdentifier.GetPlayerID);
+        }
     }
 
     public void ChangeColor (int colorID, int playerID)
     {
+        myColorID = colorID;
+        myPlayerID = playerID;
+        lastColorID = colorID;
+        lastPlayerID = playerID;
+
+        assignedColor = PlayerColorManager.GetPlayerColor(colorID);
+
         // SPRITE REND COLOR
         if (TryGetComponent(out SpriteRenderer sRend))
         {
@@ -113,9 +136,11 @@ public class ColorChanger : MonoBehaviour
 
     private Color ColorIgnoreAlpha (Color color, int colorID)
     {
-        return new Color(PlayerColorManager.GetPlayerColor(colorID).r,
+        Color colorIgnoreAlpha = new Color(PlayerColorManager.GetPlayerColor(colorID).r,
             PlayerColorManager.GetPlayerColor(colorID).g,
             PlayerColorManager.GetPlayerColor(colorID).b,
             color.a);
+
+        return colorIgnoreAlpha;
     }
 }

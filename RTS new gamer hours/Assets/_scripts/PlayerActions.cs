@@ -38,7 +38,7 @@ public class PlayerActions : MonoBehaviour
     private Color[] startSprintRendColors;
     private float sprintFullColorCounter = 0f;
 
-
+    private int lastColorID = -1;
     private Vector3 moveInput;
     private bool isAttacking = false;
     private bool isBlocking = false;
@@ -58,11 +58,7 @@ public class PlayerActions : MonoBehaviour
 
     private void Start()
     {
-        // turn on correct body parts
-        for (int i = 0; i < bodyPartsNeedMaterial.Length; i++)
-        {
-            bodyPartsNeedMaterial[i].material = PlayerColorManager.GetUnitMaterial(identifier.GetPlayerID);
-        }
+        UpdateBodyColor();
 
         sprintCounter = timeToRegenSprint;
         sprintRenderers = new Image[2] { sprintFill, sprintFill.transform.parent.GetComponent<Image>() };
@@ -73,6 +69,11 @@ public class PlayerActions : MonoBehaviour
 
     private void Update()
     {
+        if (lastColorID != identifier.GetColorID)
+        {
+            UpdateBodyColor();
+        }
+
         moveInput = new Vector3(PlayerInput.GetPlayers[identifier.GetPlayerID].GetAxis(PlayerInput.GetInputMoveHorizontal),
                 0f,
                 PlayerInput.GetPlayers[identifier.GetPlayerID].GetAxis(PlayerInput.GetInputMoveVertical));
@@ -195,6 +196,16 @@ public class PlayerActions : MonoBehaviour
             respawnHoldCounter = 0f;
             navMovement.SetNavAgentEnabled(true);
         }
+    }
+
+    private void UpdateBodyColor ()
+    {
+        // turn on correct body parts
+        for (int i = 0; i < bodyPartsNeedMaterial.Length; i++)
+        {
+            bodyPartsNeedMaterial[i].material = PlayerColorManager.GetUnitMaterial(identifier.GetPlayerID);
+        }
+        lastColorID = identifier.GetColorID;
     }
 
     private void SetAnimations(AnimatorOverrideController newController)

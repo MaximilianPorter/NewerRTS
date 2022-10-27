@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerColorManager : MonoBehaviour
 {
+    public static PlayerColorManager instance;
+
     [SerializeField] private Color[] playerColors;
     private static Color[] staticPlayerColors;
 
@@ -28,10 +30,18 @@ public class PlayerColorManager : MonoBehaviour
     public static Material GetPlayerMaterial (int playerID) => staticPlayerMaterials[playerID];
     public static Material GetPlayerProjectorMaterial (int playerID) => staticPlayerProjectorMaterials[playerID];
     public static Color GetPlayerColor(int colorID) => staticPlayerColors[colorID];
-    public static void SetPlayerColor(int colorID, Color newColor) => staticPlayerColors[colorID] = newColor;
+    public static void SetPlayerColor(int colorID, Color newColor)
+    {
+        staticPlayerColors[colorID] = newColor;
+        instance.playerColors[colorID] = newColor;
+    }
 
     private void Awake()
     {
+        transform.SetParent(null);
+        DontDestroyOnLoad(transform.gameObject);
+
+
         // initialize arrays
         for (int i = 0; i < 4; i++)
         {
@@ -44,27 +54,44 @@ public class PlayerColorManager : MonoBehaviour
         staticNonPlayerMaterial = nonPlayerMaterial;
 
         staticPlayerColors = new Color[playerColors.Length];
+    }
+
+    private void Start()
+    {
+        // if there is already an instance of this, take it's colors
+        if (instance != null)
+        {
+            Debug.LogWarning("Taking colors then destroying old one...");
+            for (int i = 0; i < playerColors.Length; i++)
+            {
+                this.playerColors[i] = instance.playerColors[i];
+            }
+            Destroy(instance.gameObject);
+            instance = this;
+        }
+        else
+            instance = this;
+
         for (int i = 0; i < playerColors.Length; i++)
         {
             staticPlayerColors[i] = playerColors[i];
         }
-
     }
 
     private void FixedUpdate()
     {
         for (int i = 0; i < staticPlayerMaterials.Length; i++)
         {
-            staticPlayerMaterials[i].color = playerColors[i];
+            staticPlayerMaterials[i].color = staticPlayerColors[i];
         }
         for (int i = 0; i < staticPlayerProjectorMaterials.Length; i++)
         {
-            staticPlayerProjectorMaterials[i].color = playerColors[i];
+            staticPlayerProjectorMaterials[i].color = staticPlayerColors[i];
         }
         for (int i = 0; i < staticUnitMaterials.Length; i++)
         {
-            staticUnitMaterials[i].SetColor("_TintColorA", playerColors[i]);
-            staticUnitMaterials[i].SetColor("_TintColorB", playerColors[i]);
+            staticUnitMaterials[i].SetColor("_TintColorA", staticPlayerColors[i]);
+            staticUnitMaterials[i].SetColor("_TintColorB", staticPlayerColors[i]);
         }
     }
 }

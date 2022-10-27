@@ -2057,7 +2057,6 @@ GameObject:
   - component: {fileID: 1917805643614587726}
   - component: {fileID: 1917805643614587724}
   - component: {fileID: 1917805643614587722}
-  - component: {fileID: 1917805643614587725}
   - component: {fileID: 7442977069102229522}
   - component: {fileID: 330450916}
   m_Layer: 0
@@ -2125,20 +2124,6 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
---- !u!114 &1917805643614587725
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1917805643614587713}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f9e96cb3c29141c4cbf7335c3306e5b4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  teamID: 0
-  meshRendMaterialChange: 
 --- !u!114 &7442977069102229522
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2155,6 +2140,7 @@ MonoBehaviour:
   isPlayer: 0
   playerID: 0
   teamID: 0
+  colorID: 0
 --- !u!114 &330450916
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2300,7 +2286,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9e96cb3c29141c4cbf7335c3306e5b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  teamID: 0
   meshRendMaterialChange: 
 --- !u!114 &7442977068788559858
 MonoBehaviour:
@@ -2318,6 +2303,7 @@ MonoBehaviour:
   isPlayer: 0
   playerID: 0
   teamID: 0
+  colorID: 0
 --- !u!114 &2182155988925910863
 MonoBehaviour:
   m_ObjectHideFlags: 0

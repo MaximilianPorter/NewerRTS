@@ -123,7 +123,7 @@ public class Building : MonoBehaviour
             SwitchAllBuildingTeams();
             SwitchAllUnitTeams();
 
-            SwitchTeams(health.GetLastHitByPlayer.GetPlayerID, health.GetLastHitByPlayer.GetTeamID);
+            SwitchTeams(health.GetLastHitByPlayer.GetPlayerID, health.GetLastHitByPlayer.GetTeamID, health.GetLastHitByPlayer.GetColorID);
             return;
         }
 
@@ -131,8 +131,9 @@ public class Building : MonoBehaviour
         DeleteBuilding();
     }
 
-    public void SwitchTeams (int newPlayerID, int newTeamID)
+    public void SwitchTeams (int newPlayerID, int newTeamID, int newColorID)
     {
+        //identifier.UpdateInfo (newPlayerID, newTeamID, newColorID);
         Identifier newBuildingInstance = Instantiate(this.gameObject, transform.position, transform.rotation).GetComponent<Identifier>();
         newBuildingInstance.SetPlayerID(newPlayerID);
         newBuildingInstance.SetTeamID(newTeamID);
@@ -174,7 +175,7 @@ public class Building : MonoBehaviour
             Building building = PlayerHolder.GetBuildings(identifier.GetPlayerID)[firstIndex];
 
             if (building != this)
-                building.SwitchTeams(health.GetLastHitByPlayer.GetPlayerID, health.GetLastHitByPlayer.GetTeamID);
+                building.SwitchTeams(health.GetLastHitByPlayer.GetPlayerID, health.GetLastHitByPlayer.GetTeamID, health.GetLastHitByPlayer.GetColorID);
             else
                 firstIndex++;
 
@@ -193,7 +194,7 @@ public class Building : MonoBehaviour
             UnitActions unit = PlayerHolder.GetUnits(identifier.GetPlayerID)[firstIndex];
 
             if (unit != null)
-                unit.SwitchTeams(health.GetLastHitByPlayer.GetPlayerID, health.GetLastHitByPlayer.GetTeamID);
+                unit.SwitchTeams(health.GetLastHitByPlayer.GetPlayerID, health.GetLastHitByPlayer.GetTeamID, health.GetLastHitByPlayer.GetColorID);
             else
                 firstIndex++;
 

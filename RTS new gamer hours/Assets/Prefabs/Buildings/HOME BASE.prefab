@@ -96,6 +96,7 @@ GameObject:
   - component: {fileID: 891543428128652729}
   - component: {fileID: 916436579705897629}
   - component: {fileID: 916436579705897626}
+  - component: {fileID: 9110762002265326065}
   - component: {fileID: 916436579705897628}
   - component: {fileID: 916436579705897627}
   - component: {fileID: 3659162556006566174}
@@ -161,6 +162,19 @@ MonoBehaviour:
   isPlayer: 0
   playerID: 0
   teamID: 0
+  colorID: 0
+--- !u!114 &9110762002265326065
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 888016694722983187}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5bdcb2d139801e340b21ca41a5629daa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &916436579705897628
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -173,8 +187,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9336efeb6eeffa8478aed43d06c9a3fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentHealth: 100
   maxHealth: 100
+  armor: 0
   invincible: 0
 --- !u!114 &916436579705897627
 MonoBehaviour:
@@ -194,6 +208,7 @@ MonoBehaviour:
   rallyPoint: {fileID: 0}
   playerHoverEffect: {fileID: 0}
   smokeExplosion: {fileID: 4912207008319035513, guid: a498eae963f771c40bde5122922062ce, type: 3}
+  sellBuildingEffect: {fileID: 0}
 --- !u!114 &3659162556006566174
 MonoBehaviour:
   m_ObjectHideFlags: 0

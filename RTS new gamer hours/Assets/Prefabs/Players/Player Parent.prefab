@@ -2145,8 +2145,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9e96cb3c29141c4cbf7335c3306e5b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  colorID: 0
-  playerID: 0
   meshRendMaterialChange: 
 --- !u!1 &3900220008472937955
 GameObject:
@@ -3423,8 +3421,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9e96cb3c29141c4cbf7335c3306e5b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  colorID: 0
-  playerID: 0
   meshRendMaterialChange: 
 --- !u!114 &5825349044488285794
 MonoBehaviour:
@@ -3603,8 +3599,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9e96cb3c29141c4cbf7335c3306e5b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  colorID: 0
-  playerID: 0
   meshRendMaterialChange: 
 --- !u!1 &5825349044508896104
 GameObject:
@@ -3841,8 +3835,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9e96cb3c29141c4cbf7335c3306e5b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  colorID: 0
-  playerID: 0
   meshRendMaterialChange: 
 --- !u!1 &5825349044624579915
 GameObject:
@@ -4163,8 +4155,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9e96cb3c29141c4cbf7335c3306e5b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  colorID: 0
-  playerID: 0
   meshRendMaterialChange: 
 --- !u!1 &5825349044823589597
 GameObject:
@@ -5048,9 +5038,9 @@ RectTransform:
   m_Father: {fileID: 5825349045714806860}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 74.0259, y: -17.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 74.0259, y: 0}
   m_SizeDelta: {x: 0, y: 40}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!222 &5825349044888031204
@@ -5894,9 +5884,9 @@ RectTransform:
   m_Father: {fileID: 5825349046120944572}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 74.0259, y: -17.5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 74.0259, y: 0}
   m_SizeDelta: {x: 0, y: 40}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!222 &5825349045203311685
@@ -7849,8 +7839,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9e96cb3c29141c4cbf7335c3306e5b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  colorID: 0
-  playerID: 0
   meshRendMaterialChange: 
 --- !u!1 &6101716404902683418
 GameObject:
@@ -8623,9 +8611,9 @@ RectTransform:
   m_Father: {fileID: 1199352177229909518}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 194.4, y: -5}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 194.4, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &755560518664558749
@@ -8875,8 +8863,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f9e96cb3c29141c4cbf7335c3306e5b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  colorID: 0
-  playerID: 0
   meshRendMaterialChange: 
 --- !u!1001 &241965052449165127
 PrefabInstance:

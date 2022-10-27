@@ -188,7 +188,7 @@ public class UnitActions : MonoBehaviour
 
         if (identifier.GetTeamID != lastTeamID)
         {
-            SwitchTeams(identifier.GetPlayerID, identifier.GetTeamID);
+            SwitchTeams(identifier.GetPlayerID, identifier.GetTeamID, identifier.GetColorID);
         }
 
         
@@ -396,15 +396,17 @@ public class UnitActions : MonoBehaviour
         Destroy(gameObject);
     }
 
-    public void SwitchTeams (int newPlayerID, int newTeamID)
+    public void SwitchTeams (int newPlayerID, int newTeamID, int newColorID)
     {
+        //identifier.UpdateInfo(newPlayerID, newTeamID, newColorID);
+
         RemoveUnitFromLists();
 
         Identifier newUnitInstance = Instantiate(this.gameObject, transform.position, transform.rotation).GetComponent<Identifier>();
         newUnitInstance.SetPlayerID(newPlayerID);
         newUnitInstance.SetTeamID(newTeamID);
 
-        if (newUnitInstance.TryGetComponent (out UnitActions newUnitActions))
+        if (newUnitInstance.TryGetComponent(out UnitActions newUnitActions))
         {
             newUnitActions.navMovement.SetDestination(navMovement.GetDestination);
             newUnitActions.SetUnitSpecificPlayerLayers(newPlayerID);

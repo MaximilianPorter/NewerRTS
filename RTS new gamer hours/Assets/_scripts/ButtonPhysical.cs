@@ -11,6 +11,7 @@ public class ButtonPhysical : MonoBehaviour
     [SerializeField] private float buttonMoveSpeed = 10f;
     [SerializeField] private bool pressOnce = false;
     [SerializeField] private ParticleSystem buttonCompleteEffect;
+    [SerializeField] private Material buttonMaterial;
 
     [SerializeField] private Button.ButtonClickedEvent onButtonComplete = new Button.ButtonClickedEvent();
     //[SerializeField] private Button.ButtonClickedEvent onButtonUp = new Button.ButtonClickedEvent();
@@ -52,6 +53,11 @@ public class ButtonPhysical : MonoBehaviour
     public void Give1000Stone()
     {
         PlayerResourceManager.PlayerResourceAmounts[buttonLastClickedBy].AddResources(0, 0, 1000);
+    }
+
+    public void ChangePlayerColor ()
+    {
+        PlayerColorManager.SetPlayerColor(buttonLastClickedBy, buttonMaterial.color);
     }
 
     private void OnTriggerEnter(Collider other)
