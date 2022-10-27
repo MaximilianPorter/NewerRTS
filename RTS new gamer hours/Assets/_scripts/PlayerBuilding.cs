@@ -152,8 +152,8 @@ public class PlayerBuilding : MonoBehaviour
 
 
         // adjust the required building layout images
-        if (allIcons[selectedIconIndex].GetOverrideBuilding == null 
-            || (allIcons[selectedIconIndex].GetOverrideBuilding != null && allIcons[selectedIconIndex].GetOverrideBuilding.requiredBuildings.Length <= 0))
+        if (allIcons[selectedIconIndex].GetRequiredBuildings() == null 
+            || (allIcons[selectedIconIndex].GetRequiredBuildings() != null && allIcons[selectedIconIndex].GetRequiredBuildings().Length <= 0))
         {
             requiredBuildingLayout.gameObject.SetActive(false);
             return;
@@ -163,7 +163,7 @@ public class PlayerBuilding : MonoBehaviour
             requiredBuildingLayout.gameObject.SetActive(true);
         }
 
-        BuyIcons[] requiredBuildings = allIcons[selectedIconIndex].GetOverrideBuilding.requiredBuildings;
+        BuyIcons[] requiredBuildings = allIcons[selectedIconIndex].GetRequiredBuildings();
         for (int i = 0; i < requiredBuildingImageContainers.Length; i++)
         {
             if (i >= requiredBuildings.Length)

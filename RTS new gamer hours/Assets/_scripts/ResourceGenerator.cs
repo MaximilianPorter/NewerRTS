@@ -23,6 +23,8 @@ public class ResourceGenerator : MonoBehaviour
     private float counter = 0f;
     private Identifier identifier;
 
+    public float GetRadius => radius;
+
     private void Awake()
     {
         identifier = GetComponent<Identifier>();
@@ -36,10 +38,12 @@ public class ResourceGenerator : MonoBehaviour
         {
             resourceVisualEffect.Play();
             //PlayerResourceManager.PlayerResourceAmounts[identifier.GetPlayerID].AddResources(amountToGive);
+            float hasMoreResourcesResearch = PlayerHolder.GetCompletedResearch(identifier.GetPlayerID).Contains(BuyIcons.Research_MoreResources) ? 1.15f : 1f;
+            int food = Mathf.CeilToInt((float)amountPerSurroundingHit.GetFood * (float)surroundingsHit * amountMultiplier * hasMoreResourcesResearch);
+            int wood = Mathf.CeilToInt((float)amountPerSurroundingHit.GetWood * (float)surroundingsHit * amountMultiplier * hasMoreResourcesResearch);
+            int stone = Mathf.CeilToInt((float)amountPerSurroundingHit.GetStone * (float)surroundingsHit * amountMultiplier * hasMoreResourcesResearch);
 
-            int food = (int)((float)amountPerSurroundingHit.GetFood * (float)surroundingsHit * amountMultiplier);
-            int wood = (int)((float)amountPerSurroundingHit.GetWood * (float)surroundingsHit * amountMultiplier);
-            int stone = (int)((float)amountPerSurroundingHit.GetStone * (float)surroundingsHit * amountMultiplier);
+
             ResourceAmount amtToGive = new ResourceAmount(food, wood, stone);
 
             PlayerResourceManager.instance.AddResourcesWithUI(identifier.GetPlayerID, amtToGive, transform.position);

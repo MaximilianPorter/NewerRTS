@@ -13,14 +13,15 @@ MonoBehaviour:
   m_Name: Swordsman
   m_EditorClassIdentifier: 
   unitType: 16
-  health: 100
-  damage: 30
+  health: 80
+  armor: 1
+  damage: 7
   timeBetweenAttacks: 1
   lookRange: 5
   attackRange: 1
   cost:
-    food: 12
-    wood: 0
+    food: 10
+    wood: 3
     stone: 0
   slowMultiplierBlocking: 0.2
   isRanged: 0

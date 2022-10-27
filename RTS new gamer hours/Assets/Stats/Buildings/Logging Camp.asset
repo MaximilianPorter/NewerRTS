@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buildingType: 25
   unitType: 0
-  subsequentUpgrades: 1c000000
+  subsequentUpgrades: 1c0000001a000000
   requiredBuildings: 
   health: 200
   cost:

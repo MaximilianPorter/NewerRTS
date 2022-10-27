@@ -9,8 +9,9 @@ public class ColorChanger : MonoBehaviour
 
     // THIS SCRIPT IS APPLIED TO ANYTHING THAT WOULD CHANGE COLORS WITH TEAMS
 
-    [Tooltip("Doesn't matter if there's a Identifier.cs in the parent or self")]
-    [SerializeField] private int teamID;
+    //[Tooltip("Doesn't matter if there's a Identifier.cs in the parent or self")]
+    //[SerializeField] private int colorID;
+    //[SerializeField] private int playerID;
     [SerializeField] private int[] meshRendMaterialChange;
 
     private void Start()
@@ -21,7 +22,7 @@ public class ColorChanger : MonoBehaviour
         {
             if (currentCheckedTransform.TryGetComponent (out Identifier identifier))
             {
-                teamID = identifier.GetTeamID;
+                ChangeColor(identifier.GetColorID, identifier.GetPlayerID);
                 break;
             }
 
@@ -32,16 +33,15 @@ public class ColorChanger : MonoBehaviour
         }
 
 
+        
+    }
 
+    public void ChangeColor (int colorID, int playerID)
+    {
         // SPRITE REND COLOR
         if (TryGetComponent(out SpriteRenderer sRend))
         {
-            Color colorNoAlpha = new Color(PlayerColorManager.GetPlayerColor(teamID).r,
-            PlayerColorManager.GetPlayerColor(teamID).g,
-            PlayerColorManager.GetPlayerColor(teamID).b,
-            sRend.color.a);
-
-            sRend.color = colorNoAlpha;
+            sRend.color = ColorIgnoreAlpha(sRend.color, colorID);
         }
 
 
@@ -49,28 +49,32 @@ public class ColorChanger : MonoBehaviour
         // IMAGE COLOR
         if (TryGetComponent(out Image iRend))
         {
-            Color colorNoAlpha = new Color(PlayerColorManager.GetPlayerColor(teamID).r,
-            PlayerColorManager.GetPlayerColor(teamID).g,
-            PlayerColorManager.GetPlayerColor(teamID).b,
-            iRend.color.a);
+            iRend.color = ColorIgnoreAlpha(iRend.color, colorID);
+        }
 
-            iRend.color = colorNoAlpha;
+        // LINE RENDERER COLOR
+        if (TryGetComponent(out LineRenderer lineRend))
+        {
+            Color colorNoAlpha = ColorIgnoreAlpha(lineRend.startColor, colorID);
+
+            lineRend.startColor = colorNoAlpha;
+            lineRend.endColor = colorNoAlpha;
         }
 
 
 
         // PARTICLE COLOR
-        if (TryGetComponent (out ParticleSystem pRend))
+        if (TryGetComponent(out ParticleSystem pRend))
         {
-            Color colorNoAlpha = new Color(PlayerColorManager.GetPlayerColor(teamID).r,
-            PlayerColorManager.GetPlayerColor(teamID).g,
-            PlayerColorManager.GetPlayerColor(teamID).b,
-            pRend.main.startColor.color.a);
-
             ParticleSystem.MainModule main = pRend.main;
-            main.startColor = colorNoAlpha;
+            main.startColor = ColorIgnoreAlpha(pRend.main.startColor.color, colorID);
         }
 
+        // SPRITE REND COLOR
+        if (TryGetComponent(out TMP_Text textRend))
+        {
+            textRend.color = ColorIgnoreAlpha(textRend.color, colorID);
+        }
 
 
         // MATERIAL
@@ -78,42 +82,40 @@ public class ColorChanger : MonoBehaviour
         {
             Material[] mats = mRend.materials;
             if (meshRendMaterialChange.Length <= 0)
-                mats[0] = PlayerColorManager.GetPlayerMaterial(teamID);
+                mats[0] = PlayerColorManager.GetPlayerMaterial(playerID);
             for (int i = 0; i < meshRendMaterialChange.Length; i++)
             {
-                mats[meshRendMaterialChange[i]] = PlayerColorManager.GetPlayerMaterial(teamID);
+                mats[meshRendMaterialChange[i]] = PlayerColorManager.GetPlayerMaterial(playerID);
             }
             mRend.materials = mats;
         }
 
-        if (TryGetComponent (out SkinnedMeshRenderer smRend))
+        if (TryGetComponent(out SkinnedMeshRenderer smRend))
         {
             Material[] mats = smRend.materials;
             if (meshRendMaterialChange.Length <= 0)
-                mats[0] = PlayerColorManager.GetPlayerMaterial(teamID);
+                mats[0] = PlayerColorManager.GetPlayerMaterial(playerID);
             for (int i = 0; i < meshRendMaterialChange.Length; i++)
             {
-                mats[meshRendMaterialChange[i]] = PlayerColorManager.GetPlayerMaterial(teamID);
+                mats[meshRendMaterialChange[i]] = PlayerColorManager.GetPlayerMaterial(playerID);
             }
             smRend.materials = mats;
         }
 
-        // SPRITE REND COLOR
-        if (TryGetComponent(out TMP_Text textRend))
-        {
-            Color colorNoAlpha = new Color(PlayerColorManager.GetPlayerColor(teamID).r,
-            PlayerColorManager.GetPlayerColor(teamID).g,
-            PlayerColorManager.GetPlayerColor(teamID).b,
-            textRend.color.a);
-
-            textRend.color = colorNoAlpha;
-        }
 
 
         // PROJECTOR
-        if (TryGetComponent (out Projector projRend))
+        if (TryGetComponent(out Projector projRend))
         {
-            projRend.material = PlayerColorManager.GetPlayerProjectorMaterial (teamID);
+            projRend.material = PlayerColorManager.GetPlayerProjectorMaterial(playerID);
         }
+    }
+
+    private Color ColorIgnoreAlpha (Color color, int colorID)
+    {
+        return new Color(PlayerColorManager.GetPlayerColor(colorID).r,
+            PlayerColorManager.GetPlayerColor(colorID).g,
+            PlayerColorManager.GetPlayerColor(colorID).b,
+            color.a);
     }
 }

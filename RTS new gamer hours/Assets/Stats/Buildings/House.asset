@@ -19,8 +19,8 @@ MonoBehaviour:
   health: 100
   cost:
     food: 0
-    wood: 0
-    stone: 0
+    wood: 20
+    stone: 20
   interactionRadius: 2
   buildRadius: 10
   population: 5

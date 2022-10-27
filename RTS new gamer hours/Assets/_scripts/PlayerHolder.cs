@@ -17,6 +17,8 @@ public class PlayerHolder : MonoBehaviour
     private static RectTransform[] playerCanvasRects = new RectTransform[4];
     public static RectTransform[] GetPlayerCanvasRects => playerCanvasRects;
 
+
+    // BUILDINGS
     private static List<List<Building>> playerBuildings = new List<List<Building>>();
     public static List<Building> GetBuildings (int playerID)
     {
@@ -53,6 +55,7 @@ public class PlayerHolder : MonoBehaviour
     }
 
 
+    // UNITS
     private static List<List<UnitActions>> playerUnits = new List<List<UnitActions>>();
     public static List<UnitActions> GetUnits (int playerID)
     {
@@ -68,15 +71,32 @@ public class PlayerHolder : MonoBehaviour
     }
 
 
+    // RESEARCH
+    private static List<List<BuyIcons>> completedResearch = new List<List<BuyIcons>>();
+    private static ResearchUi[] currentResearch = new ResearchUi[4];
+    public static ResearchUi GetCurrentResearch(int playerID) => currentResearch[playerID];
+    public static void SetCurrentResearch(int playerID, ResearchUi newCurrentResearch) => currentResearch[playerID] = newCurrentResearch;
+    public static List<BuyIcons> GetCompletedResearch(int playerID) => completedResearch[playerID];
+    public static void AddCompletedResearch(int playerID, BuyIcons researchType) => completedResearch[playerID].Add(researchType);
+
+    private static Identifier[] playerIdentifiers = new Identifier[4];
+    public static Identifier[] GetPlayerIdentifiers => playerIdentifiers;
 
     private void Awake()
     {
-        playerGameObjects = GameObject.FindGameObjectsWithTag("Player");
+        playerGameObjects = GameObject.FindGameObjectsWithTag("Player").OrderBy (player => player.GetComponent <Identifier>().GetPlayerID).ToArray();
+
+        for (int i = 0; i < playerIdentifiers.Length; i++)
+        {
+            playerIdentifiers[i] = playerGameObjects[i].GetComponent<Identifier>();
+        }
+
 
         for (int i = 0; i < 4; i++)
         {
             playerUnits.Add(new List<UnitActions>());
             playerBuildings.Add(new List<Building>());
+            completedResearch.Add(new List<BuyIcons>());
 
             playerCams[i] = playerGameObjects.FirstOrDefault(player => player.transform.parent.GetComponent<Identifier>().GetPlayerID == i)
                 .transform.parent.GetComponentInChildren<Camera>();

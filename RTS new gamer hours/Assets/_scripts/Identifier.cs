@@ -9,12 +9,14 @@ public class Identifier : MonoBehaviour
     [SerializeField] private bool isPlayer = false;
     [SerializeField] private int playerID;
     [SerializeField] private int teamID;
+    [SerializeField] private int colorID;
 
     public void SetIsParent(bool isParent) => this.isParent = isParent;
     public bool GetIsParent => isParent;
     public bool GetIsPlayer => isPlayer;
     public int GetPlayerID => playerID;
     public int GetTeamID => teamID;
+    public int GetColorID => colorID;
 
     private bool isTargetable = true;
     public bool GetIsTargetable => isTargetable;
@@ -26,6 +28,10 @@ public class Identifier : MonoBehaviour
     public void SetTeamID (int newTeamID)
     {
         teamID = newTeamID;
+    }
+    public void SetColorID (int newColorID)
+    {
+        colorID = newColorID;
     }
 
     private void Awake()
@@ -77,6 +83,7 @@ public class Identifier : MonoBehaviour
             {
                 childrenIdentifiers[i].SetPlayerID(playerID);
                 childrenIdentifiers[i].SetTeamID(teamID);
+                childrenIdentifiers[i].SetColorID(colorID);
             }
 
         }

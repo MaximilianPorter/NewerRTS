@@ -62,6 +62,12 @@ public class HealthBarManager : MonoBehaviour
                     break;
                 }
 
+                if (!PlayerHolder.GetUnits(i)[j].GetIsSelected)
+                {
+                    unitHealthBarInstances[i][j].gameObject.SetActive(false);
+                    continue;
+                }
+
                 unitHealthBarInstances[i][j].gameObject.SetActive(true);
                 unitHealthBarInstances[i][j].color = healthGradient.Evaluate (PlayerHolder.GetUnits(i)[j].GetHealth.GetCurrentHealth / PlayerHolder.GetUnits(i)[j].GetHealth.GetMaxHealth);
                 unitHealthBarInstances[i][j].transform.localPosition = PlayerHolder.WorldToCanvasLocalPoint(PlayerHolder.GetUnits(i)[j].transform.position + new Vector3(0f, 1f, 0f), i);

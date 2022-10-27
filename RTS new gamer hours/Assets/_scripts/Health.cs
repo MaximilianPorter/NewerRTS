@@ -5,12 +5,13 @@ using UnityEngine.UI;
 
 public class Health : MonoBehaviour
 {
-    [SerializeField] private float currentHealth = 100;
     [SerializeField] private float maxHealth = 100;
+    [SerializeField][Tooltip("Flat damage reduction")] private float armor = 0;
     [SerializeField] private bool invincible = false;
 
     private Identifier lastHitBy = null;
     private Vector3 lastHitFromPos = Vector3.zero;
+    private float currentHealth = 100;
 
     public float GetCurrentHealth => currentHealth;
     public float GetMaxHealth => maxHealth;
@@ -18,18 +19,23 @@ public class Health : MonoBehaviour
     public Identifier GetLastHitByPlayer => lastHitBy;
     public Vector3 GetLastHitFromPos => lastHitFromPos;
 
-    public void SetValues (float maxHealth)
+    public void SetValues (float maxHealth, float armor)
     {
         this.currentHealth = maxHealth;
         this.maxHealth = maxHealth;
+        this.armor = armor;
     }
-    public void TakeDamage (float damageAmt, Identifier hitBy, Vector3 hitFromPos)
+    public void TakeDamage (float damageAmt, Identifier hitBy, Vector3 hitFromPos, bool negateArmor = false)
     {
         lastHitBy = hitBy;
         lastHitFromPos = hitFromPos;   
 
         if (invincible)
             return;
+
+        if (armor != 0 && !negateArmor)
+            damageAmt = Mathf.Max(1, damageAmt - armor);
+
         currentHealth -= damageAmt;
     }
 

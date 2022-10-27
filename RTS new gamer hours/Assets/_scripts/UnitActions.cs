@@ -9,6 +9,7 @@ public class UnitActions : MonoBehaviour
     [SerializeField] private bool isSelectable = true;
     [SerializeField] private bool isTargetable = true;
     [SerializeField] private GameObject selectedGO;
+    [SerializeField] private LineRenderer lineToDestinationVisual;
     [SerializeField] private GameObject movementTargetVisual;
     [SerializeField] private UnitStats unitStats;
     [SerializeField] private bool debugDie = false;
@@ -82,7 +83,7 @@ public class UnitActions : MonoBehaviour
         attacking = GetComponent<Attacking>();
         health = GetComponent<Health>();
 
-        health.SetValues(unitStats.health);
+        health.SetValues(unitStats.health, unitStats.armor);
 
 
         SetAnimations(unitOverrideController);
@@ -95,7 +96,7 @@ public class UnitActions : MonoBehaviour
         // turn on correct body parts
         for (int i = 0; i < bodyPartsNeedMaterial.Length; i++)
         {
-            bodyPartsNeedMaterial[i].material = PlayerColorManager.GetUnitMaterial(identifier.GetTeamID);
+            bodyPartsNeedMaterial[i].material = PlayerColorManager.GetUnitMaterial(identifier.GetPlayerID);
         }
 
 
@@ -115,6 +116,18 @@ public class UnitActions : MonoBehaviour
     {
         selectedGO.SetActive(isSelected);
         attacking.SetCanAttack(navMovement.GetMoveSpeed01 < 0.01f);
+
+        // display line to destination
+        if (navMovement.GetDestination != transform.position && isSelected)
+        {
+            lineToDestinationVisual.gameObject.SetActive(true);
+            lineToDestinationVisual.positionCount = navMovement.GetAgentWaypoints.Length;
+            lineToDestinationVisual.SetPositions(navMovement.GetAgentWaypoints);
+        }
+        else
+        {
+            lineToDestinationVisual.gameObject.SetActive(false);
+        }
 
         // increase look distace and attack distance with height up to 3x
         if (unitStats.isRanged)
@@ -167,7 +180,7 @@ public class UnitActions : MonoBehaviour
 
 
         findNearestEnemyCounter -= Time.deltaTime;
-        if (navMovement.GetMoveSpeed01 > 0.1f || findNearestEnemyCounter <= 0)
+        if (/*navMovement.GetMoveSpeed01 > 0.1f || */findNearestEnemyCounter <= 0)
         {
             CellFindNearestEnemy();
             findNearestEnemyCounter = Random.Range (0.1f, 0.3f);
@@ -416,6 +429,7 @@ public class UnitActions : MonoBehaviour
     public void SetUnitSpecificPlayerLayers (int playerID)
     {
         selectedGO.layer = RuntimeLayerController.GetLayer(playerID);
+        lineToDestinationVisual.gameObject.layer = RuntimeLayerController.GetLayer(playerID);
         movementTargetVisual.layer = RuntimeLayerController.GetLayer(playerID);
 
 

@@ -8,6 +8,7 @@ using UnityEngine.UI;
 [RequireComponent(typeof (Rigidbody))]
 public class Projectile : MonoBehaviour
 {
+    [SerializeField] private ProjectileType projectileType = ProjectileType.NONE;
     [SerializeField] private bool lookTowardsVelocity = true;
     [SerializeField] private bool destroyOnContact = false;
     [SerializeField] private bool burns = false;
@@ -18,6 +19,7 @@ public class Projectile : MonoBehaviour
     private ParentConstraint parentConstraint;
     private Rigidbody rb;
     private float damage = 0;
+    private bool negatesArmor = false;
     private Identifier identifier;
     private Vector3 lastPos = Vector3.zero;
 
@@ -82,7 +84,7 @@ public class Projectile : MonoBehaviour
                 if (hit.transform.TryGetComponent(out Identifier enemyIdentifier) && enemyIdentifier.GetTeamID != identifier.GetTeamID)
                 {
                     if (hit.transform.TryGetComponent(out Health health))
-                        health.TakeDamage(damage, identifier, transform.position);
+                        health.TakeDamage(damage, identifier, transform.position, negatesArmor);
                 }
 
                 if (burns && hit.transform.TryGetComponent (out BurningObject burnedObject))
@@ -109,6 +111,8 @@ public class Projectile : MonoBehaviour
         this.damage = damage;
         identifier.SetPlayerID(playerID);
         identifier.SetTeamID(teamID);
+
+        negatesArmor = PlayerHolder.GetCompletedResearch(identifier.GetPlayerID).Contains(BuyIcons.Research_SharpArrows);
     }
 
     public void ResetProjectile()
@@ -139,7 +143,7 @@ public class Projectile : MonoBehaviour
     /// <param name="accuracy">a percentage value between [0, 100] that randomly determins if the shot will hit</param>
     public static bool SetTrajectory(Rigidbody rigidbody, Vector3 target, float force, float accuracy = 0f, float arch = 0.5f, Vector3? targetVelocity = null)
     {
-        Vector3 distanceMissed = new Vector3(Random.Range(-2f, 2f), Random.Range(-2f, 2f), Random.Range(-2f, 2f));
+        Vector3 distanceMissed = new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), Random.Range(-1f, 1f));
 
         if (Random.Range(0f, 100f) < accuracy)
             distanceMissed = Vector3.zero;
@@ -171,6 +175,13 @@ public class Projectile : MonoBehaviour
         rigidbody.AddForce(trajectory, ForceMode.Impulse);
         return true;
     }
+}
+
+public enum ProjectileType
+{
+    NONE = 0,
+    Arrow = 1,
+    Torch = 2,
 }
 
 

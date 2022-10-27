@@ -556,6 +556,37 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!1 &698828583497372503
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8024509099828509917}
+  m_Layer: 0
+  m_Name: Player Color Change Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8024509099828509917
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 698828583497372503}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5424162426904448804}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5424162426904448805
 GameObject:
   m_ObjectHideFlags: 0
@@ -587,6 +618,7 @@ Transform:
   - {fileID: 5424162428077050026}
   - {fileID: 267986196}
   - {fileID: 625748585}
+  - {fileID: 8024509099828509917}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -745,11 +777,13 @@ MonoBehaviour:
   - {r: 0.9529412, g: 0.3647059, b: 0.22352941, a: 1}
   - {r: 0.25882354, g: 0.84313726, b: 0.32156864, a: 1}
   - {r: 0.8039216, g: 0.85882354, b: 0.101960786, a: 1}
+  nonPlayerMaterial: {fileID: 2100000, guid: 8ce371d862a84a642872f44976b8e2de, type: 2}
   playerMaterials:
   - {fileID: 2100000, guid: 4291ccdb114aba3439ec6341f62ec2b8, type: 2}
   - {fileID: 2100000, guid: 425731b92b8fe174cb1fb78e14f3cc1d, type: 2}
   - {fileID: 2100000, guid: 78a1616352e90f648ba7330330592120, type: 2}
   - {fileID: 2100000, guid: f41993e7f2b01ae45af42df41cb87fa7, type: 2}
+  nonPlayerProjectorMaterial: {fileID: 2100000, guid: e69a8ac245f04e544891d71425562b3f, type: 2}
   playerProjectorMaterials:
   - {fileID: 2100000, guid: 7e4c27a707697eb48942a4e7c4bbd5da, type: 2}
   - {fileID: 2100000, guid: 6d248255875d0c64c8fe4b6cb682aa26, type: 2}

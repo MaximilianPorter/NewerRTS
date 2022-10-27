@@ -50,6 +50,7 @@ public class StatsDatabaseManager : MonoBehaviour
             {
                 new DatabaseValue ("Health", unitStats[i].health),
                 new DatabaseValue ("Damage", unitStats[i].damage),
+                new DatabaseValue ("Armor", unitStats[i].armor),
                 new DatabaseValue ("Move Speed", unitStats[i].maxMoveSpeed),
                 new DatabaseValue ("Time Between Attacks", unitStats[i].timeBetweenAttacks),
                 new DatabaseValue ("Range Look", unitStats[i].lookRange),
@@ -81,6 +82,11 @@ public class StatsDatabaseManager : MonoBehaviour
         yield return StartCoroutine(UpdateFloatDetails("Units", "Damage", unitStats[i].damage, i, unitStats[i].unitType, tempUnitDatabaseValues));
         DatabaseValue damageData = tempUnitDatabaseValues[i].FirstOrDefault(databaseValue => databaseValue.statName == "Damage");
         unitStats[i].damage = damageData == null ? unitStats[i].damage : damageData.floatValue;
+
+        // armor
+        yield return StartCoroutine(UpdateFloatDetails("Units", "Armor", unitStats[i].armor, i, unitStats[i].unitType, tempUnitDatabaseValues));
+        DatabaseValue armorData = tempUnitDatabaseValues[i].FirstOrDefault(databaseValue => databaseValue.statName == "Armor");
+        unitStats[i].armor = armorData == null ? unitStats[i].armor : armorData.floatValue;
 
         // move speed
         yield return StartCoroutine(UpdateFloatDetails("Units", "Move Speed", unitStats[i].maxMoveSpeed, i, unitStats[i].unitType, tempUnitDatabaseValues));
@@ -244,7 +250,7 @@ public class StatsDatabaseManager : MonoBehaviour
 public class DatabaseValue
 {
     public string statName = "Stat Name";
-    public float floatValue = 0;
+    public float floatValue;
     public Vector3 vectorValue;
 
     public DatabaseValue(string statName, float value)

@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buildingType: 3
   unitType: 15
-  subsequentUpgrades: 1c0000000d000000
+  subsequentUpgrades: 1c0000000d0000001e000000
   requiredBuildings: 
   health: 200
   cost:
@@ -25,5 +25,5 @@ MonoBehaviour:
   buildRadius: 10
   population: 2
   unit: {fileID: 6806056615238588080, guid: 2a331b9ca1c324649989ee3aac169f13, type: 3}
-  initialUnitSpawnTime: 8
+  initialUnitSpawnTime: 15
   spawnTimeMultiPerBuilding: 0.7

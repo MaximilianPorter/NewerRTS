@@ -11,8 +11,9 @@ public class BuyIconUI : MonoBehaviour
     [SerializeField] private string buttonName = "Name thing";
     [SerializeField] [TextArea] private string buttonDescription = "Description of that same thing";
 
-    [SerializeField] private UnitStats overrideUnitCost;
-    [SerializeField] private BuildingStats overrideBuildingCost;
+    [SerializeField] private UnitStats overrideUnit;
+    [SerializeField] private BuildingStats overrideBuilding;
+    [SerializeField] private ResearchStats overrideResearch;
 
     [Header("Overridden Values")]
     [SerializeField] private BuyIcons buttonType;
@@ -28,7 +29,6 @@ public class BuyIconUI : MonoBehaviour
     private Image[] images;
     private Identifier identifier;
 
-    public BuildingStats GetOverrideBuilding => overrideBuildingCost;
     public bool GetIsAffordable => isAffordable;
     public ResourceAmount GetCost => cost;
     public string GetButtonName => buttonName;
@@ -42,29 +42,35 @@ public class BuyIconUI : MonoBehaviour
     private void Awake()
     {
         identifier = GetComponent<Identifier>();
+        images = GetComponentsInChildren<Image>();
+
+        if (overrideUnit)
+        {
+            cost = overrideUnit.cost;
+            buttonType = overrideUnit.unitType;
+        }else if (overrideBuilding)
+        {
+            cost = overrideBuilding.cost;
+            buttonType = overrideBuilding.buildingType;
+        }
+        else if (overrideResearch)
+        {
+            cost = overrideResearch.cost;
+            buttonType = overrideResearch.researchType;
+        }
 
         BuyIconSpriteManager.AddTypeOfSprite(buttonType, GetComponent<Image>().sprite);
     }
 
     private void Start()
     {
-        images = GetComponentsInChildren<Image>();
 
-        if (overrideUnitCost)
-        {
-            cost = overrideUnitCost.cost;
-        }else if (overrideBuildingCost)
-        {
-            cost = overrideBuildingCost.cost;
-        }
     }
+    
 
     private void Update()
     {
-        bool hasRequiredBuildings = overrideBuildingCost == null ? true : HasRequiredBuildings();
-
-
-        isAffordable = PlayerResourceManager.PlayerResourceAmounts[identifier.GetPlayerID].HasResources(cost) && hasRequiredBuildings;
+        isAffordable = PlayerResourceManager.PlayerResourceAmounts[identifier.GetPlayerID].HasResources(cost) && HasRequiredBuildings() && NotYetResearched();
 
         for (int i = 0; i < images.Length; i++)
         {
@@ -72,21 +78,52 @@ public class BuyIconUI : MonoBehaviour
         }
     }
 
+    public BuyIcons[] GetRequiredBuildings ()
+    {
+        if (overrideBuilding)
+            return overrideBuilding.GetRequiredBuildings;
+        else if (overrideResearch)
+            return overrideResearch.GetRequiredBuildings;
+
+        return null;
+    }
+
     private bool HasRequiredBuildings ()
     {
+        if (overrideBuilding == null && overrideResearch == null)
+            return true;
+
+        BuyIcons[] requiredBuildings = GetRequiredBuildings();
+
         int hasBuildingAmount = 0;
-        for (int i = 0; i < overrideBuildingCost.requiredBuildings.Length; i++)
+        for (int i = 0; i < requiredBuildings.Length; i++)
         {
-            if (PlayerHolder.GetBuildings(identifier.GetPlayerID).Any(building => building.GetStats.buildingType == overrideBuildingCost.requiredBuildings[i]))
+            if (PlayerHolder.GetBuildings(identifier.GetPlayerID).Any(building => building.GetStats.buildingType == requiredBuildings[i]))
             {
                 hasBuildingAmount++;
             }
         }
 
-        if (hasBuildingAmount == overrideBuildingCost.requiredBuildings.Length)
+        if (hasBuildingAmount == requiredBuildings.Length)
             return true;
 
         return false;
+    }
+
+    private bool NotYetResearched ()
+    {
+        if (overrideResearch == null)
+            return true;
+
+        // if we've already researched it
+        if (PlayerHolder.GetCompletedResearch(identifier.GetPlayerID).Count > 0 && PlayerHolder.GetCompletedResearch(identifier.GetPlayerID).Contains(overrideResearch.researchType))
+            return false;
+
+        // if we're currently researching anything
+        if (PlayerHolder.GetCurrentResearch(identifier.GetPlayerID) != null)
+            return false;
+
+        return true;
     }
 
     /// <summary>
@@ -147,12 +184,15 @@ public enum BuyIcons
     Building_Swordsman = 5,
     Building_SwordsmanPlus = 6,
     Building_Spearman = 7,
+    Building_Sheildman = 31,
 
     Building_Workshop = 8,
+    Building_ResearchLab = 29,
 
     Building_TowerWood = 9,
     Building_TowerStone = 10,
 
+    Building_LandPlot = 35,
     Building_StorageYard = 26,
     Building_Farm = 11,
     Building_FarmPlus = 12,
@@ -173,7 +213,13 @@ public enum BuyIcons
     SwordsmanPlus = 17,
     Mage = 18,
     Spearman = 19,
+    Shieldman = 32,
 
-    // highest number: 28
-    // last changed on 10/25/22 - 4:35pm
+    // RESEARCH
+    Research_SharpArrows = 30,
+    Research_FlamingArrows = 33,
+    Research_MoreResources = 34,
+
+    // highest number: 35
+    // last changed on 10/26/22 - 3:44pm
 }

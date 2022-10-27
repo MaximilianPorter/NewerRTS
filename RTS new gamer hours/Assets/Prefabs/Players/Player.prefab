@@ -5712,6 +5712,9 @@ MonoBehaviour:
   unitMask:
     serializedVersion: 2
     m_Bits: 1024
+  obstacleMask:
+    serializedVersion: 2
+    m_Bits: 8256
   unitSelectionVisual: {fileID: 8091785847519968836}
   rallyTroopsEffectPrefab: {fileID: 8450968138510638528, guid: ea9ac5282c5e6674dac7a7a636a2c21f, type: 3}
   maxSelectionRadius: 30

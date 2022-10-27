@@ -10,6 +10,7 @@ public class UnitSelection : MonoBehaviour
 {
     [SerializeField] private Camera playerCam;
     [SerializeField] private LayerMask unitMask;
+    [SerializeField] private LayerMask obstacleMask;
     [SerializeField] private Transform unitSelectionVisual;
     [SerializeField] private GameObject rallyTroopsEffectPrefab;
     [SerializeField] private float maxSelectionRadius = 10f;
@@ -155,27 +156,27 @@ public class UnitSelection : MonoBehaviour
             float totalRows = Mathf.Ceil((float)unitsToRally.Count / (float)boxWidth);
             float lastRowStartIndex = totalRows * boxWidth - boxWidth;
             float remainderInLastRow = totalRows * boxWidth - unitsToRally.Count;
-            if (patternIndex == 0)
-            {
-                // pattern offset from current location
-                patternNameText.text = "CURRENT FORMATION";
-                Vector3 avgGroupPos = new Vector3(unitsToRally.Sum(unit => unit.transform.position.x)/unitsToRally.Count,
-                    transform.position.y,
-                    unitsToRally.Sum(unit => unit.transform.position.z) / unitsToRally.Count);
 
-                for (int i = 0; i < unitsToRally.Count; i++)
+            for (int i = 0; i < unitsToRally.Count; i++)
+            {
+                if (patternIndex == 0)
                 {
+                    // pattern offset from current location
+                    patternNameText.text = "CURRENT FORMATION";
+                    Vector3 avgGroupPos = new Vector3(unitsToRally.Sum(unit => unit.transform.position.x) / unitsToRally.Count,
+                        transform.position.y,
+                        unitsToRally.Sum(unit => unit.transform.position.z) / unitsToRally.Count);
+
                     Vector3 pos = unitsToRally[i].transform.position - avgGroupPos;
+
+                    pos = MaxPosWithHit(pos);
 
                     SetUnitPos(unitsToRally[i], pos, avgMoveSpeed);
                 }
-            }
-            else if (patternIndex == 1)
-            {
-                // pattern box
-                patternNameText.text = "BOX";
-                for (int i = 0; i < unitsToRally.Count; i++)
+                else if (patternIndex == 1)
                 {
+                    // pattern box
+                    patternNameText.text = "BOX";
                     if (unitsToRally[i] == null)
                         continue;
 
@@ -186,18 +187,18 @@ public class UnitSelection : MonoBehaviour
                     if (i >= lastRowStartIndex)
                         column += remainderInLastRow / 2f;
 
-                    Vector3 pos = 
-                        transform.forward * (row + 1f) * patternSpacingMulti + 
+                    Vector3 pos =
+                        transform.forward * (row + 1f) * patternSpacingMulti +
                         transform.right * (column - boxWidth / 2f) * patternSpacingMulti;
+
+                    pos = MaxPosWithHit(pos);
+
                     SetUnitPos(unitsToRally[i], pos, unitsToRally[i].GetStats.maxMoveSpeed);
                 }
-            }
-            else if (patternIndex == 2)
-            {
-                // pattern long line
-                patternNameText.text = "LINE";
-                for (int i = 0; i < unitsToRally.Count; i++)
+                else if (patternIndex == 2)
                 {
+                    // pattern long line
+                    patternNameText.text = "LINE";
                     if (unitsToRally[i] == null)
                         continue;
                     float row = Mathf.FloorToInt(i / boxWidth);
@@ -208,17 +209,17 @@ public class UnitSelection : MonoBehaviour
                         column += remainderInLastRow / 2f;
 
                     Vector3 pos =
-                        transform.forward * (row + 1f) * patternSpacingMulti + 
+                        transform.forward * (row + 1f) * patternSpacingMulti +
                         transform.right * (column - boxWidth / 2f) * patternSpacingMulti;
+
+                    pos = MaxPosWithHit(pos);
+
                     SetUnitPos(unitsToRally[i], pos, unitsToRally[i].GetStats.maxMoveSpeed);
                 }
-            }
-            else if (patternIndex == 3)
-            {
-                // pattern arrow (basically just a line that's offset by column)
-                patternNameText.text = "ARROW";
-                for (int i = 0; i < unitsToRally.Count; i++)
+                else if (patternIndex == 3)
                 {
+                    // pattern arrow (basically just a line that's offset by column)
+                    patternNameText.text = "ARROW";
                     if (unitsToRally[i] == null)
                         continue;
 
@@ -230,19 +231,115 @@ public class UnitSelection : MonoBehaviour
                         column += remainderInLastRow / 2f;
 
                     //column += ;
-                    float arrowForwardOffset = Mathf.Abs (column - boxWidth / 2f) * 0.5f;
+                    float arrowForwardOffset = Mathf.Abs(column - boxWidth / 2f) * 0.5f;
 
-                    Vector3 pos = 
-                        transform.forward * (row + 1f + arrowForwardOffset) * patternSpacingMulti + 
+                    Vector3 pos =
+                        transform.forward * (row + 1f + arrowForwardOffset) * patternSpacingMulti +
                         transform.right * (column - boxWidth / 2f) * patternSpacingMulti;
+
+                    pos = MaxPosWithHit(pos);
 
                     SetUnitPos(unitsToRally[i], pos, unitsToRally[i].GetStats.maxMoveSpeed);
                 }
+                else
+                {
+                    patternNameText.text = "";
+                }
             }
-            else
-            {
-                patternNameText.text = "";
-            }
+
+            //if (patternIndex == 0)
+            //{
+            //    // pattern offset from current location
+            //    patternNameText.text = "CURRENT FORMATION";
+            //    Vector3 avgGroupPos = new Vector3(unitsToRally.Sum(unit => unit.transform.position.x)/unitsToRally.Count,
+            //        transform.position.y,
+            //        unitsToRally.Sum(unit => unit.transform.position.z) / unitsToRally.Count);
+
+            //    for (int i = 0; i < unitsToRally.Count; i++)
+            //    {
+            //        Vector3 pos = unitsToRally[i].transform.position - avgGroupPos;
+
+            //        SetUnitPos(unitsToRally[i], pos, avgMoveSpeed);
+            //    }
+            //}
+            //else if (patternIndex == 1)
+            //{
+            //    // pattern box
+            //    patternNameText.text = "BOX";
+            //    for (int i = 0; i < unitsToRally.Count; i++)
+            //    {
+            //        if (unitsToRally[i] == null)
+            //            continue;
+
+            //        float row = Mathf.FloorToInt(i / boxWidth);
+            //        float column = i % boxWidth;
+
+            //        // only apply if unit is in the last row (centering)
+            //        if (i >= lastRowStartIndex)
+            //            column += remainderInLastRow / 2f;
+
+            //        Vector3 pos =
+            //            transform.forward * (row + 1f) * patternSpacingMulti +
+            //            transform.right * (column - boxWidth / 2f) * patternSpacingMulti;
+
+            //        bool hitSomethingInBetween = Physics.Raycast(transform.position, pos, out RaycastHit hitSomethingBetweenInfo, pos.magnitude, obstacleMask);
+            //        float minMagnitude = hitSomethingInBetween ? hitSomethingBetweenInfo.distance : pos.magnitude;
+            //        pos = Vector3.ClampMagnitude(pos, minMagnitude);
+
+            //        SetUnitPos(unitsToRally[i], pos, unitsToRally[i].GetStats.maxMoveSpeed);
+            //    }
+            //}
+            //else if (patternIndex == 2)
+            //{
+            //    // pattern long line
+            //    patternNameText.text = "LINE";
+            //    for (int i = 0; i < unitsToRally.Count; i++)
+            //    {
+            //        if (unitsToRally[i] == null)
+            //            continue;
+            //        float row = Mathf.FloorToInt(i / boxWidth);
+            //        float column = i % boxWidth;
+
+            //        // only apply if unit is in the last row (centering)
+            //        if (i >= lastRowStartIndex)
+            //            column += remainderInLastRow / 2f;
+
+            //        Vector3 pos =
+            //            transform.forward * (row + 1f) * patternSpacingMulti + 
+            //            transform.right * (column - boxWidth / 2f) * patternSpacingMulti;
+            //        SetUnitPos(unitsToRally[i], pos, unitsToRally[i].GetStats.maxMoveSpeed);
+            //    }
+            //}
+            //else if (patternIndex == 3)
+            //{
+            //    // pattern arrow (basically just a line that's offset by column)
+            //    patternNameText.text = "ARROW";
+            //    for (int i = 0; i < unitsToRally.Count; i++)
+            //    {
+            //        if (unitsToRally[i] == null)
+            //            continue;
+
+            //        float row = Mathf.FloorToInt(i / boxWidth);
+            //        float column = i % boxWidth;// + row * Mathf.Sign(i % (boxWidth + row) - boxWidth / 2f);
+
+            //        // only apply if unit is in the last row (centering)
+            //        if (i >= lastRowStartIndex)
+            //            column += remainderInLastRow / 2f;
+
+            //        //column += ;
+            //        float arrowForwardOffset = Mathf.Abs (column - boxWidth / 2f) * 0.5f;
+
+            //        Vector3 pos =
+            //            transform.forward * (row + 1f + arrowForwardOffset) * patternSpacingMulti + 
+            //            transform.right * (column - boxWidth / 2f) * patternSpacingMulti;
+
+            //        SetUnitPos(unitsToRally[i], pos, unitsToRally[i].GetStats.maxMoveSpeed);
+            //    }
+            //}
+            //else
+            //{
+            //    patternNameText.text = "";
+            //}
             
 
             if (PlayerInput.GetPlayers[identifier.GetPlayerID].GetButtonDown(PlayerInput.GetInputBack))
@@ -279,6 +376,13 @@ public class UnitSelection : MonoBehaviour
             // reset pattern index
             patternIndex = -1;
         }
+    }
+
+    private Vector3 MaxPosWithHit (Vector3 pos)
+    {
+        bool hitSomethingInBetween = Physics.Raycast(transform.position, pos, out RaycastHit hitSomethingBetweenInfo, pos.magnitude, obstacleMask);
+        float minMagnitude = hitSomethingInBetween ? hitSomethingBetweenInfo.distance : pos.magnitude;
+        return Vector3.ClampMagnitude(pos, minMagnitude);
     }
 
     private void SetUnitPos(UnitActions unit, Vector3 pos, float moveSpeed)

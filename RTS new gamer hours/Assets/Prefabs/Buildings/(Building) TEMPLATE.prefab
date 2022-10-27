@@ -174,7 +174,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3929296519141737274, guid: 2085e2001e963fc428387106b6c048ec, type: 3}
       propertyPath: m_Name
-      value: FireBigRedV2
+      value: FireBigRedV2 (Duplicate and disable)
       objectReference: {fileID: 0}
     - target: {fileID: 3929296519141737274, guid: 2085e2001e963fc428387106b6c048ec, type: 3}
       propertyPath: m_IsActive

@@ -61,7 +61,7 @@ public class PlayerActions : MonoBehaviour
         // turn on correct body parts
         for (int i = 0; i < bodyPartsNeedMaterial.Length; i++)
         {
-            bodyPartsNeedMaterial[i].material = PlayerColorManager.GetUnitMaterial(identifier.GetTeamID);
+            bodyPartsNeedMaterial[i].material = PlayerColorManager.GetUnitMaterial(identifier.GetPlayerID);
         }
 
         sprintCounter = timeToRegenSprint;

@@ -10,7 +10,8 @@ public class BuildingStats : ScriptableObject
     public BuyIcons unitType;
     public BuyIcons[] subsequentUpgrades;
     [Tooltip("These buildings need to be built in order to buy this building, MAX OF 4")]
-    public BuyIcons[] requiredBuildings;
+    [SerializeField] private BuyIcons[] requiredBuildings;
+    public BuyIcons[] GetRequiredBuildings => requiredBuildings;
 
     // change these variables in database https://console.firebase.google.com/u/3/project/rts-castles/database/rts-castles-default-rtdb/data
     [Header("Changed in Database")]

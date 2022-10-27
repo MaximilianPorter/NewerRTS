@@ -43,7 +43,7 @@ public class Building : MonoBehaviour
         identifier = GetComponent<Identifier>();
         health = GetComponent<Health>();
 
-        health.SetValues(stats.health);
+        health.SetValues(stats.health, 0);
     }
 
     private void Start()

@@ -12,6 +12,7 @@ public class UnitStats : ScriptableObject
     // change these variables in database https://console.firebase.google.com/u/3/project/rts-castles/database/rts-castles-default-rtdb/data
     [Header("Changed in Database")]
     public float health;
+    public float armor;
     public float damage;
     public float timeBetweenAttacks;
     public float lookRange = 5f;

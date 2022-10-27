@@ -1282,7 +1282,7 @@ MonoBehaviour:
     food: 0
     wood: 1
     stone: 0
-  amountMultiplier: 0.5
+  amountMultiplier: 0.3
   timeToGive: 5
   resourceVisualEffect: {fileID: 8855432173476987549}
   tagsCounted:

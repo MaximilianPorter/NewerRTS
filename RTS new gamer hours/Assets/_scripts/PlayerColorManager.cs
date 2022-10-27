@@ -5,21 +5,30 @@ using UnityEngine;
 public class PlayerColorManager : MonoBehaviour
 {
     [SerializeField] private Color[] playerColors;
+    private static Color[] staticPlayerColors;
 
+    [SerializeField] private Material nonPlayerMaterial;
     [SerializeField] private Material[] playerMaterials;
-    [SerializeField] private Material[] playerProjectorMaterials;
-    [SerializeField] private Material[] unitMaterials;
-
+    private static Material staticNonPlayerMaterial;
     private static Material[] staticPlayerMaterials = new Material[4];
+
+    [SerializeField] private Material nonPlayerProjectorMaterial;
+    [SerializeField] private Material[] playerProjectorMaterials;
+    private static Material staticNonPlayerProjectorMaterial;
     private static Material[] staticPlayerProjectorMaterials = new Material[4];
+
+    [SerializeField] private Material[] unitMaterials;
     private static Material[] staticUnitMaterials = new Material[4];
 
-    public static Material GetUnitMaterial(int teamID) => staticUnitMaterials[teamID];
+    public static Material GetNonPlayerProjectorMaterial => staticNonPlayerProjectorMaterial;
+    public static Material GetNonPlayerMaterial => staticNonPlayerMaterial;
 
-    public static Material GetPlayerMaterial (int teamID) => staticPlayerMaterials[teamID];
-    public static Material GetPlayerProjectorMaterial (int teamID) => staticPlayerProjectorMaterials[teamID];
-    public static Color GetPlayerColor (int teamID) => staticPlayerMaterials[teamID].color;
-    public static void SetPlayerColor(int teamID, Color newColor) => staticPlayerMaterials[teamID].color = newColor;
+
+    public static Material GetUnitMaterial(int playerID) => staticUnitMaterials[playerID];
+    public static Material GetPlayerMaterial (int playerID) => staticPlayerMaterials[playerID];
+    public static Material GetPlayerProjectorMaterial (int playerID) => staticPlayerProjectorMaterials[playerID];
+    public static Color GetPlayerColor(int colorID) => staticPlayerColors[colorID];
+    public static void SetPlayerColor(int colorID, Color newColor) => staticPlayerColors[colorID] = newColor;
 
     private void Awake()
     {
@@ -31,7 +40,15 @@ public class PlayerColorManager : MonoBehaviour
             staticUnitMaterials[i] = unitMaterials[i];
         }
 
-        
+        staticNonPlayerProjectorMaterial = nonPlayerProjectorMaterial;
+        staticNonPlayerMaterial = nonPlayerMaterial;
+
+        staticPlayerColors = new Color[playerColors.Length];
+        for (int i = 0; i < playerColors.Length; i++)
+        {
+            staticPlayerColors[i] = playerColors[i];
+        }
+
     }
 
     private void FixedUpdate()
@@ -47,6 +64,7 @@ public class PlayerColorManager : MonoBehaviour
         for (int i = 0; i < staticUnitMaterials.Length; i++)
         {
             staticUnitMaterials[i].SetColor("_TintColorA", playerColors[i]);
+            staticUnitMaterials[i].SetColor("_TintColorB", playerColors[i]);
         }
     }
 }

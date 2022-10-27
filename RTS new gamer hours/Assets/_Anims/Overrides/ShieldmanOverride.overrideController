@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: ShieldmanOverride
+  m_Controller: {fileID: 9100000, guid: b715938cc747b6e4a9768f423e81b88b, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: ed5efca8bebba864d9f5d5b20196c94b, type: 3}
+    m_OverrideClip: {fileID: 7400000, guid: d2fa6cc158d1d8e4da35dba21ab4395d, type: 3}
+  - m_OriginalClip: {fileID: 7400000, guid: 39c5a1e19d6559345aa3c57adb589874, type: 3}
+    m_OverrideClip: {fileID: 7400000, guid: 0db21fc102c66a444a2d99ddd0c4168b, type: 3}
+  - m_OriginalClip: {fileID: 7400000, guid: 2eff314cde206bb4eb0a5715561aa6fe, type: 3}
+    m_OverrideClip: {fileID: 7400000, guid: e8b6ae497645a274e98d76a6e407ce8b, type: 3}
+  - m_OriginalClip: {fileID: 7400000, guid: d21976f6430d38b4d89737bfbf9c936f, type: 3}
+    m_OverrideClip: {fileID: 7400000, guid: 46cd827701fed424c817fee08823358d, type: 3}
+  - m_OriginalClip: {fileID: 7400000, guid: b0d9487d80334c74198b26915b369dc8, type: 3}
+    m_OverrideClip: {fileID: 7400000, guid: 2cd4c7fa9ab8728449da2d7730b71ac2, type: 3}

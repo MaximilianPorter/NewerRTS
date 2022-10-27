@@ -18,7 +18,7 @@ public class MenuDescriptionArea : MonoBehaviour
         {
             if (playerBuilding.GetSelectedUiButton != null)
             {
-                descriptionText.text = "<b>" + playerBuilding.GetSelectedUiButton.GetButtonName.ToUpper() + ": </b> \n" +
+                descriptionText.text = "<b>" + playerBuilding.GetSelectedUiButton.GetButtonName.ToUpper() + "</b> \n" +
                     playerBuilding.GetSelectedUiButton.GetButtonDescription;
             }
 

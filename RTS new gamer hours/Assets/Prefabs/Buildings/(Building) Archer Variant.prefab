@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 6325961252058856850}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.14999999, y: 0.14999999, z: 0.14999999}
+  m_LocalScale: {x: 0.15, y: 0.15, z: 0.15}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6424725335843511831}
@@ -374,11 +374,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3931314208959751448, guid: 2085e2001e963fc428387106b6c048ec, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.75
+      value: 0.775
       objectReference: {fileID: 0}
     - target: {fileID: 3931314208959751448, guid: 2085e2001e963fc428387106b6c048ec, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.11100001
+      value: 0.111
       objectReference: {fileID: 0}
     - target: {fileID: 3931314208959751448, guid: 2085e2001e963fc428387106b6c048ec, type: 3}
       propertyPath: m_LocalRotation.w
@@ -751,7 +751,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8956819731846260274, guid: 7444a2888946a634ba879ce630db7727, type: 3}
       propertyPath: m_Name
-      value: (Building) Archer
+      value: (Building) Archer Variant
       objectReference: {fileID: 0}
     - target: {fileID: 8956819731846260276, guid: 7444a2888946a634ba879ce630db7727, type: 3}
       propertyPath: burnEffects.Array.size
