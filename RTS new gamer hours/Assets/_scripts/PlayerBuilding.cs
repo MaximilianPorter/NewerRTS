@@ -40,6 +40,7 @@ public class PlayerBuilding : MonoBehaviour
     #region private variables    
 
     private bool placingRallyPoint = false;
+    private bool placingAllRallyPoints = false;
     private Building rallyBuilding = null;
 
     private Identifier identifier;
@@ -294,7 +295,7 @@ public class PlayerBuilding : MonoBehaviour
     private void HandleOpeningCycleMenu ()
     {
         // don't open menu if we're cycleing through formations
-        if (!PlayerInput.GetPlayers[identifier.GetPlayerID].GetButton(PlayerInput.GetInputRallyTroops))
+        if (!PlayerInput.GetPlayers[identifier.GetPlayerID].GetButton(PlayerInput.GetInputRallyTroops) && !unitSelection.GetHasTroopsSelected)
         {
             buttonMenu.SetActive(anyMenuOpen);
             PlayerInput.SetPlayerIsInMenu(identifier.GetPlayerID, buildingMenuIsOpen);
@@ -654,6 +655,7 @@ public class PlayerBuilding : MonoBehaviour
         // set team and player ID of building
         placedBuildingIdentity.SetPlayerID(identifier.GetPlayerID);
         placedBuildingIdentity.SetTeamID(identifier.GetTeamID);
+        placedBuildingIdentity.SetColorID(identifier.GetColorID);
     }
     private void HandlePlacingBuilding ()
     {
@@ -737,15 +739,10 @@ public class PlayerBuilding : MonoBehaviour
 
     private void HandleBuildingRallyPoint()
     {
-        placeBuildingRallyVisual.gameObject.SetActive(placingRallyPoint);
-        if (placingRallyPoint)
+        placeBuildingRallyVisual.gameObject.SetActive(placingRallyPoint || placingAllRallyPoints);
+        if (placingRallyPoint || placingAllRallyPoints)
         {
             placeBuildingRallyVisual.localPosition = PlayerHolder.WorldToCanvasLocalPoint(transform.position + rallyVisualOffset, identifier.GetPlayerID).GetValueOrDefault (Vector2.zero);
-            //Vector2 screenPoint = playerCam.WorldToScreenPoint(transform.position + rallyVisualOffset);
-            //if (RectTransformUtility.ScreenPointToLocalPointInRectangle(playerCanvas, screenPoint, playerCam, out Vector2 localPoint))
-            //{
-            //    placeBuildingRallyVisual.localPosition = localPoint;
-            //}
 
             // place rally point or cancel
             if (PlayerInput.GetPlayers[identifier.GetPlayerID].GetButtonDown(PlayerInput.GetInputSelect))
@@ -753,6 +750,12 @@ public class PlayerBuilding : MonoBehaviour
             else if (PlayerInput.GetPlayers[identifier.GetPlayerID].GetButtonDown (PlayerInput.GetInputBack) ||
                 PlayerInput.GetPlayers[identifier.GetPlayerID].GetButtonDown(PlayerInput.GetInputSelectUnits))
                 CancelRallyPoint();
+        }
+
+        // place all rally points
+        if (PlayerInput.GetPlayers [identifier.GetPlayerID].GetButtonDown(PlayerInput.GetInputDpadDown))
+        {
+            placingAllRallyPoints = true;
         }
     }
 
@@ -764,9 +767,42 @@ public class PlayerBuilding : MonoBehaviour
     private void CancelRallyPoint ()
     {
         placingRallyPoint = false;
+        placingAllRallyPoints = false;
     }
     private void PlaceRallyPoint ()
     {
+        if (placingAllRallyPoints)
+        {
+            // visual for rally point placing
+            GameObject rallyPointEffectInstance = Instantiate(rallyPointPlaceEffect, transform.position + new Vector3(0f, -0.5f, 0f), Quaternion.identity);
+            Destroy(rallyPointEffectInstance, 3f);
+
+            // new list for already set building types
+            List<BuyIcons> alreadySetTypes = new List<BuyIcons>(0);
+            foreach (Building building in PlayerHolder.GetBuildings(identifier.GetPlayerID))
+            {
+                // skip the building if there's no unit to rally
+                if (building.GetStats.unit == null)
+                    continue;
+
+                // skip the building if we already checked it
+                if (alreadySetTypes.Contains(building.GetStats.buildingType))
+                {
+                    building.SetMainSpawnBuilding(false);
+                    continue;
+                }
+
+
+                alreadySetTypes.Add(building.GetStats.buildingType);
+                building.SetRallyPoint(transform.position + new Vector3 (0f, -0.75f, 0f));
+                building.SetMainSpawnBuilding(true);
+            }
+
+            placingAllRallyPoints = false;
+            return;
+        }
+
+
         // visual for rally point placing
         GameObject rallyPointPlaceInstance = Instantiate(rallyPointPlaceEffect, transform.position + new Vector3 (0f, -0.5f, 0f), Quaternion.identity);
         Destroy(rallyPointPlaceInstance, 3f);

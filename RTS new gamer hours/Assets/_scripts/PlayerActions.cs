@@ -117,10 +117,10 @@ public class PlayerActions : MonoBehaviour
                     return;
                 }
 
-                isBlocking = PlayerInput.GetPlayers[identifier.GetPlayerID].GetButton(PlayerInput.GetInputBlock);
-                animator.SetBool("isBlocking", isBlocking);
-                if (isBlocking)
-                    return;
+                //isBlocking = PlayerInput.GetPlayers[identifier.GetPlayerID].GetButton(PlayerInput.GetInputBlock);
+                //animator.SetBool("isBlocking", isBlocking);
+                //if (isBlocking)
+                //    return;
 
                 animator.SetBool("isMoving", navMovement.GetMoveSpeed01 > 0.01f);
                 if (animator.GetBool("isMoving"))

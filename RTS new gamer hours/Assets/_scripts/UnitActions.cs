@@ -55,7 +55,7 @@ public class UnitActions : MonoBehaviour
     private bool hasThrown = true;
     private float lookRangeWithHeight = 0f;
     private float attackRangeWithHeight = 0f;
-    private bool hardsetDestination = false;
+    private UnitMovementType movementType = UnitMovementType.LookNearDestination;
 
     private int lastTeamID = 0;
 
@@ -76,10 +76,10 @@ public class UnitActions : MonoBehaviour
     public GameObject GetOrderingObject => movementTargetVisual;
     public bool GetIsSelected => isSelected;
     public void SetIsSelected(bool select) => isSelected = select;
-    public void HardSetDestination(Vector3 destination)
+    public void SetDestinationWithType (Vector3 destination, UnitMovementType movementType)
     {
         navMovement.SetDestination(destination);
-        hardsetDestination = true;
+        this.movementType = movementType;
     }
 
     private void Awake()
@@ -287,10 +287,14 @@ public class UnitActions : MonoBehaviour
 
     private void HandleMoveTowardsEnemies ()
     {
-        if (hardsetDestination)
+        // if we're at our destination, go patrol mode
+        if (!navMovement.GetIsMoving && Mathf.Abs (navMovement.GetDestination.x - transform.position.x) < 0.5f)
+            movementType = UnitMovementType.Patrol;
+
+
+        if (movementType == UnitMovementType.IgnoreEnemies)
         {
-            if (!navMovement.GetIsMoving)
-                hardsetDestination = false;
+            navMovement.SetLookAt(null);
             return;
         }
 
@@ -304,14 +308,15 @@ public class UnitActions : MonoBehaviour
             Vector3 dirMoveTargetAndMe = (moveTowardsPos - transform.position);
             dirMoveTargetAndMe.y = 0f;
 
-            // (MOVING) if we click far enough away from the enemy
-            if (navMovement.GetIsMoving && dirMoveTargetAndEnemy.sqrMagnitude > (unitStats.lookRange/2f * unitStats.lookRange/2f))
-            {
-                navMovement.SetLookAt(null);
-                return;
-            }
-            // (NOT MOVING) if we click far enough away from our own range
-            else if (!navMovement.GetIsMoving && dirMoveTargetAndMe.sqrMagnitude > (unitStats.lookRange/2f * unitStats.lookRange/2f))
+
+            //// (MOVING) if the destination is far enough away from the enemy, leave the enemy alone
+            //if (navMovement.GetIsMoving && dirMoveTargetAndEnemy.sqrMagnitude > (unitStats.lookRange/2f * unitStats.lookRange/2f) && movementType != UnitMovementType.Patrol)
+            //{
+            //    navMovement.SetLookAt(null);
+            //    return;
+            //}
+            //// (NOT MOVING) if we click far enough away from our own range, leave the enemy
+            if (dirMoveTargetAndMe.sqrMagnitude > (unitStats.lookRange/2f * unitStats.lookRange/2f) && movementType != UnitMovementType.Patrol)
             {
                 navMovement.SetLookAt(null);
                 return;

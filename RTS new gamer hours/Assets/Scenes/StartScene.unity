@@ -1989,6 +1989,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 38414566605869866, guid: cdef1b0f481f1404baf5e60ab8c86028, type: 3}
+      propertyPath: teamID
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 38414566605869866, guid: cdef1b0f481f1404baf5e60ab8c86028, type: 3}
+      propertyPath: colorID
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 38414566605869866, guid: cdef1b0f481f1404baf5e60ab8c86028, type: 3}
+      propertyPath: playerID
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cdef1b0f481f1404baf5e60ab8c86028, type: 3}
 --- !u!4 &269743303 stripped
@@ -2183,6 +2195,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 916436579705897626, guid: 6a50baf92dad4f646aa378a28dd07da1, type: 3}
       propertyPath: teamID
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 916436579705897626, guid: 6a50baf92dad4f646aa378a28dd07da1, type: 3}
+      propertyPath: colorID
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 916436579705897626, guid: 6a50baf92dad4f646aa378a28dd07da1, type: 3}
@@ -2848,6 +2864,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 916436579705897626, guid: 6a50baf92dad4f646aa378a28dd07da1, type: 3}
       propertyPath: teamID
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 916436579705897626, guid: 6a50baf92dad4f646aa378a28dd07da1, type: 3}
+      propertyPath: colorID
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 916436579705897626, guid: 6a50baf92dad4f646aa378a28dd07da1, type: 3}
@@ -5666,7 +5686,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 283833772, guid: ec2b5e3a80856a1449b7d4c2b4b4080a, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 284775182, guid: ec2b5e3a80856a1449b7d4c2b4b4080a, type: 3}
       propertyPath: m_IsActive
@@ -10298,6 +10318,10 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 38414566605869866, guid: cdef1b0f481f1404baf5e60ab8c86028, type: 3}
+      propertyPath: colorID
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 38414566605869866, guid: cdef1b0f481f1404baf5e60ab8c86028, type: 3}
       propertyPath: playerID
       value: 2
       objectReference: {fileID: 0}
@@ -11238,6 +11262,10 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 916436579705897626, guid: 6a50baf92dad4f646aa378a28dd07da1, type: 3}
+      propertyPath: colorID
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 916436579705897626, guid: 6a50baf92dad4f646aa378a28dd07da1, type: 3}
       propertyPath: playerID
       value: 3
       objectReference: {fileID: 0}
@@ -11492,6 +11520,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 38414566605869866, guid: cdef1b0f481f1404baf5e60ab8c86028, type: 3}
       propertyPath: teamID
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 38414566605869866, guid: cdef1b0f481f1404baf5e60ab8c86028, type: 3}
+      propertyPath: colorID
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 38414566605869866, guid: cdef1b0f481f1404baf5e60ab8c86028, type: 3}

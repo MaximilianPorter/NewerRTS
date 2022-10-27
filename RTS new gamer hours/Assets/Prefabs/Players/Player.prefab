@@ -5723,6 +5723,10 @@ MonoBehaviour:
   patternSpacingMulti: 1.2
   selectedUnitsUiLayout: {fileID: 0}
   patternNameText: {fileID: 0}
+  unitMovementType: 1
+  movementTypeText: {fileID: 0}
+  movementTypeDescText: {fileID: 0}
+  microGroupUiLayout: {fileID: 0}
 --- !u!114 &183182282
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7388,6 +7392,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8604555271138620345}
     m_Modifications:
+    - target: {fileID: 147464, guid: 3c54df43aea316143beec51be2902cac, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 169662, guid: 3c54df43aea316143beec51be2902cac, type: 3}
       propertyPath: m_Name
       value: TT_King

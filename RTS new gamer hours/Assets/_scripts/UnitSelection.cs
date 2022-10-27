@@ -4,6 +4,7 @@ using System.Linq;
 using UnityEngine;
 using TMPro;
 using System.Runtime.InteropServices.WindowsRuntime;
+using Unity.VisualScripting;
 
 [RequireComponent(typeof (Identifier))]
 public class UnitSelection : MonoBehaviour
@@ -18,6 +19,9 @@ public class UnitSelection : MonoBehaviour
     [SerializeField] private float patternSpacingMulti = 2f;
     [SerializeField] private Transform selectedUnitsUiLayout;
     [SerializeField] private TMP_Text patternNameText;
+    [SerializeField] private UnitMovementType unitMovementType = UnitMovementType.LookNearDestination;
+    [SerializeField] private TMP_Text movementTypeText;
+    [SerializeField] private TMP_Text movementTypeDescText;
 
     [Header("Micro")]
     [SerializeField] private Transform microGroupUiLayout;
@@ -34,6 +38,7 @@ public class UnitSelection : MonoBehaviour
     private List<UnitActions> tempSelectedUnits = new List<UnitActions>(0);
     private UnitActions[][] microGroups = new UnitActions[4][];
     private Vector3 lastRallyPointWorldPos;
+    private float movementTypeTextCounter = 0f;
 
     public bool GetHasTroopsSelected => selectedUnits.Count > 0;
 
@@ -71,6 +76,7 @@ public class UnitSelection : MonoBehaviour
             return;
 
         HandleMircroGroups();
+        ChangeUnitMovementType();
 
         // if the player has no troops, we don't do unit selection updates
         if (PlayerHolder.GetUnits(identifier.GetPlayerID).Count <= 0)
@@ -403,10 +409,7 @@ public class UnitSelection : MonoBehaviour
                     unitsToRally[i].GetOrderingObject.SetActive(false);
                 }
 
-                if (patternIndex == -1)
-                    unitsToRally[i].HardSetDestination(unitsToRally[i].GetOrderingObject.transform.position);
-                else
-                    unitsToRally[i].GetMovement.SetDestination(unitsToRally[i].GetOrderingObject.transform.position);
+                unitsToRally[i].SetDestinationWithType(unitsToRally[i].GetOrderingObject.transform.position, unitMovementType);
             }
             // reset pattern index
             patternIndex = -1;
@@ -419,11 +422,14 @@ public class UnitSelection : MonoBehaviour
         {
             microUiObjects[i].SetActive(microGroups[i].Length >= 1);
         }
-
-        CreateMicroGroup(PlayerInput.GetInputDpadUp, 0);
-        CreateMicroGroup(PlayerInput.GetInputDpadDown, 1);
-        //CreateMicroGroup(PlayerInput.GetInputDpadLeft, 2);
-        //CreateMicroGroup(PlayerInput.GetInputDpadRight, 3);
+        // THESE WORK, I JUST HAVE THEM TURNED OFF UNTIL I FEEL LIKE USING MICRO GROUPS
+        if (PlayerInput.GetPlayers[identifier.GetPlayerID].GetButton(PlayerInput.GetInputBlock))
+        {
+            CreateMicroGroup(PlayerInput.GetInputSelect, 0);
+            CreateMicroGroup(PlayerInput.GetInputInteract, 1);
+            CreateMicroGroup(PlayerInput.GetInputSelectUnits, 2);
+            CreateMicroGroup(PlayerInput.GetInputBack, 3);
+        }
     }
 
     private void CreateMicroGroup (string buttonName, int microGroupIndex)
@@ -445,6 +451,53 @@ public class UnitSelection : MonoBehaviour
         {
             tempSelectedUnits.Clear();
             selectedUnits = microGroups[microGroupIndex].ToList();
+        }
+    }
+
+    private void ChangeUnitMovementType ()
+    {
+        if (PlayerInput.GetPlayers[identifier.GetPlayerID].GetButtonDown(PlayerInput.GetInputDpadUp))
+        {
+            movementTypeText.gameObject.SetActive(true);
+            movementTypeDescText.gameObject.SetActive(true);
+
+            int lengthOfEnum = System.Enum.GetNames(typeof(UnitMovementType)).GetLength(0);
+            if ((int)unitMovementType + 1 >= lengthOfEnum)
+            {
+                unitMovementType = 0;
+            }
+            else
+            {
+                unitMovementType++;
+            }
+
+            movementTypeTextCounter = 3f;
+
+            if (unitMovementType == UnitMovementType.IgnoreEnemies)
+            {
+                movementTypeText.text = "UNIT MOVEMENT: <i>IGNORE ENEMIES</i>";
+                movementTypeDescText.text = "Units move to their destination and only look for enemies afterwards.";
+            }
+            else if(unitMovementType == UnitMovementType.LookNearDestination)
+            {
+                movementTypeText.text = "<b>[DEFAULT]</b> UNIT MOVEMENT: <i>NEAR DESTINATION</i>";
+                movementTypeDescText.text = "Units move to their destination and when they get close, they will stop if they see an enemy.";
+
+            }
+            else if(unitMovementType == UnitMovementType.Patrol)
+            {
+                movementTypeText.text = "UNIT MOVEMENT: <i>PATROL</i>";
+                movementTypeDescText.text = "Units will constantly look for enemies while they move and will stop when they see one.";
+            }
+
+        }
+
+        movementTypeTextCounter -= Time.deltaTime;
+
+        if (movementTypeTextCounter <= 0)
+        {
+            movementTypeText.gameObject.SetActive(false);
+            movementTypeDescText.gameObject.SetActive(false);
         }
     }
 
@@ -496,9 +549,9 @@ public class UnitSelection : MonoBehaviour
             return;
 
         // change selected unit type
-        if (PlayerInput.GetPlayers[identifier.GetPlayerID].GetButtonDown(PlayerInput.GetInputDpadRight))
+        if (PlayerInput.GetPlayers[identifier.GetPlayerID].GetButtonDown(PlayerInput.GetCycleRight))
             IncreaseSelectedUnitIndex();
-        else if (PlayerInput.GetPlayers[identifier.GetPlayerID].GetButtonDown(PlayerInput.GetInputDpadLeft))
+        else if (PlayerInput.GetPlayers[identifier.GetPlayerID].GetButtonDown(PlayerInput.GetCycleLeft))
             DecreaseSelectedUnitIndex();
 
         // if the selected unit index was actually changed
@@ -602,4 +655,11 @@ public class UnitSelection : MonoBehaviour
         }
         selectedUnits = new List<UnitActions>(0);
     }
+}
+
+public enum UnitMovementType
+{
+    IgnoreEnemies = 0, // go to destination first, then look for enemies
+    LookNearDestination = 1, // stop when we're close enough to destination and there's an enemy in sight
+    Patrol = 2 // stop at the sight of any enemies
 }

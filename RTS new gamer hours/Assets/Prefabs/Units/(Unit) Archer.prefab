@@ -99,6 +99,26 @@ PrefabInstance:
       propertyPath: stats
       value: 
       objectReference: {fileID: 11400000, guid: a327a27b7fdc47e4893823bdf00332b4, type: 2}
+    - target: {fileID: 5160717717918629887, guid: d14c90c55a5aa6b4293e3c16f01004b4, type: 3}
+      propertyPath: teamID
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5160717717918629887, guid: d14c90c55a5aa6b4293e3c16f01004b4, type: 3}
+      propertyPath: colorID
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5160717717918629887, guid: d14c90c55a5aa6b4293e3c16f01004b4, type: 3}
+      propertyPath: playerID
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5531942057384617496, guid: d14c90c55a5aa6b4293e3c16f01004b4, type: 3}
+      propertyPath: m_RootOrder
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6145119589687593557, guid: d14c90c55a5aa6b4293e3c16f01004b4, type: 3}
+      propertyPath: m_RootOrder
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 8011053019397688160, guid: d14c90c55a5aa6b4293e3c16f01004b4, type: 3}
       propertyPath: stats
       value: 

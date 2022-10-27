@@ -14,6 +14,7 @@ public class Building : MonoBehaviour
     [SerializeField] private GameObject playerHoverEffect;
     [SerializeField] private GameObject smokeExplosion;
     [SerializeField] private GameObject sellBuildingEffect;
+    [SerializeField] private LineRenderer buildingRallyPointLine;
 
 
     private float scaleUpCounter = 0f;
@@ -56,6 +57,8 @@ public class Building : MonoBehaviour
             playerHoverEffect.SetActive(false);
 
         AssignActiveCell();
+
+        SetSpecificPlayerLayers(identifier.GetPlayerID);
     }
 
     private void Update()
@@ -72,6 +75,13 @@ public class Building : MonoBehaviour
         if (health.GetCurrentHealth < 0)
         {
             Die();
+        }
+
+        if (stats.unit != null)
+        {
+            buildingRallyPointLine.enabled = isMainSpawnBuilding && rallyPointMoved;
+            buildingRallyPointLine.SetPosition(0, transform.position);
+            buildingRallyPointLine.SetPosition(1, rallyPoint.position);
         }
 
     }
@@ -98,6 +108,7 @@ public class Building : MonoBehaviour
         // set team / ownership stuff
         unitInstance.GetComponent<Identifier>().SetTeamID(identifier.GetTeamID);
         unitInstance.GetComponent<Identifier>().SetPlayerID(identifier.GetPlayerID);
+        unitInstance.GetComponent<Identifier>().SetColorID(identifier.GetColorID);
 
         // first rally point
         unitInstance.GetMovement.SetDestination(rallyPoint.position + new Vector3(Random.Range(-.5f, 0.5f), 0f, Random.Range(-.5f, 0.5f)));
@@ -228,6 +239,23 @@ public class Building : MonoBehaviour
     {
         rallyPoint.position = newRallyPoint;
         rallyPointMoved = true;
+    }
+
+    public void SetSpecificPlayerLayers(int playerID)
+    {
+        if (stats.unit != null)
+            buildingRallyPointLine.gameObject.layer = RuntimeLayerController.GetLayer(playerID);
+
+        if (playerHoverEffect)
+        {
+            playerHoverEffect.gameObject.layer = RuntimeLayerController.GetLayer(playerID);
+
+            Transform[] children = playerHoverEffect.GetComponentsInChildren<Transform>();
+            for (int i = 0; i < children.Length; i++)
+            {
+                children[i].gameObject.layer = RuntimeLayerController.GetLayer(playerID);
+            }
+        }
     }
 
     private void OnDrawGizmosSelected()

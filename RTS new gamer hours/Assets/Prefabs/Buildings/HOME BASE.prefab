@@ -209,6 +209,7 @@ MonoBehaviour:
   playerHoverEffect: {fileID: 0}
   smokeExplosion: {fileID: 4912207008319035513, guid: a498eae963f771c40bde5122922062ce, type: 3}
   sellBuildingEffect: {fileID: 0}
+  buildingRallyPointLine: {fileID: 0}
 --- !u!114 &3659162556006566174
 MonoBehaviour:
   m_ObjectHideFlags: 0
