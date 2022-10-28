@@ -30,6 +30,7 @@ public class PlayerActions : MonoBehaviour
     [Space(10)]
     [SerializeField] private Renderer[] bodyPartsNeedMaterial;
 
+    private Outline outline;
     private Identifier identifier;
     private NavMeshMovement navMovement;
     private Attacking attacking;
@@ -38,7 +39,6 @@ public class PlayerActions : MonoBehaviour
     private Color[] startSprintRendColors;
     private float sprintFullColorCounter = 0f;
 
-    private int lastColorID = -1;
     private Vector3 moveInput;
     private bool isAttacking = false;
     private bool isBlocking = false;
@@ -58,6 +58,7 @@ public class PlayerActions : MonoBehaviour
 
     private void Start()
     {
+        outline = GetComponent<Outline>();
         UpdateBodyColor();
 
         sprintCounter = timeToRegenSprint;
@@ -65,13 +66,14 @@ public class PlayerActions : MonoBehaviour
         startSprintRendColors = new Color[2] { sprintFill.color, sprintFill.transform.parent.GetComponent<Image>().color };
 
         startPos = transform.position;
+
     }
 
     private void Update()
     {
-        if (lastColorID != identifier.GetColorID)
+        if (outline)
         {
-            UpdateBodyColor();
+            outline.OutlineColor = PlayerColorManager.GetPlayerColorIgnoreAlpha(identifier.GetPlayerID, outline.OutlineColor.a);
         }
 
         moveInput = new Vector3(PlayerInput.GetPlayers[identifier.GetPlayerID].GetAxis(PlayerInput.GetInputMoveHorizontal),
@@ -204,8 +206,9 @@ public class PlayerActions : MonoBehaviour
         for (int i = 0; i < bodyPartsNeedMaterial.Length; i++)
         {
             bodyPartsNeedMaterial[i].material = PlayerColorManager.GetUnitMaterial(identifier.GetPlayerID);
+
         }
-        lastColorID = identifier.GetColorID;
+        
     }
 
     private void SetAnimations(AnimatorOverrideController newController)

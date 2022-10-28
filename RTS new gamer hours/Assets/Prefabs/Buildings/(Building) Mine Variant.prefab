@@ -31,7 +31,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8956819730771449171}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &1153781043217035847
 MeshFilter:
@@ -114,7 +114,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8956819730771449171}
-  m_RootOrder: 7
+  m_RootOrder: 16
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &4586865670979117613
 MeshFilter:
@@ -199,7 +199,7 @@ RectTransform:
   m_Children:
   - {fileID: 1093768744023417528}
   m_Father: {fileID: 8956819730771449171}
-  m_RootOrder: 4
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 24.951, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -274,6 +274,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3828816209340219677, guid: 7444a2888946a634ba879ce630db7727, type: 3}
+      propertyPath: m_RootOrder
+      value: 4
+      objectReference: {fileID: 0}
     - target: {fileID: 5387379819105301195, guid: 7444a2888946a634ba879ce630db7727, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.48
@@ -385,7 +389,7 @@ MonoBehaviour:
   - Rock
   hitLayerMask:
     serializedVersion: 2
-    m_Bits: 8192
+    m_Bits: 1
   radius: 8
   projector: {fileID: 1588282747008509511}
 --- !u!1001 &349429173150785011

@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28087c7f2bbc206489107b1b1972109f, type: 3}
+  m_Name: Rocks 1
+  m_EditorClassIdentifier: 
+  parentName: Rock Parent
+  spawnBeforeTrees: 1
+  spawnObjects:
+  - prefab: {fileID: 16418353558070157, guid: dc24513e97c278b44aabd31c8d1faf54, type: 3}
+    spacingBuffer: 3
+    randomRotation: 1
+    spawnWeight: 3
+  - prefab: {fileID: 16418353558070157, guid: 60f889cd8b62d8a4f81f1d52ada93b92, type: 3}
+    spacingBuffer: 3
+    randomRotation: 1
+    spawnWeight: 1
+  numberToPlace: 15
+  showGrid: 0
+  gridSize: {x: 3, y: 3}
+  gridOffset: {x: 0, y: 0}
+  squareSpacing: {x: 0, y: 0}
+  gridSquareSize: {x: 33, y: 33}

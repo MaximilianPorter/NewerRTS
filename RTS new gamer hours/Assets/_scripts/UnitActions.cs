@@ -24,6 +24,7 @@ public class UnitActions : MonoBehaviour
     [SerializeField] private Renderer[] bodyPartsNeedMaterial;
 
     private GameObject healthBarInstance;
+    private Outline outline;
 
     [Header("Animations")]
     [SerializeField] private AnimatorOverrideController unitOverrideController;
@@ -98,6 +99,8 @@ public class UnitActions : MonoBehaviour
     private void Start()
     {
         lastTeamID = identifier.GetTeamID;
+        outline = GetComponent<Outline>();
+
 
         // turn on correct body parts
         for (int i = 0; i < bodyPartsNeedMaterial.Length; i++)
@@ -114,10 +117,15 @@ public class UnitActions : MonoBehaviour
 
         movementTargetVisual.SetActive(false);
         SetUnitSpecificPlayerLayers(identifier.GetPlayerID);
+
     }
 
     private void Update()
     {
+        if (outline)
+        {
+            outline.OutlineColor = PlayerColorManager.GetPlayerColorIgnoreAlpha(identifier.GetPlayerID, outline.OutlineColor.a);
+        }
         selectedGO.SetActive(isSelected);
         attacking.SetCanAttack(navMovement.GetMoveSpeed01 < 0.01f);
 
@@ -190,10 +198,10 @@ public class UnitActions : MonoBehaviour
             findNearestEnemyCounter = Random.Range (0.1f, 0.3f);
         }
 
-        if (identifier.GetTeamID != lastTeamID)
-        {
-            SwitchTeams(identifier.GetPlayerID, identifier.GetTeamID, identifier.GetColorID);
-        }
+        //if (identifier.GetTeamID != lastTeamID)
+        //{
+        //    SwitchTeams(identifier.GetPlayerID, identifier.GetTeamID);
+        //}
 
         
     }
@@ -394,7 +402,8 @@ public class UnitActions : MonoBehaviour
     {
         hasThrown = true;
         Projectile torchInstance = Instantiate(torch, transform.position, Quaternion.identity).GetComponent<Projectile>();
-        torchInstance.SetInfo(torchDamage, identifier.GetPlayerID, identifier.GetTeamID);
+        float hotterFireResearch = PlayerHolder.GetCompletedResearch(identifier.GetPlayerID).Contains(BuyIcons.Research_HotterFire) ? 2f : 1f;
+        torchInstance.SetInfo(torchDamage * hotterFireResearch, identifier.GetPlayerID, identifier.GetTeamID);
 
         Projectile.SetTrajectory(torchInstance.GetRigidbody, tempThrowTarget, torchThrowForce, 100, 1f);
     }
@@ -412,15 +421,12 @@ public class UnitActions : MonoBehaviour
         Destroy(gameObject);
     }
 
-    public void SwitchTeams (int newPlayerID, int newTeamID, int newColorID)
+    public void SwitchTeams (int newPlayerID, int newTeamID)
     {
-        //identifier.UpdateInfo(newPlayerID, newTeamID, newColorID);
-
         RemoveUnitFromLists();
 
         Identifier newUnitInstance = Instantiate(this.gameObject, transform.position, transform.rotation).GetComponent<Identifier>();
-        newUnitInstance.SetPlayerID(newPlayerID);
-        newUnitInstance.SetTeamID(newTeamID);
+        newUnitInstance.UpdateInfo(newPlayerID, newTeamID);
 
         if (newUnitInstance.TryGetComponent(out UnitActions newUnitActions))
         {

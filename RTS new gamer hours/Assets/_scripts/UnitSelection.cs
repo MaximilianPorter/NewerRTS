@@ -467,10 +467,9 @@ public class UnitSelection : MonoBehaviour
     {
         if (PlayerInput.GetPlayers[identifier.GetPlayerID].GetButtonDown(PlayerInput.GetInputDpadUp))
         {
-            movementTypeText.gameObject.SetActive(true);
-            movementTypeDescText.gameObject.SetActive(true);
+            movementTypeText.transform.parent.gameObject.SetActive(true);
 
-            int lengthOfEnum = System.Enum.GetNames(typeof(UnitMovementType)).GetLength(0);
+            int lengthOfEnum = System.Enum.GetNames(typeof(UnitMovementType)).GetLength(0) - 1; // the -1 is so we don't switch to patrol mode, I don't want it
             if ((int)unitMovementType + 1 >= lengthOfEnum)
             {
                 unitMovementType = 0;
@@ -484,20 +483,20 @@ public class UnitSelection : MonoBehaviour
 
             if (unitMovementType == UnitMovementType.IgnoreEnemies)
             {
-                movementTypeText.text = "UNIT MOVEMENT: <i>IGNORE ENEMIES</i>";
+                movementTypeText.text = "UNIT MOVEMENT: <b><i>IGNORE ENEMIES</i></b>";
                 movementTypeDescText.text = "Units move to their destination and only look for enemies afterwards.";
             }
             else if(unitMovementType == UnitMovementType.LookNearDestination)
             {
-                movementTypeText.text = "<b>[DEFAULT]</b> UNIT MOVEMENT: <i>NEAR DESTINATION</i>";
+                movementTypeText.text = "<b>[DEFAULT]</b> UNIT MOVEMENT: <b><i>NEAR DESTINATION</i></b>";
                 movementTypeDescText.text = "Units move to their destination and when they get close, they will stop if they see an enemy.";
 
             }
-            else if(unitMovementType == UnitMovementType.Patrol)
-            {
-                movementTypeText.text = "UNIT MOVEMENT: <i>PATROL</i>";
-                movementTypeDescText.text = "Units will constantly look for enemies while they move and will stop when they see one.";
-            }
+            //else if(unitMovementType == UnitMovementType.Patrol)
+            //{
+            //    movementTypeText.text = "UNIT MOVEMENT: <i>PATROL</i>";
+            //    movementTypeDescText.text = "Units will constantly look for enemies while they move and will stop when they see one.";
+            //}
 
         }
 
@@ -505,8 +504,7 @@ public class UnitSelection : MonoBehaviour
 
         if (movementTypeTextCounter <= 0)
         {
-            movementTypeText.gameObject.SetActive(false);
-            movementTypeDescText.gameObject.SetActive(false);
+            movementTypeText.transform.parent.gameObject.SetActive(false);
         }
     }
 

@@ -653,9 +653,7 @@ public class PlayerBuilding : MonoBehaviour
         Identifier placedBuildingIdentity = Instantiate(building.gameObject, buildingPos, Quaternion.identity).GetComponent<Identifier>();
 
         // set team and player ID of building
-        placedBuildingIdentity.SetPlayerID(identifier.GetPlayerID);
-        placedBuildingIdentity.SetTeamID(identifier.GetTeamID);
-        placedBuildingIdentity.SetColorID(identifier.GetColorID);
+        placedBuildingIdentity.UpdateInfo(identifier.GetPlayerID, identifier.GetTeamID);
     }
     private void HandlePlacingBuilding ()
     {

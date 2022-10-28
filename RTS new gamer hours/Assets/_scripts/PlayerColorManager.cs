@@ -7,7 +7,7 @@ public class PlayerColorManager : MonoBehaviour
     public static PlayerColorManager instance;
 
     [SerializeField] private Color[] playerColors;
-    private static Color[] staticPlayerColors;
+    private static Color[] staticPlayerColors = new Color[4];
 
     [SerializeField] private Material nonPlayerMaterial;
     [SerializeField] private Material[] playerMaterials;
@@ -29,14 +29,19 @@ public class PlayerColorManager : MonoBehaviour
     public static Material GetUnitMaterial(int playerID) => staticUnitMaterials[playerID];
     public static Material GetPlayerMaterial (int playerID) => staticPlayerMaterials[playerID];
     public static Material GetPlayerProjectorMaterial (int playerID) => staticPlayerProjectorMaterials[playerID];
-    public static Color GetPlayerColor(int colorID) => staticPlayerColors[colorID];
-    public static void SetPlayerColor(int colorID, Color newColor)
+    public static Color GetPlayerColor(int playerID) => staticPlayerColors[playerID];
+    public static Color GetPlayerColorIgnoreAlpha(int playerID, float alpha) => new Color(staticPlayerColors[playerID].r, staticPlayerColors[playerID].g, staticPlayerColors[playerID].b, alpha);
+    public static void SetPlayerColor(int playerID, Color newColor)
     {
-        staticPlayerColors[colorID] = newColor;
-        instance.playerColors[colorID] = newColor;
+        staticPlayerColors[playerID] = newColor;
+        instance.playerColors[playerID] = newColor;
     }
 
     private void Awake()
+    {
+    }
+
+    private void Start()
     {
         transform.SetParent(null);
         DontDestroyOnLoad(transform.gameObject);
@@ -53,11 +58,7 @@ public class PlayerColorManager : MonoBehaviour
         staticNonPlayerProjectorMaterial = nonPlayerProjectorMaterial;
         staticNonPlayerMaterial = nonPlayerMaterial;
 
-        staticPlayerColors = new Color[playerColors.Length];
-    }
 
-    private void Start()
-    {
         // if there is already an instance of this, take it's colors
         if (instance != null)
         {

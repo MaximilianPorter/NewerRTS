@@ -10,6 +10,9 @@ using UnityEngine;
 
 public class StatsDatabaseManager : MonoBehaviour
 {
+    [SerializeField] private GameObject loadingAssetsMenu;
+    public static bool LoadingStats = false;
+
     [SerializeField] private bool read = true;
     [SerializeField] private bool write = false;
 
@@ -27,15 +30,18 @@ public class StatsDatabaseManager : MonoBehaviour
     {
         reference = FirebaseDatabase.DefaultInstance.RootReference;
 
-
-        PauseGameManager.ForcePause = true;
+        LoadingStats = true;
+        loadingAssetsMenu.SetActive(true);
+        //PauseGameManager.ForcePause = true;
 
         bool isConnected = false;
         yield return StartCoroutine(CheckIsConnected(connected => isConnected = connected));
         if (!isConnected)
         {
             Debug.LogWarning("could not connect, continuing with game...");
-            PauseGameManager.ForcePause = false;
+            //PauseGameManager.ForcePause = false;
+            loadingAssetsMenu.SetActive(false);
+            LoadingStats = false;
             yield break;
         }
 
@@ -54,7 +60,9 @@ public class StatsDatabaseManager : MonoBehaviour
             yield return StartCoroutine(SetBuildingDetails(i));
         }
 
-        PauseGameManager.ForcePause = false;
+        //PauseGameManager.ForcePause = false;
+        loadingAssetsMenu.SetActive(false);
+        LoadingStats = false;
     }
 
     private void InitializeTempArrays ()
@@ -164,7 +172,7 @@ public class StatsDatabaseManager : MonoBehaviour
             // if we find a current existing value (there's no exceptions), set it from the database
             DataSnapshot snapshot = GetDBTask.Result;
             float value = float.Parse(Convert.ToString (snapshot.Value));
-            Debug.Log("found a variable for " + variableName + " on " + statsType.ToString() + " with value " + value);
+            //Debug.Log("found a variable for " + variableName + " on " + statsType.ToString() + " with value " + value);
 
             // set the value to the tempDatabase to retrieve from later
             tempDatabase[index].FirstOrDefault (databaseValue => databaseValue.statName == variableName).floatValue = value;
@@ -178,7 +186,7 @@ public class StatsDatabaseManager : MonoBehaviour
             }
 
             // if there wasn't a variable in the database, make the variable (THIS WILL ONLY RUN IF 'WRITE'=TRUE IN THE DATABASE)
-            Debug.LogWarning("No value for " + variableName + ", writing to the database now...");
+            //Debug.LogWarning("No value for " + variableName + ", writing to the database now...");
 
             // try to create the value in the database
             var SetDBTask = reference.Child(categoryName).Child(statsType.ToString()).Child(variableName).SetValueAsync(defaultValue);
@@ -213,7 +221,7 @@ public class StatsDatabaseManager : MonoBehaviour
             }
             // if we find a current existing value (there's no exceptions), set it FROM the database
             DataSnapshot snapshot = GetDBTask.Result;
-            Debug.Log("found a variable for " + variableName + " on " + statsType.ToString() + " with value " + Convert.ToString(snapshot.Value));
+            //Debug.Log("found a variable for " + variableName + " on " + statsType.ToString() + " with value " + Convert.ToString(snapshot.Value));
 
             // remove things that I might add to vector3's when entering new values into the database
             char[] charactersToTrim = { '{', '}', '(', ')', '[', ']' };

@@ -232,7 +232,8 @@ public enum BuyIcons
     Research_DualWieldingPick = 36,
     Research_FasterChopping = 37,
     Research_EnhancedFood = 38,
+    Research_HotterFire = 39,
 
-    // highest number: 38
-    // last changed on 10/27/22 - 6:44pm
+    // highest number: 39
+    // last changed on 10/28/22 - 2:06pm
 }

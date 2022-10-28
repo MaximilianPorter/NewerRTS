@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class PauseGameManager : MonoBehaviour
 {
-    [SerializeField] private GameObject loadingAssetsMenu;
     private PlayerPauseController[] playerPauseControllers;
 
     public static bool ForcePause = false;
@@ -22,8 +21,6 @@ public class PauseGameManager : MonoBehaviour
 
     private void Update()
     {
-        loadingAssetsMenu.SetActive(ForcePause);
-
         // pause if any player is paused
         if (playerPauseControllers.Any(player => player.GetIsPaused) || ForcePause)
         {

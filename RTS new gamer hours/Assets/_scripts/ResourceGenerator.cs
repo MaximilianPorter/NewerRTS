@@ -23,6 +23,7 @@ public class ResourceGenerator : MonoBehaviour
     private float counter = 0f;
     private Identifier identifier;
     private bool isLoggingCamp = false;
+    private bool isMine = false;
 
     public float GetRadius => radius;
 
@@ -37,11 +38,11 @@ public class ResourceGenerator : MonoBehaviour
     {
         if (counter < 0)
         {
-            resourceVisualEffect.Play();
             if (tagsCounted.Length > 0)
                 CheckSurroundings();
             else
             {
+                resourceVisualEffect.Play();
                 PlayerResourceManager.instance.AddResourcesWithUI(identifier.GetPlayerID, AmountWithResearch(flatAmtToGive), transform.position);
             }
 
@@ -57,8 +58,10 @@ public class ResourceGenerator : MonoBehaviour
             //PlayerResourceManager.instance.AddResourcesWithUI(identifier.GetPlayerID, amtToGive, transform.position);
 
             float fasterChoppingSpeed = isLoggingCamp && PlayerHolder.GetCompletedResearch(identifier.GetPlayerID).Contains(BuyIcons.Research_FasterChopping) ? 0.5f : 1f;
+            float fasterMiningDualPick = isMine && PlayerHolder.GetCompletedResearch(identifier.GetPlayerID).Contains(BuyIcons.Research_DualWieldingPick) ? 0.5f : 1f;
 
-            counter = timeToGive * fasterChoppingSpeed;
+
+            counter = timeToGive * fasterChoppingSpeed * fasterMiningDualPick;
         }
         counter -= Time.deltaTime;
 
@@ -90,6 +93,9 @@ public class ResourceGenerator : MonoBehaviour
         ResourceNode node = collisions.OrderBy (collision => (collision.transform.position - transform.position).sqrMagnitude).FirstOrDefault(collision => collision.TryGetComponent(out ResourceNode node)).GetComponent<ResourceNode>();
         if (node && node.TryCollectResources(out ResourceAmount returnedAmount))
         {
+            if (returnedAmount.GetStone > 0)
+                isMine = true;
+
             PlayerResourceManager.instance.AddResourcesWithUI(identifier.GetPlayerID, AmountWithResearch(returnedAmount), transform.position);
         }
 
@@ -103,6 +109,9 @@ public class ResourceGenerator : MonoBehaviour
 
         if (projector)
             projector.orthographicSize = radius;
+
+        // play visuals
+        resourceVisualEffect.Play();
     }
 
     private ResourceAmount AmountWithResearch (ResourceAmount amt, float multiplier = 1)
@@ -110,11 +119,10 @@ public class ResourceGenerator : MonoBehaviour
         float hasMoreResourcesResearch = PlayerHolder.GetCompletedResearch(identifier.GetPlayerID).Contains(BuyIcons.Research_MoreResources) ? 1.5f : 1f;
 
         float hasEnhancedFood = PlayerHolder.GetCompletedResearch(identifier.GetPlayerID).Contains(BuyIcons.Research_EnhancedFood) ? 2f : 1f;
-        float hasDualPick = PlayerHolder.GetCompletedResearch(identifier.GetPlayerID).Contains(BuyIcons.Research_DualWieldingPick) ? 2f : 1f;
 
         int food = Mathf.CeilToInt((float)amt.GetFood * amountMultiplier * multiplier * hasMoreResourcesResearch * hasEnhancedFood);
         int wood = Mathf.CeilToInt((float)amt.GetWood * amountMultiplier * multiplier * hasMoreResourcesResearch);
-        int stone = Mathf.CeilToInt((float)amt.GetStone * amountMultiplier * multiplier * hasMoreResourcesResearch * hasDualPick);
+        int stone = Mathf.CeilToInt((float)amt.GetStone * amountMultiplier * multiplier * hasMoreResourcesResearch);
 
         return new ResourceAmount(food, wood, stone);
 

@@ -12,6 +12,7 @@ public class Town : MonoBehaviour
     [SerializeField] private Projector projector;
     [SerializeField] private MeshRenderer flagRend;
 
+    private Identifier identifier;
 
     private bool allSameTeam = false;
     private int teamWithin = -1;
@@ -20,6 +21,11 @@ public class Town : MonoBehaviour
     private float giveCounter = 0f;
     private float checkCounter = 0f;
     private float timeBetweenChecks = 1f;
+
+    private void Start()
+    {
+        identifier = GetComponent<Identifier>();
+    }
 
     private void Update()
     {
@@ -63,9 +69,13 @@ public class Town : MonoBehaviour
                 allSameTeam = true;
                 teamWithin = firstUnitIdentity.GetTeamID;
                 mainPlayerID = firstUnitIdentity.GetPlayerID;
+                identifier.UpdateInfo(firstUnitIdentity.GetPlayerID, firstUnitIdentity.GetTeamID);
             }
             else
+            {
                 allSameTeam = false;
+                teamWithin = -1;
+            }
         }
         else
         {

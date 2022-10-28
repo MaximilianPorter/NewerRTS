@@ -22,6 +22,7 @@ public class Building : MonoBehaviour
     private Identifier identifier;
     private bool playerIsHovering = false;
     private bool isMainSpawnBuilding = false;
+    private int lastTeamID = -1;
 
     private Cell lastCell;
     private Cell activeCell;
@@ -59,6 +60,8 @@ public class Building : MonoBehaviour
         AssignActiveCell();
 
         SetSpecificPlayerLayers(identifier.GetPlayerID);
+
+        lastTeamID = identifier.GetTeamID;
     }
 
     private void Update()
@@ -68,6 +71,12 @@ public class Building : MonoBehaviour
             SpawnUnit();
             debugSpawnUnit = false;
         }
+
+        //if (lastTeamID != identifier.GetTeamID)
+        //{
+        //    SwitchTeams(identifier.GetPlayerID, identifier.GetTeamID);
+        //    lastTeamID = identifier.GetTeamID;
+        //}
 
         if (playerHoverEffect)
             playerHoverEffect.SetActive(playerIsHovering);
@@ -110,9 +119,7 @@ public class Building : MonoBehaviour
         unitInstance.gameObject.SetActive(true); // i think when i spawn them as UnitActions, they spawn disabled
 
         // set team / ownership stuff
-        unitInstance.GetComponent<Identifier>().SetTeamID(identifier.GetTeamID);
-        unitInstance.GetComponent<Identifier>().SetPlayerID(identifier.GetPlayerID);
-        unitInstance.GetComponent<Identifier>().SetColorID(identifier.GetColorID);
+        unitInstance.GetComponent<Identifier>().UpdateInfo(identifier.GetPlayerID, identifier.GetTeamID);
 
         // first rally point
         unitInstance.GetMovement.SetDestination(rallyPoint.position + new Vector3(Random.Range(-.5f, 0.5f), 0f, Random.Range(-.5f, 0.5f)));
@@ -138,7 +145,7 @@ public class Building : MonoBehaviour
             SwitchAllBuildingTeams();
             SwitchAllUnitTeams();
 
-            SwitchTeams(health.GetLastHitByPlayer.GetPlayerID, health.GetLastHitByPlayer.GetTeamID, health.GetLastHitByPlayer.GetColorID);
+            SwitchTeams(health.GetLastHitByPlayer.GetPlayerID, health.GetLastHitByPlayer.GetTeamID);
             return;
         }
 
@@ -146,12 +153,14 @@ public class Building : MonoBehaviour
         DeleteBuilding();
     }
 
-    public void SwitchTeams (int newPlayerID, int newTeamID, int newColorID)
+    public void SwitchTeams (int newPlayerID, int newTeamID)
     {
+        GameObject thisGameobjectInstance = this.gameObject;
+
         //identifier.UpdateInfo (newPlayerID, newTeamID, newColorID);
-        Identifier newBuildingInstance = Instantiate(this.gameObject, transform.position, transform.rotation).GetComponent<Identifier>();
-        newBuildingInstance.SetPlayerID(newPlayerID);
-        newBuildingInstance.SetTeamID(newTeamID);
+        Identifier newBuildingInstance = Instantiate(thisGameobjectInstance, transform.position, transform.rotation).GetComponent<Identifier>();
+        newBuildingInstance.UpdateInfo (newPlayerID, newTeamID);
+
 
         DeleteBuilding();
     }
@@ -190,7 +199,7 @@ public class Building : MonoBehaviour
             Building building = PlayerHolder.GetBuildings(identifier.GetPlayerID)[firstIndex];
 
             if (building != this)
-                building.SwitchTeams(health.GetLastHitByPlayer.GetPlayerID, health.GetLastHitByPlayer.GetTeamID, health.GetLastHitByPlayer.GetColorID);
+                building.SwitchTeams(health.GetLastHitByPlayer.GetPlayerID, health.GetLastHitByPlayer.GetTeamID);
             else
                 firstIndex++;
 
@@ -209,7 +218,7 @@ public class Building : MonoBehaviour
             UnitActions unit = PlayerHolder.GetUnits(identifier.GetPlayerID)[firstIndex];
 
             if (unit != null)
-                unit.SwitchTeams(health.GetLastHitByPlayer.GetPlayerID, health.GetLastHitByPlayer.GetTeamID, health.GetLastHitByPlayer.GetColorID);
+                unit.SwitchTeams(health.GetLastHitByPlayer.GetPlayerID, health.GetLastHitByPlayer.GetTeamID);
             else
                 firstIndex++;
 

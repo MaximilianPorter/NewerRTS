@@ -11,7 +11,7 @@ public class WallsAroundMap : MonoBehaviour
     private const float depth = 5f;
     private const float overextend = 1f;
 
-    private void Start()
+    private void Awake()
     {
         float xSize = map.transform.localScale.x * map.size.x + overextend + depth / 2f;
         float zSize = map.transform.localScale.z * map.size.z + overextend + depth / 2f;

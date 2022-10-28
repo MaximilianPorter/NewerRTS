@@ -11,10 +11,10 @@ public class JoystickButtonSpriteController : MonoBehaviour
 
     private ControllerType[] playerControllerTypes = new ControllerType[]
     {
-        ControllerType.PS4,
-        ControllerType.PS4,
-        ControllerType.PS4,
-        ControllerType.PS4,
+        ControllerType.Xbox,
+        ControllerType.Xbox,
+        ControllerType.Xbox,
+        ControllerType.Xbox,
     };
     public ControllerType GetPlayerControllerType(int playerID) => playerControllerTypes[playerID];
     public Sprite GetIcon (ControllerType controller, InputElement input)

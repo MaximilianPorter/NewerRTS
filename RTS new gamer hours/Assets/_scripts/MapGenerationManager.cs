@@ -13,9 +13,6 @@ public class MapGenerationManager : MonoBehaviour
 
     private NavMeshSurface navMeshSurface;
 
-    [Header("Preplaced Objects")]
-    [SerializeField] private SpawnObject[] preplacedObjects;
-
     [Header("Trees")]
     [SerializeField] private GameObject[] trees;
     [SerializeField] private bool randomRotation = true;
@@ -277,9 +274,11 @@ public class MapGenerationManager : MonoBehaviour
 
     private void InitializePreplacedObjects ()
     {
-        for (int i = 0; i < preplacedObjects.Length; i++)
+        BufferObject[] preplacedSpawnObjects = FindObjectsOfType<BufferObject>(true);
+        for (int i = 0; i < preplacedSpawnObjects.Length; i++)
         {
-            spawnedObjects.Add(preplacedObjects[i]);
+            if (preplacedSpawnObjects[i].gameObject.activeInHierarchy)
+                spawnedObjects.Add(preplacedSpawnObjects[i].GetSpawnObject);
         }
     }
 

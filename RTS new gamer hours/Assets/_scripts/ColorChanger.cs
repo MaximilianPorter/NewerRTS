@@ -14,10 +14,10 @@ public class ColorChanger : MonoBehaviour
     //[SerializeField] private int playerID;
     [SerializeField] private int[] meshRendMaterialChange;
 
-    private int lastColorID = -1;
     private int lastPlayerID = -1;
-    private int myColorID = -1;
     private int myPlayerID = -1;
+    private int myTeamID = -1;
+
     private Color assignedColor;
     private Identifier foundIdentifier;
 
@@ -25,46 +25,53 @@ public class ColorChanger : MonoBehaviour
 
     private void Start()
     {
-        // find an identifier in self or parents
-        Transform currentCheckedTransform = transform;
-        while (currentCheckedTransform)
+        Identifier parentIdentifier = GetComponentInParent <Identifier> ();
+
+        if (parentIdentifier != null)
         {
-            if (currentCheckedTransform.TryGetComponent (out Identifier identifier))
-            {
-                foundIdentifier = identifier;
-                ChangeColor(identifier.GetColorID, identifier.GetPlayerID);
-                break;
-            }
-
-            if (currentCheckedTransform.parent == null)
-                break;
-
-            currentCheckedTransform = currentCheckedTransform.parent;
+            foundIdentifier = parentIdentifier;
+            ChangeColor(parentIdentifier.GetPlayerID);
         }
+
+        //// find an identifier in self or parents
+        //Transform currentCheckedTransform = transform;
+        //while (currentCheckedTransform)
+        //{
+        //    if (currentCheckedTransform.TryGetComponent (out Identifier identifier))
+        //    {
+                
+        //        break;
+        //    }
+
+        //    if (currentCheckedTransform.parent == null)
+        //        break;
+
+        //    currentCheckedTransform = currentCheckedTransform.parent;
+        //}
     }
 
     private void Update()
     {
-        if (!PlayerColorManager.GetPlayerColor (myColorID).CompareRGB (assignedColor) || foundIdentifier.GetColorID != myColorID)
+        if (!PlayerColorManager.GetPlayerColor (myPlayerID).CompareRGB (assignedColor) || foundIdentifier.GetPlayerID != myPlayerID || foundIdentifier.GetTeamID != myTeamID)
         {
             //Debug.Log($"We have the wrong color for {gameObject.name}, changing color...");
-            ChangeColor(foundIdentifier.GetColorID, foundIdentifier.GetPlayerID);
+            ChangeColor(foundIdentifier.GetPlayerID);
         }
     }
 
-    public void ChangeColor (int colorID, int playerID)
+    public void ChangeColor (int playerID)
     {
-        myColorID = colorID;
         myPlayerID = playerID;
-        lastColorID = colorID;
         lastPlayerID = playerID;
 
-        assignedColor = PlayerColorManager.GetPlayerColor(colorID);
+        myTeamID = foundIdentifier.GetTeamID;
+
+        assignedColor = PlayerColorManager.GetPlayerColor(playerID);
 
         // SPRITE REND COLOR
         if (TryGetComponent(out SpriteRenderer sRend))
         {
-            sRend.color = ColorIgnoreAlpha(sRend.color, colorID);
+            sRend.color = ColorIgnoreAlpha(sRend.color, playerID);
         }
 
 
@@ -72,13 +79,13 @@ public class ColorChanger : MonoBehaviour
         // IMAGE COLOR
         if (TryGetComponent(out Image iRend))
         {
-            iRend.color = ColorIgnoreAlpha(iRend.color, colorID);
+            iRend.color = ColorIgnoreAlpha(iRend.color, playerID);
         }
 
         // LINE RENDERER COLOR
         if (TryGetComponent(out LineRenderer lineRend))
         {
-            Color colorNoAlpha = ColorIgnoreAlpha(lineRend.startColor, colorID);
+            Color colorNoAlpha = ColorIgnoreAlpha(lineRend.startColor, playerID);
 
             lineRend.startColor = colorNoAlpha;
             lineRend.endColor = colorNoAlpha;
@@ -90,13 +97,13 @@ public class ColorChanger : MonoBehaviour
         if (TryGetComponent(out ParticleSystem pRend))
         {
             ParticleSystem.MainModule main = pRend.main;
-            main.startColor = ColorIgnoreAlpha(pRend.main.startColor.color, colorID);
+            main.startColor = ColorIgnoreAlpha(pRend.main.startColor.color, playerID);
         }
 
         // SPRITE REND COLOR
         if (TryGetComponent(out TMP_Text textRend))
         {
-            textRend.color = ColorIgnoreAlpha(textRend.color, colorID);
+            textRend.color = ColorIgnoreAlpha(textRend.color, playerID);
         }
 
 

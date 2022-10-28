@@ -51,8 +51,7 @@ public class RespawnUnit : MonoBehaviour
         Identifier unitID = unitInstance.GetComponent<Identifier>();
 
         // set team / ownership stuff
-        unitID.SetTeamID(identifier.GetTeamID);
-        unitID.SetPlayerID(identifier.GetPlayerID);
+        unitID.UpdateInfo(identifier.GetPlayerID, identifier.GetTeamID);
         unitID.SetIsParent(false);
         unitInstance.SetIsSelectable(false);
         unitInstance.SetIsTargetable(false);

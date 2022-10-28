@@ -17,19 +17,24 @@ public class HomeBase : MonoBehaviour
     private void Start()
     {
         attachedPlayerIdentifier = PlayerHolder.GetPlayerIdentifiers[identifier.GetPlayerID];
+
+        MatchPlayersIdentity();
     }
 
     private void Update()
     {
+        MatchPlayersIdentity();
+    }
+
+    private void MatchPlayersIdentity ()
+    {
         // stay the same as the player
         if (attachedPlayerIdentifier.GetPlayerID != identifier.GetPlayerID ||
-            attachedPlayerIdentifier.GetTeamID != identifier.GetTeamID ||
-            attachedPlayerIdentifier.GetColorID != identifier.GetColorID)
+            attachedPlayerIdentifier.GetTeamID != identifier.GetTeamID)
         {
             identifier.UpdateInfo(
                 attachedPlayerIdentifier.GetPlayerID,
-                attachedPlayerIdentifier.GetTeamID,
-                attachedPlayerIdentifier.GetColorID);
+                attachedPlayerIdentifier.GetTeamID);
         }
     }
 }

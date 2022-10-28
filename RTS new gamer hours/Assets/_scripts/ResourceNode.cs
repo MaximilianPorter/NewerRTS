@@ -7,33 +7,48 @@ public class ResourceNode : MonoBehaviour
 {
     [SerializeField] private ResourceAmount amount;
     [SerializeField] private float resetTime = 0f;
-    [SerializeField] private GameObject resourceSpawnEffect;
+    [SerializeField] private ParticleSystem resourceSpawnEffect;
+    [SerializeField] private bool playEffectOnCollect = true;
+    [SerializeField] private bool playEffectOnChildOff = false;
     [SerializeField] private Vector3 resourceSpawnOffset;
     [SerializeField] private bool canBeDestroyed = false;
     [SerializeField] private int destroyAfterHits = 3;
+    [SerializeField] private int turnOffChildrenAfterHits = 0;
 
     private int currentHits = 0;
+    private int childrenOff = 0;
 
     private float resetCounter = 0f;
 
     public bool GetHasResources => resetCounter < 0;
 
+    private void Start()
+    {
+        if (resourceSpawnEffect)
+            resourceSpawnEffect.Stop();
+    }
+
     /// <summary>
     /// doensn't add resources by itself, and returns false if the resource counter is not ready
     /// </summary>
-    public bool TryCollectResources(out ResourceAmount returnedAmount, Vector3? effectSpawnPos = null)
+    public bool TryCollectResources(out ResourceAmount returnedAmount)
     {
-        if (effectSpawnPos == null)
-            effectSpawnPos = transform.position;
-
         if (resetCounter < 0)
         {
             resetCounter = resetTime;
-            if (resourceSpawnEffect != null)
+
+            if (resourceSpawnEffect != null && playEffectOnCollect)
             {
-                GameObject resourceSpawnInstance = Instantiate(resourceSpawnEffect, effectSpawnPos.GetValueOrDefault() + resourceSpawnOffset, Quaternion.identity);
-                Destroy(resourceSpawnInstance, 5f);
+                resourceSpawnEffect.transform.position = transform.position + resourceSpawnOffset;
+                resourceSpawnEffect.Play();
+
+                if (currentHits + 1 >= destroyAfterHits && canBeDestroyed)
+                {
+                    resourceSpawnEffect.transform.SetParent(null);
+                    Destroy(resourceSpawnEffect.gameObject, 5f);
+                }
             }
+
             returnedAmount = amount;
             currentHits++;
             return true;
@@ -56,6 +71,26 @@ public class ResourceNode : MonoBehaviour
                 return;
             }
             Destroy(gameObject);
+        }
+
+        if (turnOffChildrenAfterHits > 0 && currentHits >= turnOffChildrenAfterHits)
+        {
+            if (resourceSpawnEffect != null && playEffectOnChildOff)
+            {
+                resourceSpawnEffect.transform.position = transform.GetChild(childrenOff).position + resourceSpawnOffset;
+                resourceSpawnEffect.Play();
+            }
+
+            transform.GetChild(childrenOff).gameObject.SetActive (false);
+
+
+            if (childrenOff + 1 < transform.childCount)
+                childrenOff++;
+
+            if (childrenOff >= transform.childCount - 1)
+                Destroy(gameObject);
+
+            currentHits = 0;
         }
     }
 }

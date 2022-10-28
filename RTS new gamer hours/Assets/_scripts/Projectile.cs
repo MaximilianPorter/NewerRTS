@@ -109,8 +109,7 @@ public class Projectile : MonoBehaviour
     public void SetInfo (float damage, int playerID, int teamID)
     {
         this.damage = damage;
-        identifier.SetPlayerID(playerID);
-        identifier.SetTeamID(teamID);
+        identifier.UpdateInfo(playerID, teamID);
 
         negatesArmor = PlayerHolder.GetCompletedResearch(identifier.GetPlayerID).Contains(BuyIcons.Research_SharpArrows);
     }
@@ -118,8 +117,7 @@ public class Projectile : MonoBehaviour
     public void ResetProjectile()
     {
         damage = 0f;
-        identifier.SetPlayerID(-1);
-        identifier.SetTeamID(-1);
+        identifier.UpdateInfo(-1, -1);
 
         rb.isKinematic = false;
         parentConstraint.SetSource(0, new ConstraintSource());

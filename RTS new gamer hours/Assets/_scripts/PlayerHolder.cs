@@ -82,7 +82,7 @@ public class PlayerHolder : MonoBehaviour
     private static Identifier[] playerIdentifiers = new Identifier[4];
     public static Identifier[] GetPlayerIdentifiers => playerIdentifiers;
 
-    private void Awake()
+    private void Start()
     {
         playerGameObjects = GameObject.FindGameObjectsWithTag("Player").OrderBy (player => player.GetComponent <Identifier>().GetPlayerID).ToArray();
 

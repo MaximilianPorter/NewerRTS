@@ -17,10 +17,14 @@ public class TeamBoxes : MonoBehaviour
     private void Start()
     {
         counter = countdownTime;
+        countdownText.text = "";
     }
 
     private void Update()
     {
+        if (StatsDatabaseManager.LoadingStats)
+            return;
+
         if (teamBoxes.Any (box => box.GetTouchingPlayers.Length > 0))
         {
             counter -= Time.deltaTime;
