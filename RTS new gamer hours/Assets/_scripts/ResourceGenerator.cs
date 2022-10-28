@@ -105,9 +105,13 @@ public class ResourceGenerator : MonoBehaviour
     {
         float hasMoreResourcesResearch = PlayerHolder.GetCompletedResearch(identifier.GetPlayerID).Contains(BuyIcons.Research_MoreResources) ? 1.5f : 1f;
 
-        int food = Mathf.CeilToInt((float)amt.GetFood * amountMultiplier * multiplier * hasMoreResourcesResearch);
-        int wood = Mathf.CeilToInt((float)amt.GetWood * amountMultiplier * multiplier * hasMoreResourcesResearch);
-        int stone = Mathf.CeilToInt((float)amt.GetStone * amountMultiplier * multiplier * hasMoreResourcesResearch);
+        float hasEnhancedFood = PlayerHolder.GetCompletedResearch(identifier.GetPlayerID).Contains(BuyIcons.Research_EnhancedFood) ? 2f : 1f;
+        float hasFasterChopping = PlayerHolder.GetCompletedResearch(identifier.GetPlayerID).Contains(BuyIcons.Research_FasterChopping) ? 2f : 1f;
+        float hasDualPick = PlayerHolder.GetCompletedResearch(identifier.GetPlayerID).Contains(BuyIcons.Research_DualWieldingPick) ? 2f : 1f;
+
+        int food = Mathf.CeilToInt((float)amt.GetFood * amountMultiplier * multiplier * hasMoreResourcesResearch * hasEnhancedFood);
+        int wood = Mathf.CeilToInt((float)amt.GetWood * amountMultiplier * multiplier * hasMoreResourcesResearch * hasFasterChopping);
+        int stone = Mathf.CeilToInt((float)amt.GetStone * amountMultiplier * multiplier * hasMoreResourcesResearch * hasDualPick);
 
         return new ResourceAmount(food, wood, stone);
 

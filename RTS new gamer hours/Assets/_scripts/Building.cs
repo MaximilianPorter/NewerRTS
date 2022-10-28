@@ -85,7 +85,7 @@ public class Building : MonoBehaviour
         }
         else
         {
-            buildingRallyPointLine.enabled = false;
+            if (buildingRallyPointLine) buildingRallyPointLine.enabled = false;
         }
 
     }

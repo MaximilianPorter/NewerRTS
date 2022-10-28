@@ -20,6 +20,7 @@ public class BuildingStats : ScriptableObject
 
     [Space(10)]
 
+    public float costMultiPerBuilding = 1.3f;
     public float interactionRadius = 2f;
     public float buildRadius = 5;
     public int population = 5;

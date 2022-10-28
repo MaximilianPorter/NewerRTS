@@ -44,21 +44,6 @@ public class BuyIconUI : MonoBehaviour
         identifier = GetComponent<Identifier>();
         images = GetComponentsInChildren<Image>();
 
-        if (overrideUnit)
-        {
-            cost = overrideUnit.cost;
-            buttonType = overrideUnit.unitType;
-        }else if (overrideBuilding)
-        {
-            cost = overrideBuilding.cost;
-            buttonType = overrideBuilding.buildingType;
-        }
-        else if (overrideResearch)
-        {
-            cost = overrideResearch.cost;
-            buttonType = overrideResearch.researchType;
-        }
-
         BuyIconSpriteManager.AddTypeOfSprite(buttonType, GetComponent<Image>().sprite);
     }
 
@@ -70,6 +55,7 @@ public class BuyIconUI : MonoBehaviour
 
     private void Update()
     {
+        UpdateCost();
         isAffordable = PlayerResourceManager.PlayerResourceAmounts[identifier.GetPlayerID].HasResources(cost) && HasRequiredBuildings() && NotYetResearched();
 
         for (int i = 0; i < images.Length; i++)
@@ -124,6 +110,30 @@ public class BuyIconUI : MonoBehaviour
             return false;
 
         return true;
+    }
+
+    private void UpdateCost ()
+    {
+        if (overrideUnit)
+        {
+            cost = overrideUnit.cost;
+            buttonType = overrideUnit.unitType;
+        }
+        else if (overrideBuilding)
+        {
+            int placedBuildingCount = PlayerHolder.GetBuildings(identifier.GetPlayerID).Count <= 0 ? 0 : PlayerHolder.GetBuildings(identifier.GetPlayerID).Count(building => building.GetStats.buildingType == overrideBuilding.buildingType);
+            int food = Mathf.CeilToInt((float)overrideBuilding.cost.GetFood * Mathf.Pow (overrideBuilding.costMultiPerBuilding, placedBuildingCount));
+            int wood = Mathf.CeilToInt((float)overrideBuilding.cost.GetWood * Mathf.Pow(overrideBuilding.costMultiPerBuilding, placedBuildingCount));
+            int stone = Mathf.CeilToInt((float)overrideBuilding.cost.GetStone * Mathf.Pow(overrideBuilding.costMultiPerBuilding, placedBuildingCount));
+
+            cost = new ResourceAmount (food, wood, stone);
+            buttonType = overrideBuilding.buildingType;
+        }
+        else if (overrideResearch)
+        {
+            cost = overrideResearch.cost;
+            buttonType = overrideResearch.researchType;
+        }
     }
 
     /// <summary>
@@ -219,7 +229,10 @@ public enum BuyIcons
     Research_SharpArrows = 30,
     Research_FlamingArrows = 33,
     Research_MoreResources = 34,
+    Research_DualWieldingPick = 36,
+    Research_FasterChopping = 37,
+    Research_EnhancedFood = 38,
 
-    // highest number: 35
-    // last changed on 10/26/22 - 3:44pm
+    // highest number: 38
+    // last changed on 10/27/22 - 6:44pm
 }

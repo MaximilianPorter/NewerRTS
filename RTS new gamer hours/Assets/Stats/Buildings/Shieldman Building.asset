@@ -21,6 +21,7 @@ MonoBehaviour:
     food: 0
     wood: 15
     stone: 40
+  costMultiPerBuilding: 1.3
   interactionRadius: 2
   buildRadius: 10
   population: 2

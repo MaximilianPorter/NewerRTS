@@ -16,11 +16,12 @@ MonoBehaviour:
   unitType: 0
   subsequentUpgrades: 
   requiredBuildings: 
-  health: 300
+  health: 2000
   cost:
     food: 0
     wood: 0
     stone: 0
+  costMultiPerBuilding: 1.3
   interactionRadius: 3.5
   buildRadius: 10
   population: 3
