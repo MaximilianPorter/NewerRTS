@@ -22,6 +22,7 @@ public class ResourceGenerator : MonoBehaviour
     private float physicsUpdateTime = 1f;
     private float counter = 0f;
     private Identifier identifier;
+    private bool isLoggingCamp = false;
 
     public float GetRadius => radius;
 
@@ -55,7 +56,9 @@ public class ResourceGenerator : MonoBehaviour
 
             //PlayerResourceManager.instance.AddResourcesWithUI(identifier.GetPlayerID, amtToGive, transform.position);
 
-            counter = timeToGive;
+            float fasterChoppingSpeed = isLoggingCamp && PlayerHolder.GetCompletedResearch(identifier.GetPlayerID).Contains(BuyIcons.Research_FasterChopping) ? 0.5f : 1f;
+
+            counter = timeToGive * fasterChoppingSpeed;
         }
         counter -= Time.deltaTime;
 
@@ -95,6 +98,7 @@ public class ResourceGenerator : MonoBehaviour
         {
             Vector3 dir = Vector3.Cross(tree.transform.position - transform.position, Vector3.up).normalized;
             tree.ShakeOnce(-dir, 0.2f);
+            isLoggingCamp = true;
         }
 
         if (projector)
@@ -106,11 +110,10 @@ public class ResourceGenerator : MonoBehaviour
         float hasMoreResourcesResearch = PlayerHolder.GetCompletedResearch(identifier.GetPlayerID).Contains(BuyIcons.Research_MoreResources) ? 1.5f : 1f;
 
         float hasEnhancedFood = PlayerHolder.GetCompletedResearch(identifier.GetPlayerID).Contains(BuyIcons.Research_EnhancedFood) ? 2f : 1f;
-        float hasFasterChopping = PlayerHolder.GetCompletedResearch(identifier.GetPlayerID).Contains(BuyIcons.Research_FasterChopping) ? 2f : 1f;
         float hasDualPick = PlayerHolder.GetCompletedResearch(identifier.GetPlayerID).Contains(BuyIcons.Research_DualWieldingPick) ? 2f : 1f;
 
         int food = Mathf.CeilToInt((float)amt.GetFood * amountMultiplier * multiplier * hasMoreResourcesResearch * hasEnhancedFood);
-        int wood = Mathf.CeilToInt((float)amt.GetWood * amountMultiplier * multiplier * hasMoreResourcesResearch * hasFasterChopping);
+        int wood = Mathf.CeilToInt((float)amt.GetWood * amountMultiplier * multiplier * hasMoreResourcesResearch);
         int stone = Mathf.CeilToInt((float)amt.GetStone * amountMultiplier * multiplier * hasMoreResourcesResearch * hasDualPick);
 
         return new ResourceAmount(food, wood, stone);

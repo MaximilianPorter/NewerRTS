@@ -147,7 +147,9 @@ MonoBehaviour:
   buttonDescription: 'Farms, Mines, and Logging Camps generate 50% more resources
 
     -<i>60
-    sec</i>'
+    sec</i>
+
+    -<i>Requires Farm</i>'
   overrideUnit: {fileID: 0}
   overrideBuilding: {fileID: 0}
   overrideResearch: {fileID: 11400000, guid: 1c57dde161b979045a17001bae55c058, type: 2}
@@ -418,7 +420,10 @@ MonoBehaviour:
   buttonName: 'RESEARCH: Sharp Arrows'
   buttonDescription: 'Arrows go through armor
 
-    -<i>60 sec</i>'
+    -<i>60 sec</i>
+
+    -<i>Requires
+    Monestary</i>'
   overrideUnit: {fileID: 0}
   overrideBuilding: {fileID: 0}
   overrideResearch: {fileID: 11400000, guid: 048619fafaa2808458260debf20eb6a4, type: 2}
@@ -1670,7 +1675,10 @@ MonoBehaviour:
   buttonName: 'RESEARCH: Enhanced Food'
   buttonDescription: 'Double amount of food recieved from farms
 
-    -<i>90 sec</i>'
+    -<i>90 sec</i>
+
+    -<i>Requires
+    Monestary</i>'
   overrideUnit: {fileID: 0}
   overrideBuilding: {fileID: 0}
   overrideResearch: {fileID: 11400000, guid: 167a84ba93c1c734eb6ca4d389e6333d, type: 2}
@@ -3697,10 +3705,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonName: 'RESEARCH: More Tree Per Tree'
-  buttonDescription: 'Double amount of wood recieved from logging camps
+  buttonDescription: 'Doubles the speed at which the logging camp chops trees
 
     -<i>90
-    sec</i>'
+    sec</i>
+
+    -<i>Requires Monestary</i>'
   overrideUnit: {fileID: 0}
   overrideBuilding: {fileID: 0}
   overrideResearch: {fileID: 11400000, guid: c860a573c0ad223458a800ad528f6bb5, type: 2}
@@ -5603,7 +5613,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5825349044866862459}
   m_LocalRotation: {x: 0.38268343, y: -0, z: -0, w: 0.92387956}
-  m_LocalPosition: {x: 0, y: 37.35534, z: -35.355343}
+  m_LocalPosition: {x: -37, y: 37.35534, z: 1.6446582}
   m_LocalScale: {x: 22.5, y: 22.5, z: 22.5}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -9097,7 +9107,10 @@ MonoBehaviour:
   buttonName: 'RESEARCH: Dual Wielding Pick'
   buttonDescription: 'Double amount of stone recieved from mines
 
-    -<i>90 sec</i>'
+    -<i>90 sec</i>
+
+    -<i>Requires
+    Monestary</i>'
   overrideUnit: {fileID: 0}
   overrideBuilding: {fileID: 0}
   overrideResearch: {fileID: 11400000, guid: 3392c876eeeacc5409c2b188f2c311cb, type: 2}
