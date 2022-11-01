@@ -19,7 +19,7 @@ public class Projectile : MonoBehaviour
     private ParentConstraint parentConstraint;
     private Rigidbody rb;
     private float damage = 0;
-    private bool negatesArmor = false;
+    private bool moreAgainstArmored = false;
     private Identifier identifier;
     private Vector3 lastPos = Vector3.zero;
 
@@ -84,7 +84,7 @@ public class Projectile : MonoBehaviour
                 if (hit.transform.TryGetComponent(out Identifier enemyIdentifier) && enemyIdentifier.GetTeamID != identifier.GetTeamID)
                 {
                     if (hit.transform.TryGetComponent(out Health health))
-                        health.TakeDamage(damage, identifier, transform.position, negatesArmor);
+                        health.TakeDamage(damage, identifier, transform.position, moreAgainstArmored);
                 }
 
                 if (burns && hit.transform.TryGetComponent (out BurningObject burnedObject))
@@ -111,7 +111,7 @@ public class Projectile : MonoBehaviour
         this.damage = damage;
         identifier.UpdateInfo(playerID, teamID);
 
-        negatesArmor = PlayerHolder.GetCompletedResearch(identifier.GetPlayerID).Contains(BuyIcons.Research_SharpArrows);
+        moreAgainstArmored = PlayerHolder.GetCompletedResearch(identifier.GetPlayerID).Contains(BuyIcons.Research_SharpArrows);
     }
 
     public void ResetProjectile()

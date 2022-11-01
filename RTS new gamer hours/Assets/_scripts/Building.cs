@@ -15,6 +15,8 @@ public class Building : MonoBehaviour
     [SerializeField] private GameObject smokeExplosion;
     [SerializeField] private GameObject sellBuildingEffect;
     [SerializeField] private LineRenderer buildingRallyPointLine;
+    [SerializeField] private GameObject circleRadiusEffect;
+    [SerializeField] private bool needsRadius = false;
 
 
     private float scaleUpCounter = 0f;
@@ -57,6 +59,9 @@ public class Building : MonoBehaviour
         if (playerHoverEffect)
             playerHoverEffect.SetActive(false);
 
+        if (circleRadiusEffect)
+            circleRadiusEffect.SetActive(false);
+
         AssignActiveCell();
 
         SetSpecificPlayerLayers(identifier.GetPlayerID);
@@ -80,6 +85,8 @@ public class Building : MonoBehaviour
 
         if (playerHoverEffect)
             playerHoverEffect.SetActive(playerIsHovering);
+        if (circleRadiusEffect)
+            circleRadiusEffect.SetActive(playerIsHovering && needsRadius);
 
         if (health.GetCurrentHealth < 0)
         {

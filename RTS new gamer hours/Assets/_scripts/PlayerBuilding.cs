@@ -20,6 +20,7 @@ public class PlayerBuilding : MonoBehaviour
     [SerializeField] private Transform queuedUnitsLayoutGroup;
     [SerializeField] private Image costAreaLayout;
     [SerializeField] private Transform requiredBuildingLayout;
+    [SerializeField] private LayerMask groundLayermask;
 
     private Image[] requiredBuildingImageContainers;
 
@@ -479,7 +480,12 @@ public class PlayerBuilding : MonoBehaviour
                             selectedIconIndex = i;
                             runOnce = true;
                         }
-                        allIcons[i].gameObject.SetActive(true);
+
+                        // turn it on, but not if it's in completed research or current research
+                        bool notResearchingThisIcon = !PlayerHolder.GetCompletedResearch(identifier.GetPlayerID).Contains(allIcons[i].GetButtonType);
+
+                        allIcons[i].gameObject.SetActive(notResearchingThisIcon);
+
                     }
                 }
 
@@ -649,7 +655,7 @@ public class PlayerBuilding : MonoBehaviour
     private void BuildBuilding (Building building)
     {
         // place building
-        Vector3 buildingPos = hoveringBuilding ? hoveringBuilding.transform.position : new Vector3(placingBuildingVisual.transform.position.x, 0f, placingBuildingVisual.transform.position.z);
+        Vector3 buildingPos = hoveringBuilding ? hoveringBuilding.transform.position : placingBuildingVisual.transform.position;
         Identifier placedBuildingIdentity = Instantiate(building.gameObject, buildingPos, Quaternion.identity).GetComponent<Identifier>();
 
         // set team and player ID of building
@@ -662,8 +668,8 @@ public class PlayerBuilding : MonoBehaviour
 
         if (isPlacingBuilding)
         {
-
-            placingBuildingVisual.transform.position = new Vector3(Mathf.Round (transform.position.x * 2f) / 2f, 0f, Mathf.Round (transform.position.z * 2f) / 2f);
+            Vector3 groundPos = Physics.Raycast(transform.position, Vector3.down, out RaycastHit hitInfo, 3f, groundLayermask) ? hitInfo.point : Vector3.zero;
+            placingBuildingVisual.transform.position = new Vector3(Mathf.Round (transform.position.x * 2f) / 2f, groundPos.y, Mathf.Round (transform.position.z * 2f) / 2f);
 
             bool inRangeOfBuilding = PlayerHolder.GetBuildings(identifier.GetPlayerID)
                 .Any(building => (building.transform.position - transform.position).sqrMagnitude < building.GetStats.buildRadius * building.GetStats.buildRadius);

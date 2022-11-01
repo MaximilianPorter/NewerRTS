@@ -25,7 +25,7 @@ public class Health : MonoBehaviour
         this.maxHealth = maxHealth;
         this.armor = armor;
     }
-    public void TakeDamage (float damageAmt, Identifier hitBy, Vector3 hitFromPos, bool negateArmor = false)
+    public void TakeDamage (float damageAmt, Identifier hitBy, Vector3 hitFromPos, bool moreAgainstArmored = false)
     {
         lastHitBy = hitBy;
         lastHitFromPos = hitFromPos;   
@@ -33,7 +33,10 @@ public class Health : MonoBehaviour
         if (invincible)
             return;
 
-        if (armor != 0 && !negateArmor)
+        if (armor > 0 && moreAgainstArmored)
+            damageAmt *= 1.5f;
+
+        if (armor > 0)
             damageAmt = Mathf.Max(1, damageAmt - armor);
 
         currentHealth -= damageAmt;

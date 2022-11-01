@@ -24,7 +24,7 @@ MonoBehaviour:
   costMultiPerBuilding: 1
   interactionRadius: 2
   buildRadius: 10
-  population: 2
+  population: 1
   unit: {fileID: 6806056615238588080, guid: 2a331b9ca1c324649989ee3aac169f13, type: 3}
   initialUnitSpawnTime: 15
   spawnTimeMultiPerBuilding: 0.7

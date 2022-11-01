@@ -17,5 +17,5 @@ MonoBehaviour:
   cost:
     food: 0
     wood: 50
-    stone: 200
+    stone: 100
   requiredBuildings: 1d000000

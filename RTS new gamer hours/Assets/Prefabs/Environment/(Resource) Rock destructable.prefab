@@ -64,7 +64,7 @@ MonoBehaviour:
   resourceSpawnOffset: {x: 0, y: 0.5, z: 0}
   canBeDestroyed: 0
   destroyAfterHits: 0
-  turnOffChildrenAfterHits: 10
+  turnOffChildrenAfterHits: 40
 --- !u!135 &6060831469263669369
 SphereCollider:
   m_ObjectHideFlags: 0

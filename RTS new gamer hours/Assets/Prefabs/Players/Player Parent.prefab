@@ -416,12 +416,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonName: 'RESEARCH: Sharp Arrows'
-  buttonDescription: 'Arrows go through armor
+  buttonDescription: 'Arrows do 50% more damage against armored units
 
-    -<i>60 sec</i>
+    -<i>60
+    sec</i>
 
-    -<i>Requires
-    Monestary</i>'
+    -<i>Requires Monestary</i>'
   overrideUnit: {fileID: 0}
   overrideBuilding: {fileID: 0}
   overrideResearch: {fileID: 11400000, guid: 048619fafaa2808458260debf20eb6a4, type: 2}
@@ -3564,7 +3564,7 @@ MonoBehaviour:
   overrideUnit: {fileID: 0}
   overrideBuilding: {fileID: 11400000, guid: 8c102613e79aa9a42a39a699bcdcb183, type: 2}
   overrideResearch: {fileID: 0}
-  buttonType: 6
+  buttonType: 31
   cost:
     food: 0
     wood: 0
@@ -5594,7 +5594,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5825349044866862459}
   m_LocalRotation: {x: 0.38268343, y: -0, z: -0, w: 0.92387956}
-  m_LocalPosition: {x: -37, y: 37.35534, z: 1.6446582}
+  m_LocalPosition: {x: 0, y: 37.35534, z: -35.355343}
   m_LocalScale: {x: 22.5, y: 22.5, z: 22.5}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -6113,7 +6113,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonName: House
-  buttonDescription: Housing space for more people
+  buttonDescription: 'Housing space for more people
+
+    -3 population'
   overrideUnit: {fileID: 0}
   overrideBuilding: {fileID: 11400000, guid: ce07f3135db4dba4a8d6234301a3d6ed, type: 2}
   overrideResearch: {fileID: 0}
@@ -8657,7 +8659,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonName: 'UPGRADE: Village House'
-  buttonDescription: Houses more people
+  buttonDescription: 'Houses more people
+
+    -12 population'
   overrideUnit: {fileID: 0}
   overrideBuilding: {fileID: 11400000, guid: 9fec0b9d4df2e284182d4d15bf24b74c, type: 2}
   overrideResearch: {fileID: 0}

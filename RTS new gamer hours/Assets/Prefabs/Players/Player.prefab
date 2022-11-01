@@ -5747,6 +5747,9 @@ MonoBehaviour:
   queuedUnitsLayoutGroup: {fileID: 0}
   costAreaLayout: {fileID: 0}
   requiredBuildingLayout: {fileID: 0}
+  groundLayermask:
+    serializedVersion: 2
+    m_Bits: 64
   initialIcons:
   - {fileID: 0}
   - {fileID: 0}

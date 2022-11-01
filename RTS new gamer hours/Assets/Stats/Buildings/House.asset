@@ -18,13 +18,13 @@ MonoBehaviour:
   requiredBuildings: 
   health: 100
   cost:
-    food: 10
-    wood: 40
-    stone: 40
+    food: 0
+    wood: 30
+    stone: 30
   costMultiPerBuilding: 1
   interactionRadius: 2
   buildRadius: 10
-  population: 5
+  population: 3
   unit: {fileID: 0}
   initialUnitSpawnTime: 5
   spawnTimeMultiPerBuilding: 0.7

@@ -16,6 +16,6 @@ MonoBehaviour:
   timeToResearch: 60
   cost:
     food: 0
-    wood: 100
-    stone: 300
+    wood: 50
+    stone: 200
   requiredBuildings: 1d000000
