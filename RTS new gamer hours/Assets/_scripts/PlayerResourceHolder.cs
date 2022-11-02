@@ -83,6 +83,7 @@ public class PlayerResourceHolder : MonoBehaviour
         changeText[3].text = stoneChange.ToString("F0") + "<sub>/min</sub>";
         //changeText[3].color = stoneChange >= 0 ? addColor : subColor;
 
+        PlayerResourceManager.SetResourcesPerMinute(identifier.GetPlayerID, new ResourceAmount((int)foodChange, (int)woodChange, (int)stoneChange));
 
 
         if (foodCounterAndValue.Count > (60f / timeToCheck))

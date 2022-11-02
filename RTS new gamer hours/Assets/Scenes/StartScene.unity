@@ -2432,7 +2432,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   loadingAssetsMenu: {fileID: 1692365936}
   read: 1
-  write: 1
+  write: 0
   unitStats:
   - {fileID: 11400000, guid: 0aa38894e85d023409d6fd04b76fdd7c, type: 2}
   - {fileID: 11400000, guid: 9267eb36c574b344793bc6dbf7853576, type: 2}

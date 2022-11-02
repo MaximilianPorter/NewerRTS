@@ -84,7 +84,7 @@ public class PlayerActions : MonoBehaviour
 
         // if there's a game winner, don't update
         if (GameWinManager.instance != null)
-            if (GameWinManager.instance.GetWinnerID() != -1)
+            if (GameWinManager.instance.GetWinningTeamID() != -1)
             {
                 moveInput = Vector3.zero;
             }

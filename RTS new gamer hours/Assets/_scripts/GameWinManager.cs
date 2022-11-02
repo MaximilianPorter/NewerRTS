@@ -12,14 +12,9 @@ public class GameWinManager : MonoBehaviour
 
     [SerializeField] private GameObject[] playerCastles;
 
-    private static Dictionary<int, bool> playerDefeated = new Dictionary<int, bool>()
-    {
-        { 0, false },
-        { 1, false },
-        { 2, false },
-        { 3, false }
-    };
+    private static bool[] playerDefeated = new bool[4] { false, false, false, false };
 
+    public bool GameOver => GetWinningTeamID() != -1;
 
     public bool GetPlayerDefeated(int id) => playerDefeated[id];
 
@@ -48,18 +43,26 @@ public class GameWinManager : MonoBehaviour
     }
 
     /// <summary>
-    /// returns -1 if there's no winner yet, else, returns winner playerID
+    /// returns -1 if there's no winner yet, else, returns winner teamID
     /// </summary>
     /// <returns></returns>
-    public int GetWinnerID()
+    public int GetWinningTeamID()
     {
-        // 3 players defeated
-        if (playerDefeated.Count(player => player.Value == true) == playerDefeated.Count - 1)
+        int lastTeamRemaining = -1;
+        for (int i = 0; i < playerDefeated.Length; i++)
         {
-            return playerDefeated.FirstOrDefault(player => player.Value == false).Key;
+            // the player is alive
+            if (playerDefeated[i] == false)
+            {
+                // if we're the only one remaining (lastTeamRemaining == -1) or the other player(s) remaining is the same team as you
+                if (lastTeamRemaining == -1 || lastTeamRemaining == PlayerHolder.GetPlayerIdentifiers[i].GetTeamID)
+                    lastTeamRemaining = PlayerHolder.GetPlayerIdentifiers[i].GetTeamID;
+                else
+                    return -1;
+            }
         }
 
-        return -1;
+        return lastTeamRemaining;
     }
 
 }

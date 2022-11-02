@@ -12,7 +12,7 @@ public class GameTimer : MonoBehaviour
     private void Update()
     {
         if (GameWinManager.instance != null)
-            if (GameWinManager.instance.GetWinnerID() != -1)
+            if (GameWinManager.instance.GetWinningTeamID() != -1)
             { 
 
             }else

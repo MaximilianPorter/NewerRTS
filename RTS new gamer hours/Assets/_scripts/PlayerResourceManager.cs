@@ -21,6 +21,15 @@ public class PlayerResourceManager : MonoBehaviour
     private int[] debugWood = new int[4] { 0, 0, 0, 0 };
     private int[] debugStone = new int[4] { 0, 0, 0, 0 };
 
+    private static ResourceAmount[] resourcesPerMinute = new ResourceAmount[4]
+    {
+        new ResourceAmount (),
+        new ResourceAmount (),
+        new ResourceAmount (),
+        new ResourceAmount ()
+    };
+    public static ResourceAmount GetResourcesPerMinute(int playerID) => resourcesPerMinute[playerID];
+
     public static int[] PopulationCap = new int[4] { 0, 0, 0, 0 };
     public static ResourceAmount[] PlayerResourceAmounts = new ResourceAmount[4]
     {
@@ -100,6 +109,11 @@ public class PlayerResourceManager : MonoBehaviour
         //Vector3 spawnPos = PlayerHolder.WorldToCanvasLocalPoint(worldPos, playerID);
         //resourcesInstance.transform.localPosition = spawnPos;
 
+    }
+
+    public static void SetResourcesPerMinute (int playerID, ResourceAmount resource)
+    {
+        resourcesPerMinute[playerID] = resource;
     }
 
     private void HandleCheatCode ()

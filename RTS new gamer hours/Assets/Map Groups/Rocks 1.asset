@@ -24,7 +24,7 @@ MonoBehaviour:
     randomRotation: 1
     spawnWeight: 1
   numberToPlace: 15
-  showGrid: 0
+  showGrid: 1
   gridSize: {x: 3, y: 3}
   gridOffset: {x: 0, y: 0}
   squareSpacing: {x: 0, y: 0}

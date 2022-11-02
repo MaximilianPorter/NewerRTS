@@ -101,7 +101,7 @@ PrefabInstance:
       objectReference: {fileID: 11400000, guid: a327a27b7fdc47e4893823bdf00332b4, type: 2}
     - target: {fileID: 5160717717918629887, guid: d14c90c55a5aa6b4293e3c16f01004b4, type: 3}
       propertyPath: teamID
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5160717717918629887, guid: d14c90c55a5aa6b4293e3c16f01004b4, type: 3}
       propertyPath: colorID
@@ -109,7 +109,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5160717717918629887, guid: d14c90c55a5aa6b4293e3c16f01004b4, type: 3}
       propertyPath: playerID
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5531942057384617496, guid: d14c90c55a5aa6b4293e3c16f01004b4, type: 3}
       propertyPath: m_RootOrder

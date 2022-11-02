@@ -39,7 +39,7 @@ public class Movement : MonoBehaviour
     //private bool inputJumpDown = false;
     //private Vector3 lookDirAddition = Vector3.zero;
     //private float lookAdditionStrength = 0f;
-    
+
     //public bool GetHasReachedMovePos => hasReachedMovePos;
     //public Vector3 GetVelocity => rb.velocity;
     //public Transform GetLookTarget => lookAtTarget;
@@ -71,11 +71,11 @@ public class Movement : MonoBehaviour
     //        rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
     //    }
 
-    //    // check if grounded
+    //     check if grounded
     //    isGrounded = Physics.Raycast(transform.position, Vector3.down, out groundHitPoint, (-col.center.y + col.height / 2f) + 0.1f, groundMask);
     //    rb.drag = isGrounded ? groundedDrag : inAirDrag;
 
-    //    // update friction
+    //     update friction
     //    col.material = isGrounded ? groundedMat : inAirMat;
 
 
@@ -88,7 +88,7 @@ public class Movement : MonoBehaviour
     //    canMove = additionalCanMove && !hasReachedMovePos && moveInput != Vector3.zero;
     //    canTurn = additionalCanTurn;
 
-        
+
     //}
 
 
@@ -96,15 +96,16 @@ public class Movement : MonoBehaviour
     //{
     //    debugReadVelocity = rb.velocity;
 
-    //    // look towards target if there is one, if not, look in the direction you're moving
+    //     look towards target if there is one, if not, look in the direction you're moving
     //    if (lookAtTarget != null)
     //    {
     //        FixedLookTowards(lookAtTarget.position - transform.position);
-    //    } else
+    //    }
+    //    else
     //        FixedLookTowards(moveInput == Vector3.zero ? transform.forward : moveInput);
 
 
-    //    // move
+    //     move
     //    if (canMove)
     //    {
     //        rb.AddForce(transform.forward * stats.moveForce, ForceMode.Force);
@@ -118,7 +119,7 @@ public class Movement : MonoBehaviour
     //    }
     //}
 
-    //private bool CloseToPos (Vector3 pos, float softDist)
+    //private bool CloseToPos(Vector3 pos, float softDist)
     //{
     //    pos.y = 0f;
     //    Vector3 myPos = new Vector3(transform.position.x, 0f, transform.position.z);
@@ -126,33 +127,33 @@ public class Movement : MonoBehaviour
     //    return (myPos - pos).sqrMagnitude <= softDist * softDist;
     //}
 
-    //public void SetCanMove (bool newCanMove)
+    //public void SetCanMove(bool newCanMove)
     //{
     //    additionalCanMove = newCanMove;
     //}
 
-    //public void SetCanTurn (bool newCanTurn)
+    //public void SetCanTurn(bool newCanTurn)
     //{
     //    additionalCanTurn = newCanTurn;
     //}
 
-    //public void SetMoveTarget (Vector3 newTarget)
+    //public void SetMoveTarget(Vector3 newTarget)
     //{
     //    moveTarget = newTarget;
     //}
 
-    //public void SetLookAt (Transform newLookAtTarget)
+    //public void SetLookAt(Transform newLookAtTarget)
     //{
     //    lookAtTarget = newLookAtTarget;
     //}
 
-    ///// <summary>
-    ///// Sets the value of the slowMultiplier to determine the max movespeed (maxmovespeed * multiplier)
-    ///// </summary>
-    ///// <param name="priority"> if this value is higher than the current value, it will override the multiplier </param>
-    ///// <param name="multiplier"> 0 - 1 0=not moving, 1=normal movement </param>
-    ///// <returns>returns true if setting the multiplier was succesful</returns>
-    //public bool SetSlowMultiplier (int priority, float multiplier)
+    /// <summary>
+    /// Sets the value of the slowMultiplier to determine the max movespeed (maxmovespeed * multiplier)
+    /// </summary>
+    /// <param name="priority"> if this value is higher than the current value, it will override the multiplier </param>
+    /// <param name="multiplier"> 0 - 1 0=not moving, 1=normal movement </param>
+    /// <returns>returns true if setting the multiplier was succesful</returns>
+    //public bool SetSlowMultiplier(int priority, float multiplier)
     //{
     //    if (priority >= currentSlowPriority)
     //    {
@@ -168,14 +169,14 @@ public class Movement : MonoBehaviour
     //    lookAdditionStrength = strength;
     //}
 
-    //private void FixedLookTowards (Vector3 dir)
+    //private void FixedLookTowards(Vector3 dir)
     //{
     //    if (dir.magnitude < 0.15f || !canTurn)
     //        return;
 
     //    dir = dir.normalized;
 
-    //    // this is so they actually arrive at their move pos
+    //     this is so they actually arrive at their move pos
     //    float rotSpeed = CloseToPos(moveTarget, 1f) ? 50f : rotationSpeed;
 
     //    Vector3 addDir = dir + Vector3.Lerp(Vector3.zero, lookDirAddition, lookAdditionStrength);

@@ -209,7 +209,7 @@ public class Attacking : MonoBehaviour
                     returnedAmount.GetWood + (returnedAmount.GetWood > 0 ? storageYardCount : 0),
                     returnedAmount.GetStone + (returnedAmount.GetStone > 0 ? storageYardCount : 0)
                     );
-                PlayerResourceManager.instance.AddResourcesWithUI(identifier.GetPlayerID, amtToAdd, transform.position);
+                PlayerResourceManager.instance.AddResourcesWithUI(identifier.GetPlayerID, amtToAdd, transform.position + new Vector3(0f, 1f, 0f));
                 //PlayerResourceManager.PlayerResourceAmounts[identifier.GetPlayerID].AddResources(
                 //    returnedAmount.GetFood + (returnedAmount.GetFood > 0 ? storageYardCount : 0),
                 //    returnedAmount.GetWood + (returnedAmount.GetWood > 0 ? storageYardCount : 0),
