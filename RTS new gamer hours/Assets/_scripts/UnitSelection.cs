@@ -211,11 +211,12 @@ public class UnitSelection : MonoBehaviour
                         transform.position.y,
                         unitsToRally.Sum(unit => unit.transform.position.z) / unitsToRally.Count);
 
-                    Vector3 pos = unitsToRally[i].transform.position - avgGroupPos;
+                    Vector3 dir = unitsToRally[i].transform.position - avgGroupPos;
+                    dir.y = 0f;
 
-                    pos = MaxPosWithHit(pos);
+                    dir = MaxPosWithHit(dir);
 
-                    SetUnitPos(unitsToRally[i], pos, avgMoveSpeed);
+                    SetUnitPos(unitsToRally[i], dir, avgMoveSpeed);
                 }
                 else if (patternIndex == 1)
                 {
@@ -231,13 +232,13 @@ public class UnitSelection : MonoBehaviour
                     if (i >= lastRowStartIndex)
                         column += remainderInLastRow / 2f;
 
-                    Vector3 pos =
+                    Vector3 dir =
                         transform.forward * (row + 1f) * patternSpacingMulti +
                         transform.right * (column - boxWidth / 2f) * patternSpacingMulti;
 
-                    pos = MaxPosWithHit(pos);
+                    dir = MaxPosWithHit(dir);
 
-                    SetUnitPos(unitsToRally[i], pos, unitsToRally[i].GetStats.maxMoveSpeed);
+                    SetUnitPos(unitsToRally[i], dir, unitsToRally[i].GetStats.maxMoveSpeed);
                 }
                 else if (patternIndex == 2)
                 {
@@ -252,13 +253,13 @@ public class UnitSelection : MonoBehaviour
                     if (i >= lastRowStartIndex)
                         column += remainderInLastRow / 2f;
 
-                    Vector3 pos =
+                    Vector3 dir =
                         transform.forward * (row + 1f) * patternSpacingMulti +
                         transform.right * (column - boxWidth / 2f) * patternSpacingMulti;
 
-                    pos = MaxPosWithHit(pos);
+                    dir = MaxPosWithHit(dir);
 
-                    SetUnitPos(unitsToRally[i], pos, unitsToRally[i].GetStats.maxMoveSpeed);
+                    SetUnitPos(unitsToRally[i], dir, unitsToRally[i].GetStats.maxMoveSpeed);
                 }
                 else if (patternIndex == 3)
                 {
@@ -277,13 +278,13 @@ public class UnitSelection : MonoBehaviour
                     //column += ;
                     float arrowForwardOffset = Mathf.Abs(column - boxWidth / 2f) * 0.5f;
 
-                    Vector3 pos =
+                    Vector3 dir =
                         transform.forward * (row + 1f + arrowForwardOffset) * patternSpacingMulti +
                         transform.right * (column - boxWidth / 2f) * patternSpacingMulti;
 
-                    pos = MaxPosWithHit(pos);
+                    dir = MaxPosWithHit(dir);
 
-                    SetUnitPos(unitsToRally[i], pos, unitsToRally[i].GetStats.maxMoveSpeed);
+                    SetUnitPos(unitsToRally[i], dir, unitsToRally[i].GetStats.maxMoveSpeed);
                 }
                 else
                 {
@@ -411,9 +412,9 @@ public class UnitSelection : MonoBehaviour
                 // if we never chose a pattern, just put the unit near the player
                 if (patternIndex == -1)
                 {
-                    float maxDistAway = Mathf.Lerp(0.5f, 3f, (float)unitsToRally.Count / 15f);
-                    Vector3 pos = new Vector3(Random.Range(-maxDistAway, maxDistAway), 0f, Random.Range(-maxDistAway, maxDistAway));
-                    SetUnitPos(unitsToRally[i], pos, unitsToRally[i].GetStats.maxMoveSpeed);
+                    //float maxDistAway = Mathf.Lerp(0.5f, 3f, (float)unitsToRally.Count / 15f);
+                    //Vector3 pos = new Vector3(Random.Range(-maxDistAway, maxDistAway), 0f, Random.Range(-maxDistAway, maxDistAway));
+                    SetUnitPos(unitsToRally[i], Vector3.zero, unitsToRally[i].GetStats.maxMoveSpeed);
                     unitsToRally[i].GetOrderingObject.SetActive(false);
                 }
 
@@ -515,11 +516,13 @@ public class UnitSelection : MonoBehaviour
         return Vector3.ClampMagnitude(pos, minMagnitude);
     }
 
-    private void SetUnitPos(UnitActions unit, Vector3 pos, float moveSpeed)
+    private void SetUnitPos(UnitActions unit, Vector3 dir, float moveSpeed)
     {
         unit.GetOrderingObject.SetActive(true);
         unit.GetOrderingObject.transform.rotation = Quaternion.LookRotation(Vector3.forward, Vector3.up);
-        unit.GetOrderingObject.transform.position = transform.position + pos;
+
+        bool hitDown = Physics.Raycast(transform.position + new Vector3(0f, 0.5f, 0f) + dir, Vector3.down, out RaycastHit hitInfo, 100f, obstacleMask);
+        unit.GetOrderingObject.transform.position = hitDown ? hitInfo.point + new Vector3(0f, 0.5f, 0f) : transform.position + dir;
         unit.SetGroupMoveSpeed(moveSpeed);
     }
 
@@ -648,6 +651,7 @@ public class UnitSelection : MonoBehaviour
     public void DeselectUnits ()
     {
         patternNameText.text = "";
+        patternIndex = -1;
 
         selectedUnitIndex = -1;
         tempSelectedUnits = new List<UnitActions>(0);

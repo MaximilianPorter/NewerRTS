@@ -31,7 +31,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8956819730771449171}
-  m_RootOrder: 15
+  m_RootOrder: 16
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &1153781043217035847
 MeshFilter:
@@ -114,7 +114,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8956819730771449171}
-  m_RootOrder: 16
+  m_RootOrder: 17
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &4586865670979117613
 MeshFilter:
@@ -199,7 +199,7 @@ RectTransform:
   m_Children:
   - {fileID: 1093768744023417528}
   m_Father: {fileID: 8956819730771449171}
-  m_RootOrder: 7
+  m_RootOrder: 15
   m_LocalEulerAnglesHint: {x: 24.951, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -280,7 +280,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3828816209340219677, guid: 7444a2888946a634ba879ce630db7727, type: 3}
       propertyPath: m_RootOrder
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 4019740684486907426, guid: 7444a2888946a634ba879ce630db7727, type: 3}
+      propertyPath: m_RootOrder
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4019740684486907426, guid: 7444a2888946a634ba879ce630db7727, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.475
       objectReference: {fileID: 0}
     - target: {fileID: 5387379819105301195, guid: 7444a2888946a634ba879ce630db7727, type: 3}
       propertyPath: m_LocalPosition.x
@@ -395,7 +403,7 @@ MonoBehaviour:
     food: 0
     wood: 0
     stone: 0
-  amountMultiplier: 2
+  amountMultiplier: 3
   timeToGive: 5
   resourceVisualEffect: {fileID: 6326366972244839618}
   tagsCounted:

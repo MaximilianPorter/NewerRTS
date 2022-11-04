@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 16418353558070159}
   - component: {fileID: 6060831469263669369}
   - component: {fileID: 16418353558070153}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: (Resource) Rock destructable
   m_TagString: Rock
   m_Icon: {fileID: 0}
@@ -64,7 +64,7 @@ MonoBehaviour:
   resourceSpawnOffset: {x: 0, y: 0.5, z: 0}
   canBeDestroyed: 0
   destroyAfterHits: 0
-  turnOffChildrenAfterHits: 40
+  turnOffChildrenAfterHits: 100
 --- !u!135 &6060831469263669369
 SphereCollider:
   m_ObjectHideFlags: 0

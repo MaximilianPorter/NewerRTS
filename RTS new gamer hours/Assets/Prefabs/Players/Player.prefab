@@ -5715,11 +5715,11 @@ MonoBehaviour:
     m_Bits: 1024
   obstacleMask:
     serializedVersion: 2
-    m_Bits: 8256
+    m_Bits: 24640
   unitSelectionVisual: {fileID: 8091785847519968836}
   rallyTroopsEffect: {fileID: 4496352026488549157}
   maxSelectionRadius: 30
-  radiusIncreaseSpeed: 4
+  radiusIncreaseSpeed: 6
   patternSpacingMulti: 1.2
   selectedUnitsUiLayout: {fileID: 0}
   patternNameText: {fileID: 0}

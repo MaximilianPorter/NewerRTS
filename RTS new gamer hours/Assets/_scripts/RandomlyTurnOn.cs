@@ -16,7 +16,7 @@ public class RandomlyTurnOn : MonoBehaviour
 
     private void Awake()
     {
-        int randAmt = Random.Range(amountToTurnOn.x, amountToTurnOn.y);
+        int randAmt = Random.Range(amountToTurnOn.x, amountToTurnOn.y + 1);
         randomIndexes = new int[randAmt];
         counters = new float[randAmt];
 

@@ -5,11 +5,15 @@ using Unity.AI.Navigation;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
+using static UnityEditor.PlayerSettings;
 
 public class Tower : MonoBehaviour
 {
     [SerializeField] private Tower debugConnectionTower;
     [SerializeField] private List<Tower> activeConnectedTowers;
+    public List<Tower> GetActiveConnectedTowers => activeConnectedTowers;
+
+    [SerializeField] private LayerMask groundMask;
 
     [Header("Spaced Prefabs")]
     [SerializeField] private bool showWallSectionGizmos = false;
@@ -82,46 +86,62 @@ public class Tower : MonoBehaviour
         }
     }
 
-    private void PlaceWalls(Tower towerToConnectTo)
+    public void PlaceWalls(Tower towerToConnectTo)
     {
         if (activeConnectedTowers.Contains(towerToConnectTo))
             return;
 
+        activeConnectedTowers.Add(towerToConnectTo);
+        towerToConnectTo.activeConnectedTowers.Add(this);
+
         Tower otherTower = towerToConnectTo;
 
         GameObject wallParent = new GameObject("Wall Parent");
+        wallParent.AddComponent<Building>();
         wallParents.Add(wallParent);
 
+        Vector3 lookDir = towerToConnectTo.transform.position - transform.position;
+        lookDir.y = 0f;
         Vector3 otherTowerDir = otherTower.transform.position - transform.position;
         float wallsFromMiddle = otherTowerDir.magnitude / idealWallSpacing / 2f;
 
         Vector3 middleBetweenWalls = (otherTower.transform.position + transform.position) / 2f;
 
-        //Gizmos.color = Color.red;
-        //Gizmos.DrawWireSphere(middleBetweenWalls, 1f);
+        bool middleHitDown = Physics.Raycast(middleBetweenWalls + new Vector3(0f, 5f, 0f), Vector3.down, out RaycastHit hitDownInfo, 10f, groundMask);
+        if (middleHitDown)
+            middleBetweenWalls = hitDownInfo.point;
         GameObject middleWallInstance = Instantiate(wallSectionPrefab, middleBetweenWalls, Quaternion.identity);
-        middleWallInstance.transform.LookAt(otherTower.transform);
+
+        middleWallInstance.transform.rotation = Quaternion.LookRotation(lookDir, Vector3.up);
 
         for (int j = 0; j < Mathf.FloorToInt(wallsFromMiddle); j++)
         {
             float distFromEnd = (wallsFromMiddle * idealWallSpacing) - ((j + 1) * idealWallSpacing);
             if (Mathf.Abs(distFromEnd) < idealWallSpacing / 2f)
             {
-                //Gizmos.color = Color.blue;
-                //Gizmos.DrawWireSphere(middleBetweenWalls + otherTowerDir.normalized * (j * idealWallSpacing + minOverlapWallSpacing), 1f);
+                Vector3 pos = middleBetweenWalls + otherTowerDir.normalized * (j * idealWallSpacing + minOverlapWallSpacing);
 
-                GameObject wallInstance = Instantiate(wallSectionPrefab, middleBetweenWalls + otherTowerDir.normalized * (j * idealWallSpacing + minOverlapWallSpacing), Quaternion.identity,
+                bool hitDown = Physics.Raycast(pos + new Vector3(0f, 5f, 0f), Vector3.down, out RaycastHit hitInfo, 10f, groundMask);
+                if (hitDown)
+                    pos = hitInfo.point;
+
+                GameObject wallInstance = Instantiate(wallSectionPrefab, pos, Quaternion.identity,
                     wallParent.transform);
-                wallInstance.transform.LookAt(otherTower.transform);
+
+                wallInstance.transform.rotation = Quaternion.LookRotation(lookDir, Vector3.up);
             }
             else
             {
-                //Gizmos.color = Color.white;
-                //Gizmos.DrawWireSphere(middleBetweenWalls + otherTowerDir.normalized * (j + 1) * idealWallSpacing, 1f);
+                Vector3 pos = middleBetweenWalls + otherTowerDir.normalized * (j + 1) * idealWallSpacing;
 
-                GameObject wallInstance = Instantiate(wallSectionPrefab, middleBetweenWalls + otherTowerDir.normalized * (j + 1) * idealWallSpacing, Quaternion.identity,
+                bool hitDown = Physics.Raycast(pos + new Vector3(0f, 5f, 0f), Vector3.down, out RaycastHit hitInfo, 10f, groundMask);
+                if (hitDown)
+                    pos = hitInfo.point;
+
+                GameObject wallInstance = Instantiate(wallSectionPrefab, pos, Quaternion.identity,
                     wallParent.transform);
-                wallInstance.transform.LookAt(otherTower.transform);
+
+                wallInstance.transform.rotation = Quaternion.LookRotation(lookDir, Vector3.up);
             }
         }
 
@@ -133,18 +153,32 @@ public class Tower : MonoBehaviour
                 //Gizmos.color = Color.blue;
                 //Gizmos.DrawWireSphere(middleBetweenWalls + otherTowerDir.normalized * (j * idealWallSpacing + minOverlapWallSpacing), 1f);
 
-                GameObject wallInstance = Instantiate(wallSectionPrefab, middleBetweenWalls - otherTowerDir.normalized * (j * idealWallSpacing + minOverlapWallSpacing), Quaternion.identity,
+                Vector3 pos = middleBetweenWalls - otherTowerDir.normalized * (j * idealWallSpacing + minOverlapWallSpacing);
+
+                bool hitDown = Physics.Raycast(pos + new Vector3(0f, 5f, 0f), Vector3.down, out RaycastHit hitInfo, 10f, groundMask);
+                if (hitDown)
+                    pos = hitInfo.point;
+
+                GameObject wallInstance = Instantiate(wallSectionPrefab, pos, Quaternion.identity,
                     wallParent.transform);
-                wallInstance.transform.LookAt(otherTower.transform);
+
+                wallInstance.transform.rotation = Quaternion.LookRotation(lookDir, Vector3.up);
             }
             else
             {
                 //Gizmos.color = Color.white;
                 //Gizmos.DrawWireSphere(middleBetweenWalls + otherTowerDir.normalized * (j + 1) * idealWallSpacing, 1f);
 
-                GameObject wallInstance = Instantiate(wallSectionPrefab, middleBetweenWalls - otherTowerDir.normalized * (j + 1) * idealWallSpacing, Quaternion.identity,
+                Vector3 pos = middleBetweenWalls - otherTowerDir.normalized * (j + 1) * idealWallSpacing;
+
+                bool hitDown = Physics.Raycast(pos + new Vector3 (0f, 5f, 0f), Vector3.down, out RaycastHit hitInfo, 10f, groundMask);
+                if (hitDown)
+                    pos = hitInfo.point;
+
+                GameObject wallInstance = Instantiate(wallSectionPrefab, pos, Quaternion.identity,
                     wallParent.transform);
-                wallInstance.transform.LookAt(otherTower.transform);
+
+                wallInstance.transform.rotation = Quaternion.LookRotation(lookDir, Vector3.up);
             }
         }
 

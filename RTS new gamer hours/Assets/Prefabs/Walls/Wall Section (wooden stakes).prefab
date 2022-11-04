@@ -43,6 +43,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: stakes
       objectReference: {fileID: 0}
+    - target: {fileID: 181116, guid: 1ed2edca09b6b724da20c1e1e8825f82, type: 3}
+      propertyPath: m_Layer
+      value: 14
+      objectReference: {fileID: 0}
     - target: {fileID: 481928, guid: 1ed2edca09b6b724da20c1e1e8825f82, type: 3}
       propertyPath: m_RootOrder
       value: 0

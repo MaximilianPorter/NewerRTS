@@ -29,6 +29,8 @@ public class PlayerBuilding : MonoBehaviour
     [SerializeField] private Transform placeBuildingRallyVisual;
     [SerializeField] private GameObject rallyPointPlaceEffect;
     [SerializeField] private Vector3 rallyVisualOffset = new Vector3(0, 10f, 0f);
+    [SerializeField] private GameObject wallBuildingVisual;
+    [SerializeField] private MeshRenderer wallVisualToChangeColor;
     [SerializeField] private GameObject placingBuildingVisual;
     [SerializeField] private MeshRenderer buildingVisualToChangeColor;
     [SerializeField] private Material canPlaceMat;
@@ -50,6 +52,7 @@ public class PlayerBuilding : MonoBehaviour
     private Building hoveringBuilding; // building that is being stood on
     private Building aboutToPlaceBuilding;
     private ResourceAmount tempPlaceBuildingCost;
+    private Tower fromTower;
 
     private bool isPlacingBuilding = false;
     private bool clickedOnBuilding = false;
@@ -125,6 +128,8 @@ public class PlayerBuilding : MonoBehaviour
         HandleBuildingRallyPoint();
 
         HandlePlacingBuilding();
+
+        HandlePlacingWall();
     }
 
     private void ManageSelectedIcon ()
@@ -651,6 +656,21 @@ public class PlayerBuilding : MonoBehaviour
     {
         hoveringBuilding.SellBuilding();
     }
+    // used by UI buttons
+    public void BuildWall ()
+    {
+        Tower tower = hoveringBuilding.GetComponent<Tower>();
+
+        if (fromTower == null) // we are starting the wall
+        {
+            fromTower = tower;
+        }
+        else // we are finishing the wall
+        {
+            fromTower.PlaceWalls(tower);
+            fromTower = null;
+        }
+    }
 
     private void BuildBuilding (Building building)
     {
@@ -696,6 +716,46 @@ public class PlayerBuilding : MonoBehaviour
                 isPlacingBuilding = false;
                 aboutToPlaceBuilding = null;
             }
+        }
+    }
+
+    private void HandlePlacingWall ()
+    {
+        wallBuildingVisual.SetActive(fromTower != null);
+
+        if (fromTower == null)
+            return;
+
+        bool canPlaceWall = hoveringBuilding && hoveringBuilding.GetComponent<Tower>() && hoveringBuilding.GetComponent<Tower>() != fromTower &&
+            !fromTower.GetActiveConnectedTowers.Contains(hoveringBuilding.GetComponent<Tower>());
+        wallVisualToChangeColor.material = canPlaceWall ? canPlaceMat : canNOTPlaceMat;
+
+        Vector3 wallLookDir = transform.position - fromTower.transform.position;
+        wallLookDir.y = 0f;
+
+        wallBuildingVisual.transform.rotation = Quaternion.LookRotation(wallLookDir, Vector3.up);
+        wallBuildingVisual.transform.position = (transform.position + fromTower.transform.position) / 2f;
+        wallBuildingVisual.transform.localScale = new Vector3(1f, 2f, (transform.position - fromTower.transform.position).magnitude);
+
+        
+        if (PlayerInput.GetPlayers[identifier.GetPlayerID].GetButtonDown(PlayerInput.GetInputSelect))
+        {
+            if (canPlaceWall)
+            {
+                // place wall
+                fromTower.PlaceWalls(hoveringBuilding.GetComponent<Tower>());
+                fromTower = null;
+            }
+            else
+            {
+                fromTower = null;
+            }
+        }
+
+        // cancel wall placement
+        if (PlayerInput.GetPlayers[identifier.GetPlayerID].GetButtonDown(PlayerInput.GetInputBack))
+        {
+            fromTower = null;
         }
     }
 

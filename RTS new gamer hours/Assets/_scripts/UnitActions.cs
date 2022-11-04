@@ -18,6 +18,7 @@ public class UnitActions : MonoBehaviour
 
     [Header("Physics")]
     [SerializeField] private LayerMask enemyMask;
+    [SerializeField] private LayerMask obstacleVisionMask;
 
 
     [Header("Visuals")]
@@ -239,7 +240,12 @@ public class UnitActions : MonoBehaviour
                 if (unit == identifier) // don't look for self
                     continue;
 
+                // if the unit isn't targetable
                 if (unit.GetIsTargetable == false)
+                    continue;
+
+                // if there's something in the way
+                if (Physics.Raycast(transform.position, unit.transform.position - transform.position, unitStats.lookRange, obstacleVisionMask))
                     continue;
 
                 Vector3 unitDir = (unit.transform.position - transform.position);

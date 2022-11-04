@@ -72,6 +72,20 @@ public class EndGameGraphManager : MonoBehaviour
         HandleChangingGraphType();
         HandleGoToMenu();
 
+        float maxResources = 1f;
+        for (int i = 0; i < resourcesPerMinute.Length; i++)
+        {
+            if (maxResources < resourcesPerMinute[i].Max())
+                maxResources = resourcesPerMinute[i].Max();
+        }
+
+        float maxUnits = 1f;
+        for (int i = 0; i < unitCountPerMinute.Length; i++)
+        {
+            if (maxUnits < unitCountPerMinute[i].Max())
+                maxUnits = unitCountPerMinute[i].Max();
+        }
+
         for (int i = 0; i < playerLines.Length; i++)
         {
 
@@ -89,7 +103,7 @@ public class EndGameGraphManager : MonoBehaviour
                 {
                     playerLines[i].SetPosition(j, new Vector3(
                         (float)j / resourcesPerMinute[i].Count * graphWidth * 2f - graphWidth,
-                        resourcesPerMinute[i][j] / Mathf.Max (1f, resourcesPerMinute[i].Max()) * graphHeight * 2f - graphHeight,
+                        resourcesPerMinute[i][j] / Mathf.Max (1f, maxResources) * graphHeight * 2f - graphHeight,
                         0f));
                 }
             }
@@ -100,7 +114,7 @@ public class EndGameGraphManager : MonoBehaviour
                 {
                     playerLines[i].SetPosition(j, new Vector3(
                         (float)j / unitCountPerMinute[i].Count * graphWidth * 2f - graphWidth,
-                        unitCountPerMinute[i][j] / Mathf.Max(1f, unitCountPerMinute[i].Max()) * graphHeight * 2f - graphHeight,
+                        unitCountPerMinute[i][j] / Mathf.Max(1f, maxUnits) * graphHeight * 2f - graphHeight,
                         0f));
                 }
             }

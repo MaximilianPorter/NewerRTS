@@ -116,6 +116,15 @@ public class PlayerHolder : MonoBehaviour
             playerBuildings[i].RemoveAll(building => building == null);
             playerUnits[i].RemoveAll(unit => unit == null);
         }
+
+        if (GameWinManager.instance.GameOver)
+        {
+            for (int i = 0; i < 4; i++)
+            {
+                completedResearch[i].Clear();
+                currentResearch[i] = null;
+            }
+        }
     }
 
 
