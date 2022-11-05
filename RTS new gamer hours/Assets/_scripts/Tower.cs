@@ -7,13 +7,16 @@ using UnityEngine;
 using UnityEngine.AI;
 using static UnityEditor.PlayerSettings;
 
+[RequireComponent(typeof (Identifier))]
 public class Tower : MonoBehaviour
 {
     [SerializeField] private Tower debugConnectionTower;
     [SerializeField] private List<Tower> activeConnectedTowers;
     public List<Tower> GetActiveConnectedTowers => activeConnectedTowers;
+    public void RemoveConnectedTower(Tower tower) => activeConnectedTowers.Remove(tower);
 
     [SerializeField] private LayerMask groundMask;
+    [SerializeField] private Wall wallParentPrefab;
 
     [Header("Spaced Prefabs")]
     [SerializeField] private bool showWallSectionGizmos = false;
@@ -31,8 +34,15 @@ public class Tower : MonoBehaviour
     [SerializeField] private float wallHeight = 2f;
     [SerializeField] private float stoneSpacing = 0.5f;
 
-    private List<GameObject> wallParents = new List<GameObject>();
-    
+    private List<Wall> wallParents = new List<Wall>();
+
+    private Identifier identifier;
+
+    private void Start()
+    {
+        identifier = GetComponent<Identifier>();
+    }
+
     private void Update()
     {
         if (placeWallsBetween)
@@ -58,7 +68,8 @@ public class Tower : MonoBehaviour
         Vector3 otherTowerDir = otherTower.transform.position - transform.position;
         Vector3 middleBetweenTowers = (otherTower.transform.position + transform.position) / 2f;
 
-        GameObject wallParent = new GameObject("Wall Parent");
+        Wall wallParent = Instantiate(wallParentPrefab, (transform.position + towerToConnectTo.transform.position) / 2f, Quaternion.identity);
+        wallParent.InitializeWall(this, towerToConnectTo);
         wallParents.Add(wallParent);
 
         GameObject bigWall = Instantiate(cubeForWall, middleBetweenTowers, Quaternion.identity, wallParent.transform);
@@ -86,7 +97,7 @@ public class Tower : MonoBehaviour
         }
     }
 
-    public void PlaceWalls(Tower towerToConnectTo)
+    public void PlaceWalls(Tower towerToConnectTo, bool doorExists = false, Wall changeParent = null)
     {
         if (activeConnectedTowers.Contains(towerToConnectTo))
             return;
@@ -96,8 +107,18 @@ public class Tower : MonoBehaviour
 
         Tower otherTower = towerToConnectTo;
 
-        GameObject wallParent = new GameObject("Wall Parent");
-        wallParent.AddComponent<Building>();
+        Wall wallParent;
+        if (changeParent)
+        {
+            wallParent = changeParent;
+        }
+        else
+        {
+            wallParent = Instantiate(wallParentPrefab, (transform.position + towerToConnectTo.transform.position) / 2f, Quaternion.identity);
+            wallParent.InitializeWall(this, towerToConnectTo);
+        }
+
+        wallParent.SetDoorExists(doorExists);
         wallParents.Add(wallParent);
 
         Vector3 lookDir = towerToConnectTo.transform.position - transform.position;
@@ -110,7 +131,7 @@ public class Tower : MonoBehaviour
         bool middleHitDown = Physics.Raycast(middleBetweenWalls + new Vector3(0f, 5f, 0f), Vector3.down, out RaycastHit hitDownInfo, 10f, groundMask);
         if (middleHitDown)
             middleBetweenWalls = hitDownInfo.point;
-        GameObject middleWallInstance = Instantiate(wallSectionPrefab, middleBetweenWalls, Quaternion.identity);
+        GameObject middleWallInstance = Instantiate(wallSectionPrefab, middleBetweenWalls, Quaternion.identity, wallParent.transform);
 
         middleWallInstance.transform.rotation = Quaternion.LookRotation(lookDir, Vector3.up);
 

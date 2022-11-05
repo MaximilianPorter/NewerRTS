@@ -26,9 +26,9 @@ public class PlayerBuilding : MonoBehaviour
 
     [Header("Building")]
     [SerializeField] private BuyIconUI[] initialIcons;
-    [SerializeField] private Transform placeBuildingRallyVisual;
+    [SerializeField] private Image placingUiVisual;
+    [SerializeField] private Vector3 placingUiVisualOffset = new Vector3(0, 10f, 0f);
     [SerializeField] private GameObject rallyPointPlaceEffect;
-    [SerializeField] private Vector3 rallyVisualOffset = new Vector3(0, 10f, 0f);
     [SerializeField] private GameObject wallBuildingVisual;
     [SerializeField] private MeshRenderer wallVisualToChangeColor;
     [SerializeField] private GameObject placingBuildingVisual;
@@ -117,6 +117,8 @@ public class PlayerBuilding : MonoBehaviour
 
         if (anyMenuOpen)
             ManageSelectedIcon();
+
+        HandlePlacementUiVisual();
 
         HandleOpeningCycleMenu();
         StartCoroutine(HandleCycleMenuOpen());
@@ -654,6 +656,13 @@ public class PlayerBuilding : MonoBehaviour
     // used by UI buttons
     public void SellBuilding ()
     {
+        Wall wallParent = hoveringBuilding.GetComponentInParent<Wall>();
+        if (wallParent)
+        {
+            wallParent.SellWall();
+            return;
+        }
+
         hoveringBuilding.SellBuilding();
     }
     // used by UI buttons
@@ -670,6 +679,12 @@ public class PlayerBuilding : MonoBehaviour
             fromTower.PlaceWalls(tower);
             fromTower = null;
         }
+    }
+    // used by UI buttons
+    public void PlaceDoorOnWall()
+    {
+        Wall wall = hoveringBuilding.GetComponentInParent<Wall>();
+        wall.PlaceDoor();
     }
 
     private void BuildBuilding (Building building)
@@ -735,7 +750,7 @@ public class PlayerBuilding : MonoBehaviour
 
         wallBuildingVisual.transform.rotation = Quaternion.LookRotation(wallLookDir, Vector3.up);
         wallBuildingVisual.transform.position = (transform.position + fromTower.transform.position) / 2f;
-        wallBuildingVisual.transform.localScale = new Vector3(1f, 2f, (transform.position - fromTower.transform.position).magnitude);
+        wallBuildingVisual.transform.localScale = new Vector3(0.5f, 2f, (transform.position - fromTower.transform.position).magnitude);
 
         
         if (PlayerInput.GetPlayers[identifier.GetPlayerID].GetButtonDown(PlayerInput.GetInputSelect))
@@ -803,10 +818,8 @@ public class PlayerBuilding : MonoBehaviour
 
     private void HandleBuildingRallyPoint()
     {
-        placeBuildingRallyVisual.gameObject.SetActive(placingRallyPoint || placingAllRallyPoints);
         if (placingRallyPoint || placingAllRallyPoints)
         {
-            placeBuildingRallyVisual.localPosition = PlayerHolder.WorldToCanvasLocalPoint(transform.position + rallyVisualOffset, identifier.GetPlayerID).GetValueOrDefault (Vector2.zero);
 
             // place rally point or cancel
             if (PlayerInput.GetPlayers[identifier.GetPlayerID].GetButtonDown(PlayerInput.GetInputSelect))
@@ -883,5 +896,22 @@ public class PlayerBuilding : MonoBehaviour
 
         rallyBuilding = null;
         placingRallyPoint = false;
+    }
+
+    private void HandlePlacementUiVisual ()
+    {
+        placingUiVisual.gameObject.SetActive(placingRallyPoint || placingAllRallyPoints || isPlacingBuilding || fromTower != null);
+        placingUiVisual.transform.localPosition = PlayerHolder.WorldToCanvasLocalPoint(transform.position + placingUiVisualOffset, identifier.GetPlayerID).GetValueOrDefault(Vector2.zero);
+
+        if (placingRallyPoint || placingAllRallyPoints)
+        {
+            placingUiVisual.sprite = BuyIconSpriteManager.GetTypeOfIcon(BuyIcons.BuildingRallyPoint);
+        }else if (isPlacingBuilding)
+        {
+            placingUiVisual.sprite = BuyIconSpriteManager.GetTypeOfIcon(aboutToPlaceBuilding.GetStats.buildingType);
+        }else if (fromTower != null)
+        {
+            placingUiVisual.sprite = BuyIconSpriteManager.GetTypeOfIcon(BuyIcons.BuildWallNoDoor);
+        }
     }
 }

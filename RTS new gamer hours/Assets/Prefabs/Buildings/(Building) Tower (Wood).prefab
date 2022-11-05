@@ -471,9 +471,10 @@ MonoBehaviour:
   groundMask:
     serializedVersion: 2
     m_Bits: 64
+  wallParentPrefab: {fileID: 940315507880657039, guid: dbd340eb611fdaa4ca332d9de749ae6c, type: 3}
   showWallSectionGizmos: 0
   placeWallsBetween: 0
-  wallSectionPrefab: {fileID: 1588726601564471128, guid: d7f92abd9cc52ca4d9ffa0b658384a57, type: 3}
+  wallSectionPrefab: {fileID: 5758319450202610997, guid: 19a1f449f9563fd4598fa15041d08971, type: 3}
   minOverlapWallSpacing: 0.8
   idealWallSpacing: 1.6
   placeBigWall: 0

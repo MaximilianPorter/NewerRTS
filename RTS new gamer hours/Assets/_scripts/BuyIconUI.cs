@@ -209,11 +209,16 @@ public enum BuyIcons
     Building_LoggingCamp = 25,
     Building_Mine = 24,
 
+    // WALLS
+    Wall_Wood = 40,
+
 
     // OTHER UI BUTTONS
     BuildingRallyPoint = 13,
     SellBuilding = 28,
     BuildWallNoDoor = 23,
+    AddUnitToWall = 41,
+    AddDoorToWall = 42,
 
     // UNITS
     CancelProduction = 21,
@@ -234,6 +239,6 @@ public enum BuyIcons
     Research_EnhancedFood = 38,
     Research_HotterFire = 39,
 
-    // highest number: 39
-    // last changed on 10/28/22 - 2:06pm
+    // highest number: 42
+    // last changed on 11-5-22 : 1:43pm
 }
