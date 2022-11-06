@@ -3,13 +3,17 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 
+[RequireComponent (typeof (Identifier))]
 public class Wall : MonoBehaviour
 {
     [SerializeField] private GameObject doorPrefab;
+    [SerializeField] private int wallLevel = 0;
+
     private bool doorSpawned = false;
 
     public bool GetDoorSpawned => doorSpawned;
     public void SetDoorExists(bool doorSpawned) => this.doorSpawned = doorSpawned;
+    public int GetWallLevel => wallLevel;
 
     // connected towers
     private Tower tower0;
@@ -18,10 +22,18 @@ public class Wall : MonoBehaviour
     private Tower doorTower0;
     private Tower doorTower1;
 
+    private Identifier identifier;
+
     public void InitializeWall(Tower tower0, Tower tower1, bool doorSpawned = false)
     {
         this.tower0 = tower0;
         this.tower1 = tower1;
+    }
+
+    private void Start()
+    {
+        identifier = GetComponent<Identifier>();
+        
     }
 
     private void Update()
@@ -45,6 +57,44 @@ public class Wall : MonoBehaviour
         {
             Destroy(gameObject);
         }
+
+
+        
+    }
+
+    private void LateUpdate()
+    {
+        // if the towers are the same, but the wall isn't, change the wall to match the towers
+        if (tower0.GetWallParentPrefab.wallLevel == tower1.GetWallParentPrefab.wallLevel && wallLevel != tower0.GetWallParentPrefab.wallLevel)
+        {
+            // remove tower connections
+            tower0.RemoveConnectedTower(tower1);
+            tower0.RemoveConnectedTower(doorTower0);
+
+            tower1.RemoveConnectedTower(tower0);
+            tower1.RemoveConnectedTower(doorTower1);
+
+            tower0.GetWallParents.Remove(this);
+            tower1.GetWallParents.Remove(this);
+
+            // build new connections
+            Wall newWall = tower0.PlaceWalls(tower1);
+            if (doorSpawned)
+                newWall.PlaceDoor();
+
+
+            // destroy current walls
+            Destroy(gameObject);
+        }
+    }
+
+    public void ChangeTower (Tower oldTower, Tower newTower)
+    {
+        if (tower0 == oldTower)
+            tower0 = newTower;
+
+        if (tower1 == oldTower)
+            tower1 = newTower;
     }
 
     public void SellWall ()
@@ -82,7 +132,9 @@ public class Wall : MonoBehaviour
 
         // find towers on door
         doorTower0 = doorInstance.GetComponentsInChildren<Tower>()[0];
+        //doorTower0.GetComponent<Identifier>().UpdateInfo(identifier.GetPlayerID, identifier.GetTeamID);
         doorTower1 = doorInstance.GetComponentsInChildren<Tower>()[1];
+        //doorTower1.GetComponent<Identifier>().UpdateInfo(identifier.GetPlayerID, identifier.GetTeamID);
 
         // delete existing wall
         for (int i = 0; i < transform.childCount - 1; i++) // -1 is so it doesn't destroy the door

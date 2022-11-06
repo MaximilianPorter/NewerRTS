@@ -36,4 +36,4 @@ MonoBehaviour:
   hitDistance: 0.5
   hitRadius: 0.5
   hitForce: 0.1
-  maxMoveSpeed: 1.5
+  maxMoveSpeed: 2.2

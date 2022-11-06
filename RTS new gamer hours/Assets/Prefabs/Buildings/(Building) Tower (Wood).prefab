@@ -347,6 +347,10 @@ PrefabInstance:
       propertyPath: m_RootOrder
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 2701549813935837882, guid: 7444a2888946a634ba879ce630db7727, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.87
+      objectReference: {fileID: 0}
     - target: {fileID: 3828816209340219677, guid: 7444a2888946a634ba879ce630db7727, type: 3}
       propertyPath: m_RootOrder
       value: 4
@@ -474,7 +478,7 @@ MonoBehaviour:
   wallParentPrefab: {fileID: 940315507880657039, guid: dbd340eb611fdaa4ca332d9de749ae6c, type: 3}
   showWallSectionGizmos: 0
   placeWallsBetween: 0
-  wallSectionPrefab: {fileID: 5758319450202610997, guid: 19a1f449f9563fd4598fa15041d08971, type: 3}
+  wallSectionPrefab: {fileID: 5758319450202610993, guid: 19a1f449f9563fd4598fa15041d08971, type: 3}
   minOverlapWallSpacing: 0.8
   idealWallSpacing: 1.6
   placeBigWall: 0

@@ -13,7 +13,12 @@ public class Tower : MonoBehaviour
     [SerializeField] private Tower debugConnectionTower;
     [SerializeField] private List<Tower> activeConnectedTowers;
     public List<Tower> GetActiveConnectedTowers => activeConnectedTowers;
-    public void RemoveConnectedTower(Tower tower) => activeConnectedTowers.Remove(tower);
+    public void RemoveConnectedTower(Tower tower)
+    {
+        if (activeConnectedTowers.Contains (tower))
+            activeConnectedTowers.Remove(tower);
+    }
+    
 
     [SerializeField] private LayerMask groundMask;
     [SerializeField] private Wall wallParentPrefab;
@@ -21,7 +26,7 @@ public class Tower : MonoBehaviour
     [Header("Spaced Prefabs")]
     [SerializeField] private bool showWallSectionGizmos = false;
     [SerializeField] private bool placeWallsBetween = false;
-    [SerializeField] private GameObject wallSectionPrefab;
+    [SerializeField] private Building wallSectionPrefab;
     [SerializeField] private float minOverlapWallSpacing = 1.25f;
     [SerializeField] private float idealWallSpacing = 2.5f;
 
@@ -35,8 +40,12 @@ public class Tower : MonoBehaviour
     [SerializeField] private float stoneSpacing = 0.5f;
 
     private List<Wall> wallParents = new List<Wall>();
+    public List<Wall> GetWallParents => wallParents;
 
     private Identifier identifier;
+
+    public Building GetWallPrefab => wallSectionPrefab;
+    public Wall GetWallParentPrefab => wallParentPrefab;
 
     private void Start()
     {
@@ -97,15 +106,16 @@ public class Tower : MonoBehaviour
         }
     }
 
-    public void PlaceWalls(Tower towerToConnectTo, bool doorExists = false, Wall changeParent = null)
+    /// <summary>
+    /// returns wall parent instance
+    /// </summary>
+    public Wall PlaceWalls(Tower towerToConnectTo, bool doorExists = false, Wall changeParent = null)
     {
         if (activeConnectedTowers.Contains(towerToConnectTo))
-            return;
+            return null;
 
         activeConnectedTowers.Add(towerToConnectTo);
         towerToConnectTo.activeConnectedTowers.Add(this);
-
-        Tower otherTower = towerToConnectTo;
 
         Wall wallParent;
         if (changeParent)
@@ -116,22 +126,30 @@ public class Tower : MonoBehaviour
         {
             wallParent = Instantiate(wallParentPrefab, (transform.position + towerToConnectTo.transform.position) / 2f, Quaternion.identity);
             wallParent.InitializeWall(this, towerToConnectTo);
+            if (wallParent.TryGetComponent (out Identifier wallID))
+            {
+                if (identifier == null)
+                    identifier = GetComponent<Identifier>();
+                wallID.UpdateInfo(identifier.GetPlayerID, identifier.GetTeamID);
+            }
         }
+
 
         wallParent.SetDoorExists(doorExists);
         wallParents.Add(wallParent);
+        towerToConnectTo.wallParents.Add(wallParent);
 
         Vector3 lookDir = towerToConnectTo.transform.position - transform.position;
         lookDir.y = 0f;
-        Vector3 otherTowerDir = otherTower.transform.position - transform.position;
+        Vector3 otherTowerDir = towerToConnectTo.transform.position - transform.position;
         float wallsFromMiddle = otherTowerDir.magnitude / idealWallSpacing / 2f;
 
-        Vector3 middleBetweenWalls = (otherTower.transform.position + transform.position) / 2f;
+        Vector3 middleBetweenWalls = (towerToConnectTo.transform.position + transform.position) / 2f;
 
         bool middleHitDown = Physics.Raycast(middleBetweenWalls + new Vector3(0f, 5f, 0f), Vector3.down, out RaycastHit hitDownInfo, 10f, groundMask);
         if (middleHitDown)
             middleBetweenWalls = hitDownInfo.point;
-        GameObject middleWallInstance = Instantiate(wallSectionPrefab, middleBetweenWalls, Quaternion.identity, wallParent.transform);
+        GameObject middleWallInstance = Instantiate(wallSectionPrefab.gameObject, middleBetweenWalls, Quaternion.identity, wallParent.transform);
 
         middleWallInstance.transform.rotation = Quaternion.LookRotation(lookDir, Vector3.up);
 
@@ -146,7 +164,7 @@ public class Tower : MonoBehaviour
                 if (hitDown)
                     pos = hitInfo.point;
 
-                GameObject wallInstance = Instantiate(wallSectionPrefab, pos, Quaternion.identity,
+                GameObject wallInstance = Instantiate(wallSectionPrefab.gameObject, pos, Quaternion.identity,
                     wallParent.transform);
 
                 wallInstance.transform.rotation = Quaternion.LookRotation(lookDir, Vector3.up);
@@ -159,7 +177,7 @@ public class Tower : MonoBehaviour
                 if (hitDown)
                     pos = hitInfo.point;
 
-                GameObject wallInstance = Instantiate(wallSectionPrefab, pos, Quaternion.identity,
+                GameObject wallInstance = Instantiate(wallSectionPrefab.gameObject, pos, Quaternion.identity,
                     wallParent.transform);
 
                 wallInstance.transform.rotation = Quaternion.LookRotation(lookDir, Vector3.up);
@@ -180,7 +198,7 @@ public class Tower : MonoBehaviour
                 if (hitDown)
                     pos = hitInfo.point;
 
-                GameObject wallInstance = Instantiate(wallSectionPrefab, pos, Quaternion.identity,
+                GameObject wallInstance = Instantiate(wallSectionPrefab.gameObject, pos, Quaternion.identity,
                     wallParent.transform);
 
                 wallInstance.transform.rotation = Quaternion.LookRotation(lookDir, Vector3.up);
@@ -196,7 +214,7 @@ public class Tower : MonoBehaviour
                 if (hitDown)
                     pos = hitInfo.point;
 
-                GameObject wallInstance = Instantiate(wallSectionPrefab, pos, Quaternion.identity,
+                GameObject wallInstance = Instantiate(wallSectionPrefab.gameObject, pos, Quaternion.identity,
                     wallParent.transform);
 
                 wallInstance.transform.rotation = Quaternion.LookRotation(lookDir, Vector3.up);
@@ -206,6 +224,31 @@ public class Tower : MonoBehaviour
         //Gizmos.color = Color.blue;
         //Gizmos.DrawWireSphere(middleBetweenWalls + otherTowerDir.normalized * (wallsFromMiddle), 1f);
         //Gizmos.DrawWireSphere(middleBetweenWalls - otherTowerDir.normalized * (wallsFromMiddle), 1f);
+
+        return wallParent;
+    }
+
+
+    public void UpgradeTower(Tower newTower)
+    {
+        for (int i = 0; i < wallParents.Count; i++)
+        {
+            wallParents[i].ChangeTower(this, newTower);
+        }
+
+
+        // change out active connected towers to the new tower
+        for (int i = 0; i < activeConnectedTowers.Count; i++)
+        {
+            Tower connectedTower = activeConnectedTowers[i];
+            if (connectedTower.activeConnectedTowers.Contains(this))
+            {
+                connectedTower.activeConnectedTowers.Remove(this);
+                connectedTower.activeConnectedTowers.Add(newTower);
+            }
+
+            newTower.activeConnectedTowers = activeConnectedTowers;
+        }
     }
 
     private void OnDrawGizmos()

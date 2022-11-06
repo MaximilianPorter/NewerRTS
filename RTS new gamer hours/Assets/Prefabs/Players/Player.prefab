@@ -5741,6 +5741,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   buttonMenu: {fileID: 0}
   buttonMenuOffset: {x: 0, y: 0}
+  costMenuOffset: {x: 0, y: 2.2}
   buttonUiLayoutGroup: {fileID: 0}
   menuCycleSpeed: 10
   selectAnim: {fileID: 0}
@@ -5754,9 +5755,11 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   - {fileID: 0}
-  placeBuildingRallyVisual: {fileID: 0}
+  placingUiVisual: {fileID: 0}
+  placingUiVisualOffset: {x: 0, y: 10, z: 0}
   rallyPointPlaceEffect: {fileID: 5800903921319017751, guid: 743a854488746394e999828854aec38f, type: 3}
-  rallyVisualOffset: {x: 0, y: 10, z: 0}
+  wallBuildingVisual: {fileID: 0}
+  wallVisualToChangeColor: {fileID: 0}
   placingBuildingVisual: {fileID: 0}
   buildingVisualToChangeColor: {fileID: 0}
   canPlaceMat: {fileID: 0}

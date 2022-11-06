@@ -43,11 +43,16 @@ public class Identifier : MonoBehaviour
 
         if (!isParent)
         {
-            //if (transform.parent == null)
-            //{
-            //    Debug.LogError("If " + gameObject.name + " is a parent, check isParent");
-            //    return;
-            //}
+
+            if (transform.parent == null)
+            {
+                Debug.LogError("If " + gameObject.name + " is a parent, check isParent");
+                return;
+            }
+
+            Identifier parentId = transform.parent.GetComponentInParent<Identifier>(true);
+            this.SetPlayerID(parentId.playerID);
+            this.SetTeamID(parentId.teamID);
 
 
             //// find an identifier in parents
@@ -101,7 +106,6 @@ public class Identifier : MonoBehaviour
 
     public void UpdateInfo (int playerID, int teamID)
     {
-        //Debug.Log($"Something changed in the identifier for {gameObject.name}, updating values...");
         Identifier[] childrenIdentifiers = GetComponentsInChildren<Identifier>(true);
         for (int i = 0; i < childrenIdentifiers.Length; i++)
         {

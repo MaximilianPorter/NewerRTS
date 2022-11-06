@@ -14,6 +14,7 @@ public class PlayerBuilding : MonoBehaviour
     //[SerializeField] private RectTransform playerCanvas;
     [SerializeField] private GameObject buttonMenu;
     [SerializeField] private Vector2 buttonMenuOffset;
+    [SerializeField] private Vector2 costMenuOffset;
     [SerializeField] private Transform buttonUiLayoutGroup;
     [SerializeField] private float menuCycleSpeed = 10f;
     [SerializeField] private Animator selectAnim;
@@ -118,6 +119,8 @@ public class PlayerBuilding : MonoBehaviour
         if (anyMenuOpen)
             ManageSelectedIcon();
 
+        ManageCostArea();
+
         HandlePlacementUiVisual();
 
         HandleOpeningCycleMenu();
@@ -148,20 +151,6 @@ public class PlayerBuilding : MonoBehaviour
         }
         buttonUiLayoutGroup.transform.localPosition = Vector3.Lerp(buttonUiLayoutGroup.transform.localPosition, -allIcons[selectedIconIndex].transform.localPosition, Time.deltaTime * menuCycleSpeed);
 
-        // fade cost ui if the button isn't affordable
-        costAreaLayout.color = new Color(costAreaLayout.color.r, costAreaLayout.color.g, costAreaLayout.color.b,
-            allIcons[selectedIconIndex].GetIsAffordable ? 1f : 0.5f);
-
-        // adjust cost ui display of selected button
-        ResourceAmount cost = allIcons[selectedIconIndex].GetCost;
-        costResourceTransforms[0].gameObject.SetActive(cost.GetFood > 0);
-        costResourceTransforms[1].gameObject.SetActive(cost.GetWood > 0);
-        costResourceTransforms[2].gameObject.SetActive(cost.GetStone > 0);
-        costAreaLayout.gameObject.SetActive(cost.GetFood > 0 || cost.GetWood > 0 || cost.GetStone > 0);
-        costTexts[0].text = cost.GetFood.ToString();
-        costTexts[1].text = cost.GetWood.ToString();
-        costTexts[2].text = cost.GetStone.ToString();
-
 
         // adjust the required building layout images
         if (allIcons[selectedIconIndex].GetRequiredBuildings() == null 
@@ -189,6 +178,38 @@ public class PlayerBuilding : MonoBehaviour
                 ? allIcons[selectedIconIndex].GetNormalColor
                 : allIcons[selectedIconIndex].GetDisabledColor;
         }
+    }
+
+    private void ManageCostArea ()
+    {
+        ResourceAmount cost = allIcons[selectedIconIndex].GetCost;
+
+        if (fromTower)
+        {
+            cost = tempPlaceBuildingCost;
+
+            costAreaLayout.color = new Color(costAreaLayout.color.r, costAreaLayout.color.g, costAreaLayout.color.b,
+                PlayerResourceManager.PlayerResourceAmounts[identifier.GetPlayerID].HasResources(tempPlaceBuildingCost) ? 1f : 0.5f);
+        }
+        else
+        {
+            // fade cost ui if the button isn't affordable
+            costAreaLayout.color = new Color(costAreaLayout.color.r, costAreaLayout.color.g, costAreaLayout.color.b,
+                allIcons[selectedIconIndex].GetIsAffordable ? 1f : 0.5f);
+        }
+
+
+        // ui display for cost
+        costResourceTransforms[0].gameObject.SetActive(cost.GetFood > 0);
+        costResourceTransforms[1].gameObject.SetActive(cost.GetWood > 0);
+        costResourceTransforms[2].gameObject.SetActive(cost.GetStone > 0);
+
+        costTexts[0].text = cost.GetFood.ToString();
+        costTexts[1].text = cost.GetWood.ToString();
+        costTexts[2].text = cost.GetStone.ToString();
+
+        costAreaLayout.gameObject.SetActive((anyMenuOpen && (cost.GetFood > 0 || cost.GetWood > 0 || cost.GetStone > 0)) || fromTower);
+
     }
 
     private void IncreaseIconIndex ()
@@ -403,7 +424,7 @@ public class PlayerBuilding : MonoBehaviour
 
     private void HandleUnitMenu ()
     {
-        if (!anyMenuOpen)
+        if (!anyMenuOpen && fromTower == null)
         {
             // open unit menu
             if (PlayerInput.GetPlayers[identifier.GetPlayerID].GetButtonDown(PlayerInput.GetInputOpenUnitMenu))
@@ -443,7 +464,7 @@ public class PlayerBuilding : MonoBehaviour
 
     private void HandleBuildMenu ()
     {
-        if (!anyMenuOpen)
+        if (!anyMenuOpen && fromTower == null)
         {
             // build new building
             if (PlayerInput.GetPlayers[identifier.GetPlayerID].GetButtonDown(PlayerInput.GetInputOpenBuildMenu) && !hoveringBuilding)
@@ -649,6 +670,14 @@ public class PlayerBuilding : MonoBehaviour
     // used by UI buttons
     public void UpgradeBuilding (Building building)
     {
+        if (hoveringBuilding.TryGetComponent (out Tower hoverTower))
+        {
+            // if we're upgradeing a tower, they might have walls connecting them
+            hoverTower.UpgradeTower(BuildBuilding(building).GetComponent<Tower>());
+            hoveringBuilding.DeleteBuilding();
+            return;
+        }
+
         hoveringBuilding.DeleteBuilding();
 
         BuildBuilding(building);
@@ -674,11 +703,6 @@ public class PlayerBuilding : MonoBehaviour
         {
             fromTower = tower;
         }
-        else // we are finishing the wall
-        {
-            fromTower.PlaceWalls(tower);
-            fromTower = null;
-        }
     }
     // used by UI buttons
     public void PlaceDoorOnWall()
@@ -687,7 +711,7 @@ public class PlayerBuilding : MonoBehaviour
         wall.PlaceDoor();
     }
 
-    private void BuildBuilding (Building building)
+    private Identifier BuildBuilding (Building building)
     {
         // place building
         Vector3 buildingPos = hoveringBuilding ? hoveringBuilding.transform.position : placingBuildingVisual.transform.position;
@@ -695,6 +719,8 @@ public class PlayerBuilding : MonoBehaviour
 
         // set team and player ID of building
         placedBuildingIdentity.UpdateInfo(identifier.GetPlayerID, identifier.GetTeamID);
+
+        return placedBuildingIdentity;
     }
     private void HandlePlacingBuilding ()
     {
@@ -736,21 +762,38 @@ public class PlayerBuilding : MonoBehaviour
 
     private void HandlePlacingWall ()
     {
+        if (tempPlaceBuildingCost == null)
+            tempPlaceBuildingCost = new ResourceAmount();
+
         wallBuildingVisual.SetActive(fromTower != null);
 
         if (fromTower == null)
             return;
 
-        bool canPlaceWall = hoveringBuilding && hoveringBuilding.GetComponent<Tower>() && hoveringBuilding.GetComponent<Tower>() != fromTower &&
-            !fromTower.GetActiveConnectedTowers.Contains(hoveringBuilding.GetComponent<Tower>());
+        bool isNextToCorrectBuilding = hoveringBuilding && hoveringBuilding.TryGetComponent (out Tower hoverTower) && hoverTower != fromTower &&
+            !fromTower.GetActiveConnectedTowers.Contains(hoverTower);
+        bool canPlaceWall = isNextToCorrectBuilding &&
+            PlayerResourceManager.PlayerResourceAmounts[identifier.GetPlayerID].HasResources (tempPlaceBuildingCost);
+
+        // change visual colors
         wallVisualToChangeColor.material = canPlaceWall ? canPlaceMat : canNOTPlaceMat;
 
-        Vector3 wallLookDir = transform.position - fromTower.transform.position;
+        // snap to tower
+        Vector3 wallEndPos = isNextToCorrectBuilding ? hoveringBuilding.transform.position : transform.position;
+
+
+        // manage cost
+        tempPlaceBuildingCost.SetFood((int)(fromTower.GetWallPrefab.GetStats.cost.GetFood * Vector3.Distance(wallEndPos, fromTower.transform.position)));
+        tempPlaceBuildingCost.SetWood((int)(fromTower.GetWallPrefab.GetStats.cost.GetWood * Vector3.Distance(wallEndPos, fromTower.transform.position)));
+        tempPlaceBuildingCost.SetStone((int)(fromTower.GetWallPrefab.GetStats.cost.GetStone * Vector3.Distance(wallEndPos, fromTower.transform.position)));
+
+        // manage wall visual look
+        Vector3 wallLookDir = wallEndPos - fromTower.transform.position;
         wallLookDir.y = 0f;
 
         wallBuildingVisual.transform.rotation = Quaternion.LookRotation(wallLookDir, Vector3.up);
-        wallBuildingVisual.transform.position = (transform.position + fromTower.transform.position) / 2f;
-        wallBuildingVisual.transform.localScale = new Vector3(0.5f, 2f, (transform.position - fromTower.transform.position).magnitude);
+        wallBuildingVisual.transform.position = (wallEndPos + fromTower.transform.position) / 2f;
+        wallBuildingVisual.transform.localScale = new Vector3(0.5f, 2f, (wallEndPos - fromTower.transform.position).magnitude);
 
         
         if (PlayerInput.GetPlayers[identifier.GetPlayerID].GetButtonDown(PlayerInput.GetInputSelect))
@@ -758,6 +801,8 @@ public class PlayerBuilding : MonoBehaviour
             if (canPlaceWall)
             {
                 // place wall
+                PlayerResourceManager.PlayerResourceAmounts[identifier.GetPlayerID].SubtractResoruces(tempPlaceBuildingCost);
+
                 fromTower.PlaceWalls(hoveringBuilding.GetComponent<Tower>());
                 fromTower = null;
             }

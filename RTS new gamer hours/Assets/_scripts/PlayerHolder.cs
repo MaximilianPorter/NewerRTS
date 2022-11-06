@@ -117,7 +117,7 @@ public class PlayerHolder : MonoBehaviour
             playerUnits[i].RemoveAll(unit => unit == null);
         }
 
-        if (GameWinManager.instance.GameOver)
+        if (GameWinManager.instance && GameWinManager.instance.GameOver)
         {
             for (int i = 0; i < 4; i++)
             {
@@ -142,6 +142,9 @@ public class PlayerHolder : MonoBehaviour
         return null;
     }
 
+    /// <summary>
+    /// usually looks something like "transform.localscale = Vector3.one * ScaleWithScreenOrthoSizeMultiplier"
+    /// </summary>
     public static float ScaleWithScreenOrthoSizeMultiplier (int playerID)
     {
         return (playerCamStartOrthoSize[playerID] / playerCams[playerID].orthographicSize);

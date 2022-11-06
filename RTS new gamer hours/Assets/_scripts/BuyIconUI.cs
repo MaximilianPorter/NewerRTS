@@ -211,6 +211,7 @@ public enum BuyIcons
 
     // WALLS
     Wall_Wood = 40,
+    Wall_Stone = 43,
 
 
     // OTHER UI BUTTONS
@@ -239,6 +240,6 @@ public enum BuyIcons
     Research_EnhancedFood = 38,
     Research_HotterFire = 39,
 
-    // highest number: 42
-    // last changed on 11-5-22 : 1:43pm
+    // highest number: 43
+    // last changed on 11-5-22 : 6:15pm
 }

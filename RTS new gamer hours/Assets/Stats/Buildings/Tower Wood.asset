@@ -22,9 +22,9 @@ MonoBehaviour:
     wood: 200
     stone: 0
   costMultiPerBuilding: 1
-  interactionRadius: 2
-  buildRadius: 10
+  interactionRadius: 2.5
+  buildRadius: 15
   population: 0
-  unit: {fileID: 6806056615238588080, guid: 197e208e373752448a8eb352aa3896d9, type: 3}
+  unit: {fileID: 0}
   initialUnitSpawnTime: 5
   spawnTimeMultiPerBuilding: 0.7

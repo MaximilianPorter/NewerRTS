@@ -69,7 +69,7 @@ MonoBehaviour:
   wallParentPrefab: {fileID: 0}
   showWallSectionGizmos: 0
   placeWallsBetween: 0
-  wallSectionPrefab: {fileID: 5758319450202610997, guid: 19a1f449f9563fd4598fa15041d08971, type: 3}
+  wallSectionPrefab: {fileID: 5758319450202610993, guid: 19a1f449f9563fd4598fa15041d08971, type: 3}
   minOverlapWallSpacing: 0.8
   idealWallSpacing: 1.6
   placeBigWall: 0
@@ -182,7 +182,7 @@ MonoBehaviour:
   wallParentPrefab: {fileID: 0}
   showWallSectionGizmos: 0
   placeWallsBetween: 0
-  wallSectionPrefab: {fileID: 5758319450202610997, guid: 19a1f449f9563fd4598fa15041d08971, type: 3}
+  wallSectionPrefab: {fileID: 5758319450202610993, guid: 19a1f449f9563fd4598fa15041d08971, type: 3}
   minOverlapWallSpacing: 0.8
   idealWallSpacing: 1.6
   placeBigWall: 0
