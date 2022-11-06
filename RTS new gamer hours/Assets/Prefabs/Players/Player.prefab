@@ -98,6 +98,70 @@ Transform:
   m_Father: {fileID: 8604555271138620345}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2902146281846554452
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6947402691174778282}
+  - component: {fileID: 6119222070155031449}
+  - component: {fileID: 3459706853550778066}
+  m_Layer: 7
+  m_Name: Selection Ring Projector
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6947402691174778282
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2902146281846554452}
+  m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 10, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8604555271138620345}
+  m_RootOrder: 7
+  m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!119 &6119222070155031449
+Projector:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2902146281846554452}
+  m_Enabled: 1
+  serializedVersion: 2
+  m_NearClipPlane: 0.1
+  m_FarClipPlane: 200
+  m_FieldOfView: 60
+  m_AspectRatio: 1
+  m_Orthographic: 1
+  m_OrthographicSize: 5
+  m_Material: {fileID: 2100000, guid: 8def8d88990554d46aa626a227c51531, type: 2}
+  m_IgnoreLayers:
+    serializedVersion: 2
+    m_Bits: 15736767
+--- !u!114 &3459706853550778066
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2902146281846554452}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 218f5670fde47c44295206e5dd087eb0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5267479624092191791
 GameObject:
   m_ObjectHideFlags: 0
@@ -5603,6 +5667,7 @@ Transform:
   - {fileID: 1666378082}
   - {fileID: 5265940187460079639}
   - {fileID: 4371169123611133643}
+  - {fileID: 6947402691174778282}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
@@ -5716,7 +5781,7 @@ MonoBehaviour:
   obstacleMask:
     serializedVersion: 2
     m_Bits: 24640
-  unitSelectionVisual: {fileID: 8091785847519968836}
+  unitSelectionVisual: {fileID: 6119222070155031449}
   rallyTroopsEffect: {fileID: 4496352026488549157}
   maxSelectionRadius: 30
   radiusIncreaseSpeed: 6

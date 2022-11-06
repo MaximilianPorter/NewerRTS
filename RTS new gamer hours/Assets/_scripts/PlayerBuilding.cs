@@ -512,6 +512,13 @@ public class PlayerBuilding : MonoBehaviour
                         // turn it on, but not if it's in completed research or current research
                         bool notResearchingThisIcon = !PlayerHolder.GetCompletedResearch(identifier.GetPlayerID).Contains(allIcons[i].GetButtonType);
 
+                        // turn off the door icon if there's already a door on the wall
+                        if (hoveringBuilding.transform.parent && hoveringBuilding.transform.parent.TryGetComponent (out Wall parentWall) && parentWall.GetDoorSpawned && allIcons[i].GetButtonType == BuyIcons.AddDoorToWall)
+                        {
+                            allIcons[i].gameObject.SetActive(false);
+                            continue;
+                        }
+
                         allIcons[i].gameObject.SetActive(notResearchingThisIcon);
 
                     }

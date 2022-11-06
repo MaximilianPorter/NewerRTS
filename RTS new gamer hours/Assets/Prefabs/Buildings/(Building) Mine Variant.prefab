@@ -280,11 +280,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3828816209340219677, guid: 7444a2888946a634ba879ce630db7727, type: 3}
       propertyPath: m_RootOrder
-      value: 7
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 4019740684486907426, guid: 7444a2888946a634ba879ce630db7727, type: 3}
       propertyPath: m_RootOrder
-      value: 6
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 4019740684486907426, guid: 7444a2888946a634ba879ce630db7727, type: 3}
       propertyPath: m_LocalPosition.y
@@ -410,7 +410,7 @@ MonoBehaviour:
   - Rock
   hitLayerMask:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 16384
   radius: 8
   projector: {fileID: 302148436211215595}
 --- !u!1001 &349429173150785011

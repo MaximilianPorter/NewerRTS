@@ -12,7 +12,7 @@ public class UnitSelection : MonoBehaviour
     [SerializeField] private Camera playerCam;
     [SerializeField] private LayerMask unitMask;
     [SerializeField] private LayerMask obstacleMask;
-    [SerializeField] private Transform unitSelectionVisual;
+    [SerializeField] private Projector unitSelectionVisual;
     [SerializeField] private ParticleSystem rallyTroopsEffect;
     [SerializeField] private float maxSelectionRadius = 10f;
     [SerializeField] private float radiusIncreaseSpeed = 4f;
@@ -67,6 +67,8 @@ public class UnitSelection : MonoBehaviour
         }
         patternNameText.text = "";
         rallyTroopsEffect.Stop();
+
+        unitSelectionVisual.material = PlayerColorManager.GetPlayerProjectorMaterial(identifier.GetPlayerID);
     }
 
     private void Update()
@@ -118,7 +120,8 @@ public class UnitSelection : MonoBehaviour
         {
             // increase radius and select units within
             unitSelectionVisual.gameObject.SetActive(true);
-            unitSelectionVisual.localScale = new Vector3(currentSelectionRadius, currentSelectionRadius, 5f);
+            //unitSelectionVisual.localScale = new Vector3(currentSelectionRadius, currentSelectionRadius, 5f);
+            unitSelectionVisual.orthographicSize = currentSelectionRadius;
             currentSelectionRadius = Mathf.Clamp(currentSelectionRadius + Time.deltaTime * radiusIncreaseSpeed, 0f, maxSelectionRadius);
             SelectNearbyUnits();
         }
