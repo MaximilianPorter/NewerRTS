@@ -37,7 +37,7 @@ public class BurningObject : MonoBehaviour
 
             if (health)
             {
-                health.TakeDamage (Time.deltaTime * damagePerSecond, health.GetLastHitByPlayer, transform.position, false, true);
+                health.TakeDamage (Time.deltaTime * damagePerSecond, health.GetLastHitByPlayer, transform.position, true);
             }
         }
 

@@ -264,6 +264,8 @@ public class Attacking : MonoBehaviour
 
         // hits unit with different team ID
         Collider[] hitEnemies = hits.Where(hit => hit.TryGetComponent(out Identifier otherId) && otherId.GetTeamID != identifier.GetTeamID).ToArray();
+        if (hitEnemies.Length <= 0)
+            return;
 
         // hit all enemies in radius
         if (stats.hitAllInRadius)
@@ -278,7 +280,7 @@ public class Attacking : MonoBehaviour
         }
         else // hit first enemy in radius
         {
-            Collider firstEnemy = hits.FirstOrDefault();
+            Collider firstEnemy = hitEnemies.FirstOrDefault();
             DamageEnemy(firstEnemy);
         }
 

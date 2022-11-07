@@ -7,6 +7,7 @@ using UnityEngine;
 
 public class MapGenerationManager : MonoBehaviour
 {
+
     [SerializeField] private LayerMask groundMask;
     [SerializeField] private bool generateOnlyNavMesh = false;
     [SerializeField] private bool showSpawnedObjectBuffers = false;
@@ -38,6 +39,7 @@ public class MapGenerationManager : MonoBehaviour
     public Vector2 offset;
     private float[,] treeNoiseMap;
 
+
     [Header("Land Tiles")]
     [SerializeField] [Range(0f, 100)] private float percentageToContinueLedge = 20f;
     [SerializeField] private GameObject flatTile;
@@ -64,20 +66,16 @@ public class MapGenerationManager : MonoBehaviour
 
     private void Awake()
     {
-        
+        if (randomSeed)
+            seed = Random.Range(0, 100000000);
 
-        
+        Random.InitState(seed);
     }
 
     private void Start()
     {
         if (!generateOnlyNavMesh)
         {
-            if (randomSeed)
-                seed = Random.Range(0, 100000000);
-
-            Random.InitState(seed);
-
             InitializePreplacedObjects();
 
             // spawn before trees

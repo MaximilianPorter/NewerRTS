@@ -334,6 +334,7 @@ public class PlayerBuilding : MonoBehaviour
             HandleBuildMenu();
             HandleUnitMenu();
         }
+        buttonMenu.transform.localPosition = PlayerHolder.WorldToCanvasLocalPoint(transform.position + (Vector3)buttonMenuOffset, identifier.GetPlayerID).GetValueOrDefault(Vector2.zero);
     }
 
     private IEnumerator HandleCycleMenuOpen ()
@@ -368,7 +369,6 @@ public class PlayerBuilding : MonoBehaviour
             }
 
 
-            buttonMenu.transform.localPosition = PlayerHolder.WorldToCanvasLocalPoint(transform.position + (Vector3)buttonMenuOffset, identifier.GetPlayerID).GetValueOrDefault(Vector2.zero);
             //Vector2 screenPoint = playerCam.WorldToScreenPoint(transform.position + (Vector3)buttonMenuOffset);
             //if (RectTransformUtility.ScreenPointToLocalPointInRectangle(playerCanvas, screenPoint, playerCam, out Vector2 localPoint))
             //{
@@ -841,7 +841,7 @@ public class PlayerBuilding : MonoBehaviour
         Building[] closestBuildings = PlayerHolder.GetBuildings(identifier.GetPlayerID).
             Where(building => building != null &&  // building isn't null
             building.GetStats.buildingType != BuyIcons.Building_CASTLE && // building isn't castle
-            (building.transform.position - transform.position).sqrMagnitude < building.GetStats.interactionRadius * building.GetStats.interactionRadius) // building is in range
+            (new Vector3 (building.transform.position.x, 0f, building.transform.position.z) - new Vector3(transform.position.x, 0f, transform.position.z)).sqrMagnitude < building.GetStats.interactionRadius * building.GetStats.interactionRadius) // building is in range
             .ToArray();
 
         if (closestBuildings.Length > 0)
@@ -955,7 +955,7 @@ public class PlayerBuilding : MonoBehaviour
     private void HandlePlacementUiVisual ()
     {
         placingUiVisualObject.SetActive(placingRallyPoint || placingAllRallyPoints || isPlacingBuilding || fromTower != null);
-        placingUiVisualObject.transform.localPosition = PlayerHolder.WorldToCanvasLocalPoint(transform.position + placingUiVisualOffset, identifier.GetPlayerID).GetValueOrDefault(Vector2.zero);
+        //placingUiVisualObject.transform.localPosition = PlayerHolder.WorldToCanvasLocalPoint(transform.position + placingUiVisualOffset, identifier.GetPlayerID).GetValueOrDefault(Vector2.zero);
 
         if (placingRallyPoint || placingAllRallyPoints)
         {

@@ -320,7 +320,7 @@ GameObject:
   - component: {fileID: 251871041485523035}
   - component: {fileID: 2044454340162835348}
   - component: {fileID: 430510729223920334}
-  m_Layer: 20
+  m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -499,12 +499,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   buttonName: 'RESEARCH: Sharp Arrows'
-  buttonDescription: 'Arrows do 50% more damage against armored units
+  buttonDescription: 'Arrows go through armor
 
-    -<i>60
-    sec</i>
+    -<i>60 sec</i>
 
-    -<i>Requires Monestary</i>'
+    -<i>Requires
+    Monestary</i>'
   overrideUnit: {fileID: 0}
   overrideBuilding: {fileID: 0}
   overrideResearch: {fileID: 11400000, guid: 048619fafaa2808458260debf20eb6a4, type: 2}
@@ -3098,7 +3098,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5561753839229569397}
-  m_Layer: 20
+  - component: {fileID: 7853606160144130993}
+  m_Layer: 0
   m_Name: Wall Placement Visual
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3121,6 +3122,18 @@ Transform:
   m_Father: {fileID: 5825349044633011813}
   m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7853606160144130993
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3954498334203936482}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 218f5670fde47c44295206e5dd087eb0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &4025391245465423949
 GameObject:
   m_ObjectHideFlags: 0
@@ -5240,6 +5253,7 @@ GameObject:
   - component: {fileID: 5825349044610954687}
   - component: {fileID: 5825349044610954685}
   - component: {fileID: 5825349044610954684}
+  - component: {fileID: 1902262637428099135}
   m_Layer: 0
   m_Name: Placement UI Visual
   m_TagString: Untagged
@@ -5254,8 +5268,8 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5825349044610954686}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0.000021458}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -5267,7 +5281,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 480, y: -101.95999}
+  m_AnchoredPosition: {x: 480, y: -129.29}
   m_SizeDelta: {x: 59.02, y: 59.02}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5825349044610954685
@@ -5308,6 +5322,32 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 10
+--- !u!1773428102 &1902262637428099135
+ParentConstraint:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5825349044610954686}
+  m_Enabled: 1
+  m_Weight: 1
+  m_TranslationAtRest: {x: 0, y: 140.71, z: 0.000021458}
+  m_RotationAtRest: {x: 0, y: 0, z: 0}
+  m_TranslationOffsets:
+  - {x: 0, y: 6.2537766, z: 0.0000019073486}
+  m_RotationOffsets:
+  - {x: 0, y: 0, z: 0}
+  m_AffectTranslationX: 1
+  m_AffectTranslationY: 1
+  m_AffectTranslationZ: 1
+  m_AffectRotationX: 1
+  m_AffectRotationY: 1
+  m_AffectRotationZ: 1
+  m_IsContraintActive: 1
+  m_IsLocked: 0
+  m_Sources:
+  - sourceTransform: {fileID: 5825349044488285801}
+    weight: 1
 --- !u!1 &5825349044624579915
 GameObject:
   m_ObjectHideFlags: 0
@@ -7602,6 +7642,7 @@ GameObject:
   - component: {fileID: 5825349045407187672}
   - component: {fileID: 5825349045407187678}
   - component: {fileID: 5825349045407187679}
+  - component: {fileID: 8695119066923847241}
   m_Layer: 5
   m_Name: (Layout) Cost Area
   m_TagString: Untagged
@@ -7710,6 +7751,32 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_HorizontalFit: 0
   m_VerticalFit: 1
+--- !u!1773428102 &8695119066923847241
+ParentConstraint:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5825349045407187674}
+  m_Enabled: 1
+  m_Weight: 1
+  m_TranslationAtRest: {x: 0.000114889706, y: 35.221878, z: -0.000037550926}
+  m_RotationAtRest: {x: 0, y: 0, z: 0}
+  m_TranslationOffsets:
+  - {x: 0.0000038146973, y: 1.5654163, z: -0.0000019073486}
+  m_RotationOffsets:
+  - {x: 0, y: 0, z: 0}
+  m_AffectTranslationX: 1
+  m_AffectTranslationY: 1
+  m_AffectTranslationZ: 1
+  m_AffectRotationX: 1
+  m_AffectRotationY: 1
+  m_AffectRotationZ: 1
+  m_IsContraintActive: 1
+  m_IsLocked: 0
+  m_Sources:
+  - sourceTransform: {fileID: 5825349044488285801}
+    weight: 1
 --- !u!1 &5825349045427580407
 GameObject:
   m_ObjectHideFlags: 0
@@ -11385,7 +11452,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9091122543498668792}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: -0.000030259}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -11394,7 +11461,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 0, y: 14}
+  m_AnchoredPosition: {x: 0, y: 15.734999}
   m_SizeDelta: {x: 31.47, y: 31.47}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1425670845090883583
