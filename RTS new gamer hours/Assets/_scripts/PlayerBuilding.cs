@@ -27,6 +27,7 @@ public class PlayerBuilding : MonoBehaviour
 
     [Header("Building")]
     [SerializeField] private BuyIconUI[] initialIcons;
+    [SerializeField] private GameObject placingUiVisualObject;
     [SerializeField] private Image placingUiVisual;
     [SerializeField] private Vector3 placingUiVisualOffset = new Vector3(0, 10f, 0f);
     [SerializeField] private GameObject rallyPointPlaceEffect;
@@ -174,7 +175,8 @@ public class PlayerBuilding : MonoBehaviour
             }
             requiredBuildingImageContainers[i].gameObject.SetActive(true);
             requiredBuildingImageContainers[i].sprite = BuyIconSpriteManager.GetTypeOfIcon(requiredBuildings[i]);
-            requiredBuildingImageContainers[i].color = PlayerHolder.GetBuildings(identifier.GetPlayerID).Any(building => building.GetStats.buildingType == requiredBuildings[i])
+            requiredBuildingImageContainers[i].color = PlayerHolder.GetBuildings(identifier.GetPlayerID).Any(building => building.GetStats.buildingType == requiredBuildings[i]) || 
+                PlayerHolder.GetCompletedResearch (identifier.GetPlayerID).Contains(requiredBuildings[i])
                 ? allIcons[selectedIconIndex].GetNormalColor
                 : allIcons[selectedIconIndex].GetDisabledColor;
         }
@@ -952,8 +954,8 @@ public class PlayerBuilding : MonoBehaviour
 
     private void HandlePlacementUiVisual ()
     {
-        placingUiVisual.gameObject.SetActive(placingRallyPoint || placingAllRallyPoints || isPlacingBuilding || fromTower != null);
-        placingUiVisual.transform.localPosition = PlayerHolder.WorldToCanvasLocalPoint(transform.position + placingUiVisualOffset, identifier.GetPlayerID).GetValueOrDefault(Vector2.zero);
+        placingUiVisualObject.SetActive(placingRallyPoint || placingAllRallyPoints || isPlacingBuilding || fromTower != null);
+        placingUiVisualObject.transform.localPosition = PlayerHolder.WorldToCanvasLocalPoint(transform.position + placingUiVisualOffset, identifier.GetPlayerID).GetValueOrDefault(Vector2.zero);
 
         if (placingRallyPoint || placingAllRallyPoints)
         {

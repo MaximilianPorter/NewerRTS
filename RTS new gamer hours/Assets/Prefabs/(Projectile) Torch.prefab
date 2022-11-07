@@ -99,6 +99,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotateSpeed: 500
+  aroundParent: 1
+  unscaledTime: 0
 --- !u!1 &5640332772760401253
 GameObject:
   m_ObjectHideFlags: 0
@@ -179,9 +181,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 091dc986ba44ccd48ba3d35d5283d010, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  projectileType: 0
   lookTowardsVelocity: 1
   destroyOnContact: 1
   burns: 1
+  fireEffect: {fileID: 4837623951847860882}
   spawnOnHit: {fileID: 5564693967124309227, guid: aaea3171db8450e44b136b1467c3f306, type: 3}
   hitMask:
     serializedVersion: 2
@@ -296,5 +300,10 @@ PrefabInstance:
 --- !u!4 &4725390666558467726 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4125417875758524, guid: 167e663a5fb66bb42a555a0fea27b834, type: 3}
+  m_PrefabInstance: {fileID: 4728038322518176562}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &4837623951847860882 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 198137044813289888, guid: 167e663a5fb66bb42a555a0fea27b834, type: 3}
   m_PrefabInstance: {fileID: 4728038322518176562}
   m_PrefabAsset: {fileID: 0}

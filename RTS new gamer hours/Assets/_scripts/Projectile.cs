@@ -12,6 +12,7 @@ public class Projectile : MonoBehaviour
     [SerializeField] private bool lookTowardsVelocity = true;
     [SerializeField] private bool destroyOnContact = false;
     [SerializeField] private bool burns = false;
+    [SerializeField] private ParticleSystem fireEffect;
 
     [SerializeField] private GameObject spawnOnHit;
     [SerializeField] private LayerMask hitMask;
@@ -36,6 +37,14 @@ public class Projectile : MonoBehaviour
     private void Start()
     {
         Destroy(gameObject, 10f);
+
+        if (fireEffect)
+        {
+            if (burns)
+                fireEffect.Play();
+            else
+                fireEffect.Stop();
+        }
     }
 
     private void FixedUpdate()
@@ -106,9 +115,10 @@ public class Projectile : MonoBehaviour
         lastPos = transform.position;
     }
 
-    public void SetInfo (float damage, int playerID, int teamID)
+    public void SetInfo (float damage, int playerID, int teamID, bool burns)
     {
         this.damage = damage;
+        this.burns = burns;
         identifier.UpdateInfo(playerID, teamID);
 
         moreAgainstArmored = PlayerHolder.GetCompletedResearch(identifier.GetPlayerID).Contains(BuyIcons.Research_SharpArrows);

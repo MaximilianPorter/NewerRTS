@@ -88,6 +88,10 @@ public class BuyIconUI : MonoBehaviour
             {
                 hasBuildingAmount++;
             }
+
+            // also works for research
+            if (PlayerHolder.GetCompletedResearch(identifier.GetPlayerID).Contains(requiredBuildings[i]))
+                hasBuildingAmount++;
         }
 
         if (hasBuildingAmount == requiredBuildings.Length)
@@ -239,7 +243,8 @@ public enum BuyIcons
     Research_FasterChopping = 37,
     Research_EnhancedFood = 38,
     Research_HotterFire = 39,
+    Research_Magic = 44,
 
-    // highest number: 43
-    // last changed on 11-5-22 : 6:15pm
+    // highest number: 44
+    // last changed on 11-6-22 : 2:22pm
 }

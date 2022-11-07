@@ -1,5 +1,46 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &-6892600498287996129
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c74b981ab35fcb1468c7aaf9752b24e1, type: 3}
+  m_Name: CloudShadows
+  m_EditorClassIdentifier: 
+  active: 1
+  enabled:
+    overrideState: 1
+    value: 1
+  texture:
+    overrideState: 0
+    value: {fileID: 2800000, guid: 32ef32965c344ed4c9af86f0dc15661a, type: 3}
+    defaultState: 1
+  density:
+    overrideState: 1
+    value: 1
+  size:
+    overrideState: 1
+    value: 1
+  speed:
+    overrideState: 1
+    value: 0.2
+  direction:
+    overrideState: 0
+    value: {x: 0, y: 1}
+  projectFromSun:
+    overrideState: 0
+    value: 0
+  startFadeDistance:
+    overrideState: 0
+    value: 0
+  endFadeDistance:
+    overrideState: 0
+    value: 200
 --- !u!114 &-6549662133330444809
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -1368,6 +1409,8 @@ MonoBehaviour:
   - {fileID: 5755831581963672090}
   - {fileID: -6549662133330444809}
   - {fileID: -4794195336313837589}
+  - {fileID: 5149601128020478796}
+  - {fileID: -6892600498287996129}
 --- !u!114 &2227597459528469188
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -1415,6 +1458,50 @@ MonoBehaviour:
   dirtIntensity:
     overrideState: 0
     value: 0
+--- !u!114 &5149601128020478796
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40b924e2dad56384a8df2a1e111bb675, type: 3}
+  m_Name: Vignette
+  m_EditorClassIdentifier: 
+  active: 1
+  enabled:
+    overrideState: 1
+    value: 1
+  mode:
+    overrideState: 0
+    value: 0
+  color:
+    overrideState: 0
+    value: {r: 0, g: 0, b: 0, a: 1}
+  center:
+    overrideState: 0
+    value: {x: 0.5, y: 0.5}
+  intensity:
+    overrideState: 1
+    value: 0.25
+  smoothness:
+    overrideState: 0
+    value: 0.2
+  roundness:
+    overrideState: 0
+    value: 1
+  rounded:
+    overrideState: 0
+    value: 0
+  mask:
+    overrideState: 0
+    value: {fileID: 0}
+    defaultState: 1
+  opacity:
+    overrideState: 0
+    value: 1
 --- !u!114 &5755831581963672090
 MonoBehaviour:
   m_ObjectHideFlags: 3

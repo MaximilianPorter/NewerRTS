@@ -409,7 +409,7 @@ public class UnitActions : MonoBehaviour
         hasThrown = true;
         Projectile torchInstance = Instantiate(torch, transform.position, Quaternion.identity).GetComponent<Projectile>();
         float hotterFireResearch = PlayerHolder.GetCompletedResearch(identifier.GetPlayerID).Contains(BuyIcons.Research_HotterFire) ? 2f : 1f;
-        torchInstance.SetInfo(torchDamage * hotterFireResearch, identifier.GetPlayerID, identifier.GetTeamID);
+        torchInstance.SetInfo(torchDamage * hotterFireResearch, identifier.GetPlayerID, identifier.GetTeamID, true);
 
         Projectile.SetTrajectory(torchInstance.GetRigidbody, tempThrowTarget, torchThrowForce, 100, 1f);
     }

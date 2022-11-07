@@ -12,6 +12,7 @@ public class Attacking : MonoBehaviour
 
     [Header("Stats")]
     [SerializeField] private UnitStats stats;
+    [SerializeField] private bool flamingAttacks = false;
     //[SerializeField] private bool isRanged = true;
     //[SerializeField] private float lookRange = 5f;
     //[SerializeField] private float attackRange = 5f;
@@ -26,6 +27,7 @@ public class Attacking : MonoBehaviour
     //[SerializeField] private float hitForce = 0.1f;
 
     [Header("Effects")]
+    [SerializeField] private ParticleSystem startHitEffect;
     [SerializeField] private GameObject defaultHitEffect;
     [SerializeField] private GameObject wheatHitEffect;
     [SerializeField] private GameObject rockHitEffect;
@@ -58,6 +60,12 @@ public class Attacking : MonoBehaviour
     private void Awake()
     {
         identifier = GetComponent<Identifier>();
+    }
+
+    private void Start()
+    {
+        if (startHitEffect)
+            startHitEffect.Stop();
     }
 
     private void Update()
@@ -179,7 +187,7 @@ public class Attacking : MonoBehaviour
             return;
 
         Projectile projInstance = Instantiate(stats.projectile, firePoint.position, Quaternion.identity).GetComponent<Projectile>();
-        projInstance.SetInfo(stats.damage, identifier.GetPlayerID, identifier.GetTeamID);
+        projInstance.SetInfo(stats.damage, identifier.GetPlayerID, identifier.GetTeamID, flamingAttacks);
 
         // attempt to find it's velocity (nav mesh agent first, then rigidbody)
         Vector3? targetVelocity = null;
@@ -195,6 +203,9 @@ public class Attacking : MonoBehaviour
 
     public void MeleeHit()
     {
+        if (startHitEffect)
+            startHitEffect.Play();
+
         Collider[] hits = Physics.OverlapSphere(transform.position + transform.forward * stats.hitDistance, stats.hitRadius, stats.hitMask);
 
         Collider resourceNode = hits.FirstOrDefault(hit => hit.TryGetComponent(out ResourceNode node));
@@ -252,7 +263,30 @@ public class Attacking : MonoBehaviour
 
 
         // hits unit with different team ID
-        Collider enemy = hits.FirstOrDefault(hit => hit.TryGetComponent(out Identifier otherId) && otherId.GetTeamID != identifier.GetTeamID);
+        Collider[] hitEnemies = hits.Where(hit => hit.TryGetComponent(out Identifier otherId) && otherId.GetTeamID != identifier.GetTeamID).ToArray();
+
+        // hit all enemies in radius
+        if (stats.hitAllInRadius)
+        {
+            for (int i = 0; i < hitEnemies.Length; i++)
+            {
+                if (hitEnemies[i] != null)
+                {
+                    DamageEnemy(hitEnemies[i]);
+                }
+            }
+        }
+        else // hit first enemy in radius
+        {
+            Collider firstEnemy = hits.FirstOrDefault();
+            DamageEnemy(firstEnemy);
+        }
+
+
+    }
+
+    private void DamageEnemy (Collider enemy)
+    {
         if (enemy != null)
         {
             // damage enemy unit
@@ -265,8 +299,16 @@ public class Attacking : MonoBehaviour
                     return;
 
             // hit effect
-            GameObject hitEffectInstance = Instantiate(defaultHitEffect, transform.position + transform.forward * stats.hitDistance, Quaternion.identity);
-            Destroy(hitEffectInstance, 1f);
+            if (defaultHitEffect)
+            {
+                GameObject hitEffectInstance = Instantiate(defaultHitEffect, transform.position + transform.forward * stats.hitDistance, Quaternion.identity);
+                Destroy(hitEffectInstance, 1f);
+            }
+
+            if (flamingAttacks && enemy.TryGetComponent(out BurningObject burningHit))
+            {
+                burningHit.ResetBurn();
+            }
 
             //unit.attachedRigidbody.AddForce((unit.transform.position - transform.position).normalized * attackingKnockbackForce, ForceMode.Impulse);
         }

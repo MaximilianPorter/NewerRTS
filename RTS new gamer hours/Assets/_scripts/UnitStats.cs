@@ -34,6 +34,7 @@ public class UnitStats : ScriptableObject
 
     [Header("Melee")]
     public LayerMask hitMask;
+    public bool hitAllInRadius = false;
     public float hitDistance = 0.5f;
     public float hitRadius = 0.5f;
     public float hitForce = 0.1f;
