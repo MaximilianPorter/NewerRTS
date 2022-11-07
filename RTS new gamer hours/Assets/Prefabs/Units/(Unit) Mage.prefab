@@ -51,6 +51,14 @@ PrefabInstance:
       propertyPath: startHitEffect
       value: 
       objectReference: {fileID: 9103851364922387604}
+    - target: {fileID: 5160717717918629872, guid: d14c90c55a5aa6b4293e3c16f01004b4, type: 3}
+      propertyPath: wheatHitEffect
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5160717717918629872, guid: d14c90c55a5aa6b4293e3c16f01004b4, type: 3}
+      propertyPath: defaultHitEffect
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 5160717717918629883, guid: d14c90c55a5aa6b4293e3c16f01004b4, type: 3}
       propertyPath: m_RootOrder
       value: 0

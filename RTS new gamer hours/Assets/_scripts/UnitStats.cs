@@ -35,8 +35,9 @@ public class UnitStats : ScriptableObject
     [Header("Melee")]
     public LayerMask hitMask;
     public bool hitAllInRadius = false;
-    public float hitDistance = 0.5f;
-    public float hitRadius = 0.5f;
+    [Range (0f, 1f)] [SerializeField] private float hitDistance = 0.5f;
+    public float GetHitCenterDist => hitDistance * attackRange;
+    public float GetHitRadius => hitDistance > 0.5f ? Mathf.Lerp(0f, attackRange, hitDistance) : Mathf.Lerp(attackRange, 0f, hitDistance);//Mathf.Lerp(attackRange, 0f, Mathf.Clamp(hitDistance, 0f, 0.5f)) + Mathf.Lerp (0f, attackRange/2f, hitDistance > 0.5f ? hitDistance : 0f);
     public float hitForce = 0.1f;
 
     [Header("Movement")]

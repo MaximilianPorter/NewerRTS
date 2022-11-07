@@ -33,7 +33,7 @@ MonoBehaviour:
   hitMask:
     serializedVersion: 2
     m_Bits: 24577
-  hitDistance: 1
-  hitRadius: 1
+  hitAllInRadius: 0
+  hitDistance: 0.5
   hitForce: 0.1
   maxMoveSpeed: 5

@@ -10,7 +10,7 @@ public class GameWinManager : MonoBehaviour
     public bool ModeDestroyMainBuilding = false;
     public bool ModeDestroyAllBuildings = false;
 
-    [SerializeField] private GameObject[] playerCastles;
+    //[SerializeField] private HomeBase[] playerCastles;
 
     private static bool[] playerDefeated = new bool[4] { false, false, false, false };
 
@@ -29,7 +29,9 @@ public class GameWinManager : MonoBehaviour
         {
             for (int i = 0; i < 4; i++)
             {
-                playerDefeated[i] = PlayerHolder.GetBuildings(i).Count <= 0;
+                // player is defeated when they run out of buildings, or the only building left is the destroyed castle
+                playerDefeated[i] = PlayerHolder.GetBuildings(i).Count <= 0 || 
+                    (PlayerHolder.GetBuildings (i).Count == 1 && PlayerHolder.GetBuildings(i)[0].GetStats.buildingType == BuyIcons.Building_CASTLE_DESTROYED);
             }
         }
         
@@ -37,7 +39,7 @@ public class GameWinManager : MonoBehaviour
         {
             for (int i = 0; i < 4; i++)
             {
-                playerDefeated[i] = playerCastles[i] == null;
+                //playerDefeated[i] = playerCastles[i] == null;
             }
         }
     }

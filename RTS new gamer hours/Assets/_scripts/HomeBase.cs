@@ -5,6 +5,8 @@ using UnityEngine;
 [RequireComponent(typeof (Identifier))]
 public class HomeBase : MonoBehaviour
 {
+    [SerializeField] private Building destroyedHomeBaseBuilding;
+
     private Identifier identifier;
     private Identifier attachedPlayerIdentifier;
 
@@ -24,6 +26,15 @@ public class HomeBase : MonoBehaviour
     private void Update()
     {
         MatchPlayersIdentity();
+    }
+
+    public void Die ()
+    {
+        // place building
+        Identifier placedBuildingIdentity = Instantiate(destroyedHomeBaseBuilding.gameObject, transform.position, Quaternion.identity).GetComponent<Identifier>();
+
+        // set team and player ID of building
+        placedBuildingIdentity.UpdateInfo(identifier.GetPlayerID, identifier.GetTeamID);
     }
 
     private void MatchPlayersIdentity ()

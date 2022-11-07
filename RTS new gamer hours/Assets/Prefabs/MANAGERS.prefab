@@ -952,6 +952,7 @@ GameObject:
   - component: {fileID: 4935508238686832231}
   - component: {fileID: 1415941802941732751}
   - component: {fileID: 3619267676295978045}
+  - component: {fileID: 3414168373827259125}
   m_Layer: 0
   m_Name: GameController
   m_TagString: Untagged
@@ -1220,6 +1221,18 @@ MonoBehaviour:
     buttonState: 0
     ps4Sprite: {fileID: -383237293, guid: 2c5c1565e9d7c8c4780bc516d28b82d7, type: 3}
     xboxSprite: {fileID: -1735758639, guid: e2e86fc604b80ef4e966b7e5e2f79462, type: 3}
+--- !u!114 &3414168373827259125
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5424162428077050024}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d082739e55993ed4db65394222603891, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8119444083559543764
 GameObject:
   m_ObjectHideFlags: 0

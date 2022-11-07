@@ -356,8 +356,8 @@ public class PlayerBuilding : MonoBehaviour
 
             if (buildingMenuIsOpen)
             {
-                // close build menu if we're ever too far away || standing on building
-                bool inRangeOfBuilding = PlayerHolder.GetBuildings(identifier.GetPlayerID).Any(building => (building.transform.position - transform.position).sqrMagnitude < building.GetStats.buildRadius * building.GetStats.buildRadius);
+                // [DEPRICATED] close build menu if we're ever too far away || standing on building
+                //bool inRangeOfBuilding = PlayerHolder.GetBuildings(identifier.GetPlayerID).Any(building => (building.transform.position - transform.position).sqrMagnitude < building.GetStats.buildRadius * building.GetStats.buildRadius);
 
                 if ((/*!inRangeOfBuilding || */hoveringBuilding) && !clickedOnBuilding)
                 {
@@ -367,13 +367,6 @@ public class PlayerBuilding : MonoBehaviour
                 if (clickedOnBuilding && !hoveringBuilding)
                     CloseMenu();
             }
-
-
-            //Vector2 screenPoint = playerCam.WorldToScreenPoint(transform.position + (Vector3)buttonMenuOffset);
-            //if (RectTransformUtility.ScreenPointToLocalPointInRectangle(playerCanvas, screenPoint, playerCam, out Vector2 localPoint))
-            //{
-            //    buttonMenu.transform.localPosition = localPoint;
-            //}
 
             // CLICK ICON
             if (PlayerInput.GetPlayers[identifier.GetPlayerID].GetButtonDown(PlayerInput.GetInputSelect))
@@ -391,7 +384,8 @@ public class PlayerBuilding : MonoBehaviour
                     }
                     else
                     {
-                        // TODO make some sort of red flash indicating that we don't have the resources
+                        // make some sort of red flash indicating that we don't have the resources
+                        ErrorMessageHandler.SetErrorMessage(identifier.GetPlayerID, "not enough resources / Requirements not met");
                     }
                 }else if (buildingMenuIsOpen)
                 {
@@ -403,6 +397,11 @@ public class PlayerBuilding : MonoBehaviour
                             // spend and close menu
                             CloseMenu();
                         }
+                        else
+                        {
+                            // we don't have the resources to buy this, don't close the menu
+                            ErrorMessageHandler.SetErrorMessage(identifier.GetPlayerID, "not enough resources / Requirements not met");
+                        }
                     }
                     else
                     {
@@ -411,7 +410,8 @@ public class PlayerBuilding : MonoBehaviour
                         if (tempPlaceBuildingCost == null)
                         {
                             // we don't have the resources to buy this, don't close the menu
-                            // TODO make some sort of red flash indicating that we don't have the resources
+                            // make some sort of red flash indicating that we don't have the resources
+                            ErrorMessageHandler.SetErrorMessage(identifier.GetPlayerID, "not enough resources / Requirements not met");
                         }
                         else
                         {
@@ -757,6 +757,10 @@ public class PlayerBuilding : MonoBehaviour
                 BuildBuilding(aboutToPlaceBuilding);
                 isPlacingBuilding = false;
                 aboutToPlaceBuilding = null;
+            }else if (PlayerInput.GetPlayers[identifier.GetPlayerID].GetButtonDown(PlayerInput.GetInputSelect) && !canPlace)
+            {
+                // CAN'T PLACE BUILDING
+                ErrorMessageHandler.SetErrorMessage(identifier.GetPlayerID, "place building closer to castle, or further away from another building");
             }
             // CANCEL
             else if (PlayerInput.GetPlayers[identifier.GetPlayerID].GetButtonDown(PlayerInput.GetInputBack) 
@@ -817,7 +821,9 @@ public class PlayerBuilding : MonoBehaviour
             }
             else
             {
-                fromTower = null;
+                // can't place wall here
+                ErrorMessageHandler.SetErrorMessage(identifier.GetPlayerID, "CANNOT PLACE WALL HERE, connect wall to another tower");
+                //fromTower = null;
             }
         }
 

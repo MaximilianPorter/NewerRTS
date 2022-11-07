@@ -76,6 +76,13 @@ public class BuyIconUI : MonoBehaviour
 
     private bool HasRequiredBuildings ()
     {
+        // if you don't have your castle and this is not the 'build castle' button
+        if ((overrideBuilding == null || (overrideBuilding && overrideBuilding.buildingType != BuyIcons.Building_CASTLE)) && 
+            !PlayerHolder.GetBuildings (identifier.GetPlayerID).Any (building => building.GetStats.buildingType == BuyIcons.Building_CASTLE))
+        {
+            return false;
+        }
+
         if (overrideBuilding == null && overrideResearch == null)
             return true;
 
@@ -190,6 +197,7 @@ public enum BuyIcons
 
     // BUILDINGS
     Building_CASTLE = 22,
+    Building_CASTLE_DESTROYED = 46,
     Building_House = 20,
     Building_VillageHouse = 1,
     Building_Archers = 2,
@@ -244,7 +252,8 @@ public enum BuyIcons
     Research_EnhancedFood = 38,
     Research_HotterFire = 39,
     Research_Magic = 44,
+    Research_LargerMageAttacks = 45,
 
-    // highest number: 44
-    // last changed on 11-6-22 : 2:22pm
+    // highest number: 46
+    // last changed on 11-7-22 : 1:49pm
 }

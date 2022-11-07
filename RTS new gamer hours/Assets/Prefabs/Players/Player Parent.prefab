@@ -88,7 +88,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5825349044494905059}
-  m_RootOrder: 24
+  m_RootOrder: 25
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -164,10 +164,10 @@ MonoBehaviour:
   buttonName: 'RESEARCH: Organic Resources'
   buttonDescription: 'Farms, Mines, and Logging Camps generate 50% more resources
 
-    -<i>60
-    sec</i>
+    -
+    <i>Requires Farm</i>
 
-    -<i>Requires Farm</i>'
+    - <i>60 sec</i>'
   overrideUnit: {fileID: 0}
   overrideBuilding: {fileID: 0}
   overrideResearch: {fileID: 11400000, guid: 1c57dde161b979045a17001bae55c058, type: 2}
@@ -444,7 +444,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5825349044494905059}
-  m_RootOrder: 23
+  m_RootOrder: 24
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -520,10 +520,10 @@ MonoBehaviour:
   buttonName: 'RESEARCH: Sharp Arrows'
   buttonDescription: 'Arrows go through armor
 
-    -<i>60 sec</i>
+    - <i>Requires Monestary</i>
 
-    -<i>Requires
-    Monestary</i>'
+    -
+    <i>60 sec</i>'
   overrideUnit: {fileID: 0}
   overrideBuilding: {fileID: 0}
   overrideResearch: {fileID: 11400000, guid: 048619fafaa2808458260debf20eb6a4, type: 2}
@@ -791,7 +791,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5825349044494905059}
-  m_RootOrder: 36
+  m_RootOrder: 38
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -932,6 +932,7 @@ RectTransform:
   - {fileID: 8897976191051234153}
   - {fileID: 2297761824650644636}
   - {fileID: 1672292537612786728}
+  - {fileID: 4716441577333095925}
   m_Father: {fileID: 5825349044624579912}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -984,6 +985,139 @@ MonoBehaviour:
   m_Spacing: {x: 5, y: 20}
   m_Constraint: 0
   m_ConstraintCount: 2
+--- !u!1 &1987514944497775089
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2268066222039076597}
+  - component: {fileID: 6955785049272386110}
+  - component: {fileID: 8260679279829334158}
+  - component: {fileID: 7078880452404156751}
+  - component: {fileID: 8749936050308001681}
+  m_Layer: 5
+  m_Name: Image (36)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &2268066222039076597
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1987514944497775089}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5825349044494905059}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 80, y: 80}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &6955785049272386110
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1987514944497775089}
+  m_CullTransparentMesh: 1
+--- !u!114 &8260679279829334158
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1987514944497775089}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a215cfdac3b59f42a109b254b30c511, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isParent: 0
+  isPlayer: 0
+  playerID: 0
+  teamID: 0
+--- !u!114 &7078880452404156751
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1987514944497775089}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: 508f236727f64b2479b736cc557ef318, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!114 &8749936050308001681
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1987514944497775089}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7372a2d2dcc1254aa69ff66af08ef7b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buttonName: REBUILD CASTLE
+  buttonDescription: Rebuilds your main castle
+  overrideUnit: {fileID: 0}
+  overrideBuilding: {fileID: 11400000, guid: a5e6028d55c64a444bc51ee3841dc158, type: 2}
+  overrideResearch: {fileID: 0}
+  buttonType: 22
+  cost:
+    food: 0
+    wood: 0
+    stone: 0
+  normalColor: {r: 1, g: 1, b: 1, a: 1}
+  disabledColor: {r: 0, g: 0, b: 0, a: 0.5019608}
+  buttonAction:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2863807201155371098}
+        m_TargetAssemblyTypeName: PlayerBuilding, Assembly-CSharp
+        m_MethodName: UpgradeBuilding
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 916436579705897627, guid: 6a50baf92dad4f646aa378a28dd07da1, type: 3}
+          m_ObjectArgumentAssemblyTypeName: Building, Assembly-CSharp
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &2032120675737034513
 GameObject:
   m_ObjectHideFlags: 0
@@ -1014,7 +1148,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5825349044494905059}
-  m_RootOrder: 22
+  m_RootOrder: 23
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -1698,7 +1832,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5825349044494905059}
-  m_RootOrder: 25
+  m_RootOrder: 26
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -1774,10 +1908,10 @@ MonoBehaviour:
   buttonName: 'RESEARCH: Enhanced Food'
   buttonDescription: 'Double amount of food recieved from farms
 
-    -<i>90 sec</i>
+    - <i>Requires
+    Monestary</i>
 
-    -<i>Requires
-    Monestary</i>'
+    - <i>90 sec</i>'
   overrideUnit: {fileID: 0}
   overrideBuilding: {fileID: 0}
   overrideResearch: {fileID: 11400000, guid: 167a84ba93c1c734eb6ca4d389e6333d, type: 2}
@@ -2029,6 +2163,173 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!1 &2774303177064608543
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6001337209181191627}
+  - component: {fileID: 1603516269414312145}
+  - component: {fileID: 463520202454715976}
+  - component: {fileID: 6603288038208788949}
+  - component: {fileID: 7287772835403885290}
+  m_Layer: 5
+  m_Name: (Text) Error Message
+  m_TagString: UI Error Message
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &6001337209181191627
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2774303177064608543}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0.000026152}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5825349044624579912}
+  m_RootOrder: 11
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0.5}
+  m_AnchorMax: {x: 1, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: -82.4}
+  m_SizeDelta: {x: -281.91, y: 50}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &1603516269414312145
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2774303177064608543}
+  m_CullTransparentMesh: 1
+--- !u!114 &463520202454715976
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2774303177064608543}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_text: '<font="SourceSansPro-BlackItalic ERROR MESSAGE"><mark=#BE1818>CAN''T BUY
+    THIS, DO SOMETHING ELSE: CAN''T BUY THIS, DO SOMETHING ELSE, this might be a
+    really long error message</mark>'
+  m_isRightToLeft: 0
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontSharedMaterials: []
+  m_fontMaterial: {fileID: 0}
+  m_fontMaterials: []
+  m_fontColor32:
+    serializedVersion: 2
+    rgba: 4278190080
+  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
+  m_enableVertexGradient: 0
+  m_colorMode: 3
+  m_fontColorGradient:
+    topLeft: {r: 1, g: 1, b: 1, a: 1}
+    topRight: {r: 1, g: 1, b: 1, a: 1}
+    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
+    bottomRight: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColorGradientPreset: {fileID: 0}
+  m_spriteAsset: {fileID: 0}
+  m_tintAllSprites: 0
+  m_StyleSheet: {fileID: 0}
+  m_TextStyleHashCode: -1183493901
+  m_overrideHtmlColors: 0
+  m_faceColor:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontSize: 25
+  m_fontSizeBase: 25
+  m_fontWeight: 400
+  m_enableAutoSizing: 0
+  m_fontSizeMin: 18
+  m_fontSizeMax: 72
+  m_fontStyle: 0
+  m_HorizontalAlignment: 2
+  m_VerticalAlignment: 512
+  m_textAlignment: 65535
+  m_characterSpacing: 0
+  m_wordSpacing: 0
+  m_lineSpacing: 0
+  m_lineSpacingMax: 0
+  m_paragraphSpacing: 0
+  m_charWidthMaxAdj: 0
+  m_enableWordWrapping: 1
+  m_wordWrappingRatios: 0.4
+  m_overflowMode: 0
+  m_linkedTextComponent: {fileID: 0}
+  parentLinkedComponent: {fileID: 0}
+  m_enableKerning: 1
+  m_enableExtraPadding: 0
+  checkPaddingRequired: 0
+  m_isRichText: 1
+  m_parseCtrlCharacters: 1
+  m_isOrthographic: 1
+  m_isCullingEnabled: 0
+  m_horizontalMapping: 0
+  m_verticalMapping: 0
+  m_uvLineOffset: 0
+  m_geometrySortingOrder: 0
+  m_IsTextObjectScaleStatic: 0
+  m_VertexBufferAutoSizeReduction: 0
+  m_useMaxVisibleDescender: 1
+  m_pageToDisplay: 1
+  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_isUsingLegacyAnimationComponent: 0
+  m_isVolumetricText: 0
+  m_hasFontAssetChanged: 0
+  m_baseMaterial: {fileID: 0}
+  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &6603288038208788949
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2774303177064608543}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a215cfdac3b59f42a109b254b30c511, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isParent: 0
+  isPlayer: 0
+  playerID: 0
+  teamID: 0
+--- !u!114 &7287772835403885290
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2774303177064608543}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19535182562da9445b9888f4cb3c8c54, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2879752150721466677
 GameObject:
   m_ObjectHideFlags: 0
@@ -2062,7 +2363,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5825349044494905059}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -2138,7 +2439,7 @@ MonoBehaviour:
   buttonName: Plot of Land
   buttonDescription: 'Does nothing. Just a space for future advances
 
-    -<i>Upgrades
+    - <i>Upgrades
     to <b>Farm</b>, <b>Mine</b>, or <b>Logging Camp</b></i>'
   overrideUnit: {fileID: 0}
   overrideBuilding: {fileID: 11400000, guid: 8a896e0eac0d15d4fab4eda34482a20b, type: 2}
@@ -2198,7 +2499,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5825349044494905059}
-  m_RootOrder: 21
+  m_RootOrder: 22
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -2274,8 +2575,8 @@ MonoBehaviour:
   buttonName: Wizard Tower
   buttonDescription: 'Train mages that excel at magic attacks
 
-    -<i>Requires RESEARCH:
-    MAGIC</i>'
+    - <i>Requires
+    RESEARCH: MAGIC</i>'
   overrideUnit: {fileID: 0}
   overrideBuilding: {fileID: 11400000, guid: 69b16439bd57cbd41801390ed0cf5a49, type: 2}
   overrideResearch: {fileID: 0}
@@ -2334,7 +2635,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5825349044494905059}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -3340,7 +3641,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5825349044494905059}
-  m_RootOrder: 8
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -3416,10 +3717,10 @@ MonoBehaviour:
   buttonName: 'UPGRADE: Stone Tower'
   buttonDescription: 'Improved tower in both health and fighting power
 
-    -<i>Requires
+    - <i>Requires
     Mine</i>
 
-    -Fire is ineffective'
+    - Fire is ineffective'
   overrideUnit: {fileID: 0}
   overrideBuilding: {fileID: 11400000, guid: b6d960d526d820d478e21f316615e87d, type: 2}
   overrideResearch: {fileID: 0}
@@ -3478,7 +3779,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5825349044494905059}
-  m_RootOrder: 14
+  m_RootOrder: 15
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -3611,7 +3912,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5825349044494905059}
-  m_RootOrder: 12
+  m_RootOrder: 13
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -3687,8 +3988,8 @@ MonoBehaviour:
   buttonName: 'UPGRADE: Farm'
   buttonDescription: 'Generates food automatically
 
-    -<i>Does NOT need to be placed
-    next to resources</i>'
+    - <i>Does NOT need to be
+    placed next to resources</i>'
   overrideUnit: {fileID: 0}
   overrideBuilding: {fileID: 11400000, guid: 1d7be9a07610e434baca29a94bf5a692, type: 2}
   overrideResearch: {fileID: 0}
@@ -3876,7 +4177,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5825349044494905059}
-  m_RootOrder: 20
+  m_RootOrder: 21
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -3952,7 +4253,7 @@ MonoBehaviour:
   buttonName: 'UPGRADE: Heavy Shieldman'
   buttonDescription: 'Train heavy shielded units that excel at combat
 
-    -Heavy
+    - Heavy
     armor'
   overrideUnit: {fileID: 0}
   overrideBuilding: {fileID: 11400000, guid: 8c102613e79aa9a42a39a699bcdcb183, type: 2}
@@ -4012,7 +4313,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5825349044494905059}
-  m_RootOrder: 26
+  m_RootOrder: 27
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -4088,10 +4389,12 @@ MonoBehaviour:
   buttonName: 'RESEARCH: Faster Chopping'
   buttonDescription: 'Doubles the speed at which the <b>Logging Camp</b> chops trees
 
-    -<i>90
-    sec</i>
+    -
+    <i>Requires Monestary</i>
 
-    -<i>Requires Monestary</i>'
+    - <i>90 sec</i>
+
+'
   overrideUnit: {fileID: 0}
   overrideBuilding: {fileID: 0}
   overrideResearch: {fileID: 11400000, guid: c860a573c0ad223458a800ad528f6bb5, type: 2}
@@ -4408,7 +4711,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5825349044494905059}
-  m_RootOrder: 18
+  m_RootOrder: 19
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -4484,7 +4787,7 @@ MonoBehaviour:
   buttonName: Barracks
   buttonDescription: 'Train swordsman
 
-    -Light armor'
+    - Light armor'
   overrideUnit: {fileID: 0}
   overrideBuilding: {fileID: 11400000, guid: fc751a1384ed24f43af7db4ab253d0c5, type: 2}
   overrideResearch: {fileID: 0}
@@ -5001,6 +5304,7 @@ RectTransform:
   - {fileID: 6509427667958175817}
   - {fileID: 5825349044404665841}
   - {fileID: 5825349046148027745}
+  - {fileID: 2268066222039076597}
   - {fileID: 5825349044880502760}
   - {fileID: 2902475965169902152}
   - {fileID: 5825349045934945210}
@@ -5027,6 +5331,7 @@ RectTransform:
   - {fileID: 7426854226054306731}
   - {fileID: 212910987265769390}
   - {fileID: 1645020009037707862}
+  - {fileID: 6803163405985536841}
   - {fileID: 5825349046419052667}
   - {fileID: 5825349045182492374}
   - {fileID: 5825349045023334679}
@@ -5372,7 +5677,7 @@ ParentConstraint:
   m_TranslationAtRest: {x: 0, y: 140.71, z: 0.000021458}
   m_RotationAtRest: {x: 0, y: 0, z: 0}
   m_TranslationOffsets:
-  - {x: 0, y: 6.2537766, z: 0.0000019073486}
+  - {x: 0, y: 6.2537766, z: 0}
   m_RotationOffsets:
   - {x: 0, y: 0, z: 0}
   m_AffectTranslationX: 1
@@ -5432,6 +5737,7 @@ RectTransform:
   - {fileID: 4337029282324531927}
   - {fileID: 1369029557201535773}
   - {fileID: 4769323307917189643}
+  - {fileID: 6001337209181191627}
   m_Father: {fileID: 5825349044633011813}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -5741,7 +6047,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5825349044494905059}
-  m_RootOrder: 16
+  m_RootOrder: 17
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -5874,7 +6180,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5825349044494905059}
-  m_RootOrder: 11
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -6330,7 +6636,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5825349044494905059}
-  m_RootOrder: 19
+  m_RootOrder: 20
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -6451,7 +6757,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5825349044494905059}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -6736,7 +7042,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5825349044494905059}
-  m_RootOrder: 37
+  m_RootOrder: 39
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -6869,7 +7175,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5825349044494905059}
-  m_RootOrder: 32
+  m_RootOrder: 34
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -7296,7 +7602,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5825349044494905059}
-  m_RootOrder: 31
+  m_RootOrder: 33
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -7579,7 +7885,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5825349044494905059}
-  m_RootOrder: 35
+  m_RootOrder: 37
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -7801,7 +8107,7 @@ ParentConstraint:
   m_TranslationAtRest: {x: 0.000114889706, y: 35.221878, z: -0.000037550926}
   m_RotationAtRest: {x: 0, y: 0, z: 0}
   m_TranslationOffsets:
-  - {x: 0.0000038146973, y: 1.5654163, z: -0.0000019073486}
+  - {x: 0.000005106209, y: 1.5654163, z: -0.0000038146973}
   m_RotationOffsets:
   - {x: 0, y: 0, z: 0}
   m_AffectTranslationX: 1
@@ -7848,7 +8154,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5825349044494905059}
-  m_RootOrder: 34
+  m_RootOrder: 36
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -7985,7 +8291,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5825349044494905059}
-  m_RootOrder: 17
+  m_RootOrder: 18
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -8335,7 +8641,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5825349044494905059}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -8411,10 +8717,10 @@ MonoBehaviour:
   buttonName: Wooden Tower
   buttonDescription: 'Tower with an archer to protect anything nearby
 
-    -<i>Requires
+    - <i>Requires
     Logging Camp</i>
 
-    -Weak to fire'
+    - Weak to fire'
   overrideUnit: {fileID: 0}
   overrideBuilding: {fileID: 11400000, guid: cdcb55d044e50cd498e62c095113f336, type: 2}
   overrideResearch: {fileID: 0}
@@ -8613,7 +8919,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5825349044494905059}
-  m_RootOrder: 38
+  m_RootOrder: 40
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -9029,7 +9335,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5825349044494905059}
-  m_RootOrder: 15
+  m_RootOrder: 16
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -9161,7 +9467,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5825349044494905059}
-  m_RootOrder: 30
+  m_RootOrder: 32
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -9221,7 +9527,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5825349044494905059}
-  m_RootOrder: 33
+  m_RootOrder: 35
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -9446,7 +9752,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5825349044494905059}
-  m_RootOrder: 27
+  m_RootOrder: 28
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -9522,10 +9828,12 @@ MonoBehaviour:
   buttonName: 'RESEARCH: Dual Wielding Pick'
   buttonDescription: 'Doubles the speed at which the <b>Mine</b> collects stone
 
-    -<i>90
-    sec</i>
+    -
+    <i>Requires Monestary</i>
 
-    -<i>Requires Monestary</i>'
+    - <i>90 sec</i>
+
+'
   overrideUnit: {fileID: 0}
   overrideBuilding: {fileID: 0}
   overrideResearch: {fileID: 11400000, guid: 3392c876eeeacc5409c2b188f2c311cb, type: 2}
@@ -9584,7 +9892,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5825349044494905059}
-  m_RootOrder: 29
+  m_RootOrder: 30
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -9660,8 +9968,8 @@ MonoBehaviour:
   buttonName: 'RESEARCH: Magic'
   buttonDescription: 'Learn more about magic and the properties it gives to things
 
-    -<i>70
-    sec</i>'
+    -
+    <i>70 sec</i>'
   overrideUnit: {fileID: 0}
   overrideBuilding: {fileID: 0}
   overrideResearch: {fileID: 11400000, guid: 862943e7c27ef844a821ede5d3dd4726, type: 2}
@@ -10034,7 +10342,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5825349044494905059}
-  m_RootOrder: 13
+  m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -10288,6 +10596,144 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!1 &7247953068508819844
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6803163405985536841}
+  - component: {fileID: 8745244198837055613}
+  - component: {fileID: 3082898084053049210}
+  - component: {fileID: 2968450696252336877}
+  - component: {fileID: 3241816127725926781}
+  m_Layer: 5
+  m_Name: Image (35)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &6803163405985536841
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7247953068508819844}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5825349044494905059}
+  m_RootOrder: 31
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 80, y: 80}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!222 &8745244198837055613
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7247953068508819844}
+  m_CullTransparentMesh: 1
+--- !u!114 &3082898084053049210
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7247953068508819844}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a215cfdac3b59f42a109b254b30c511, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isParent: 0
+  isPlayer: 0
+  playerID: 0
+  teamID: 0
+--- !u!114 &2968450696252336877
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7247953068508819844}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 21300000, guid: 14e7fefff348a194e8693cc9fea721eb, type: 3}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!114 &3241816127725926781
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7247953068508819844}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7372a2d2dcc1254aa69ff66af08ef7b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buttonName: 'RESEARCH: Bigger = Better'
+  buttonDescription: 'Mages have +30% attack range and size
+
+    - <i>Requires Monestary</i>
+
+    -
+    <i>100 sec</i>'
+  overrideUnit: {fileID: 0}
+  overrideBuilding: {fileID: 0}
+  overrideResearch: {fileID: 11400000, guid: b917b39019f64114da002a5b69f5e4d9, type: 2}
+  buttonType: 45
+  cost:
+    food: 0
+    wood: 0
+    stone: 0
+  normalColor: {r: 1, g: 1, b: 1, a: 1}
+  disabledColor: {r: 0, g: 0, b: 0, a: 0.5019608}
+  buttonAction:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7447749670856190674}
+        m_TargetAssemblyTypeName: PlayerResearch, Assembly-CSharp
+        m_MethodName: SetCurrentResearch
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 3241816127725926781}
+          m_ObjectArgumentAssemblyTypeName: BuyIconUI, Assembly-CSharp
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &7440899344431365216
 GameObject:
   m_ObjectHideFlags: 0
@@ -10940,7 +11386,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5825349044494905059}
-  m_RootOrder: 9
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -11073,7 +11519,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5825349044494905059}
-  m_RootOrder: 28
+  m_RootOrder: 29
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -11149,7 +11595,7 @@ MonoBehaviour:
   buttonName: 'RESEARCH: Hotter Fire'
   buttonDescription: 'Torches do 2X damage
 
-    -<i>60 sec</i>'
+    - <i>60 sec</i>'
   overrideUnit: {fileID: 0}
   overrideBuilding: {fileID: 0}
   overrideResearch: {fileID: 11400000, guid: 9eff497ba602c5c4d9c2f9d261df2110, type: 2}
@@ -11602,7 +12048,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 5825349044494905059}
-  m_RootOrder: 10
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -11964,6 +12410,120 @@ PrefabInstance:
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7144197980713645212, guid: 3daa1dc0c4b8c2a439b116ef6d7cd0d3, type: 3}
   m_PrefabInstance: {fileID: 1756047638576369653}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &2472863867926841705
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 6409799505637023727}
+    m_Modifications:
+    - target: {fileID: 337136894420251214, guid: 3daa1dc0c4b8c2a439b116ef6d7cd0d3, type: 3}
+      propertyPath: researchStats
+      value: 
+      objectReference: {fileID: 11400000, guid: b917b39019f64114da002a5b69f5e4d9, type: 2}
+    - target: {fileID: 4719241376321236238, guid: 3daa1dc0c4b8c2a439b116ef6d7cd0d3, type: 3}
+      propertyPath: m_Name
+      value: (Container) Researching UI (7)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5867957723724829214, guid: 3daa1dc0c4b8c2a439b116ef6d7cd0d3, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -7.2099915
+      objectReference: {fileID: 0}
+    - target: {fileID: 7144197980713645212, guid: 3daa1dc0c4b8c2a439b116ef6d7cd0d3, type: 3}
+      propertyPath: m_Pivot.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7144197980713645212, guid: 3daa1dc0c4b8c2a439b116ef6d7cd0d3, type: 3}
+      propertyPath: m_Pivot.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7144197980713645212, guid: 3daa1dc0c4b8c2a439b116ef6d7cd0d3, type: 3}
+      propertyPath: m_RootOrder
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 7144197980713645212, guid: 3daa1dc0c4b8c2a439b116ef6d7cd0d3, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7144197980713645212, guid: 3daa1dc0c4b8c2a439b116ef6d7cd0d3, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7144197980713645212, guid: 3daa1dc0c4b8c2a439b116ef6d7cd0d3, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7144197980713645212, guid: 3daa1dc0c4b8c2a439b116ef6d7cd0d3, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7144197980713645212, guid: 3daa1dc0c4b8c2a439b116ef6d7cd0d3, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7144197980713645212, guid: 3daa1dc0c4b8c2a439b116ef6d7cd0d3, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7144197980713645212, guid: 3daa1dc0c4b8c2a439b116ef6d7cd0d3, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7144197980713645212, guid: 3daa1dc0c4b8c2a439b116ef6d7cd0d3, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7144197980713645212, guid: 3daa1dc0c4b8c2a439b116ef6d7cd0d3, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7144197980713645212, guid: 3daa1dc0c4b8c2a439b116ef6d7cd0d3, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7144197980713645212, guid: 3daa1dc0c4b8c2a439b116ef6d7cd0d3, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7144197980713645212, guid: 3daa1dc0c4b8c2a439b116ef6d7cd0d3, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7144197980713645212, guid: 3daa1dc0c4b8c2a439b116ef6d7cd0d3, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7144197980713645212, guid: 3daa1dc0c4b8c2a439b116ef6d7cd0d3, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7144197980713645212, guid: 3daa1dc0c4b8c2a439b116ef6d7cd0d3, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7144197980713645212, guid: 3daa1dc0c4b8c2a439b116ef6d7cd0d3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7144197980713645212, guid: 3daa1dc0c4b8c2a439b116ef6d7cd0d3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7144197980713645212, guid: 3daa1dc0c4b8c2a439b116ef6d7cd0d3, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7340812768179417577, guid: 3daa1dc0c4b8c2a439b116ef6d7cd0d3, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 14e7fefff348a194e8693cc9fea721eb, type: 3}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 3daa1dc0c4b8c2a439b116ef6d7cd0d3, type: 3}
+--- !u!224 &4716441577333095925 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 7144197980713645212, guid: 3daa1dc0c4b8c2a439b116ef6d7cd0d3, type: 3}
+  m_PrefabInstance: {fileID: 2472863867926841705}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &2559526229291205806
 PrefabInstance:

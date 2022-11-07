@@ -1,4 +1,5 @@
 using System.Linq;
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 
 [RequireComponent(typeof(NavMeshMovement))]
@@ -142,17 +143,22 @@ public class UnitActions : MonoBehaviour
             lineToDestinationVisual.gameObject.SetActive(false);
         }
 
+        // RESEARCH : MAGE LARGER ATTACKS
+        float attackRange = unitStats.unitType == BuyIcons.Mage && PlayerHolder.GetCompletedResearch(identifier.GetPlayerID).Contains(BuyIcons.Research_LargerMageAttacks) ?
+            unitStats.attackRange * 1.3f :
+            unitStats.attackRange;
+
         // increase look distace and attack distance with height up to 3x
         if (unitStats.isRanged)
         {
             float heightMultiplier = 1.8f;
             lookRangeWithHeight = unitStats.lookRange + Mathf.Clamp((-navMovement.GetBaseOffset + transform.position.y) * heightMultiplier, 0f, unitStats.lookRange * 2f);
-            attackRangeWithHeight = unitStats.attackRange + Mathf.Clamp((-navMovement.GetBaseOffset + transform.position.y) * heightMultiplier, 0f, unitStats.attackRange * 2f);
+            attackRangeWithHeight = attackRange + Mathf.Clamp((-navMovement.GetBaseOffset + transform.position.y) * heightMultiplier, 0f, attackRange * 2f);
         }
         else
         {
             lookRangeWithHeight = unitStats.lookRange;
-            attackRangeWithHeight = unitStats.attackRange;
+            attackRangeWithHeight = attackRange;
         }
 
         if (debugDie || health.GetIsDead)

@@ -32,6 +32,8 @@ public class Attacking : MonoBehaviour
     [SerializeField] private GameObject wheatHitEffect;
     [SerializeField] private GameObject rockHitEffect;
 
+    private Vector3 startHitEffectStartScale;
+
     [Space(10)]
 
 
@@ -65,11 +67,30 @@ public class Attacking : MonoBehaviour
     private void Start()
     {
         if (startHitEffect)
+        {
             startHitEffect.Stop();
+            startHitEffectStartScale = startHitEffect.transform.localScale;
+        }
+
     }
 
     private void Update()
     {
+
+        if (startHitEffect)
+        {
+            // RESEARCH : MAGE LARGER ATTACKS
+            if (stats.unitType == BuyIcons.Mage && PlayerHolder.GetCompletedResearch(identifier.GetPlayerID).Contains(BuyIcons.Research_LargerMageAttacks))
+            {
+                startHitEffect.transform.localScale = startHitEffectStartScale * 1.3f;
+            }
+            else
+            {
+                startHitEffect.transform.localScale = startHitEffectStartScale;
+            }
+        }
+
+
         if (debugShoot)
         {
             Shoot();
@@ -206,7 +227,7 @@ public class Attacking : MonoBehaviour
         if (startHitEffect)
             startHitEffect.Play();
 
-        Collider[] hits = Physics.OverlapSphere(transform.position + transform.forward * stats.hitDistance, stats.hitRadius, stats.hitMask);
+        Collider[] hits = Physics.OverlapSphere(transform.position + transform.forward * stats.GetHitCenterDist, stats.GetHitRadius, stats.hitMask);
 
         Collider resourceNode = hits.FirstOrDefault(hit => hit.TryGetComponent(out ResourceNode node));
         if (resourceNode != null)
@@ -245,11 +266,11 @@ public class Attacking : MonoBehaviour
         Collider rock = hits.FirstOrDefault(hit => hit.CompareTag("Rock"));
         if (rock != null)
         {
-            GameObject rockHitInstance = Instantiate(rockHitEffect, transform.position + transform.forward * stats.hitDistance,
+            GameObject rockHitInstance = Instantiate(rockHitEffect, transform.position + transform.forward * stats.GetHitCenterDist,
                 Quaternion.LookRotation(-transform.forward));
             Destroy(rockHitInstance, 2f);
 
-            GameObject hitEffectInstance = Instantiate(defaultHitEffect, transform.position + transform.forward * stats.hitDistance, Quaternion.identity);
+            GameObject hitEffectInstance = Instantiate(defaultHitEffect, transform.position + transform.forward * stats.GetHitCenterDist, Quaternion.identity);
             Destroy(hitEffectInstance, 1f);
 
         }
@@ -257,7 +278,7 @@ public class Attacking : MonoBehaviour
         Collider wheat = hits.FirstOrDefault(hit => hit.CompareTag("Field"));
         if (wheat != null)
         {
-            GameObject wheatHitInstance = Instantiate(wheatHitEffect, transform.position + transform.forward * stats.hitDistance, Quaternion.identity);
+            GameObject wheatHitInstance = Instantiate(wheatHitEffect, transform.position + transform.forward * stats.GetHitCenterDist, Quaternion.identity);
             Destroy(wheatHitInstance, 5f);
         }
 
@@ -303,7 +324,7 @@ public class Attacking : MonoBehaviour
             // hit effect
             if (defaultHitEffect)
             {
-                GameObject hitEffectInstance = Instantiate(defaultHitEffect, transform.position + transform.forward * stats.hitDistance, Quaternion.identity);
+                GameObject hitEffectInstance = Instantiate(defaultHitEffect, transform.position + transform.forward * stats.GetHitCenterDist, Quaternion.identity);
                 Destroy(hitEffectInstance, 1f);
             }
 
@@ -333,7 +354,7 @@ public class Attacking : MonoBehaviour
         if (!stats.isRanged)
         {
             Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere (transform.position + transform.forward * stats.hitDistance, stats.hitRadius);
+            Gizmos.DrawWireSphere (transform.position + transform.forward * stats.GetHitCenterDist, stats.GetHitRadius);
         }
     }
 }

@@ -10,6 +10,7 @@ public class Building : MonoBehaviour
     [SerializeField] private bool isTargetable = true;
     [SerializeField] private BuildingStats stats;
     [SerializeField] private bool debugSpawnUnit = false;
+    [SerializeField] private bool debugDie = false;
     [SerializeField] private Transform rallyPoint;
     [SerializeField] private GameObject playerHoverEffect;
     [SerializeField] private GameObject smokeExplosion;
@@ -75,6 +76,12 @@ public class Building : MonoBehaviour
         {
             SpawnUnit();
             debugSpawnUnit = false;
+        }
+
+        if (debugDie)
+        {
+            Die();
+            debugDie = false;
         }
 
         //if (lastTeamID != identifier.GetTeamID)
@@ -154,6 +161,9 @@ public class Building : MonoBehaviour
 
             SwitchTeams(health.GetLastHitByPlayer.GetPlayerID, health.GetLastHitByPlayer.GetTeamID);
             return;
+        }else if (stats.buildingType == BuyIcons.Building_CASTLE)
+        {
+            GetComponent<HomeBase>().Die();
         }
 
 

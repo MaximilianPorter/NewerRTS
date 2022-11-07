@@ -25,7 +25,8 @@ public class TeamBoxes : MonoBehaviour
         if (StatsDatabaseManager.LoadingStats)
             return;
 
-        if (teamBoxes.Any (box => box.GetTouchingPlayers.Length > 0))
+        // at least 2 people are standing on boxes that are separate teams
+        if (teamBoxes.Count (box => box.GetTouchingPlayers.Length > 0) > 1)
         {
             counter -= Time.deltaTime;
             countdownText.text = counter.ToString("F0");

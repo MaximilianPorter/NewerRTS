@@ -15,6 +15,7 @@ TagManager:
   - Main Canvas
   - Animal
   - Chest
+  - UI Error Message
   layers:
   - Default
   - TransparentFX
