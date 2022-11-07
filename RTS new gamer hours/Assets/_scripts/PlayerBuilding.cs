@@ -801,8 +801,8 @@ public class PlayerBuilding : MonoBehaviour
         wallLookDir.y = 0f;
 
         wallBuildingVisual.transform.rotation = Quaternion.LookRotation(wallLookDir, Vector3.up);
-        wallBuildingVisual.transform.position = (wallEndPos + fromTower.transform.position) / 2f;
-        wallBuildingVisual.transform.localScale = new Vector3(0.5f, 2f, (wallEndPos - fromTower.transform.position).magnitude);
+        wallBuildingVisual.transform.localScale = new Vector3(0.5f, 1f, (wallEndPos - fromTower.transform.position).magnitude);
+        wallBuildingVisual.transform.position = (wallEndPos + fromTower.transform.position + new Vector3 (0f, 0.5f, 0f)) / 2f;
 
         
         if (PlayerInput.GetPlayers[identifier.GetPlayerID].GetButtonDown(PlayerInput.GetInputSelect))
