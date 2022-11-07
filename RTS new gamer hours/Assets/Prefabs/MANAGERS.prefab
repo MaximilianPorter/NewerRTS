@@ -1015,27 +1015,6 @@ MonoBehaviour:
     m_Bits: 64
   generateOnlyNavMesh: 0
   showSpawnedObjectBuffers: 0
-  preplacedObjects:
-  - prefab: {fileID: 0}
-    spacingBuffer: 1
-    randomRotation: 0
-    spawnWeight: 0
-  - prefab: {fileID: 0}
-    spacingBuffer: 8
-    randomRotation: 0
-    spawnWeight: 0
-  - prefab: {fileID: 0}
-    spacingBuffer: 8
-    randomRotation: 0
-    spawnWeight: 0
-  - prefab: {fileID: 0}
-    spacingBuffer: 8
-    randomRotation: 0
-    spawnWeight: 0
-  - prefab: {fileID: 0}
-    spacingBuffer: 8
-    randomRotation: 0
-    spawnWeight: 0
   trees:
   - {fileID: 6105749644536836682, guid: b460afd8b2468664e8c4569564672999, type: 3}
   - {fileID: 6105749644536836682, guid: 10925f2173894024e96054e40a1f4fad, type: 3}
@@ -1063,7 +1042,6 @@ MonoBehaviour:
   timeBetweenChestSpawns: {x: 15, y: 30}
   spawnArea: {x: 50, y: 50}
   spawnGroups:
-  - {fileID: 11400000, guid: 8397f5cf7dab95b45838fc6d89546d98, type: 2}
   - {fileID: 11400000, guid: 0da327a43b796d7478d70ee8f7e67d1a, type: 2}
   - {fileID: 11400000, guid: 267598114aa02404f98e84c460498358, type: 2}
   - {fileID: 11400000, guid: 6ac0c51e9763e5b4d9cace0da89bd2c8, type: 2}
@@ -1147,7 +1125,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66978d806a6f6084480ea0bb59885478, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  loadingAssetsMenu: {fileID: 8119444083559543764}
 --- !u!114 &4382548591723899512
 MonoBehaviour:
   m_ObjectHideFlags: 0
