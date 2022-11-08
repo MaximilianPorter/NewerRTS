@@ -60,8 +60,6 @@ public class UnitActions : MonoBehaviour
     private float attackRangeWithHeight = 0f;
     private UnitMovementType movementType = UnitMovementType.LookNearDestination;
 
-    private int lastTeamID = 0;
-
     private Cell lastCell;
     //private Cell activeCell;
 
@@ -100,15 +98,10 @@ public class UnitActions : MonoBehaviour
 
     private void Start()
     {
-        lastTeamID = identifier.GetTeamID;
         outline = GetComponent<Outline>();
 
 
-        // turn on correct body parts
-        for (int i = 0; i < bodyPartsNeedMaterial.Length; i++)
-        {
-            bodyPartsNeedMaterial[i].material = PlayerColorManager.GetUnitMaterial(identifier.GetPlayerID);
-        }
+        UpdateBodyColor();
 
 
         if (isSelectable)
@@ -473,6 +466,15 @@ public class UnitActions : MonoBehaviour
         for (int i = 0; i < children.Length; i++)
         {
             children[i].gameObject.layer = RuntimeLayerController.GetLayer(playerID);
+        }
+    }
+
+    public void UpdateBodyColor()
+    {
+        // turn on correct body parts
+        for (int i = 0; i < bodyPartsNeedMaterial.Length; i++)
+        {
+            bodyPartsNeedMaterial[i].material = PlayerColorManager.GetUnitMaterial(identifier.GetPlayerID);
         }
     }
 

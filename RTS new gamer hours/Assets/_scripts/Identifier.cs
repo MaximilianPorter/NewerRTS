@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using UnityEngine.UI;
 
 public class Identifier : MonoBehaviour
 {
@@ -9,6 +10,8 @@ public class Identifier : MonoBehaviour
     [SerializeField] private bool isPlayer = false;
     [SerializeField] private int playerID;
     [SerializeField] private int teamID;
+
+    public Button.ButtonClickedEvent onChange = new Button.ButtonClickedEvent();
 
     private int lastPlayerID = -1;
     private int lastTeamID = -1;
@@ -111,6 +114,7 @@ public class Identifier : MonoBehaviour
         {
             childrenIdentifiers[i].SetPlayerID(playerID);
             childrenIdentifiers[i].SetTeamID(teamID);
+            childrenIdentifiers[i].onChange.Invoke();
         }
     }
 

@@ -12,6 +12,7 @@ public class SplitscreenAutoCamera : MonoBehaviour
     [SerializeField] private GameObject[] playerParents;
     [SerializeField] private RectTransform vertLine;
     [SerializeField] private RectTransform horLine;
+    [SerializeField] private GameObject outerLines;
 
     private Camera[] playerCameras;
     private Camera[] playerUiCameras;
@@ -83,8 +84,8 @@ public class SplitscreenAutoCamera : MonoBehaviour
 
     private void SetRectValues ()
     {
-        vertLine.sizeDelta = new Vector2(20f, vertLine.sizeDelta.y);
-        horLine.sizeDelta = new Vector2(horLine.sizeDelta.x, 20f);
+        vertLine.sizeDelta = new Vector2(10f, vertLine.sizeDelta.y);
+        horLine.sizeDelta = new Vector2(horLine.sizeDelta.x, 10f);
 
         int playersJoinedCount = playersJoinedOrder.Count(player => player >= 0);
 
@@ -95,6 +96,7 @@ public class SplitscreenAutoCamera : MonoBehaviour
 
             horLine.gameObject.SetActive(false);
             vertLine.gameObject.SetActive(false);
+            outerLines.SetActive(true);
         }
         else if (playersJoinedCount == 2)
         {
@@ -106,6 +108,7 @@ public class SplitscreenAutoCamera : MonoBehaviour
 
             horLine.gameObject.SetActive(false);
             vertLine.gameObject.SetActive(true);
+            outerLines.SetActive(true);
 
             vertLine.localPosition = Vector3.zero;
             horLine.localPosition = Vector3.zero;
@@ -126,6 +129,7 @@ public class SplitscreenAutoCamera : MonoBehaviour
             horLine.localPosition = Vector3.zero;
             horLine.gameObject.SetActive(true);
             vertLine.gameObject.SetActive(true);
+            outerLines.SetActive(true);
             vertLine.sizeDelta = new Vector2(vertLine.sizeDelta.x, Screen.height / 2f);
             horLine.sizeDelta = new Vector2(Screen.width, horLine.sizeDelta.y);
         }
@@ -147,8 +151,16 @@ public class SplitscreenAutoCamera : MonoBehaviour
             horLine.localPosition = Vector3.zero;
             horLine.gameObject.SetActive(true);
             vertLine.gameObject.SetActive(true);
+            outerLines.SetActive(true);
             vertLine.sizeDelta = new Vector2(vertLine.sizeDelta.x, Screen.height);
             horLine.sizeDelta = new Vector2(Screen.width, horLine.sizeDelta.y);
+        }
+        else
+        {
+            // no players joined yet
+            horLine.gameObject.SetActive(false);
+            vertLine.gameObject.SetActive(false);
+            outerLines.SetActive(false);
         }
 
 

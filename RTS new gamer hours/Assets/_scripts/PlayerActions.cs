@@ -200,7 +200,7 @@ public class PlayerActions : MonoBehaviour
         }
     }
 
-    private void UpdateBodyColor ()
+    public void UpdateBodyColor ()
     {
         // turn on correct body parts
         for (int i = 0; i < bodyPartsNeedMaterial.Length; i++)
@@ -208,7 +208,6 @@ public class PlayerActions : MonoBehaviour
             bodyPartsNeedMaterial[i].material = PlayerColorManager.GetUnitMaterial(identifier.GetPlayerID);
 
         }
-        
     }
 
     private void SetAnimations(AnimatorOverrideController newController)
