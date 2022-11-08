@@ -42,6 +42,61 @@ public class JoystickButtonSpriteController : MonoBehaviour
     {
         instance = this;
     }
+
+    //private void Awake()
+    //{
+    //    // Subscribe to events
+    //    ReInput.ControllerConnectedEvent += OnControllerConnected;
+    //    ReInput.ControllerDisconnectedEvent += OnControllerDisconnected;
+    //    ReInput.ControllerPreDisconnectEvent += OnControllerPreDisconnect;
+    //}
+
+    //// This function will be called when a controller is connected
+    //// You can get information about the controller that was connected via the args parameter
+    //void OnControllerConnected(ControllerStatusChangedEventArgs args)
+    //{
+    //    Debug.Log("A controller was connected! Name = " + args.name + " Id = " + args.controllerId + " Type = " + args.controllerType);
+    //}
+
+    //// This function will be called when a controller is fully disconnected
+    //// You can get information about the controller that was disconnected via the args parameter
+    //void OnControllerDisconnected(ControllerStatusChangedEventArgs args)
+    //{
+    //    Debug.Log("A controller was disconnected! Name = " + args.name + " Id = " + args.controllerId + " Type = " + args.controllerType);
+    //}
+
+    //// This function will be called when a controller is about to be disconnected
+    //// You can get information about the controller that is being disconnected via the args parameter
+    //// You can use this event to save the controller's maps before it's disconnected
+    //void OnControllerPreDisconnect(ControllerStatusChangedEventArgs args)
+    //{
+    //    Debug.Log("A controller is being disconnected! Name = " + args.name + " Id = " + args.controllerId + " Type = " + args.controllerType);
+    //}
+
+    //void OnDestroy()
+    //{
+    //    // Unsubscribe from events
+    //    ReInput.ControllerConnectedEvent -= OnControllerConnected;
+    //    ReInput.ControllerDisconnectedEvent -= OnControllerDisconnected;
+    //    ReInput.ControllerPreDisconnectEvent -= OnControllerPreDisconnect;
+    //}
+
+    private void Update()
+    {
+        for (int i = 0; i < ReInput.players.playerCount; i++)
+        {
+            Controller controller = PlayerInput.GetPlayers[i].controllers.GetController(Rewired.ControllerType.Joystick, i);
+            if (controller == null)
+                continue;
+
+            if (controller.name.Contains("Dualshock") || controller.name.Contains("Sony"))
+                playerControllerTypes[i] = ControllerType.PS4;
+            else if (controller.name.Contains("XInput"))
+                playerControllerTypes[i] = ControllerType.Xbox;
+
+            //Debug.Log("player" + i + ":" + controller.name);
+        }
+    }
 }
 
 public enum ControllerType

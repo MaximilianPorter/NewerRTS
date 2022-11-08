@@ -1,3 +1,4 @@
+using Rewired.Demos;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,7 @@ public class TeamBoxes : MonoBehaviour
 
     [SerializeField] private float countdownTime = 5f;
     [SerializeField] private TMP_Text countdownText;
+    [SerializeField] private TMP_Text mainGroundText;
 
     private int lastAmtOfPlayersToReadyUp = 0;
     private float counter;
@@ -24,6 +26,8 @@ public class TeamBoxes : MonoBehaviour
     {
         if (StatsDatabaseManager.LoadingStats)
             return;
+
+        mainGroundText.text = SplitscreenAutoCamera.PlayersJoined > 0 ? "PRACTICE AREA" : "PRESS [A]\nTO JOIN";
 
         // at least 2 people are standing on boxes that are separate teams
         if (teamBoxes.Count (box => box.GetTouchingPlayers.Length > 0) > 1)

@@ -18,6 +18,8 @@ public class SplitscreenAutoCamera : MonoBehaviour
     private Camera[] playerUiCameras;
     private Rect[] playerCameraRects;
 
+    public static int PlayersJoined = 0;
+
     private int debugSecondPlayerIndex = 0;
 
     private void Awake()
@@ -72,6 +74,8 @@ public class SplitscreenAutoCamera : MonoBehaviour
                 }
             }
         }
+
+        PlayersJoined = playersJoinedOrder.Count(num => num != -1);
 
         // set rect values
         SetRectValues();

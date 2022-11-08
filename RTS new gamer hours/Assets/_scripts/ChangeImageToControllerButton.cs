@@ -15,12 +15,11 @@ public class ChangeImageToControllerButton : MonoBehaviour
         identifier = GetComponent <Identifier>();
         image = GetComponent<Image>();
 
-        ControllerType controller = JoystickButtonSpriteController.instance.GetPlayerControllerType(identifier.GetPlayerID);
-        image.sprite = JoystickButtonSpriteController.instance.GetIcon(controller, input);
     }
 
     private void Update()
     {
-        
+        ControllerType controller = JoystickButtonSpriteController.instance.GetPlayerControllerType(identifier.GetPlayerID);
+        image.sprite = JoystickButtonSpriteController.instance.GetIcon(controller, input);
     }
 }
