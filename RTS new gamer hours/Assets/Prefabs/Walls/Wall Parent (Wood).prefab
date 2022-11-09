@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 940315507880657032}
   - component: {fileID: 5862693579279401454}
   - component: {fileID: 940315507880657039}
+  - component: {fileID: 1651889963508237513}
   m_Layer: 0
   m_Name: Wall Parent (Wood)
   m_TagString: Untagged
@@ -49,6 +50,9 @@ MonoBehaviour:
   isPlayer: 0
   playerID: 0
   teamID: 0
+  onChange:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &940315507880657039
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -62,3 +66,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   doorPrefab: {fileID: 2845427702264437988, guid: 218d853bfda5d0049bdc3bdbe751c92a, type: 3}
+  wallLevel: 0
+--- !u!114 &1651889963508237513
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 940315507880657038}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9336efeb6eeffa8478aed43d06c9a3fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 100
+  armor: 0
+  invincible: 0

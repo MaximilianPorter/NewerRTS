@@ -201,7 +201,7 @@ public class Attacking : MonoBehaviour
 
     private void Shoot ()
     {
-        Transform target = nearestCellEnemy.transform;
+        Transform target = nearestCellEnemy ? nearestCellEnemy.transform : null;
 
         // sometimes it's null. i don't think it matters too much if we don't fire every once in a while
         if (target == null)

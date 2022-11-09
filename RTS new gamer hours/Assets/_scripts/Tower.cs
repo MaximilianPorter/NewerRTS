@@ -150,6 +150,7 @@ public class Tower : MonoBehaviour
         if (middleHitDown)
             middleBetweenWalls = hitDownInfo.point;
         GameObject middleWallInstance = Instantiate(wallSectionPrefab.gameObject, middleBetweenWalls, Quaternion.identity, wallParent.transform);
+        wallParent.AddWall(middleWallInstance.GetComponent<Health>());
 
         middleWallInstance.transform.rotation = Quaternion.LookRotation(lookDir, Vector3.up);
 
@@ -167,6 +168,8 @@ public class Tower : MonoBehaviour
                 GameObject wallInstance = Instantiate(wallSectionPrefab.gameObject, pos, Quaternion.identity,
                     wallParent.transform);
 
+                wallParent.AddWall(wallInstance.GetComponent<Health>());
+
                 wallInstance.transform.rotation = Quaternion.LookRotation(lookDir, Vector3.up);
             }
             else
@@ -179,6 +182,7 @@ public class Tower : MonoBehaviour
 
                 GameObject wallInstance = Instantiate(wallSectionPrefab.gameObject, pos, Quaternion.identity,
                     wallParent.transform);
+                wallParent.AddWall(wallInstance.GetComponent<Health>());
 
                 wallInstance.transform.rotation = Quaternion.LookRotation(lookDir, Vector3.up);
             }
@@ -200,6 +204,7 @@ public class Tower : MonoBehaviour
 
                 GameObject wallInstance = Instantiate(wallSectionPrefab.gameObject, pos, Quaternion.identity,
                     wallParent.transform);
+                wallParent.AddWall(wallInstance.GetComponent<Health>());
 
                 wallInstance.transform.rotation = Quaternion.LookRotation(lookDir, Vector3.up);
             }
@@ -216,6 +221,7 @@ public class Tower : MonoBehaviour
 
                 GameObject wallInstance = Instantiate(wallSectionPrefab.gameObject, pos, Quaternion.identity,
                     wallParent.transform);
+                wallParent.AddWall(wallInstance.GetComponent<Health>());
 
                 wallInstance.transform.rotation = Quaternion.LookRotation(lookDir, Vector3.up);
             }

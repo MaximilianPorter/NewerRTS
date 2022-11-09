@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -10,6 +11,9 @@ public class Wall : MonoBehaviour
     [SerializeField] private int wallLevel = 0;
 
     private bool doorSpawned = false;
+
+    private List<Health> wallHealths = new List<Health>();
+    public void AddWall (Health newWallHealth) => wallHealths.Add (newWallHealth);
 
     public bool GetDoorSpawned => doorSpawned;
     public void SetDoorExists(bool doorSpawned) => this.doorSpawned = doorSpawned;
@@ -23,6 +27,9 @@ public class Wall : MonoBehaviour
     private Tower doorTower1;
 
     private Identifier identifier;
+    private Health health;
+
+    private int lastWallSize = 0;
 
     public void InitializeWall(Tower tower0, Tower tower1, bool doorSpawned = false)
     {
@@ -33,6 +40,7 @@ public class Wall : MonoBehaviour
     private void Start()
     {
         identifier = GetComponent<Identifier>();
+        health = GetComponent<Health>();
         
     }
 
@@ -58,12 +66,18 @@ public class Wall : MonoBehaviour
             Destroy(gameObject);
         }
 
-
-        
+        if (lastWallSize != wallHealths.Count)
+        {
+            health.SetValues(wallHealths.Sum(wall => wall.GetMaxHealth), 0);
+            lastWallSize = wallHealths.Count;
+        }
     }
+
 
     private void LateUpdate()
     {
+        wallHealths.RemoveAll(wall => wall == null);
+
         // if the towers are the same, but the wall isn't, change the wall to match the towers
         if (tower0.GetWallParentPrefab.wallLevel == tower1.GetWallParentPrefab.wallLevel && wallLevel != tower0.GetWallParentPrefab.wallLevel)
         {
@@ -86,6 +100,31 @@ public class Wall : MonoBehaviour
             // destroy current walls
             Destroy(gameObject);
         }
+
+        // if a wall takes damage, transfer the damage to 'this.health' and heal the wall
+        for (int i = 0; i < wallHealths.Count; i++)
+        {
+            if (wallHealths[i].GetCurrentHealth < wallHealths[i].GetMaxHealth)
+            {
+                float diff = wallHealths[i].GetMaxHealth - wallHealths[i].GetCurrentHealth;
+                health.TakeDamage(diff, wallHealths[i].GetLastHitByPlayer, wallHealths[i].GetLastHitFromPos);
+                wallHealths[i].Heal(1000000);
+            }
+        }
+
+        if (health.GetCurrentHealth <= 0)
+            DestroyWall();
+    }
+
+    public void DestroyWall ()
+    {
+        tower1.RemoveConnectedTower(tower0);
+        tower1.RemoveConnectedTower(doorTower1);
+
+        tower0.RemoveConnectedTower(tower1);
+        tower0.RemoveConnectedTower(doorTower0);
+
+        Destroy(gameObject);
     }
 
     public void ChangeTower (Tower oldTower, Tower newTower)
@@ -105,13 +144,7 @@ public class Wall : MonoBehaviour
             childBuildings[i].SellBuilding();
         }
 
-        tower1.RemoveConnectedTower(tower0);
-        tower1.RemoveConnectedTower(doorTower1);
-
-        tower0.RemoveConnectedTower(tower1);
-        tower0.RemoveConnectedTower(doorTower0);
-
-        Destroy(gameObject);
+        DestroyWall();
     }
 
     public void PlaceDoor ()

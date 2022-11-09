@@ -24,6 +24,10 @@ PrefabInstance:
       value: 4096
       objectReference: {fileID: 0}
     - target: {fileID: 4258379125407079058, guid: d14c90c55a5aa6b4293e3c16f01004b4, type: 3}
+      propertyPath: attackFireWaitTime
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4258379125407079058, guid: d14c90c55a5aa6b4293e3c16f01004b4, type: 3}
       propertyPath: unitOverrideController
       value: 
       objectReference: {fileID: 22100000, guid: 94fe43a350ad7754e8f2f184a9a29b37, type: 2}
@@ -47,6 +51,10 @@ PrefabInstance:
       propertyPath: stats
       value: 
       objectReference: {fileID: 11400000, guid: 5510d3b878a641048bd1433af47e7a4a, type: 2}
+    - target: {fileID: 5160717717918629872, guid: d14c90c55a5aa6b4293e3c16f01004b4, type: 3}
+      propertyPath: defaultHitEffect
+      value: 
+      objectReference: {fileID: 8436814671522722686, guid: 4d4e33d3d33fd694f8dc8b4e1d08af3a, type: 3}
     - target: {fileID: 5160717717918629883, guid: d14c90c55a5aa6b4293e3c16f01004b4, type: 3}
       propertyPath: m_RootOrder
       value: 0

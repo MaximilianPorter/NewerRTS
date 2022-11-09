@@ -10,9 +10,17 @@ public class CellIdentifier : MonoBehaviour
     private Collider col;
     public Collider GetCollider => col;
 
+    private Building building;
+    public Building GetBuilding => building;
+
+    private UnitActions unit;
+    public UnitActions GetUnit => unit;
+
     private void Start()
     {
         identifier = GetComponent<Identifier>();
         col = GetComponent<Collider>();
+        building = GetComponent<Building>();
+        unit = GetComponent<UnitActions>();
     }
 }

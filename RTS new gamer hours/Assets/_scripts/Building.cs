@@ -8,6 +8,7 @@ using UnityEngine;
 public class Building : MonoBehaviour
 {
     [SerializeField] private bool isTargetable = true;
+    [SerializeField] private bool isWall = false;
     [SerializeField] private BuildingStats stats;
     [SerializeField] private bool debugSpawnUnit = false;
     [SerializeField] private bool debugDie = false;
@@ -37,6 +38,7 @@ public class Building : MonoBehaviour
     public Health GetHealth => health;
     public void SetIsTargetable(bool isTargetable) => this.isTargetable = isTargetable;
     public bool GetIsTargetable => isTargetable;
+    public bool GetIsWall => isWall;
     public void SetMainSpawnBuilding(bool isMainSpawnBuilding) => this.isMainSpawnBuilding = isMainSpawnBuilding;
     public bool GetIsMainSpawnBuilding => isMainSpawnBuilding;
     public bool GetRallyPointMoved => rallyPointMoved;

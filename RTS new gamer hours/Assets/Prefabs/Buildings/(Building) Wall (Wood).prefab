@@ -170,8 +170,8 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 11400000, guid: 6bf593ce42a35a5498aedf96238a5e14, type: 2}
     - target: {fileID: 8956819731846260278, guid: 7444a2888946a634ba879ce630db7727, type: 3}
-      propertyPath: isTargetable
-      value: 0
+      propertyPath: isWall
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8956819731846260281, guid: 7444a2888946a634ba879ce630db7727, type: 3}
       propertyPath: isParent

@@ -15,10 +15,10 @@ MonoBehaviour:
   unitType: 47
   health: 100
   armor: 5
-  damage: 50
-  timeBetweenAttacks: 1
+  damage: 30
+  timeBetweenAttacks: 3
   lookRange: 5
-  attackRange: 1.7
+  attackRange: 2.5
   cost:
     food: 10
     wood: 3

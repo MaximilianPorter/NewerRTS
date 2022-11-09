@@ -250,6 +250,10 @@ public class UnitActions : MonoBehaviour
                 if (unit.GetIdentifier.GetIsTargetable == false)
                     continue;
 
+                // if you're not a battering ram
+                if (unitStats.unitType != BuyIcons.Unit_BatteringRam && unit.GetBuilding && unit.GetBuilding.GetIsWall)
+                    continue;
+
                 // if there's something in the way
                 if (Physics.Raycast(transform.position, unit.transform.position - transform.position, unitStats.lookRange, obstacleVisionMask))
                     continue;
@@ -352,7 +356,8 @@ public class UnitActions : MonoBehaviour
                 float sqrDistFromEnemy = dirEnemyAndMe.sqrMagnitude;
                 if (enemy.TryGetComponent (out Building enemyBuilding))
                 {
-                    if (sqrDistFromEnemy > enemyBuilding.GetStats.interactionRadius * enemyBuilding.GetStats.interactionRadius)
+                    float minDist = unitStats.regularAttackBuildings ? attackRangeWithHeight * attackRangeWithHeight : enemyBuilding.GetStats.interactionRadius * enemyBuilding.GetStats.interactionRadius;
+                    if (sqrDistFromEnemy > minDist)
                     {
                         // if we're out of range to throw shit on the building
                         navMovement.SetDestination (enemy.transform.position + dirEnemyAndMe.normalized * (enemyBuilding.GetStats.interactionRadius - 0.1f));
@@ -363,8 +368,18 @@ public class UnitActions : MonoBehaviour
                         navMovement.ResetDestination();
                         navMovement.SetLookAt(enemy.transform);
 
-                        if (throwCounter > timeBetweenThrows)
-                            StartThrow(enemy.transform.position);
+                        if (unitStats.regularAttackBuildings)
+                        {
+                            if (attacking.GetCanAttack && !isAttacking && !isThrowing)
+                            {
+                                Attack();
+                            }
+                        }
+                        else
+                        {
+                            if (throwCounter > timeBetweenThrows)
+                                StartThrow(enemy.transform.position);
+                        }
                     }
                 }
                 else
