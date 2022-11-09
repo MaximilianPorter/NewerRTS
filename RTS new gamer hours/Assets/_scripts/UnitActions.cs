@@ -1,6 +1,7 @@
 using System.Linq;
 using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 [RequireComponent(typeof(NavMeshMovement))]
 [RequireComponent(typeof(Attacking))]
@@ -46,6 +47,7 @@ public class UnitActions : MonoBehaviour
     private float findNearestEnemyCounter = 0f;
 
     private Identifier identifier;
+    private CellIdentifier cellIdentifier;
     private NavMeshMovement navMovement;
     private Attacking attacking;
     private Health health;
@@ -86,6 +88,7 @@ public class UnitActions : MonoBehaviour
     private void Awake()
     {
         identifier = GetComponent<Identifier>();
+        cellIdentifier = GetComponent<CellIdentifier>();
         navMovement = GetComponent<NavMeshMovement>();
         attacking = GetComponent<Attacking>();
         health = GetComponent<Health>();
@@ -137,7 +140,7 @@ public class UnitActions : MonoBehaviour
         }
 
         // RESEARCH : MAGE LARGER ATTACKS
-        float attackRange = unitStats.unitType == BuyIcons.Mage && PlayerHolder.GetCompletedResearch(identifier.GetPlayerID).Contains(BuyIcons.Research_LargerMageAttacks) ?
+        float attackRange = unitStats.unitType == BuyIcons.Unit_Mage && PlayerHolder.GetCompletedResearch(identifier.GetPlayerID).Contains(BuyIcons.Research_LargerMageAttacks) ?
             unitStats.attackRange * 1.3f :
             unitStats.attackRange;
 
@@ -188,7 +191,7 @@ public class UnitActions : MonoBehaviour
         HandleMoveTowardsEnemies();
 
 
-        UnitCellManager.UpdateActiveCell (identifier, transform.position, ref lastCell);
+        UnitCellManager.UpdateActiveCell (cellIdentifier, transform.position, ref lastCell);
 
 
         findNearestEnemyCounter -= Time.deltaTime;
@@ -219,9 +222,9 @@ public class UnitActions : MonoBehaviour
         attacking.SetNearestEnemy(ReturnClosestEnemy(cellsAroundMe));
     }
 
-    private Transform ReturnClosestEnemy(Cell[] cellsToCheck)
+    private CellIdentifier ReturnClosestEnemy(Cell[] cellsToCheck)
     {
-        Transform closestEnemy = null;
+        CellIdentifier closestEnemy = null;
 
         //int totalUnitsAroundMe = cellsToCheck.Sum(cell => cell.unitsInCell.Count);
 
@@ -231,16 +234,20 @@ public class UnitActions : MonoBehaviour
                 continue;
 
 
-            foreach (Identifier unit in cellsToCheck[i].unitsInCell)
+            foreach (CellIdentifier unit in cellsToCheck[i].unitsInCell)
             {
                 if (unit == null)
+                    continue;
+
+                // if the enemy is not part of the enemy mask
+                if (enemyMask != (enemyMask | (1 << unit.gameObject.layer)))
                     continue;
 
                 if (unit == identifier) // don't look for self
                     continue;
 
                 // if the unit isn't targetable
-                if (unit.GetIsTargetable == false)
+                if (unit.GetIdentifier.GetIsTargetable == false)
                     continue;
 
                 // if there's something in the way
@@ -257,12 +264,12 @@ public class UnitActions : MonoBehaviour
                 
 
                 // detect closest enemy
-                if (unit.GetTeamID != identifier.GetTeamID)
+                if (unit.GetIdentifier.GetTeamID != identifier.GetTeamID)
                 {
                     if (closestEnemy == null)
-                        closestEnemy = unit.transform;
-                    else if (unitDir.sqrMagnitude < (closestEnemy.position - transform.position).sqrMagnitude)
-                        closestEnemy = unit.transform;
+                        closestEnemy = unit;
+                    else if (unitDir.sqrMagnitude < (closestEnemy.transform.position - transform.position).sqrMagnitude)
+                        closestEnemy = unit;
                 }
             }
 
@@ -312,11 +319,11 @@ public class UnitActions : MonoBehaviour
         }
 
         Vector3 moveTowardsPos = navMovement.GetDestination;
-        Transform enemy = attacking.GetNearestEnemy;
+        CellIdentifier enemy = attacking.GetNearestEnemy;
 
         if (enemy)
         {
-            Vector3 dirMoveTargetAndEnemy = (moveTowardsPos - enemy.position);
+            Vector3 dirMoveTargetAndEnemy = (moveTowardsPos - enemy.transform.position);
             dirMoveTargetAndEnemy.y = 0f;
             Vector3 dirMoveTargetAndMe = (moveTowardsPos - transform.position);
             dirMoveTargetAndMe.y = 0f;
@@ -339,7 +346,7 @@ public class UnitActions : MonoBehaviour
             // or we're standing still and the enemy is in our range
             else
             {
-                Vector3 dirEnemyAndMe = (transform.position - enemy.position);
+                Vector3 dirEnemyAndMe = (transform.position - enemy.transform.position);
                 dirEnemyAndMe.y = 0f;
 
                 float sqrDistFromEnemy = dirEnemyAndMe.sqrMagnitude;
@@ -348,32 +355,33 @@ public class UnitActions : MonoBehaviour
                     if (sqrDistFromEnemy > enemyBuilding.GetStats.interactionRadius * enemyBuilding.GetStats.interactionRadius)
                     {
                         // if we're out of range to throw shit on the building
-                        navMovement.SetDestination (enemy.position + dirEnemyAndMe.normalized * (enemyBuilding.GetStats.interactionRadius - 0.1f));
+                        navMovement.SetDestination (enemy.transform.position + dirEnemyAndMe.normalized * (enemyBuilding.GetStats.interactionRadius - 0.1f));
                     }
                     else
                     {
                         // if we're in range to lob that stinky poo poo onto the building
                         navMovement.ResetDestination();
-                        navMovement.SetLookAt(enemy);
+                        navMovement.SetLookAt(enemy.transform);
 
                         if (throwCounter > timeBetweenThrows)
-                            StartThrow(enemy.position);
+                            StartThrow(enemy.transform.position);
                     }
                 }
                 else
                 {
-                    if (sqrDistFromEnemy > attackRangeWithHeight * attackRangeWithHeight)
+                    float colliderSqrRadius = ((CapsuleCollider)enemy.GetCollider).radius * ((CapsuleCollider)enemy.GetCollider).radius;
+                    if (sqrDistFromEnemy > attackRangeWithHeight * attackRangeWithHeight + colliderSqrRadius) // - enemy.collider.radius
                     {
                         // if we're out of range of attacking
                         // move close enough to attack
-                        navMovement.SetDestination(enemy.position);
+                        navMovement.SetDestination(enemy.transform.position);
                         navMovement.SetLookAt(null);
                     }
                     else
                     {
                         // we're in range of attacking
                         navMovement.ResetDestination();
-                        navMovement.SetLookAt(enemy);
+                        navMovement.SetLookAt(enemy.transform);
 
                         if (attacking.GetCanAttack && !isAttacking && !isThrowing)
                         {
@@ -447,7 +455,7 @@ public class UnitActions : MonoBehaviour
         if (!isSelectable)
             return;
 
-        lastCell.unitsInCell.Remove(identifier);
+        lastCell.unitsInCell.Remove(cellIdentifier);
         PlayerHolder.RemoveUnit(identifier.GetPlayerID, this);
     }
     private void SetAnimations (AnimatorOverrideController newController)

@@ -209,6 +209,7 @@ public enum BuyIcons
     Building_Sheildman = 31,
 
     Building_Workshop = 8,
+    Building_WorkshopPlus = 50,
     Building_ResearchLab = 29,
 
     Building_TowerWood = 9,
@@ -235,13 +236,16 @@ public enum BuyIcons
 
     // UNITS
     CancelProduction = 21,
-    Archer = 14,
-    ArcherPlus = 15,
-    Swordsman = 16,
-    SwordsmanPlus = 17,
-    Mage = 18,
-    Spearman = 19,
-    Shieldman = 32,
+    Unit_Archer = 14,
+    Unit_ArcherPlus = 15,
+    Unit_Swordsman = 16,
+    Unit_SwordsmanPlus = 17,
+    Unit_Mage = 18,
+    Unit_Spearman = 19,
+    Unit_Shieldman = 32,
+    Unit_BatteringRam = 47,
+    Unit_Catapult = 48,
+    Unit_Balista = 49,
 
     // RESEARCH
     Research_SharpArrows = 30,
@@ -254,6 +258,6 @@ public enum BuyIcons
     Research_Magic = 44,
     Research_LargerMageAttacks = 45,
 
-    // highest number: 46
-    // last changed on 11-7-22 : 1:49pm
+    // highest number: 50
+    // last changed on 11-8-22 : 4:45pm
 }

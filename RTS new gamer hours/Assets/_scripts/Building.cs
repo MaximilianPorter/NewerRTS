@@ -22,6 +22,7 @@ public class Building : MonoBehaviour
 
     private float scaleUpCounter = 0f;
     private bool rallyPointMoved = false;
+    private CellIdentifier cellIdentifier;
     private Identifier identifier;
     private bool playerIsHovering = false;
     private bool isMainSpawnBuilding = false;
@@ -46,6 +47,7 @@ public class Building : MonoBehaviour
     private void Awake()
     {
         identifier = GetComponent<Identifier>();
+        cellIdentifier = GetComponent<CellIdentifier>();
         health = GetComponent<Health>();
 
         health.SetValues(stats.health, 0);
@@ -119,9 +121,9 @@ public class Building : MonoBehaviour
         if (lastCell == null || lastCell != activeCell)
         {
             if (lastCell != null)
-                lastCell.unitsInCell.Remove(identifier);
+                lastCell.unitsInCell.Remove(cellIdentifier);
 
-            activeCell.unitsInCell.Add(identifier);
+            activeCell.unitsInCell.Add(cellIdentifier);
             lastCell = activeCell;
         }
     }
@@ -183,7 +185,7 @@ public class Building : MonoBehaviour
     }
     public void DeleteBuilding ()
     {
-        lastCell.unitsInCell.Remove(identifier);
+        lastCell.unitsInCell.Remove(cellIdentifier);
         PlayerHolder.RemoveBuilding(identifier.GetPlayerID, this);
 
         Destroy(gameObject);

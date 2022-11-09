@@ -44,13 +44,19 @@ public class MyUiButton : MonoBehaviour
         if (buttonType == ButtonType.Click)
         {
             if (isClicking)
+            {
+                isClicking = false;
+                isSelected = false;
                 onComplete.Invoke();
+            }
         }
         else if (buttonType == ButtonType.Hold)
         {
             if (isClicking && fillTimer >= timeToFill)
             {
                 fillTimer = 0f;
+                isClicking = false;
+                isSelected = false;
                 onComplete.Invoke();
             }
         }

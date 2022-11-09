@@ -22,6 +22,7 @@ public class UnitStats : ScriptableObject
     [Space(10)]
 
     public float slowMultiplierBlocking = 0.2f;
+    public bool regularAttackBuildings = false;
 
     [Header("Ranged")]
     public bool isRanged = false;

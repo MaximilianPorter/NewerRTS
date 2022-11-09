@@ -9,6 +9,8 @@ public class PlayerPauseController : MonoBehaviour
     [SerializeField] private GameObject pauseMenu;
     [SerializeField] private MyUiButton[] pauseMenuButtons;
 
+    [SerializeField] private MyUiButton[] buttonsNotAvailableInGame;
+
     private Identifier identifier;
 
     public void Pause()
@@ -62,7 +64,7 @@ public class PlayerPauseController : MonoBehaviour
 
     private void HandlePauseMenuOpen ()
     {
-
+        // unpause
         if (PlayerInput.GetPlayers[identifier.GetPlayerID].GetButtonDown(PlayerInput.GetInputBack))
         {
             UnPause();
@@ -98,6 +100,12 @@ public class PlayerPauseController : MonoBehaviour
         if (PlayerInput.GetPlayers[identifier.GetPlayerID].GetAxis(PlayerInput.GetInputMoveVertical) < 0.5 && 
             PlayerInput.GetPlayers[identifier.GetPlayerID].GetAxis(PlayerInput.GetInputMoveVertical) > -0.5)
             movedIndex = false;
+
+        // turn off buttons that aren't available in game
+        for (int i = 0; i < buttonsNotAvailableInGame.Length; i++)
+        {
+            buttonsNotAvailableInGame[i].gameObject.SetActive(GameWinManager.instance == null);
+        }
     }
 
     private void ChangeButtonIndex (int amount)
@@ -105,6 +113,16 @@ public class PlayerPauseController : MonoBehaviour
         movedIndex = true;
         pauseMenuButtons[selectedButtonIndex].DeSelectButton();
         pauseMenuButtons[selectedButtonIndex].SetIsClicking(false);
+
+        // if the button isn't active, skip over it
+        // capped to 10 times cause I don't like while loops
+        for (int i = 0; i < 10; i++)
+        {
+            if (pauseMenuButtons[selectedButtonIndex + amount].gameObject.activeInHierarchy)
+                break;
+
+            selectedButtonIndex += amount;
+        }
         selectedButtonIndex += amount;
         pauseMenuButtons[selectedButtonIndex].SelectButton();
     }
@@ -115,6 +133,12 @@ public class PlayerPauseController : MonoBehaviour
         {
             pauseMenuButtons[i].DeSelectButton();
         }
+    }
+
+    public void LeaveGame ()
+    {
+        UnPause();
+        SplitscreenAutoCamera.instance.RemoveJoinedPlayer(identifier.GetPlayerID);
     }
 
     public void MainMenuButton ()

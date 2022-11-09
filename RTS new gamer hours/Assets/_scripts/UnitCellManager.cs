@@ -68,7 +68,7 @@ public class UnitCellManager : MonoBehaviour
         {
             for (int y = 0; y < Cells.GetLength(1); y++)
             {
-                Cells[x, y] = new Cell(new Vector2Int (x, y), new List<Identifier>(0));
+                Cells[x, y] = new Cell(new Vector2Int (x, y), new List<CellIdentifier>(0));
             }
         }
     }
@@ -142,7 +142,7 @@ public class UnitCellManager : MonoBehaviour
         return cells;
     }
 
-    public static void UpdateActiveCell(Identifier identifier, Vector3 pos, ref Cell lastCell)
+    public static void UpdateActiveCell(CellIdentifier identifier, Vector3 pos, ref Cell lastCell)
     {
         Cell activeCell = UnitCellManager.GetCell(pos);
         if (lastCell == null || lastCell != activeCell)
@@ -184,9 +184,9 @@ public class UnitCellManager : MonoBehaviour
 public class Cell
 {
     public Vector2Int pos;
-    public List<Identifier> unitsInCell;
+    public List<CellIdentifier> unitsInCell;
 
-    public Cell (Vector2Int pos, List<Identifier> unitsInCell)
+    public Cell (Vector2Int pos, List<CellIdentifier> unitsInCell)
     {
         this.pos = pos;
         this.unitsInCell = unitsInCell;

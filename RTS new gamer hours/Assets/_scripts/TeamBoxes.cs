@@ -24,10 +24,10 @@ public class TeamBoxes : MonoBehaviour
 
     private void Update()
     {
+        mainGroundText.text = SplitscreenAutoCamera.PlayersJoined > 0 ? "PRACTICE AREA" : "PRESS [A]\nTO JOIN";
+
         if (StatsDatabaseManager.LoadingStats)
             return;
-
-        mainGroundText.text = SplitscreenAutoCamera.PlayersJoined > 0 ? "PRACTICE AREA" : "PRESS [A]\nTO JOIN";
 
         // at least 2 people are standing on boxes that are separate teams
         if (teamBoxes.Count (box => box.GetTouchingPlayers.Length > 0) > 1)

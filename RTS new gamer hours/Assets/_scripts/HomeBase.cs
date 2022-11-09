@@ -26,6 +26,15 @@ public class HomeBase : MonoBehaviour
     private void Update()
     {
         MatchPlayersIdentity();
+
+        if (attachedPlayerIdentifier && GameWinManager.instance != null)
+        {
+            if (!attachedPlayerIdentifier.gameObject.activeInHierarchy)
+            {
+                PlayerHolder.GetBuildings(attachedPlayerIdentifier.GetPlayerID).Remove(GetComponent<Building>());
+                gameObject.SetActive(false);
+            }
+        }
     }
 
     public void Die ()

@@ -10,30 +10,31 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8ac889f1e1c8a4f46b9fe26f45ce43e0, type: 3}
-  m_Name: Mage
+  m_Name: BatteringRam
   m_EditorClassIdentifier: 
-  unitType: 18
-  health: 70
-  armor: 0
-  damage: 6
-  timeBetweenAttacks: 3
+  unitType: 47
+  health: 100
+  armor: 5
+  damage: 50
+  timeBetweenAttacks: 1
   lookRange: 5
-  attackRange: 3
+  attackRange: 1.7
   cost:
-    food: 20
-    wood: 10
-    stone: 10
+    food: 10
+    wood: 3
+    stone: 0
   slowMultiplierBlocking: 0.2
+  regularAttackBuildings: 1
   isRanged: 0
   projectileForce: 0
   accuracy: 0
   leadsTarget: 0
-  projectileArch: 1
+  projectileArch: 0.5
   projectile: {fileID: 0}
   hitMask:
     serializedVersion: 2
-    m_Bits: 1024
-  hitAllInRadius: 1
-  hitDistance: 0
+    m_Bits: 4096
+  hitAllInRadius: 0
+  hitDistance: 0.5
   hitForce: 0.1
-  maxMoveSpeed: 1.5
+  maxMoveSpeed: 0.5

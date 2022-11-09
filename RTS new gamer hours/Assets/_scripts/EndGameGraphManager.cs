@@ -34,10 +34,10 @@ public class EndGameGraphManager : MonoBehaviour
         new List<int>(),
     };
 
-    private float timeBetweenSnapshots = 1f;
+    private readonly float timeBetweenSnapshots = 5f;
     private float snapshotCounter = 0f;
 
-    private float timeToRestartGame = 5f;
+    private readonly float timeToRestartGame = 5f;
     private float restartGameCounter = 0f;
 
 
@@ -88,6 +88,14 @@ public class EndGameGraphManager : MonoBehaviour
 
         for (int i = 0; i < playerLines.Length; i++)
         {
+            // don't show the lines of the players who aren't playing
+            if (!PlayerHolder.GetPlayerIdentifiers[i].gameObject.activeInHierarchy)
+            {
+                playerLines[i].enabled = false;
+                continue;
+            }
+            else
+                playerLines[i].enabled = true;
 
             // set colors
             playerLines[i].startColor = PlayerColorManager.GetPlayerColor(i);

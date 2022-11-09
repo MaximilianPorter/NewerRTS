@@ -41,7 +41,7 @@ public class Attacking : MonoBehaviour
     [SerializeField] private Transform firePoint;
 
 
-    private Transform nearestEnemy;
+    private CellIdentifier nearestCellEnemy;
     private bool canAttack = true;
     private bool canAttackAddition = true;
     private float attackCounter = 10000f;
@@ -55,8 +55,8 @@ public class Attacking : MonoBehaviour
 
     public bool GetCanAttack => canAttack;
     public void SetCanAttack(bool addition) => canAttackAddition = addition;
-    public void SetNearestEnemy (Transform newEnemy) => nearestEnemy = newEnemy;
-    public Transform GetNearestEnemy => nearestEnemy;
+    public void SetNearestEnemy (CellIdentifier newEnemy) => nearestCellEnemy = newEnemy;
+    public CellIdentifier GetNearestEnemy => nearestCellEnemy;
     public UnitStats GetStats => stats;
 
     private void Awake()
@@ -80,7 +80,7 @@ public class Attacking : MonoBehaviour
         if (startHitEffect)
         {
             // RESEARCH : MAGE LARGER ATTACKS
-            if (stats.unitType == BuyIcons.Mage && PlayerHolder.GetCompletedResearch(identifier.GetPlayerID).Contains(BuyIcons.Research_LargerMageAttacks))
+            if (stats.unitType == BuyIcons.Unit_Mage && PlayerHolder.GetCompletedResearch(identifier.GetPlayerID).Contains(BuyIcons.Research_LargerMageAttacks))
             {
                 startHitEffect.transform.localScale = startHitEffectStartScale * 1.3f;
             }
@@ -201,7 +201,7 @@ public class Attacking : MonoBehaviour
 
     private void Shoot ()
     {
-        Transform target = nearestEnemy;
+        Transform target = nearestCellEnemy.transform;
 
         // sometimes it's null. i don't think it matters too much if we don't fire every once in a while
         if (target == null)

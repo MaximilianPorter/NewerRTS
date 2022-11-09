@@ -58,10 +58,29 @@ public class SplitscreenAutoCamera : MonoBehaviour
 
     private void Update()
     {
+        HandleJoiningPlayers();
+
+        PlayersJoined = playersJoinedOrder.Count(num => num != -1);
+
+        // set rect values
+        SetRectValues();
+
+        for (int i = 0; i < playerParents.Length; i++)
+        {
+            playerParents[i].SetActive(playersJoinedOrder.Contains(i));
+        }
+    }
+
+    private void HandleJoiningPlayers ()
+    {
+        // if the game has started, you can't join
+        if (GameWinManager.instance != null)
+            return;
+
         for (int i = 0; i < 4; i++)
         {
             // if a player clicks "A" and they're not joined yet
-            if (PlayerInput.GetPlayers[i].GetButtonDown (PlayerInput.GetInputSelect) && !playersJoinedOrder.Contains(i))
+            if (PlayerInput.GetPlayers[i].GetButtonDown(PlayerInput.GetInputSelect) && !playersJoinedOrder.Contains(i))
             {
                 // assign the first -1 to the character index
                 for (int j = 0; j < playersJoinedOrder.Length; j++)
@@ -74,15 +93,25 @@ public class SplitscreenAutoCamera : MonoBehaviour
                 }
             }
         }
+    }
 
-        PlayersJoined = playersJoinedOrder.Count(num => num != -1);
-
-        // set rect values
-        SetRectValues();
-
-        for (int i = 0; i < playerParents.Length; i++)
+    public void RemoveJoinedPlayer (int playerID)
+    {
+        int playerRemoveIndex = 100000;
+        for (int i = 0; i < playersJoinedOrder.Length; i++)
         {
-            playerParents[i].SetActive(playersJoinedOrder.Contains(i));
+            if (i > playerRemoveIndex && playersJoinedOrder[i] != -1)
+            {
+                playersJoinedOrder[i - 1] = playersJoinedOrder[i];
+                playersJoinedOrder[i] = -1;
+            }
+
+            if (playersJoinedOrder[i] == playerID)
+            {
+                playerRemoveIndex = i;
+                playersJoinedOrder[i] = -1;
+            }
+
         }
     }
 

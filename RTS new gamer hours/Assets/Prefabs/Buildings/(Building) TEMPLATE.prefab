@@ -186,6 +186,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8956819731846260277}
   - component: {fileID: 8956819731846260281}
+  - component: {fileID: 7584293615422801350}
   - component: {fileID: 8956819731846260278}
   - component: {fileID: 8956819731846260279}
   - component: {fileID: 8956819731846260276}
@@ -234,6 +235,21 @@ MonoBehaviour:
   isPlayer: 0
   playerID: 0
   teamID: 0
+  onChange:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &7584293615422801350
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8956819731846260274}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c0f66b71fbea304e947f2a99b89b66b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &8956819731846260278
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -249,6 +265,7 @@ MonoBehaviour:
   isTargetable: 1
   stats: {fileID: 0}
   debugSpawnUnit: 0
+  debugDie: 0
   rallyPoint: {fileID: 8956819731203436766}
   playerHoverEffect: {fileID: 3936105976378229163}
   smokeExplosion: {fileID: 4912207008319035513, guid: a498eae963f771c40bde5122922062ce, type: 3}

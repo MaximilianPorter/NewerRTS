@@ -73,12 +73,17 @@ public class UnitSelection : MonoBehaviour
 
     private void Update()
     {
+        // don't do anything if we're paused
+        if (PauseGameManager.GetIsPaused)
+            return;
+
+        ChangeUnitMovementType();
+
         // if the player is in a menu, we don't do unit selection updates
         if (PlayerInput.GetPlayerIsInMenu(identifier.GetPlayerID))
             return;
 
         HandleMircroGroups();
-        ChangeUnitMovementType();
 
         // handle unit visuals for units selected (little dot over the unit)
         if (selectedUnits.Count > 0)
