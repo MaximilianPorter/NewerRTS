@@ -20,9 +20,9 @@ MonoBehaviour:
   lookRange: 5
   attackRange: 2.5
   cost:
-    food: 10
-    wood: 3
-    stone: 0
+    food: 0
+    wood: 35
+    stone: 20
   slowMultiplierBlocking: 0.2
   regularAttackBuildings: 1
   isRanged: 0

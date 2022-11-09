@@ -257,7 +257,8 @@ public enum BuyIcons
     Research_HotterFire = 39,
     Research_Magic = 44,
     Research_LargerMageAttacks = 45,
+    Research_SiegeTechnology = 51,
 
-    // highest number: 50
-    // last changed on 11-8-22 : 4:45pm
+    // highest number: 51
+    // last changed on 11-8-22 : 7:45pm
 }

@@ -33,6 +33,6 @@ Material:
     - _Glossiness: 0
     - _Metallic: 0
     m_Colors:
-    - _TintColorA: {r: 1, g: 0.21226418, b: 0.91847616, a: 1}
-    - _TintColorB: {r: 1, g: 0.21226418, b: 0.91847616, a: 1}
+    - _TintColorA: {r: 0.9529412, g: 0.3647059, b: 0.22352941, a: 1}
+    - _TintColorB: {r: 0.9529412, g: 0.3647059, b: 0.22352941, a: 1}
   m_BuildTextureStacks: []

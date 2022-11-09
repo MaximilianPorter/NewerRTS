@@ -16,7 +16,7 @@ MonoBehaviour:
   unitType: 0
   subsequentUpgrades: 1c0000002a000000
   requiredBuildings: 
-  health: 300
+  health: 150
   cost:
     food: 0
     wood: 0
