@@ -1,0 +1,70 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 469c24fdb3bd6431b92cc1465bd9166b, type: 3}
+  m_Name: RemoteConfigDataStoreAsset
+  m_EditorClassIdentifier: 
+  _rsKeyList: "[\r\n  {\r\n    \"metadata\": {\r\n      \"entityId\": \"bd27f870-0bff-4b50-9119-da408ef5b4bc\"\r\n   
+    },\r\n    \"rs\": {\r\n      \"key\": \"Unit_Archer\",\r\n      \"type\": \"json\",\r\n     
+    \"schemaId\": null,\r\n      \"value\": {\r\n        \"unitType\": 14,\r\n       
+    \"health\": 70,\r\n        \"armor\": 0,\r\n        \"damage\": 5,\r\n       
+    \"timeBetweenAttacks\": 2,\r\n        \"lookRange\": 6,\r\n        \"attackRange\":
+    6,\r\n        \"cost\": {\r\n          \"food\": 12,\r\n          \"wood\": 5,\r\n         
+    \"stone\": 0\r\n        },\r\n        \"regularAttackBuildings\": false,\r\n       
+    \"isRanged\": true,\r\n        \"projectileForce\": 15,\r\n        \"accuracy\":
+    70,\r\n        \"leadsTarget\": true,\r\n        \"projectileArch\": 0.34999999403953552,\r\n       
+    \"projectile\": {\r\n          \"instanceID\": 27500\r\n        },\r\n       
+    \"hitMask\": {\r\n          \"serializedVersion\": \"2\",\r\n          \"m_Bits\":
+    1024\r\n        },\r\n        \"hitAllInRadius\": false,\r\n        \"hitDistance\":
+    0.5,\r\n        \"maxMoveSpeed\": 2.2000000476837158\r\n      }\r\n    }\r\n 
+    },\r\n  {\r\n    \"metadata\": {\r\n      \"entityId\": \"45a67faa-1f5f-473f-b173-b75efd78f33a\"\r\n   
+    },\r\n    \"rs\": {\r\n      \"key\": \"Unit_Swordsman\",\r\n      \"type\":
+    \"json\",\r\n      \"schemaId\": null,\r\n      \"value\": {\r\n        \"unitType\":
+    16,\r\n        \"health\": 80.0,\r\n        \"armor\": 1.0,\r\n        \"damage\":
+    7.0,\r\n        \"timeBetweenAttacks\": 1.0,\r\n        \"lookRange\": 5.0,\r\n       
+    \"attackRange\": 1.0,\r\n        \"cost\": {\r\n          \"food\": 10,\r\n         
+    \"wood\": 3,\r\n          \"stone\": 0\r\n        },\r\n        \"regularAttackBuildings\":
+    false,\r\n        \"isRanged\": false,\r\n        \"projectileForce\": 0.0,\r\n       
+    \"accuracy\": 0.0,\r\n        \"leadsTarget\": false,\r\n        \"projectileArch\":
+    0.5,\r\n        \"projectile\": {\r\n          \"instanceID\": 0\r\n        },\r\n       
+    \"hitMask\": {\r\n          \"serializedVersion\": \"2\",\r\n          \"m_Bits\":
+    1024\r\n        },\r\n        \"hitAllInRadius\": false,\r\n        \"hitDistance\":
+    0.5,\r\n        \"maxMoveSpeed\": 2.0\r\n      }\r\n    }\r\n  }\r\n]"
+  _rsLastCachedKeyList: "[\r\n  {\r\n    \"metadata\": {\r\n      \"entityId\": \"bd27f870-0bff-4b50-9119-da408ef5b4bc\"\r\n   
+    },\r\n    \"rs\": {\r\n      \"key\": \"Unit_Archer\",\r\n      \"type\": \"json\",\r\n     
+    \"schemaId\": null,\r\n      \"value\": {\r\n        \"unitType\": 14,\r\n       
+    \"health\": 70,\r\n        \"armor\": 0,\r\n        \"damage\": 5,\r\n       
+    \"timeBetweenAttacks\": 2,\r\n        \"lookRange\": 6,\r\n        \"attackRange\":
+    6,\r\n        \"cost\": {\r\n          \"food\": 12,\r\n          \"wood\": 5,\r\n         
+    \"stone\": 0\r\n        },\r\n        \"regularAttackBuildings\": false,\r\n       
+    \"isRanged\": true,\r\n        \"projectileForce\": 15,\r\n        \"accuracy\":
+    70,\r\n        \"leadsTarget\": true,\r\n        \"projectileArch\": 0.34999999403953552,\r\n       
+    \"projectile\": {\r\n          \"instanceID\": 27500\r\n        },\r\n       
+    \"hitMask\": {\r\n          \"serializedVersion\": \"2\",\r\n          \"m_Bits\":
+    1024\r\n        },\r\n        \"hitAllInRadius\": false,\r\n        \"hitDistance\":
+    0.5,\r\n        \"maxMoveSpeed\": 2.2000000476837158\r\n      }\r\n    }\r\n 
+    },\r\n  {\r\n    \"metadata\": {\r\n      \"entityId\": \"45a67faa-1f5f-473f-b173-b75efd78f33a\"\r\n   
+    },\r\n    \"rs\": {\r\n      \"key\": \"Unit_Swordsman\",\r\n      \"type\":
+    \"json\",\r\n      \"schemaId\": null,\r\n      \"value\": {\r\n        \"unitType\":
+    16,\r\n        \"health\": 80.0,\r\n        \"armor\": 1.0,\r\n        \"damage\":
+    7.0,\r\n        \"timeBetweenAttacks\": 1.0,\r\n        \"lookRange\": 5.0,\r\n       
+    \"attackRange\": 1.0,\r\n        \"cost\": {\r\n          \"food\": 10,\r\n         
+    \"wood\": 3,\r\n          \"stone\": 0\r\n        },\r\n        \"regularAttackBuildings\":
+    false,\r\n        \"isRanged\": false,\r\n        \"projectileForce\": 0.0,\r\n       
+    \"accuracy\": 0.0,\r\n        \"leadsTarget\": false,\r\n        \"projectileArch\":
+    0.5,\r\n        \"projectile\": {\r\n          \"instanceID\": 0\r\n        },\r\n       
+    \"hitMask\": {\r\n          \"serializedVersion\": \"2\",\r\n          \"m_Bits\":
+    1024\r\n        },\r\n        \"hitAllInRadius\": false,\r\n        \"hitDistance\":
+    0.5,\r\n        \"maxMoveSpeed\": 2.0\r\n      }\r\n    }\r\n  }\r\n]"
+  _environments: "[\r\n  {\r\n    \"projectId\": \"9cbc666d-572b-4382-952c-916d7f44144a\",\r\n   
+    \"name\": \"production\",\r\n    \"id\": \"638d38d3-d3e6-4625-a0d5-532979d78fad\",\r\n   
+    \"isDefault\": true,\r\n    \"createdAt\": \"2022-11-11T19:37:28Z\",\r\n    \"updatedAt\":
+    \"2022-11-11T19:37:28Z\"\r\n  }\r\n]"

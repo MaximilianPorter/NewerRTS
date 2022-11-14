@@ -149,6 +149,9 @@ MonoBehaviour:
   isPlayer: 0
   playerID: 0
   teamID: 0
+  onChange:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &1396730318529224538
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -269,6 +272,9 @@ MonoBehaviour:
   isPlayer: 0
   playerID: 0
   teamID: 0
+  onChange:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &1396730319860474753
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -490,19 +496,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 485146, guid: 0feddc0c38c75f645a0f0eb135022e83, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.4
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 485146, guid: 0feddc0c38c75f645a0f0eb135022e83, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.4
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 485146, guid: 0feddc0c38c75f645a0f0eb135022e83, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.4
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 485146, guid: 0feddc0c38c75f645a0f0eb135022e83, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1
+      value: -0.75
       objectReference: {fileID: 0}
     - target: {fileID: 485146, guid: 0feddc0c38c75f645a0f0eb135022e83, type: 3}
       propertyPath: m_LocalPosition.y
@@ -510,7 +516,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 485146, guid: 0feddc0c38c75f645a0f0eb135022e83, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 2
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 485146, guid: 0feddc0c38c75f645a0f0eb135022e83, type: 3}
       propertyPath: m_LocalRotation.w

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu (fileName = "Unit Name", menuName = "Create Unit Stats")]
+[System.Serializable]
 public class UnitStats : ScriptableObject
 {
     public BuyIcons unitType;
@@ -21,7 +22,6 @@ public class UnitStats : ScriptableObject
 
     [Space(10)]
 
-    public float slowMultiplierBlocking = 0.2f;
     public bool regularAttackBuildings = false;
 
     [Header("Ranged")]
@@ -39,14 +39,31 @@ public class UnitStats : ScriptableObject
     [Range (0f, 1f)] [SerializeField] private float hitDistance = 0.5f;
     public float GetHitCenterDist => hitDistance * attackRange;
     public float GetHitRadius => hitDistance > 0.5f ? Mathf.Lerp(0f, attackRange, hitDistance) : Mathf.Lerp(attackRange, 0f, hitDistance);//Mathf.Lerp(attackRange, 0f, Mathf.Clamp(hitDistance, 0f, 0.5f)) + Mathf.Lerp (0f, attackRange/2f, hitDistance > 0.5f ? hitDistance : 0f);
-    public float hitForce = 0.1f;
 
     [Header("Movement")]
-    //public float moveForce = 1000f;
     public float maxMoveSpeed = 1f;
-    //public float maxStepDistance = 0.2f;
-    //public float legSwitchSpeed = 3.8f;
-    //public float stopMovingDist = 0.02f;
 
+    public UnitStats(UnitStats newStats)
+    {
+        this.unitType = newStats.unitType;
+        this.health = newStats.health;
+        this.armor = newStats.armor;
+        this.damage = newStats.damage;
+        this.timeBetweenAttacks = newStats.timeBetweenAttacks;
+        this.lookRange = newStats.lookRange;
+        this.attackRange = newStats.attackRange;
+        this.cost = newStats.cost;
+        this.regularAttackBuildings = newStats.regularAttackBuildings;
+        this.isRanged = newStats.isRanged;
+        this.projectileForce = newStats.projectileForce;
+        this.accuracy = newStats.accuracy;
+        this.leadsTarget = newStats.leadsTarget;
+        this.projectileArch = newStats.projectileArch;
+        this.projectile = newStats.projectile;
+        this.hitMask = newStats.hitMask;
+        this.hitAllInRadius = newStats.hitAllInRadius;
+        this.hitDistance = newStats.hitDistance;
+        this.maxMoveSpeed = newStats.maxMoveSpeed;
+    }
 }
 

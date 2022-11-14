@@ -5,7 +5,6 @@ using Unity.AI.Navigation;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
-using static UnityEditor.PlayerSettings;
 
 [RequireComponent(typeof (Identifier))]
 public class Tower : MonoBehaviour

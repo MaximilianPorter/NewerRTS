@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
@@ -47,6 +48,8 @@ public class PlayerActions : MonoBehaviour
     private Vector3 startPos;
     private float respawnHoldCounter = 0f;
 
+    private CastleSpawn castleSpawn;
+
     private void Awake()
     {
         identifier = GetComponent<Identifier>();
@@ -65,7 +68,16 @@ public class PlayerActions : MonoBehaviour
         sprintRenderers = new Image[2] { sprintFill, sprintFill.transform.parent.GetComponent<Image>() };
         startSprintRendColors = new Color[2] { sprintFill.color, sprintFill.transform.parent.GetComponent<Image>().color };
 
+        if (FindObjectsOfType<CastleSpawn>().Length > 0)
+            castleSpawn = FindObjectsOfType<CastleSpawn>().FirstOrDefault(castle => castle.GetTeamID == identifier.GetTeamID);
+        if (castleSpawn)
+        {
+            navMovement.SetNavAgentEnabled(false);
+            transform.position = castleSpawn.transform.position - castleSpawn.transform.position.normalized;
+            navMovement.SetNavAgentEnabled(true);
+        }
         startPos = transform.position;
+
 
     }
 
@@ -193,11 +205,16 @@ public class PlayerActions : MonoBehaviour
 
         if (respawnHoldCounter > 5)
         {
-            navMovement.SetNavAgentEnabled(false);
-            transform.position = startPos;
-            respawnHoldCounter = 0f;
-            navMovement.SetNavAgentEnabled(true);
+            Respawn();
         }
+    }
+
+    private void Respawn ()
+    {
+        navMovement.SetNavAgentEnabled(false);
+        transform.position = startPos;
+        respawnHoldCounter = 0f;
+        navMovement.SetNavAgentEnabled(true);
     }
 
     public void UpdateBodyColor ()

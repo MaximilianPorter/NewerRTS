@@ -23,7 +23,7 @@ MonoBehaviour:
     food: 12
     wood: 5
     stone: 0
-  slowMultiplierBlocking: 0.2
+  regularAttackBuildings: 0
   isRanged: 1
   projectileForce: 15
   accuracy: 70
@@ -33,7 +33,6 @@ MonoBehaviour:
   hitMask:
     serializedVersion: 2
     m_Bits: 1024
+  hitAllInRadius: 0
   hitDistance: 0.5
-  hitRadius: 0.5
-  hitForce: 0.1
   maxMoveSpeed: 2.2

@@ -24,4 +24,4 @@ MonoBehaviour:
   gridSize: {x: 2, y: 2}
   gridOffset: {x: 0, y: 0}
   squareSpacing: {x: 0, y: 0}
-  gridSquareSize: {x: 49, y: 49}
+  gridSquareSize: {x: 73, y: 73}

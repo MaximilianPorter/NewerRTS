@@ -87,14 +87,14 @@ public class PlayerResourceManager : MonoBehaviour
         {
             if (playerIDs[i].GetTeamID == teamID)
             {
-                PlayerResourceAmounts[playerIDs[i].GetPlayerID].AddResources(amount);
+                PlayerResourceAmounts[playerIDs[i].GetPlayerID] += amount;
             }
         }
     }
 
     public void AddResourcesWithUI(int playerID, ResourceAmount amount, Vector3 worldPos)
     {
-        PlayerResourceAmounts[playerID].AddResources(amount);
+        PlayerResourceAmounts[playerID] += amount;
 
         Vector3? pos = PlayerHolder.WorldToCanvasLocalPoint(worldPos, playerID);
         if (pos == null)
@@ -133,7 +133,7 @@ public class PlayerResourceManager : MonoBehaviour
                         {
                             if (PlayerInput.GetPlayers[i].GetButtonDown(PlayerInput.GetInputOpenUnitMenu))
                             {
-                                PlayerResourceAmounts[i].AddResources(1000, 10000, 10000);
+                                PlayerResourceAmounts[i] += new ResourceAmount(10000, 10000, 10000);
                                 usedCheatCode[i] = true;
                                 return;
                             }

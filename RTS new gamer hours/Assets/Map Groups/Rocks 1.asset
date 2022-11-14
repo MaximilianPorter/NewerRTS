@@ -23,9 +23,9 @@ MonoBehaviour:
     spacingBuffer: 3
     randomRotation: 1
     spawnWeight: 1
-  numberToPlace: 15
+  numberToPlace: 17
   showGrid: 0
   gridSize: {x: 3, y: 3}
   gridOffset: {x: 0, y: 0}
   squareSpacing: {x: 0, y: 0}
-  gridSquareSize: {x: 33, y: 33}
+  gridSquareSize: {x: 40, y: 40}

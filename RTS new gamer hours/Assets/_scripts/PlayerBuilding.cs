@@ -623,11 +623,7 @@ public class PlayerBuilding : MonoBehaviour
         ResourceAmount cost = allIcons.FirstOrDefault(icon => icon.GetButtonType == unitType).GetCost;
         int unitCount = allQueuedUnits.FirstOrDefault(queuedUnit => queuedUnit.GetUnitType == unitType).GetUnitAmt;
         // refunt cost of unit
-        PlayerResourceManager.PlayerResourceAmounts[identifier.GetPlayerID].AddResources(
-            cost.GetFood * unitCount,
-            cost.GetWood * unitCount,
-            cost.GetStone * unitCount
-            );
+        PlayerResourceManager.PlayerResourceAmounts[identifier.GetPlayerID] += cost * unitCount;
 
         allQueuedUnits.FirstOrDefault(queuedUnit => queuedUnit.GetUnitType == unitType).SetDetails(0, 0);
     }
@@ -751,7 +747,7 @@ public class PlayerBuilding : MonoBehaviour
             // PLACE BUILDING
             if (PlayerInput.GetPlayers [identifier.GetPlayerID].GetButtonDown(PlayerInput.GetInputSelect) && canPlace)
             {
-                PlayerResourceManager.PlayerResourceAmounts[identifier.GetPlayerID].SubtractResoruces(tempPlaceBuildingCost);
+                PlayerResourceManager.PlayerResourceAmounts[identifier.GetPlayerID] -= tempPlaceBuildingCost;
 
                 // place building
                 BuildBuilding(aboutToPlaceBuilding);
@@ -814,7 +810,7 @@ public class PlayerBuilding : MonoBehaviour
             if (canPlaceWall)
             {
                 // place wall
-                PlayerResourceManager.PlayerResourceAmounts[identifier.GetPlayerID].SubtractResoruces(tempPlaceBuildingCost);
+                PlayerResourceManager.PlayerResourceAmounts[identifier.GetPlayerID] -= tempPlaceBuildingCost;
 
                 fromTower.PlaceWalls(hoveringBuilding.GetComponent<Tower>());
                 fromTower = null;

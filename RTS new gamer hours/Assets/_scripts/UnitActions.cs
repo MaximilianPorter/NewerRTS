@@ -1,7 +1,6 @@
 using System.Linq;
 using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
-using static UnityEditor.Experimental.GraphView.GraphView;
 
 [RequireComponent(typeof(NavMeshMovement))]
 [RequireComponent(typeof(Attacking))]
@@ -107,11 +106,11 @@ public class UnitActions : MonoBehaviour
         UpdateBodyColor();
 
 
-        if (isSelectable)
-        {
-            // add unit to list of all units for player
-            PlayerHolder.AddUnit(identifier.GetPlayerID, this);
-        }
+        // add unit to list of all units for player
+        PlayerHolder.AddUnit(identifier.GetPlayerID, this);
+        //if (isSelectable)
+        //{
+        //}
 
         movementTargetVisual.SetActive(false);
         SetUnitSpecificPlayerLayers(identifier.GetPlayerID);
@@ -247,7 +246,7 @@ public class UnitActions : MonoBehaviour
                     continue;
 
                 // if the unit isn't targetable
-                if (unit.GetIdentifier.GetIsTargetable == false)
+                if (unit.GetIdentifier && unit.GetIdentifier.GetIsTargetable == false)
                     continue;
 
                 // if you're not a battering ram

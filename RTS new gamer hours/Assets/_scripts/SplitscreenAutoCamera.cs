@@ -19,6 +19,7 @@ public class SplitscreenAutoCamera : MonoBehaviour
     private Rect[] playerCameraRects;
 
     public static int PlayersJoined = 0;
+    public int[] GetPlayerJoinOrder => playersJoinedOrder;
 
     private int debugSecondPlayerIndex = 0;
 
@@ -26,10 +27,7 @@ public class SplitscreenAutoCamera : MonoBehaviour
     {
         transform.SetParent(null);
         DontDestroyOnLoad(transform.gameObject);
-    }
 
-    private void Start()
-    {
         // if there is already an instance of this, take it's player count and destroy this
         if (instance != null)
         {
@@ -39,6 +37,10 @@ public class SplitscreenAutoCamera : MonoBehaviour
         }
         else
             instance = this;
+    }
+
+    private void Start()
+    {
 
 
         // find cameras

@@ -257,7 +257,7 @@ public class Attacking : MonoBehaviour
             Vector3 dir = Vector3.Cross(shakingObject.transform.position - transform.position, Vector3.up).normalized;
             if (shakingObject.TryGetComponent (out TreeShake treeShake))
             {
-                treeShake.ShakeOnce(-dir, stats.hitForce);
+                treeShake.ShakeOnce(-dir, 0.1f);
                 GameObject hitEffect = Instantiate(treeShake.GetHitEffect, shakingObject.transform.position + treeShake.GetHitEffectOffset, Quaternion.identity);
                 Destroy(hitEffect, 5f);
             }

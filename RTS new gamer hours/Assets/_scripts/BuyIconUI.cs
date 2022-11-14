@@ -158,7 +158,7 @@ public class BuyIconUI : MonoBehaviour
 
         if (PlayerResourceManager.PlayerResourceAmounts[identifier.GetPlayerID].HasResources (cost))
         {
-            PlayerResourceManager.PlayerResourceAmounts[identifier.GetPlayerID].SubtractResoruces(cost);
+            PlayerResourceManager.PlayerResourceAmounts[identifier.GetPlayerID] -= cost;
 
             buttonAction.Invoke();
             return true;

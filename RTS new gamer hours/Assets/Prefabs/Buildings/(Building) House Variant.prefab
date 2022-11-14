@@ -501,6 +501,14 @@ PrefabInstance:
       propertyPath: stats
       value: 
       objectReference: {fileID: 11400000, guid: ce07f3135db4dba4a8d6234301a3d6ed, type: 2}
+    - target: {fileID: 8956819731846260281, guid: 7444a2888946a634ba879ce630db7727, type: 3}
+      propertyPath: teamID
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8956819731846260281, guid: 7444a2888946a634ba879ce630db7727, type: 3}
+      propertyPath: playerID
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7444a2888946a634ba879ce630db7727, type: 3}
 --- !u!4 &7427456998414464443 stripped

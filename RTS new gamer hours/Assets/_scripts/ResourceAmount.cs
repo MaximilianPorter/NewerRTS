@@ -35,25 +35,22 @@ public class ResourceAmount
         return false;
     }
 
-    public void SubtractResoruces (ResourceAmount subtractResources)
+    public static ResourceAmount operator +(ResourceAmount amt0, ResourceAmount amt1)
     {
-        food = (int)Mathf.Clamp(food - subtractResources.GetFood, 0, Mathf.Infinity);
-        wood = (int)Mathf.Clamp(wood - subtractResources.GetWood, 0, Mathf.Infinity);
-        stone = (int)Mathf.Clamp(stone - subtractResources.GetStone, 0, Mathf.Infinity);
+        return new ResourceAmount(amt0.food + amt1.food, amt0.wood + amt1.wood, amt0.stone + amt1.stone);
+    }
+    public static ResourceAmount operator *(ResourceAmount amt0, int value)
+    {
+        return new ResourceAmount(amt0.food * value, amt0.wood * value, amt0.stone * value);
     }
 
-    public void AddResources (ResourceAmount addResources)
+    public static ResourceAmount operator -(ResourceAmount amt0, ResourceAmount amt1)
     {
-        food += addResources.GetFood;
-        wood += addResources.GetWood;
-        stone += addResources.GetStone;
-    }
+        int food = (int)Mathf.Clamp(amt0.food - amt1.food, 0, Mathf.Infinity);
+        int wood = (int)Mathf.Clamp(amt0.wood - amt1.wood, 0, Mathf.Infinity);
+        int stone = (int)Mathf.Clamp(amt0.stone - amt1.stone, 0, Mathf.Infinity);
 
-    public void AddResources (int food = 0, int wood = 0, int stone = 0)
-    {
-        this.food += food;
-        this.wood += wood;
-        this.stone += stone;
+        return new ResourceAmount(food, wood, stone);
     }
 
 

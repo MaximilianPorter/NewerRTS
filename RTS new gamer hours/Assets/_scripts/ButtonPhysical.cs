@@ -44,15 +44,15 @@ public class ButtonPhysical : MonoBehaviour
 
     public void Give1000Food()
     {
-        PlayerResourceManager.PlayerResourceAmounts[buttonLastClickedBy].AddResources(1000, 0, 0);
+        PlayerResourceManager.PlayerResourceAmounts[buttonLastClickedBy] += new ResourceAmount(1000, 0, 0);
     }
     public void Give1000Wood()
     {
-        PlayerResourceManager.PlayerResourceAmounts[buttonLastClickedBy].AddResources(0, 1000, 0);
+        PlayerResourceManager.PlayerResourceAmounts[buttonLastClickedBy] += new ResourceAmount(0, 1000, 0);
     }
     public void Give1000Stone()
     {
-        PlayerResourceManager.PlayerResourceAmounts[buttonLastClickedBy].AddResources(0, 0, 1000);
+        PlayerResourceManager.PlayerResourceAmounts[buttonLastClickedBy] += new ResourceAmount(0, 0, 1000);
     }
 
     public void ChangePlayerColor ()
