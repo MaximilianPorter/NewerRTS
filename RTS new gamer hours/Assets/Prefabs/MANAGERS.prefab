@@ -755,6 +755,7 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 6d248255875d0c64c8fe4b6cb682aa26, type: 2}
   - {fileID: 2100000, guid: 8def8d88990554d46aa626a227c51531, type: 2}
   - {fileID: 2100000, guid: b128dfdad3de62e42aefe2d15373f2f2, type: 2}
+  nonPlayerUnitMaterial: {fileID: 2100000, guid: 5577330e6e6299c45be62585d3ff3426, type: 2}
   unitMaterials:
   - {fileID: 2100000, guid: 9fd99e27152b70b40bfb3b84ed1a994f, type: 2}
   - {fileID: 2100000, guid: 82d2fa1228da26c48b622239c19ed82f, type: 2}
@@ -1451,6 +1452,26 @@ MonoBehaviour:
     buttonState: 0
     ps4Sprite: {fileID: -383237293, guid: 2c5c1565e9d7c8c4780bc516d28b82d7, type: 3}
     xboxSprite: {fileID: -1735758639, guid: e2e86fc604b80ef4e966b7e5e2f79462, type: 3}
+  - input: 12
+    buttonState: 0
+    ps4Sprite: {fileID: -1296956941, guid: 2c5c1565e9d7c8c4780bc516d28b82d7, type: 3}
+    xboxSprite: {fileID: -1274578425, guid: e2e86fc604b80ef4e966b7e5e2f79462, type: 3}
+  - input: 13
+    buttonState: 0
+    ps4Sprite: {fileID: -1404094636, guid: 2c5c1565e9d7c8c4780bc516d28b82d7, type: 3}
+    xboxSprite: {fileID: -2064156148, guid: e2e86fc604b80ef4e966b7e5e2f79462, type: 3}
+  - input: 10
+    buttonState: 0
+    ps4Sprite: {fileID: 195752741, guid: 2c5c1565e9d7c8c4780bc516d28b82d7, type: 3}
+    xboxSprite: {fileID: -1827401749, guid: e2e86fc604b80ef4e966b7e5e2f79462, type: 3}
+  - input: 11
+    buttonState: 0
+    ps4Sprite: {fileID: -1704790215, guid: 2c5c1565e9d7c8c4780bc516d28b82d7, type: 3}
+    xboxSprite: {fileID: -1431308507, guid: e2e86fc604b80ef4e966b7e5e2f79462, type: 3}
+  - input: 2
+    buttonState: 0
+    ps4Sprite: {fileID: -322174943, guid: 2c5c1565e9d7c8c4780bc516d28b82d7, type: 3}
+    xboxSprite: {fileID: 682766627, guid: e2e86fc604b80ef4e966b7e5e2f79462, type: 3}
 --- !u!114 &3414168373827259125
 MonoBehaviour:
   m_ObjectHideFlags: 0

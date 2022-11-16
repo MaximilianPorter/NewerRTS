@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Archer
   m_EditorClassIdentifier: 
   unitType: 14
-  health: 70
+  health: 1
   armor: 0
   damage: 5
   timeBetweenAttacks: 2
@@ -29,7 +29,6 @@ MonoBehaviour:
   accuracy: 70
   leadsTarget: 1
   projectileArch: 0.35
-  projectile: {fileID: 5640332772760401253, guid: 55e4c6da466501e4da37fba31125a102, type: 3}
   hitMask:
     serializedVersion: 2
     m_Bits: 1024

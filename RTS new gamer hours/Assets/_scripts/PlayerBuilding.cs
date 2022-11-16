@@ -22,6 +22,7 @@ public class PlayerBuilding : MonoBehaviour
     [SerializeField] private Image costAreaLayout;
     [SerializeField] private Transform requiredBuildingLayout;
     [SerializeField] private LayerMask groundLayermask;
+    [SerializeField] private LayerMask buildingLayermask;
 
     private Image[] requiredBuildingImageContainers;
 
@@ -33,7 +34,7 @@ public class PlayerBuilding : MonoBehaviour
     [SerializeField] private GameObject rallyPointPlaceEffect;
     [SerializeField] private GameObject wallBuildingVisual;
     [SerializeField] private MeshRenderer wallVisualToChangeColor;
-    [SerializeField] private GameObject placingBuildingVisual;
+    [SerializeField] private Outline placingBuildingVisual;
     [SerializeField] private MeshRenderer buildingVisualToChangeColor;
     [SerializeField] private Material canPlaceMat;
     [SerializeField] private Material canNOTPlaceMat;
@@ -44,6 +45,7 @@ public class PlayerBuilding : MonoBehaviour
 
     #region private variables    
 
+    private bool tutorialActive = false;
     private bool placingRallyPoint = false;
     private bool placingAllRallyPoints = false;
     private Building rallyBuilding = null;
@@ -75,6 +77,8 @@ public class PlayerBuilding : MonoBehaviour
     #endregion
 
     #region setters and getters
+    public QueuedUpUnitUi[] GetQueuedUnits => allQueuedUnits;
+    public void SetTutorial(bool inTutorial) => tutorialActive = inTutorial;
     public BuyIconUI GetSelectedUiButton => allIcons[selectedIconIndex];
     public bool GetHasMenuOpen => anyMenuOpen;
 
@@ -433,7 +437,7 @@ public class PlayerBuilding : MonoBehaviour
             {
                 // if we have no buildings, or all the buildings have no unit attached, return
                 if (PlayerHolder.GetBuildings(identifier.GetPlayerID).Count <= 0 ||
-                    PlayerHolder.GetBuildings (identifier.GetPlayerID).All (building => building.GetStats.unit == null))
+                    PlayerHolder.GetBuildings (identifier.GetPlayerID).All (building => building.GetSpawnableUnit == null))
                 {
                     return;
                 }
@@ -444,7 +448,7 @@ public class PlayerBuilding : MonoBehaviour
                     Building[] buildings = PlayerHolder.GetBuildings(identifier.GetPlayerID).ToArray();
                     for (int j = 0; j < buildings.Length; j++)
                     {
-                        if (buildings[j].GetStats.unit == null) continue;
+                        if (buildings[j].GetSpawnableUnit == null) continue;
 
                         // find buildings with units available
                         if (buildings[j].GetStats.unitType == allIcons[i].GetButtonType)
@@ -478,7 +482,20 @@ public class PlayerBuilding : MonoBehaviour
                 // turn on correct menu buttons
                 for (int i = 0; i < initialIcons.Length; i++)
                 {
-                    initialIcons[i].gameObject.SetActive(true);
+
+                    // don't place a second research lab
+                    bool notPlacingSecondMonestary = true;
+                    if (initialIcons[i].GetButtonType == BuyIcons.Building_ResearchLab)
+                        foreach (Building building in PlayerHolder.GetBuildings(identifier.GetPlayerID))
+                        {
+                            if (building.GetStats.buildingType == BuyIcons.Building_ResearchLab)
+                            {
+                                notPlacingSecondMonestary = false;
+                                break;
+                            }
+                        }
+
+                    initialIcons[i].gameObject.SetActive(notPlacingSecondMonestary);
                 }
 
                 //return;
@@ -720,7 +737,7 @@ public class PlayerBuilding : MonoBehaviour
     {
         // place building
         Vector3 buildingPos = hoveringBuilding ? hoveringBuilding.transform.position : placingBuildingVisual.transform.position;
-        Identifier placedBuildingIdentity = Instantiate(building.gameObject, buildingPos, Quaternion.identity).GetComponent<Identifier>();
+        Identifier placedBuildingIdentity = Instantiate(building.gameObject, buildingPos, Quaternion.identity, tutorialActive ? TutorialController.Instance.GetSpawnedObjectsHolder : null).GetComponent<Identifier>();
 
         // set team and player ID of building
         placedBuildingIdentity.UpdateInfo(identifier.GetPlayerID, identifier.GetTeamID);
@@ -729,7 +746,7 @@ public class PlayerBuilding : MonoBehaviour
     }
     private void HandlePlacingBuilding ()
     {
-        placingBuildingVisual.SetActive(isPlacingBuilding);
+        placingBuildingVisual.gameObject.SetActive(isPlacingBuilding);
         grid.SetActive(isPlacingBuilding);
 
         if (isPlacingBuilding)
@@ -737,11 +754,13 @@ public class PlayerBuilding : MonoBehaviour
             Vector3 groundPos = Physics.Raycast(transform.position, Vector3.down, out RaycastHit hitInfo, 3f, groundLayermask) ? hitInfo.point : Vector3.zero;
             placingBuildingVisual.transform.position = new Vector3(Mathf.Round (transform.position.x * 2f) / 2f, groundPos.y, Mathf.Round (transform.position.z * 2f) / 2f);
 
-            bool inRangeOfBuilding = PlayerHolder.GetBuildings(identifier.GetPlayerID)
-                .Any(building => (building.transform.position - transform.position).sqrMagnitude < building.GetStats.buildRadius * building.GetStats.buildRadius);
+            bool inRangeOfBuilding = GetClosestBuildingInRange(true, true);
+                //PlayerHolder.GetBuildings(identifier.GetPlayerID)
+                //.Any(building => (building.transform.position - transform.position).sqrMagnitude < building.GetStats.buildRadius * building.GetStats.buildRadius);
 
             bool canPlace = inRangeOfBuilding && !hoveringBuilding;
             buildingVisualToChangeColor.material = canPlace ? canPlaceMat : canNOTPlaceMat;
+            placingBuildingVisual.OutlineColor = canPlace ? canPlaceMat.color : canNOTPlaceMat.color;
 
 
             // PLACE BUILDING
@@ -779,7 +798,10 @@ public class PlayerBuilding : MonoBehaviour
         if (fromTower == null)
             return;
 
-        bool isNextToCorrectBuilding = hoveringBuilding && hoveringBuilding.TryGetComponent (out Tower hoverTower) && hoverTower != fromTower &&
+        Building closestBuildingIncludeTeam = GetClosestBuildingInRange(true);
+        Tower hoverTower = closestBuildingIncludeTeam ? closestBuildingIncludeTeam.GetComponent<Tower>() : null;
+
+        bool isNextToCorrectBuilding = hoverTower && hoverTower != fromTower &&
             !fromTower.GetActiveConnectedTowers.Contains(hoverTower);
         bool canPlaceWall = isNextToCorrectBuilding &&
             PlayerResourceManager.PlayerResourceAmounts[identifier.GetPlayerID].HasResources (tempPlaceBuildingCost);
@@ -788,7 +810,7 @@ public class PlayerBuilding : MonoBehaviour
         wallVisualToChangeColor.material = canPlaceWall ? canPlaceMat : canNOTPlaceMat;
 
         // snap to tower
-        Vector3 wallEndPos = isNextToCorrectBuilding ? hoveringBuilding.transform.position : transform.position;
+        Vector3 wallEndPos = isNextToCorrectBuilding ? hoverTower.transform.position : transform.position;
 
 
         // manage cost
@@ -812,7 +834,7 @@ public class PlayerBuilding : MonoBehaviour
                 // place wall
                 PlayerResourceManager.PlayerResourceAmounts[identifier.GetPlayerID] -= tempPlaceBuildingCost;
 
-                fromTower.PlaceWalls(hoveringBuilding.GetComponent<Tower>());
+                fromTower.PlaceWalls(hoverTower);
                 fromTower = null;
             }
             else
@@ -840,15 +862,19 @@ public class PlayerBuilding : MonoBehaviour
 
     private void CheckForHoveringBuilding ()
     {
-        Building[] closestBuildings = PlayerHolder.GetBuildings(identifier.GetPlayerID).
-            Where(building => building != null &&  // building isn't null
-            building.GetStats.buildingType != BuyIcons.Building_CASTLE && // building isn't castle
-            (new Vector3 (building.transform.position.x, 0f, building.transform.position.z) - new Vector3(transform.position.x, 0f, transform.position.z)).sqrMagnitude < building.GetStats.interactionRadius * building.GetStats.interactionRadius) // building is in range
-            .ToArray();
 
-        if (closestBuildings.Length > 0)
+
+        //Building[] closestBuildings = PlayerHolder.GetBuildings(identifier.GetPlayerID).
+        //    Where(building => building != null &&  // building isn't null
+        //    building.GetStats.buildingType != BuyIcons.Building_CASTLE && // building isn't castle
+        //    (new Vector3 (building.transform.position.x, 0f, building.transform.position.z) - new Vector3(transform.position.x, 0f, transform.position.z)).sqrMagnitude < building.GetStats.interactionRadius * building.GetStats.interactionRadius) // building is in range
+        //    .ToArray();
+
+        Building closestBuilding = GetClosestBuildingInRange(false);
+
+        if (closestBuilding != null)
         {
-            hoveringBuilding = closestBuildings.OrderBy(building => (building.transform.position - transform.position).sqrMagnitude).ToArray()[0];
+            hoveringBuilding = closestBuilding;//closestBuildings.OrderBy(building => (building.transform.position - transform.position).sqrMagnitude).ToArray()[0];
 
             // step away from last building
             if (lastHoveringBuilding != hoveringBuilding)
@@ -870,6 +896,61 @@ public class PlayerBuilding : MonoBehaviour
         }
 
             
+    }
+
+    private Building GetClosestBuildingInRange (bool includeTeammates, bool buildRadius = false)
+    {
+        Building closestBuilding = null;
+        float sphereCheckSize = buildRadius ? 20f : 4f;
+        foreach (Collider collider in (Physics.OverlapSphere (transform.position, sphereCheckSize, buildingLayermask)))
+        {
+            if (collider.TryGetComponent(out Identifier buildingIdentity))
+            {
+                if (!includeTeammates)
+                {
+                    if (buildingIdentity.GetPlayerID != identifier.GetPlayerID)
+                        continue;
+                }
+                else
+                {
+                    if (buildingIdentity.GetTeamID != identifier.GetTeamID)
+                        continue;
+                }
+            }
+
+            Building building = collider.GetComponent<Building>();
+            if (building == null)
+                    continue;
+
+
+            // building isn't castle
+            if (building.GetStats.buildingType == BuyIcons.Building_CASTLE && !buildRadius)
+                continue;
+
+            Vector3 buildingPos = new Vector3(building.transform.position.x, 0f, building.transform.position.z);
+            Vector3 myPos = new Vector3(transform.position.x, 0f, transform.position.z);
+
+
+            float range = building.GetStats.interactionRadius;
+            if (buildRadius)
+                range = building.GetStats.buildRadius;
+            // out of building range
+            if ((buildingPos - myPos).sqrMagnitude >= range * range)
+                continue;
+
+            if (closestBuilding)
+            {
+                Vector3 closestBuildingPos = new Vector3(closestBuilding.transform.position.x, 0f, closestBuilding.transform.position.z);
+
+                // assign closest building if it's actually the closest building
+                if ((buildingPos - myPos).sqrMagnitude < (closestBuildingPos - myPos).sqrMagnitude)
+                    closestBuilding = building;
+            }
+            else
+                closestBuilding = building;
+        }
+
+        return closestBuilding;
     }
 
     private void HandleBuildingRallyPoint()
@@ -915,7 +996,7 @@ public class PlayerBuilding : MonoBehaviour
             foreach (Building building in PlayerHolder.GetBuildings(identifier.GetPlayerID))
             {
                 // skip the building if there's no unit to rally
-                if (building.GetStats.unit == null)
+                if (building.GetSpawnableUnit == null)
                     continue;
 
                 // skip the building if we already checked it

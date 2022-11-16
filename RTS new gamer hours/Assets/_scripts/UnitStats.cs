@@ -5,10 +5,13 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu (fileName = "Unit Name", menuName = "Create Unit Stats")]
-[System.Serializable]
-public class UnitStats : ScriptableObject
+[Serializable]
+public class UnitStats : JsonSerialisableScriptableObject <UnitStats>
 {
     public BuyIcons unitType;
+    
+    // this is for the json file
+    public readonly string instructions = "-------------------vvv JUST CHANGE THESE THINGS vvv-------------------";
 
     // change these variables in database https://console.firebase.google.com/u/3/project/rts-castles/database/rts-castles-default-rtdb/data
     [Header("Changed in Database")]
@@ -19,6 +22,9 @@ public class UnitStats : ScriptableObject
     public float lookRange = 5f;
     public float attackRange = 1f;
     public ResourceAmount cost;
+
+    public readonly string instructions0 = "-------------------vvv DONT CHANGE THESE vvv-------------------";
+
 
     [Space(10)]
 
@@ -31,7 +37,7 @@ public class UnitStats : ScriptableObject
     public float accuracy = 0f;
     public bool leadsTarget = false;
     [Range(0f, 1f)]public float projectileArch = 0.5f;
-    public GameObject projectile;
+    //public GameObject projectile;
 
     [Header("Melee")]
     public LayerMask hitMask;
@@ -43,27 +49,27 @@ public class UnitStats : ScriptableObject
     [Header("Movement")]
     public float maxMoveSpeed = 1f;
 
-    public UnitStats(UnitStats newStats)
-    {
-        this.unitType = newStats.unitType;
-        this.health = newStats.health;
-        this.armor = newStats.armor;
-        this.damage = newStats.damage;
-        this.timeBetweenAttacks = newStats.timeBetweenAttacks;
-        this.lookRange = newStats.lookRange;
-        this.attackRange = newStats.attackRange;
-        this.cost = newStats.cost;
-        this.regularAttackBuildings = newStats.regularAttackBuildings;
-        this.isRanged = newStats.isRanged;
-        this.projectileForce = newStats.projectileForce;
-        this.accuracy = newStats.accuracy;
-        this.leadsTarget = newStats.leadsTarget;
-        this.projectileArch = newStats.projectileArch;
-        this.projectile = newStats.projectile;
-        this.hitMask = newStats.hitMask;
-        this.hitAllInRadius = newStats.hitAllInRadius;
-        this.hitDistance = newStats.hitDistance;
-        this.maxMoveSpeed = newStats.maxMoveSpeed;
-    }
+    //public UnitStats(UnitStats newStats)
+    //{
+    //    this.unitType = newStats.unitType;
+    //    this.health = newStats.health;
+    //    this.armor = newStats.armor;
+    //    this.damage = newStats.damage;
+    //    this.timeBetweenAttacks = newStats.timeBetweenAttacks;
+    //    this.lookRange = newStats.lookRange;
+    //    this.attackRange = newStats.attackRange;
+    //    this.cost = newStats.cost;
+    //    this.regularAttackBuildings = newStats.regularAttackBuildings;
+    //    this.isRanged = newStats.isRanged;
+    //    this.projectileForce = newStats.projectileForce;
+    //    this.accuracy = newStats.accuracy;
+    //    this.leadsTarget = newStats.leadsTarget;
+    //    this.projectileArch = newStats.projectileArch;
+    //    this.projectile = newStats.projectile;
+    //    this.hitMask = newStats.hitMask;
+    //    this.hitAllInRadius = newStats.hitAllInRadius;
+    //    this.hitDistance = newStats.hitDistance;
+    //    this.maxMoveSpeed = newStats.maxMoveSpeed;
+    //}
 }
 

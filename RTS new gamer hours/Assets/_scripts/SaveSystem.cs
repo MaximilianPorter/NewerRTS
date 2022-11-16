@@ -20,18 +20,16 @@ public class SaveSystem : MonoBehaviour
 
     private void OnDestroy()
     {
-        ConfigManager.FetchCompleted -= UpdateUnitStats;
+        //ConfigManager.FetchCompleted -= UpdateUnitStats;
     }
 
-    public static void SaveUnitStats(UnitStats stats)
+    public static void SaveUnitStatsToJson(UnitStats stats)
     {
         BinaryFormatter formatter = new BinaryFormatter();
-        string path = Application.persistentDataPath + "/" + stats.unitType + ".gamer";
+        string path = Application.persistentDataPath + "/" + stats.unitType + ".json";
         FileStream stream = new FileStream(path, FileMode.Create);
 
-        UnitStats data = new UnitStats(stats);
-
-        formatter.Serialize (stream, data);
+        formatter.Serialize (stream, JsonUtility.ToJson(stats));
         stream.Close();
     }
 
@@ -46,15 +44,7 @@ public class SaveSystem : MonoBehaviour
             var jsonUnitString = ConfigManager.appConfig.GetJson(statsToUpdate.unitType.ToString());
             JsonUtility.FromJsonOverwrite(jsonUnitString, statsToUpdate);
 
-            SaveUnitStats(statsToUpdate);
-            //BinaryFormatter formatter = new BinaryFormatter();
-            //FileStream stream = new FileStream(path, FileMode.Open);
-
-            //UnitStats data = formatter.Deserialize(stream) as UnitStats;
-
-
-
-            //stream.Close();
+            SaveUnitStatsToJson(statsToUpdate);
         }
         else
         {
@@ -62,11 +52,32 @@ public class SaveSystem : MonoBehaviour
             var jsonUnitString = ConfigManager.appConfig.GetJson(statsToUpdate.unitType.ToString());
             JsonUtility.FromJsonOverwrite(jsonUnitString, statsToUpdate);
 
-            SaveUnitStats(statsToUpdate);
+            SaveUnitStatsToJson(statsToUpdate);
             Debug.LogError("Save file not found in " + path);
         }
 
 
+    }
+
+    public static void LoadUnitStatsFromJson (UnitStats stats)
+    {
+        string path = Application.persistentDataPath + "/" + stats.unitType + ".json";
+
+        if (File.Exists(path))
+        {
+            BinaryFormatter formatter = new BinaryFormatter();
+            FileStream stream = new FileStream(path, FileMode.Open);
+
+            //UnitStats data = formatter.Deserialize(stream) as UnitStats;
+
+            JsonUtility.FromJsonOverwrite(JsonUtility.ToJson(formatter.Deserialize(stream)), stats);
+
+            stream.Close();
+        }
+        else
+        {
+            Debug.LogError("Save file not found in " + path);
+        }
     }
 
     private void UpdateUnitStats (ConfigResponse response)

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using Unity.VisualScripting;
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEditor;
 using UnityEngine;
 
@@ -14,6 +15,8 @@ public class StatsDatabaseManager : MonoBehaviour
     [SerializeField] private GameObject loadingAssetsMenu;
     public static bool LoadingStats = false;
 
+    [SerializeField] private bool onlyRunOnGameStart = true;
+    [SerializeField] private bool debugHasInternetConnection = true;
     [SerializeField] private bool read = true;
     [SerializeField] private bool write = false;
 
@@ -27,8 +30,19 @@ public class StatsDatabaseManager : MonoBehaviour
     // if you don't have the download, you can find it online in your firebase project settings
     private DatabaseReference reference;
 
+    public static StatsDatabaseManager Instance { get; private set; }
+
     private IEnumerator Start()
     {
+        // if this code has run before, don't update it again
+        if (Instance != null && onlyRunOnGameStart)
+        {
+            Debug.LogWarning("This is not the beginning of the game, only fetch data from json files...");
+            GetDataFromJsonFiles();
+            Destroy(Instance);
+            yield break;
+        }
+
         reference = FirebaseDatabase.DefaultInstance.RootReference;
 
         LoadingStats = true;
@@ -36,10 +50,17 @@ public class StatsDatabaseManager : MonoBehaviour
         //PauseGameManager.ForcePause = true;
 
         bool isConnected = false;
-        yield return StartCoroutine(CheckIsConnected(connected => isConnected = connected));
-        if (!isConnected)
+        if (debugHasInternetConnection)
+        {
+            yield return StartCoroutine(CheckIsConnected(connected => isConnected = connected));
+
+        }
+        if (!isConnected || !debugHasInternetConnection)
         {
             Debug.LogWarning("could not connect, continuing with game...");
+
+            GetDataFromJsonFiles();
+
             //PauseGameManager.ForcePause = false;
             loadingAssetsMenu.SetActive(false);
             LoadingStats = false;
@@ -51,19 +72,28 @@ public class StatsDatabaseManager : MonoBehaviour
         InitializeTempArrays();
 
 
+        //yield return UpdateJson("Unit Jsons", unitStats[0].unitType, unitStats[0], null);
         for (int i = 0; i < unitStats.Length; i++)
         {
             yield return StartCoroutine(SetUnitDetails(i));
+            unitStats[i].DumpJsonToFile(Application.persistentDataPath + "/" + unitStats[i].unitType + ".json");
         }
 
         for (int i = 0; i < buildingStats.Length; i++)
         {
             yield return StartCoroutine(SetBuildingDetails(i));
+            buildingStats[i].DumpJsonToFile(Application.persistentDataPath + "/" + buildingStats[i].buildingType + ".json");
         }
 
         //PauseGameManager.ForcePause = false;
         loadingAssetsMenu.SetActive(false);
         LoadingStats = false;
+
+        if (onlyRunOnGameStart)
+        {
+            DontDestroyOnLoad(gameObject);
+            Instance = this;
+        }
     }
 
     private void InitializeTempArrays ()
@@ -153,6 +183,56 @@ public class StatsDatabaseManager : MonoBehaviour
         yield return StartCoroutine(UpdateVector3Details("Buildings", "Cost", costToVector3, i, buildingStats[i].buildingType, tempBuildingDatabaseValues));
         DatabaseValue costValue = tempBuildingDatabaseValues[i].FirstOrDefault(databaseValue => databaseValue.statName == "Cost");
         buildingStats[i].cost = costValue == null ? buildingStats[i].cost : new ResourceAmount((int)costValue.vectorValue.x, (int)costValue.vectorValue.y, (int)costValue.vectorValue.z);
+    }
+
+    public IEnumerator UpdateJson(string categoryName, BuyIcons statsType, UnitStats unitStats = null, BuildingStats buildingStats = null)
+    {
+        // try to get json from database
+        var GetDBTask = reference.Child(categoryName).Child(statsType.ToString()).GetValueAsync();
+
+        // wait for a response
+        yield return new WaitUntil(predicate: () => GetDBTask.IsCompleted);
+
+        if (GetDBTask.Result.Exists)
+        {
+            if (!read)
+            {
+                Debug.LogError($"READ is disabled, YOU NEED TO ENABLE READ ON {gameObject.name}");
+            }
+
+            // if we find a current existing value (there's no exceptions), set it FROM the database
+            //DataSnapshot snapshot = GetDBTask.Result;
+            if (unitStats)
+            {
+                JsonUtility.FromJsonOverwrite(GetDBTask.Result.GetRawJsonValue(), unitStats);
+            }else if (buildingStats)
+            {
+                JsonUtility.FromJsonOverwrite(GetDBTask.Result.GetRawJsonValue(), buildingStats);
+            }
+        }
+        else
+        {
+            if (!write)
+            {
+                Debug.LogError($"WRITE is disabled, no new value will be made for {statsType}");
+                yield break;
+            }
+
+            // try to create the value in the database
+            var SetDBTask = reference.Child(categoryName).Child(statsType.ToString()).SetRawJsonValueAsync(JsonUtility.ToJson(unitStats ? unitStats : buildingStats));
+
+            // wait for the setting action to be completed
+            yield return new WaitUntil(predicate: () => SetDBTask.IsCompleted);
+
+            if (SetDBTask.Exception != null)
+            {
+                Debug.LogWarning(message: $"Failed to register task with {SetDBTask.Exception}");
+            }
+            else
+            {
+                // database is now updated
+            }
+        }
     }
 
     public IEnumerator UpdateFloatDetails(string categoryName, string variableName, float defaultValue, int index, BuyIcons statsType, DatabaseValue[][] tempDatabase)
@@ -292,6 +372,19 @@ public class StatsDatabaseManager : MonoBehaviour
         yield return null;
         callback(isConnected);
 
+    }
+
+    private void GetDataFromJsonFiles ()
+    {
+        for (int i = 0; i < unitStats.Length; i++)
+        {
+            unitStats[i].LoadJsonFromFile(Application.persistentDataPath + "/" + unitStats[i].unitType + ".json");
+        }
+
+        for (int i = 0; i < buildingStats.Length; i++)
+        {
+            buildingStats[i].LoadJsonFromFile(Application.persistentDataPath + "/" + buildingStats[i].buildingType + ".json");
+        }
     }
 }
 

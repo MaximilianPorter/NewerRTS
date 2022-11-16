@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SurrenderController : MonoBehaviour
 {
     [SerializeField] private bool[] debugSurrender = new bool[4] { false, false, false, false };
+    [SerializeField] private Image[] surrenderFills;
 
 
     private float[] surrenderCounter = new float[4] { 0f, 0f, 0f, 0f };
@@ -17,12 +19,18 @@ public class SurrenderController : MonoBehaviour
         for (int i = 0; i < 4; i++)
         {
             if (playerSurrendered[i])
+            {
+                surrenderFills[i].gameObject.SetActive(false);
                 continue;
+            }
 
+            surrenderFills[i].gameObject.SetActive(surrenderCounter[i] > 2);
+            surrenderFills[i].fillAmount = surrenderCounter[i] / timeToSurrender;
 
             if (PlayerInput.GetPlayers[i].GetButton(PlayerInput.GetInputBack))
             {
                 surrenderCounter[i] += Time.deltaTime;
+
             }
             else
                 surrenderCounter[i] = 0f;

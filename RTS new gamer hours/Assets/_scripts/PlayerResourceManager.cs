@@ -58,7 +58,7 @@ public class PlayerResourceManager : MonoBehaviour
 
     private void Start()
     {
-        playerCanvases = FindObjectsOfType<Canvas>().Where(canvas => canvas.GetComponent<Identifier>()).OrderBy(canvas => canvas.GetComponent<Identifier>().GetPlayerID).ToArray();
+        playerCanvases = FindObjectsOfType<Canvas>().Where(canvas => canvas.TryGetComponent (out Identifier canvasIdentity) && canvasIdentity.GetPlayerID != -1).OrderBy(canvas => canvas.GetComponent<Identifier>().GetPlayerID).ToArray();
         playerCameras = Camera.allCameras.Where(cam => cam.GetComponent<Identifier>()).OrderBy(cam => cam.GetComponent<Identifier>().GetPlayerID).ToArray();
         playerIDs = FindObjectsOfType<Identifier>().Where(identifier => identifier.GetIsPlayer == true).ToArray();
         

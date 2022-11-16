@@ -12,6 +12,7 @@ public class Attacking : MonoBehaviour
 
     [Header("Stats")]
     [SerializeField] private UnitStats stats;
+    [SerializeField] private GameObject projectile;
     [SerializeField] private bool flamingAttacks = false;
     //[SerializeField] private bool isRanged = true;
     //[SerializeField] private float lookRange = 5f;
@@ -207,7 +208,7 @@ public class Attacking : MonoBehaviour
         if (target == null)
             return;
 
-        Projectile projInstance = Instantiate(stats.projectile, firePoint.position, Quaternion.identity).GetComponent<Projectile>();
+        Projectile projInstance = Instantiate(projectile, firePoint.position, Quaternion.identity).GetComponent<Projectile>();
         projInstance.SetInfo(stats.damage, identifier.GetPlayerID, identifier.GetTeamID, flamingAttacks);
 
         // attempt to find it's velocity (nav mesh agent first, then rigidbody)

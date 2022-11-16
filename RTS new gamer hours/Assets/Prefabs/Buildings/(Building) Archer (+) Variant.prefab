@@ -1355,6 +1355,10 @@ PrefabInstance:
       propertyPath: stats
       value: 
       objectReference: {fileID: 11400000, guid: 24180a627a78ec24eb5a386defeea526, type: 2}
+    - target: {fileID: 8956819731846260278, guid: 7444a2888946a634ba879ce630db7727, type: 3}
+      propertyPath: unitToSpawn
+      value: 
+      objectReference: {fileID: 6806056615238588080, guid: 2a331b9ca1c324649989ee3aac169f13, type: 3}
     - target: {fileID: 8956819731846260281, guid: 7444a2888946a634ba879ce630db7727, type: 3}
       propertyPath: teamID
       value: 1

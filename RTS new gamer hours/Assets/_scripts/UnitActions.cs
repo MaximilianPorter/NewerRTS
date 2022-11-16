@@ -107,10 +107,10 @@ public class UnitActions : MonoBehaviour
 
 
         // add unit to list of all units for player
-        PlayerHolder.AddUnit(identifier.GetPlayerID, this);
-        //if (isSelectable)
-        //{
-        //}
+        if (isSelectable)
+        {
+            PlayerHolder.AddUnit(identifier.GetPlayerID, this);
+        }
 
         movementTargetVisual.SetActive(false);
         SetUnitSpecificPlayerLayers(identifier.GetPlayerID);
@@ -249,6 +249,10 @@ public class UnitActions : MonoBehaviour
                 if (unit.GetIdentifier && unit.GetIdentifier.GetIsTargetable == false)
                     continue;
 
+                // if the unit is on the same team as you
+                if (unit.GetIdentifier.GetTeamID == identifier.GetTeamID)
+                    continue;
+
                 // if you're not a battering ram
                 if (unitStats.unitType != BuyIcons.Unit_BatteringRam && unit.GetBuilding && unit.GetBuilding.GetIsWall)
                     continue;
@@ -266,14 +270,10 @@ public class UnitActions : MonoBehaviour
                 }
                 
 
-                // detect closest enemy
-                if (unit.GetIdentifier.GetTeamID != identifier.GetTeamID)
-                {
-                    if (closestEnemy == null)
-                        closestEnemy = unit;
-                    else if (unitDir.sqrMagnitude < (closestEnemy.transform.position - transform.position).sqrMagnitude)
-                        closestEnemy = unit;
-                }
+                if (closestEnemy == null)
+                    closestEnemy = unit;
+                else if (unitDir.sqrMagnitude < (closestEnemy.transform.position - transform.position).sqrMagnitude)
+                    closestEnemy = unit;
             }
 
 
@@ -469,7 +469,9 @@ public class UnitActions : MonoBehaviour
         if (!isSelectable)
             return;
 
-        lastCell.unitsInCell.Remove(cellIdentifier);
+        if (lastCell != null && lastCell.unitsInCell.Contains (cellIdentifier))
+            lastCell.unitsInCell.Remove(cellIdentifier);
+
         PlayerHolder.RemoveUnit(identifier.GetPlayerID, this);
     }
     private void SetAnimations (AnimatorOverrideController newController)
@@ -479,6 +481,9 @@ public class UnitActions : MonoBehaviour
 
     public void SetUnitSpecificPlayerLayers (int playerID)
     {
+        if (playerID < 0)
+            return;
+
         selectedGO.layer = RuntimeLayerController.GetLayer(playerID);
         lineToDestinationVisual.gameObject.layer = RuntimeLayerController.GetLayer(playerID);
         movementTargetVisual.layer = RuntimeLayerController.GetLayer(playerID);
@@ -496,7 +501,10 @@ public class UnitActions : MonoBehaviour
         // turn on correct body parts
         for (int i = 0; i < bodyPartsNeedMaterial.Length; i++)
         {
-            bodyPartsNeedMaterial[i].material = PlayerColorManager.GetUnitMaterial(identifier.GetPlayerID);
+            if (identifier.GetPlayerID < 0)
+                bodyPartsNeedMaterial[i].material = PlayerColorManager.GetNonPlayerUnitMaterial;
+            else
+                bodyPartsNeedMaterial[i].material = PlayerColorManager.GetUnitMaterial(identifier.GetPlayerID);
         }
     }
 

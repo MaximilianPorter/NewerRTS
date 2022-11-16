@@ -19,6 +19,9 @@ public class ChangeImageToControllerButton : MonoBehaviour
 
     private void Update()
     {
+        if (identifier.GetPlayerID == -1 || identifier.GetTeamID == -1)
+            return;
+
         ControllerType controller = JoystickButtonSpriteController.instance.GetPlayerControllerType(identifier.GetPlayerID);
         image.sprite = JoystickButtonSpriteController.instance.GetIcon(controller, input);
     }

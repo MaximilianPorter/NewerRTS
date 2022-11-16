@@ -63,10 +63,16 @@ public class PlayerHolder : MonoBehaviour
     }
     public static void AddUnit (int playerID, UnitActions unit)
     {
+        if (playerID < 0)
+            return;
+
         playerUnits[playerID].Add(unit);
     }
     public static void RemoveUnit (int playerID, UnitActions unit)
     {
+        if (playerID < 0)
+            return;
+
         playerUnits[playerID].Remove(unit);
     }
 
@@ -76,7 +82,13 @@ public class PlayerHolder : MonoBehaviour
     private static ResearchUi[] currentResearch = new ResearchUi[4];
     public static ResearchUi GetCurrentResearch(int playerID) => currentResearch[playerID];
     public static void SetCurrentResearch(int playerID, ResearchUi newCurrentResearch) => currentResearch[playerID] = newCurrentResearch;
-    public static List<BuyIcons> GetCompletedResearch(int playerID) => completedResearch[playerID];
+    public static List<BuyIcons> GetCompletedResearch(int playerID)
+    {
+        if (playerID < 0)
+            return new List<BuyIcons>(0);
+
+        return completedResearch[playerID];
+    }
     public static void AddCompletedResearch(int playerID, BuyIcons researchType) => completedResearch[playerID].Add(researchType);
 
     private static Identifier[] playerIdentifiers = new Identifier[4];
@@ -149,4 +161,28 @@ public class PlayerHolder : MonoBehaviour
     {
         return (playerCamStartOrthoSize[playerID] / playerCams[playerID].orthographicSize);
     }
+
+    public static void DestroyAllBuildingsExceptFirst (int playerID)
+    {
+        while (GetBuildings(playerID).Count > 1)
+        {
+            if (GetBuildings(playerID).Count <= 1)
+                break;
+
+            GetBuildings(playerID)[1].Die();
+        }
+    }
+
+    public static void DestroyAllUnits (int playerID)
+    {
+        while (GetUnits (playerID).Count > 0)
+        {
+            if (GetUnits(playerID).Count <= 0)
+                break;
+
+            GetUnits (playerID)[0].Die();
+        }
+    }
+
+
 }

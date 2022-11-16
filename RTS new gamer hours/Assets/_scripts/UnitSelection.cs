@@ -492,13 +492,13 @@ public class UnitSelection : MonoBehaviour
 
             if (unitMovementType == UnitMovementType.IgnoreEnemies)
             {
-                movementTypeText.text = "UNIT MOVEMENT: <b><i>IGNORE ENEMIES</i></b>";
-                movementTypeDescText.text = "Units move to their destination and only look for enemies afterwards.";
+                movementTypeText.text = "MOVEMENT: <b><i>POINT</i></b>";
+                movementTypeDescText.text = "Units move directly to their destination, no interruptions.";
             }
             else if(unitMovementType == UnitMovementType.LookNearDestination)
             {
-                movementTypeText.text = "<b>[DEFAULT]</b> UNIT MOVEMENT: <b><i>NEAR DESTINATION</i></b>";
-                movementTypeDescText.text = "Units move to their destination and when they get close, they will stop if they see an enemy.";
+                movementTypeText.text = "MOVEMENT: <b><i>CASUAL</i></b><b> [DEFAULT]</b>";
+                movementTypeDescText.text = "Units will auto attack nearby enemies when close to their destination.";
 
             }
             //else if(unitMovementType == UnitMovementType.Patrol)

@@ -10,6 +10,7 @@ public class Building : MonoBehaviour
     [SerializeField] private bool isTargetable = true;
     [SerializeField] private bool isWall = false;
     [SerializeField] private BuildingStats stats;
+    [SerializeField] private UnitActions unitToSpawn;
     [SerializeField] private bool debugSpawnUnit = false;
     [SerializeField] private bool debugDie = false;
     [SerializeField] private Transform rallyPoint;
@@ -36,6 +37,7 @@ public class Building : MonoBehaviour
 
 
     public Health GetHealth => health;
+    public UnitActions GetSpawnableUnit => unitToSpawn;
     public void SetIsTargetable(bool isTargetable) => this.isTargetable = isTargetable;
     public bool GetIsTargetable => isTargetable;
     public bool GetIsWall => isWall;
@@ -104,7 +106,7 @@ public class Building : MonoBehaviour
             Die();
         }
 
-        if (stats.unit != null)
+        if (unitToSpawn != null)
         {
             buildingRallyPointLine.enabled = isMainSpawnBuilding && rallyPointMoved;
             buildingRallyPointLine.SetPosition(0, transform.position);
@@ -133,7 +135,7 @@ public class Building : MonoBehaviour
     public void SpawnUnit ()
     {
         // spawn unit
-        UnitActions unitInstance = Instantiate(stats.unit.gameObject, transform.position, Quaternion.identity).GetComponent <UnitActions>();
+        UnitActions unitInstance = Instantiate(unitToSpawn, transform.position, Quaternion.identity);
         unitInstance.gameObject.SetActive(true); // i think when i spawn them as UnitActions, they spawn disabled
 
         // set team / ownership stuff
@@ -277,7 +279,10 @@ public class Building : MonoBehaviour
 
     public void SetSpecificPlayerLayers(int playerID)
     {
-        if (stats.unit != null)
+        if (playerID < 0)
+            return;
+
+        if (unitToSpawn != null)
             buildingRallyPointLine.gameObject.layer = RuntimeLayerController.GetLayer(playerID);
 
         if (playerHoverEffect)

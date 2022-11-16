@@ -19,18 +19,42 @@ public class PlayerColorManager : MonoBehaviour
     private static Material staticNonPlayerProjectorMaterial;
     private static Material[] staticPlayerProjectorMaterials = new Material[4];
 
+    [SerializeField] private Material nonPlayerUnitMaterial;
     [SerializeField] private Material[] unitMaterials;
+    private static Material staticNonPlayerUnitMaterial;
     private static Material[] staticUnitMaterials = new Material[4];
 
     public static Material GetNonPlayerProjectorMaterial => staticNonPlayerProjectorMaterial;
     public static Material GetNonPlayerMaterial => staticNonPlayerMaterial;
-
+    public static Material GetNonPlayerUnitMaterial => staticNonPlayerUnitMaterial;
 
     public static Material GetUnitMaterial(int playerID) => staticUnitMaterials[playerID];
-    public static Material GetPlayerMaterial (int playerID) => staticPlayerMaterials[playerID];
-    public static Material GetPlayerProjectorMaterial (int playerID) => staticPlayerProjectorMaterials[playerID];
-    public static Color GetPlayerColor(int playerID) => staticPlayerColors[playerID];
-    public static Color GetPlayerColorIgnoreAlpha(int playerID, float alpha) => new Color(staticPlayerColors[playerID].r, staticPlayerColors[playerID].g, staticPlayerColors[playerID].b, alpha);
+    public static Material GetPlayerMaterial(int playerID)
+    {
+        if (playerID < 0)
+            return GetNonPlayerMaterial;
+        return staticPlayerMaterials[playerID];
+    }
+    public static Material GetPlayerProjectorMaterial(int playerID)
+    {
+        if (playerID < 0)
+            return GetNonPlayerProjectorMaterial;
+
+        return staticPlayerProjectorMaterials[playerID];
+    }
+    public static Color GetPlayerColor(int playerID)
+    {
+        if (playerID < 0)
+            return Color.white;
+
+        return staticPlayerColors[playerID];
+    }
+    public static Color GetPlayerColorIgnoreAlpha(int playerID, float alpha)
+    {
+        if (playerID < 0)
+            return new Color(Color.white.r, Color.white.g, Color.white.b, alpha);
+        return new Color(staticPlayerColors[playerID].r, staticPlayerColors[playerID].g, staticPlayerColors[playerID].b, alpha);
+    }
     public static void SetPlayerColor(int playerID, Color newColor)
     {
         staticPlayerColors[playerID] = newColor;
@@ -57,6 +81,7 @@ public class PlayerColorManager : MonoBehaviour
 
         staticNonPlayerProjectorMaterial = nonPlayerProjectorMaterial;
         staticNonPlayerMaterial = nonPlayerMaterial;
+        staticNonPlayerUnitMaterial = nonPlayerUnitMaterial;
 
 
         // if there is already an instance of this, take it's colors
