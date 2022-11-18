@@ -111,12 +111,14 @@ public class PlayerColorManager : MonoBehaviour
         }
         for (int i = 0; i < staticPlayerProjectorMaterials.Length; i++)
         {
-            staticPlayerProjectorMaterials[i].color = staticPlayerColors[i];
+            staticPlayerProjectorMaterials[i].SetColor("_Multiply_Color", staticPlayerColors[i]);
+            //staticPlayerProjectorMaterials[i].color = staticPlayerColors[i];
         }
         for (int i = 0; i < staticUnitMaterials.Length; i++)
         {
-            staticUnitMaterials[i].SetColor("_TintColorA", staticPlayerColors[i]);
-            staticUnitMaterials[i].SetColor("_TintColorB", staticPlayerColors[i]);
+            staticUnitMaterials[i].SetColor("_Tint_Color", staticPlayerColors[i]);
+            //staticUnitMaterials[i].SetColor("_TintColorA", staticPlayerColors[i]);
+            //staticUnitMaterials[i].SetColor("_TintColorB", staticPlayerColors[i]);
         }
     }
 }

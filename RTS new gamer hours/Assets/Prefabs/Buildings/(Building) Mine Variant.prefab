@@ -278,6 +278,10 @@ PrefabInstance:
       propertyPath: m_OrthographicSize
       value: 8
       objectReference: {fileID: 0}
+    - target: {fileID: 302148436342449138, guid: 7444a2888946a634ba879ce630db7727, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3828816209340219677, guid: 7444a2888946a634ba879ce630db7727, type: 3}
       propertyPath: m_RootOrder
       value: 6
@@ -301,6 +305,14 @@ PrefabInstance:
     - target: {fileID: 5387379819105301195, guid: 7444a2888946a634ba879ce630db7727, type: 3}
       propertyPath: m_LocalPosition.z
       value: -0.585
+      objectReference: {fileID: 0}
+    - target: {fileID: 8036550659323676752, guid: 7444a2888946a634ba879ce630db7727, type: 3}
+      propertyPath: m_Size.x
+      value: 16
+      objectReference: {fileID: 0}
+    - target: {fileID: 8036550659323676752, guid: 7444a2888946a634ba879ce630db7727, type: 3}
+      propertyPath: m_Size.y
+      value: 16
       objectReference: {fileID: 0}
     - target: {fileID: 8956819731846260274, guid: 7444a2888946a634ba879ce630db7727, type: 3}
       propertyPath: m_Name
@@ -372,11 +384,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7444a2888946a634ba879ce630db7727, type: 3}
---- !u!119 &302148436211215595 stripped
-Projector:
-  m_CorrespondingSourceObject: {fileID: 302148435140632461, guid: 7444a2888946a634ba879ce630db7727, type: 3}
+--- !u!114 &8036550658248882998 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8036550659323676752, guid: 7444a2888946a634ba879ce630db7727, type: 3}
   m_PrefabInstance: {fileID: 1076917094}
   m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0777d029ed3dffa4692f417d4aba19ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &8956819730771449171 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8956819731846260277, guid: 7444a2888946a634ba879ce630db7727, type: 3}
@@ -412,7 +430,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 16384
   radius: 8
-  projector: {fileID: 302148436211215595}
+  projector: {fileID: 8036550658248882998}
 --- !u!1001 &349429173150785011
 PrefabInstance:
   m_ObjectHideFlags: 0

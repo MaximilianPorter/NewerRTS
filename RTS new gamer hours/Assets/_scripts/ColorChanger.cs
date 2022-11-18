@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
 
 public class ColorChanger : MonoBehaviour
@@ -135,7 +136,7 @@ public class ColorChanger : MonoBehaviour
 
 
         // PROJECTOR
-        if (TryGetComponent(out Projector projRend))
+        if (TryGetComponent(out DecalProjector projRend))
         {
             projRend.material = PlayerColorManager.GetPlayerProjectorMaterial(playerID);
         }

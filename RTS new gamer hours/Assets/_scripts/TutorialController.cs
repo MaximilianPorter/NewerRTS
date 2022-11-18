@@ -71,7 +71,9 @@ public class TutorialController : MonoBehaviour
         }
 
         // skip step
-        if (!startSkip && PlayerInput.GetPlayers[activePlayer.GetPlayerID].GetButton(PlayerInput.GetInputInteract))
+        if (PlayerInput.GetPlayers[activePlayer.GetPlayerID].GetButtonDown(PlayerInput.GetInputInteract))
+            startSkip = true;
+        if (startSkip && PlayerInput.GetPlayers[activePlayer.GetPlayerID].GetButton(PlayerInput.GetInputInteract))
         {
             skipStepTimer += Time.deltaTime;
             skipStepFill.fillAmount = skipStepTimer / 1f;
@@ -79,11 +81,10 @@ public class TutorialController : MonoBehaviour
             if (skipStepTimer > 1f)
             {
                 GoNextStep();
-                startSkip = true;
                 skipStepTimer = 0f;
             }
         }
-        else if (PlayerInput.GetPlayers[activePlayer.GetPlayerID].GetButtonUp(PlayerInput.GetInputInteract))
+        if (PlayerInput.GetPlayers[activePlayer.GetPlayerID].GetButtonUp(PlayerInput.GetInputInteract))
             startSkip = false;
         else
         {

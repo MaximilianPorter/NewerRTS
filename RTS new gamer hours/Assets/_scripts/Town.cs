@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public class Town : MonoBehaviour
 {
@@ -9,7 +10,7 @@ public class Town : MonoBehaviour
     [SerializeField] private float timeToGive = 5f;
     [SerializeField] private float radius = 5f;
     [SerializeField] private ResourceAmount amountToGive = new ResourceAmount(10, 10, 10);
-    [SerializeField] private Projector projector;
+    [SerializeField] private DecalProjector projector;
     [SerializeField] private MeshRenderer flagRend;
 
     private Identifier identifier;

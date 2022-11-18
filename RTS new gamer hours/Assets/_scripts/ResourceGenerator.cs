@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 [RequireComponent(typeof (Identifier))]
 public class ResourceGenerator : MonoBehaviour
@@ -14,7 +15,7 @@ public class ResourceGenerator : MonoBehaviour
     [SerializeField] [TagField] private string[] tagsCounted;
     [SerializeField] private LayerMask hitLayerMask;
     [SerializeField] private float radius = 5f;
-    [SerializeField] private Projector projector;
+    [SerializeField] private DecalProjector projector;
 
 
     private int surroundingsHit = 0;
@@ -108,7 +109,7 @@ public class ResourceGenerator : MonoBehaviour
         }
 
         if (projector)
-            projector.orthographicSize = radius;
+            projector.size = new Vector3(radius * 2f, radius * 2f, projector.size.z);
 
         // play visuals
         resourceVisualEffect.Play();
@@ -134,6 +135,6 @@ public class ResourceGenerator : MonoBehaviour
         Gizmos.DrawWireSphere(transform.position, radius);
 
         if (projector && !Application.isPlaying)
-            projector.orthographicSize = radius;
+            projector.size = new Vector3(radius * 2f, radius * 2f, projector.size.z);
     }
 }

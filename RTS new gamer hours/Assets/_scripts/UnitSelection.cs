@@ -5,6 +5,7 @@ using UnityEngine;
 using TMPro;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Unity.VisualScripting;
+using UnityEngine.Rendering.Universal;
 
 [RequireComponent(typeof (Identifier))]
 public class UnitSelection : MonoBehaviour
@@ -12,7 +13,7 @@ public class UnitSelection : MonoBehaviour
     [SerializeField] private Camera playerCam;
     [SerializeField] private LayerMask unitMask;
     [SerializeField] private LayerMask obstacleMask;
-    [SerializeField] private Projector unitSelectionVisual;
+    [SerializeField] private DecalProjector unitSelectionVisual;
     [SerializeField] private ParticleSystem rallyTroopsEffect;
     [SerializeField] private float maxSelectionRadius = 10f;
     [SerializeField] private float radiusIncreaseSpeed = 4f;
@@ -126,8 +127,8 @@ public class UnitSelection : MonoBehaviour
             // increase radius and select units within
             unitSelectionVisual.gameObject.SetActive(true);
             //unitSelectionVisual.localScale = new Vector3(currentSelectionRadius, currentSelectionRadius, 5f);
-            unitSelectionVisual.orthographicSize = currentSelectionRadius;
             currentSelectionRadius = Mathf.Clamp(currentSelectionRadius + Time.deltaTime * radiusIncreaseSpeed, 0f, maxSelectionRadius);
+            unitSelectionVisual.size = new Vector3(currentSelectionRadius * 2f, currentSelectionRadius * 2f, unitSelectionVisual.size.z);
             SelectNearbyUnits();
         }
         else
