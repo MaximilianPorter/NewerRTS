@@ -223,8 +223,8 @@ MonoBehaviour:
     m_OverrideState: 0
     m_Value: 0
   fogColor:
-    m_OverrideState: 0
-    m_Value: {r: 0.76, g: 0.94, b: 1, a: 1}
+    m_OverrideState: 1
+    m_Value: {r: 0.6179489, g: 0.76447284, b: 0.8122524, a: 1}
   fogColorGradient:
     m_OverrideState: 0
     m_Value: {fileID: 0}
