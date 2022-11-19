@@ -1,5 +1,7 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,7 +9,7 @@ public class PlayerPauseController : MonoBehaviour
 {
 
     [SerializeField] private GameObject pauseMenu;
-    [SerializeField] private MyUiButton[] pauseMenuButtons;
+    [SerializeField] private PauseMenuSection[] pauseMenus;
 
     [SerializeField] private MyUiButton[] buttonsNotAvailableInGame;
 
@@ -22,6 +24,22 @@ public class PlayerPauseController : MonoBehaviour
         isPaused = false;
     }
 
+    [Serializable]
+    public struct PauseMenuSection
+    {
+        public PauseMenus menuType;
+        public GameObject menuParent;
+        public MyUiButton[] buttonsInMenu;
+    }
+    public enum PauseMenus
+    {
+        Main = 0,
+        Options = 1,
+    }
+
+
+    private PauseMenuSection currentMenu;
+    private PauseMenus currentMenuType = PauseMenus.Main;
     private int selectedButtonIndex = 0;
     private bool isPaused = false;
 
@@ -37,10 +55,13 @@ public class PlayerPauseController : MonoBehaviour
     private void Start()
     {
         //pauseMenuButtons = GetComponentsInChildren<MyUiButton>();
+        currentMenu = pauseMenus.FirstOrDefault(menu => menu.menuType == PauseMenus.Main);
     }
 
     private void Update()
     {
+        currentMenu = pauseMenus.FirstOrDefault(menu => menu.menuType == currentMenuType);
+
         if (isPaused)
         {
             HandlePauseMenuOpen();
@@ -51,12 +72,10 @@ public class PlayerPauseController : MonoBehaviour
             {
                 DeSelectAllButtons();
                 selectedButtonIndex = 0;
-                pauseMenuButtons[selectedButtonIndex].SelectButton();
+                currentMenu.buttonsInMenu[selectedButtonIndex].SelectButton();
                 Pause();
             }
         }
-
-        
 
         if (pauseMenu)
             pauseMenu.SetActive(isPaused);
@@ -67,12 +86,19 @@ public class PlayerPauseController : MonoBehaviour
         // unpause
         if (PlayerInput.GetPlayers[identifier.GetPlayerID].GetButtonDown(PlayerInput.GetInputBack))
         {
-            UnPause();
+            if (currentMenuType != PauseMenus.Main)
+            {
+                currentMenuType = PauseMenus.Main;
+                selectedButtonIndex = 0;
+                currentMenu.buttonsInMenu[selectedButtonIndex].SelectButton();
+            }
+            else
+                UnPause();
         }
 
 
-        ButtonType buttonType = pauseMenuButtons[selectedButtonIndex].GetButtonType;
-        pauseMenuButtons[selectedButtonIndex].SetIsClicking(buttonType == ButtonType.Hold ? 
+        ButtonType buttonType = currentMenu.buttonsInMenu[selectedButtonIndex].GetButtonType;
+        currentMenu.buttonsInMenu[selectedButtonIndex].SetIsClicking(buttonType == ButtonType.Hold ? 
             PlayerInput.GetPlayers[identifier.GetPlayerID].GetButton(PlayerInput.GetInputSelect) :
             PlayerInput.GetPlayers[identifier.GetPlayerID].GetButtonDown(PlayerInput.GetInputSelect));
 
@@ -90,7 +116,7 @@ public class PlayerPauseController : MonoBehaviour
         if ((!movedIndex && PlayerInput.GetPlayers[identifier.GetPlayerID].GetAxis(PlayerInput.GetInputMoveVertical) < -0.5f) ||
             PlayerInput.GetPlayers[identifier.GetPlayerID].GetButtonDown(PlayerInput.GetInputDpadDown))
         {
-            if (selectedButtonIndex + 1 < pauseMenuButtons.Length)
+            if (selectedButtonIndex + 1 < currentMenu.buttonsInMenu.Length)
             {
                 ChangeButtonIndex(1);
             }
@@ -106,33 +132,45 @@ public class PlayerPauseController : MonoBehaviour
         {
             buttonsNotAvailableInGame[i].gameObject.SetActive(GameWinManager.instance == null);
         }
+
+        for (int i = 0; i < pauseMenus.Length; i++)
+        {
+            pauseMenus[i].menuParent.SetActive(pauseMenus[i].menuType == currentMenuType);
+        }
     }
 
     private void ChangeButtonIndex (int amount)
     {
         movedIndex = true;
-        pauseMenuButtons[selectedButtonIndex].DeSelectButton();
-        pauseMenuButtons[selectedButtonIndex].SetIsClicking(false);
+        currentMenu.buttonsInMenu[selectedButtonIndex].DeSelectButton();
+        currentMenu.buttonsInMenu[selectedButtonIndex].SetIsClicking(false);
 
         // if the button isn't active, skip over it
         // capped to 10 times cause I don't like while loops
         for (int i = 0; i < 10; i++)
         {
-            if (pauseMenuButtons[selectedButtonIndex + amount].gameObject.activeInHierarchy)
+            if (currentMenu.buttonsInMenu[selectedButtonIndex + amount].gameObject.activeInHierarchy)
                 break;
 
             selectedButtonIndex += amount;
         }
         selectedButtonIndex += amount;
-        pauseMenuButtons[selectedButtonIndex].SelectButton();
+        currentMenu.buttonsInMenu[selectedButtonIndex].SelectButton();
     }
 
     private void DeSelectAllButtons ()
     {
-        for (int i = 0; i < pauseMenuButtons.Length; i++)
+        for (int i = 0; i < currentMenu.buttonsInMenu.Length; i++)
         {
-            pauseMenuButtons[i].DeSelectButton();
+            currentMenu.buttonsInMenu[i].DeSelectButton();
         }
+    }
+
+    public void OpenOptionsMenu()
+    {
+        currentMenuType = PauseMenus.Options;
+        selectedButtonIndex = 0;
+        currentMenu.buttonsInMenu[selectedButtonIndex].SelectButton();
     }
 
     public void LeaveGame ()

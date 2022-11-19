@@ -84,7 +84,7 @@ public class TutorialController : MonoBehaviour
                 skipStepTimer = 0f;
             }
         }
-        if (PlayerInput.GetPlayers[activePlayer.GetPlayerID].GetButtonUp(PlayerInput.GetInputInteract))
+        else if (PlayerInput.GetPlayers[activePlayer.GetPlayerID].GetButtonUp(PlayerInput.GetInputInteract))
             startSkip = false;
         else
         {
@@ -149,7 +149,7 @@ public class TutorialController : MonoBehaviour
         steps[currentStep].onFinishStep.Invoke();
 
         skipStepTimer = 0f;
-        startSkip = true;
+        startSkip = false;
         currentStepTimer = 0f;
         if (currentStep + 1 < steps.Length)
             currentStep++;
@@ -192,6 +192,7 @@ public class TutorialController : MonoBehaviour
             activePlayer.GetComponent<PlayerBuilding>().SetTutorial(true);
             currentStep = 0;
             tutorialIdentifier.UpdateInfo(activePlayer.GetPlayerID, activePlayer.GetTeamID);
+            steps[currentStep].onStartStep.Invoke();
 
             PlayerHolder.DestroyAllBuildingsExceptFirst(activePlayer.GetPlayerID);
             PlayerHolder.DestroyAllUnits(activePlayer.GetPlayerID);
