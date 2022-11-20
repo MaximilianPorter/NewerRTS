@@ -259,6 +259,9 @@ public enum BuyIcons
     Research_LargerMageAttacks = 45,
     Research_SiegeTechnology = 51,
 
-    // highest number: 51
-    // last changed on 11-8-22 : 7:45pm
+    Creature_Bear = 52,
+    Creature_Cow = 53,
+
+    // highest number: 53
+    // last changed on 11-20-22 : 12:01pm
 }

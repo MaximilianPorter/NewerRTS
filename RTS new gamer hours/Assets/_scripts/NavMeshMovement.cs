@@ -40,6 +40,7 @@ public class NavMeshMovement : MonoBehaviour
     public float GetMoveSpeed01 => Mathf.Clamp01(agent.velocity.sqrMagnitude / (moveSpeed * moveSpeed));
     public Vector3 GetDestination => agent == null || agent.enabled == false ? transform.position : agent.destination;
     public void SetNavAgentEnabled(bool isEnabled) => agent.enabled = isEnabled;
+    public Vector3 GetAgentVelocity => agent.velocity;
     public Vector3[] GetAgentWaypoints => agent.path.corners;
 
     private void Awake()
@@ -54,9 +55,11 @@ public class NavMeshMovement : MonoBehaviour
 
     private void Start()
     {
-        agent.speed = stats.maxMoveSpeed;
-
-        moveSpeed = stats.maxMoveSpeed;
+        if (stats)
+        {
+            agent.speed = stats.maxMoveSpeed;
+            moveSpeed = stats.maxMoveSpeed;
+        }
     }
 
     private void Update()

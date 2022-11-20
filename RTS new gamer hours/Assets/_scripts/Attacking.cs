@@ -14,18 +14,10 @@ public class Attacking : MonoBehaviour
     [SerializeField] private UnitStats stats;
     [SerializeField] private GameObject projectile;
     [SerializeField] private bool flamingAttacks = false;
-    //[SerializeField] private bool isRanged = true;
-    //[SerializeField] private float lookRange = 5f;
-    //[SerializeField] private float attackRange = 5f;
-    //[SerializeField] private float timeBetweenAttacks = 0.5f;
-    //[SerializeField] private float damage = 1f;
-    //[SerializeField] private float projectileForce;
-    //[SerializeField] private GameObject projectile;
-    //[SerializeField] private float slowMultiplierBlocking = 0.2f;
-    //[SerializeField] private LayerMask hitMask;
-    //[SerializeField] private float hitDistance = 0.2f;
-    //[SerializeField] private float hitRadius = 2f;
-    //[SerializeField] private float hitForce = 0.1f;
+
+    [Header("Physics")]
+    [SerializeField] private LayerMask enemyMask;
+    [SerializeField] private LayerMask obstacleVisionMask;
 
     [Header("Effects")]
     [SerializeField] private ParticleSystem startHitEffect;
@@ -42,27 +34,39 @@ public class Attacking : MonoBehaviour
     [SerializeField] private Transform firePoint;
 
 
+    private NavMeshMovement navMovement;
     private CellIdentifier nearestCellEnemy;
+    private CellIdentifier cellIdentifier;
     private bool canAttack = true;
     private bool canAttackAddition = true;
     private float attackCounter = 10000f;
+    private float lookRangeWithHeight = 0f;
+    private float attackRangeWithHeight = 0f;
 
     //private float checkForEnemyCounter = 0;
     //private float checkForEnemyTime = .2f;
     private float attackAnimWaitTimeCounter = 1000f;
+    private float findNearestEnemyCounter = 0f;
     private bool hasAttacked = false;
+    private Cell lastCell;
+    private bool canLookForEnemies = true;
 
     //private List<Projectile> firedProjectiles = new List<Projectile>(4);
 
+    public void SetCanLookForEnemies(bool canLookForEnemies) => this.canLookForEnemies = canLookForEnemies;
     public bool GetCanAttack => canAttack;
     public void SetCanAttack(bool addition) => canAttackAddition = addition;
     public void SetNearestEnemy (CellIdentifier newEnemy) => nearestCellEnemy = newEnemy;
     public CellIdentifier GetNearestEnemy => nearestCellEnemy;
     public UnitStats GetStats => stats;
+    public float AttackRangeWithHeight => attackRangeWithHeight;
+    public float LookRangeWithHeight => lookRangeWithHeight;
 
     private void Awake()
     {
         identifier = GetComponent<Identifier>();
+        navMovement = GetComponent<NavMeshMovement>();
+        cellIdentifier = GetComponent<CellIdentifier>();
     }
 
     private void Start()
@@ -77,11 +81,28 @@ public class Attacking : MonoBehaviour
 
     private void Update()
     {
+        // RESEARCH : MAGE LARGER ATTACKS
+        float attackRange = stats.unitType == BuyIcons.Unit_Mage && identifier.GetPlayerID > -1 && PlayerHolder.GetCompletedResearch(identifier.GetPlayerID).Contains(BuyIcons.Research_LargerMageAttacks) ?
+            stats.attackRange * 1.3f :
+            stats.attackRange;
+
+        // increase look distace and attack distance with height up to 3x
+        if (stats.isRanged)
+        {
+            float heightMultiplier = 1.8f;
+            lookRangeWithHeight = stats.lookRange + Mathf.Clamp((-navMovement.GetBaseOffset + transform.position.y) * heightMultiplier, 0f, stats.lookRange * 2f);
+            attackRangeWithHeight = attackRange + Mathf.Clamp((-navMovement.GetBaseOffset + transform.position.y) * heightMultiplier, 0f, attackRange * 2f);
+        }
+        else
+        {
+            lookRangeWithHeight = stats.lookRange;
+            attackRangeWithHeight = attackRange;
+        }
 
         if (startHitEffect)
         {
             // RESEARCH : MAGE LARGER ATTACKS
-            if (stats.unitType == BuyIcons.Unit_Mage && PlayerHolder.GetCompletedResearch(identifier.GetPlayerID).Contains(BuyIcons.Research_LargerMageAttacks))
+            if (stats.unitType == BuyIcons.Unit_Mage && identifier.GetPlayerID > -1 && PlayerHolder.GetCompletedResearch(identifier.GetPlayerID).Contains(BuyIcons.Research_LargerMageAttacks))
             {
                 startHitEffect.transform.localScale = startHitEffectStartScale * 1.3f;
             }
@@ -99,6 +120,16 @@ public class Attacking : MonoBehaviour
         }
 
         HandleAttackingTime();
+
+        UnitCellManager.UpdateActiveCell(cellIdentifier, transform.position, ref lastCell);
+
+
+        findNearestEnemyCounter -= Time.deltaTime;
+        if (findNearestEnemyCounter <= 0 && canLookForEnemies)
+        {
+            CellFindNearestEnemy();
+            findNearestEnemyCounter = Random.Range(0.1f, 0.3f);
+        }
     }
 
     //private void NonPlayerBehaviour()
@@ -166,6 +197,85 @@ public class Attacking : MonoBehaviour
     //    }
     //}
 
+    private void CellFindNearestEnemy()
+    {
+        int cellsOutToCheck = Mathf.CeilToInt(lookRangeWithHeight / UnitCellManager.cellWidth);
+        Cell activeCell = UnitCellManager.GetCell(transform.position);
+
+        Vector2Int bottomLeft = new Vector2Int(activeCell.pos.x - cellsOutToCheck, activeCell.pos.y - cellsOutToCheck);
+        Vector2Int topRight = new Vector2Int(activeCell.pos.x + cellsOutToCheck, activeCell.pos.y + cellsOutToCheck);
+        Cell[] cellsAroundMe = UnitCellManager.GetCells(bottomLeft, topRight);
+
+
+        SetNearestEnemy(ReturnClosestEnemy(cellsAroundMe));
+    }
+
+    private CellIdentifier ReturnClosestEnemy(Cell[] cellsToCheck)
+    {
+        CellIdentifier closestEnemy = null;
+
+        //int totalUnitsAroundMe = cellsToCheck.Sum(cell => cell.unitsInCell.Count);
+
+        for (int i = 0; i < cellsToCheck.Length; i++)
+        {
+            if (cellsToCheck[i] == null)
+                continue;
+
+
+            foreach (CellIdentifier unit in cellsToCheck[i].unitsInCell)
+            {
+                if (unit == null)
+                    continue;
+
+                // if the enemy is not part of the enemy mask
+                if (enemyMask != (enemyMask | (1 << unit.gameObject.layer)))
+                    continue;
+
+                if (unit == identifier) // don't look for self
+                    continue;
+
+                // if the unit isn't targetable
+                if (unit.GetIdentifier && unit.GetIdentifier.GetIsTargetable == false)
+                    continue;
+
+                // if the unit is on the same team as you
+                if (unit.GetIdentifier.GetTeamID == identifier.GetTeamID)
+                    continue;
+
+                // if you're not a battering ram
+                if (stats.unitType != BuyIcons.Unit_BatteringRam && unit.GetBuilding && unit.GetBuilding.GetIsWall)
+                    continue;
+
+                // if there's something in the way
+                if (Physics.Raycast(transform.position, unit.transform.position - transform.position, stats.lookRange, obstacleVisionMask))
+                    continue;
+
+                Vector3 unitDir = (unit.transform.position - transform.position);
+                unitDir.y = 0; // height doesn't matter
+
+                if (unitDir.sqrMagnitude > lookRangeWithHeight * lookRangeWithHeight)
+                {
+                    continue;
+                }
+
+
+                if (closestEnemy == null)
+                    closestEnemy = unit;
+                else if (unitDir.sqrMagnitude < (closestEnemy.transform.position - transform.position).sqrMagnitude)
+                    closestEnemy = unit;
+            }
+
+
+
+
+            // if we already found an enmy in the first 12 squares, there's no point to keep checking
+            if (i >= 12 && closestEnemy != null)
+                break;
+        }
+
+        return closestEnemy;
+    }
+
     private void HandleAttackingTime ()
     {
         attackCounter += Time.deltaTime;
@@ -230,57 +340,61 @@ public class Attacking : MonoBehaviour
 
         Collider[] hits = Physics.OverlapSphere(transform.position + transform.forward * stats.GetHitCenterDist, stats.GetHitRadius, stats.hitMask);
 
-        Collider resourceNode = hits.FirstOrDefault(hit => hit.TryGetComponent(out ResourceNode node));
-        if (resourceNode != null)
+        foreach (Collider hit in hits)
         {
-            ResourceNode node = resourceNode.GetComponent<ResourceNode>();
-            if (node.TryCollectResources(out ResourceAmount returnedAmount))
-            {
-                int storageYardCount = PlayerHolder.GetBuildings(identifier.GetPlayerID).Count(building => building.GetStats.buildingType == BuyIcons.Building_StorageYard);
-                ResourceAmount amtToAdd = new ResourceAmount(
-                    returnedAmount.GetFood + (returnedAmount.GetFood > 0 ? storageYardCount : 0),
-                    returnedAmount.GetWood + (returnedAmount.GetWood > 0 ? storageYardCount : 0),
-                    returnedAmount.GetStone + (returnedAmount.GetStone > 0 ? storageYardCount : 0)
-                    );
-                PlayerResourceManager.instance.AddResourcesWithUI(identifier.GetPlayerID, amtToAdd, transform.position + new Vector3(0f, 1f, 0f));
-                //PlayerResourceManager.PlayerResourceAmounts[identifier.GetPlayerID].AddResources(
-                //    returnedAmount.GetFood + (returnedAmount.GetFood > 0 ? storageYardCount : 0),
-                //    returnedAmount.GetWood + (returnedAmount.GetWood > 0 ? storageYardCount : 0),
-                //    returnedAmount.GetStone + (returnedAmount.GetStone > 0 ? storageYardCount : 0)
-                //    );
-            }
-            //node.CollectResources(identifier.GetPlayerID);
-        }
+            if (hit.transform == transform)
+                continue;
 
-        Collider shakingObject = hits.FirstOrDefault(tree => tree.GetComponent <TreeShake>());
-        if (shakingObject != null)
-        {
-            Vector3 dir = Vector3.Cross(shakingObject.transform.position - transform.position, Vector3.up).normalized;
-            if (shakingObject.TryGetComponent (out TreeShake treeShake))
+            if (hit.TryGetComponent (out ResourceNode node))
             {
+                if (node.TryCollectResources(out ResourceAmount returnedAmount))
+                {
+                    if (identifier.GetPlayerID < 0)
+                        continue;
+
+                    int storageYardCount = PlayerHolder.GetBuildings(identifier.GetPlayerID).Count(building => building.GetStats.buildingType == BuyIcons.Building_StorageYard);
+                    ResourceAmount amtToAdd = new ResourceAmount(
+                        returnedAmount.GetFood + (returnedAmount.GetFood > 0 ? storageYardCount : 0),
+                        returnedAmount.GetWood + (returnedAmount.GetWood > 0 ? storageYardCount : 0),
+                        returnedAmount.GetStone + (returnedAmount.GetStone > 0 ? storageYardCount : 0)
+                        );
+                    PlayerResourceManager.instance.AddResourcesWithUI(identifier.GetPlayerID, amtToAdd, transform.position + new Vector3(0f, 1f, 0f));
+                    //PlayerResourceManager.PlayerResourceAmounts[identifier.GetPlayerID].AddResources(
+                    //    returnedAmount.GetFood + (returnedAmount.GetFood > 0 ? storageYardCount : 0),
+                    //    returnedAmount.GetWood + (returnedAmount.GetWood > 0 ? storageYardCount : 0),
+                    //    returnedAmount.GetStone + (returnedAmount.GetStone > 0 ? storageYardCount : 0)
+                    //    );
+                }
+
+            }
+
+            if (hit.TryGetComponent (out TreeShake treeShake))
+            {
+                Vector3 dir = Vector3.Cross(treeShake.transform.position - transform.position, Vector3.up).normalized;
                 treeShake.ShakeOnce(-dir, 0.1f);
-                GameObject hitEffect = Instantiate(treeShake.GetHitEffect, shakingObject.transform.position + treeShake.GetHitEffectOffset, Quaternion.identity);
+                GameObject hitEffect = Instantiate(treeShake.GetHitEffect, treeShake.transform.position + treeShake.GetHitEffectOffset, Quaternion.identity);
                 Destroy(hitEffect, 5f);
+
             }
-        }
 
-        Collider rock = hits.FirstOrDefault(hit => hit.CompareTag("Rock"));
-        if (rock != null)
-        {
-            GameObject rockHitInstance = Instantiate(rockHitEffect, transform.position + transform.forward * stats.GetHitCenterDist,
-                Quaternion.LookRotation(-transform.forward));
-            Destroy(rockHitInstance, 2f);
 
-            GameObject hitEffectInstance = Instantiate(defaultHitEffect, transform.position + transform.forward * stats.GetHitCenterDist, Quaternion.identity);
-            Destroy(hitEffectInstance, 1f);
+            if (hit.CompareTag("Rock"))
+            {
+                GameObject rockHitInstance = Instantiate(rockHitEffect, transform.position + transform.forward * stats.GetHitCenterDist,
+                    Quaternion.LookRotation(-transform.forward));
+                Destroy(rockHitInstance, 2f);
 
-        }
+                GameObject hitEffectInstance = Instantiate(defaultHitEffect, transform.position + transform.forward * stats.GetHitCenterDist, Quaternion.identity);
+                Destroy(hitEffectInstance, 1f);
 
-        Collider wheat = hits.FirstOrDefault(hit => hit.CompareTag("Field"));
-        if (wheat != null)
-        {
-            GameObject wheatHitInstance = Instantiate(wheatHitEffect, transform.position + transform.forward * stats.GetHitCenterDist, Quaternion.identity);
-            Destroy(wheatHitInstance, 5f);
+            }
+
+            if (hit.CompareTag("Field"))
+            {
+                GameObject wheatHitInstance = Instantiate(wheatHitEffect, transform.position + transform.forward * stats.GetHitCenterDist, Quaternion.identity);
+                Destroy(wheatHitInstance, 5f);
+
+            }
         }
 
 
@@ -303,9 +417,9 @@ public class Attacking : MonoBehaviour
         else // hit first enemy in radius
         {
             Collider firstEnemy = hitEnemies.FirstOrDefault();
-            DamageEnemy(firstEnemy);
+            if (firstEnemy != null)
+                DamageEnemy(firstEnemy);
         }
-
 
     }
 
@@ -317,10 +431,13 @@ public class Attacking : MonoBehaviour
             if (enemy.TryGetComponent(out Health enemyHealth))
                 enemyHealth.TakeDamage(stats.damage, identifier, transform.position);
 
-            // don't spawn effects if we have too many units on the field
-            if (PlayerHolder.GetUnits(identifier.GetPlayerID).Count > 100)
-                if (Random.Range(0f, 1f) > 0.5f)
-                    return;
+            if (identifier.GetPlayerID > -1)
+            {
+                // don't spawn effects if we have too many units on the field
+                if (PlayerHolder.GetUnits(identifier.GetPlayerID).Count > 100)
+                    if (Random.Range(0f, 1f) > 0.5f)
+                        return;
+            }
 
             // hit effect
             if (defaultHitEffect)

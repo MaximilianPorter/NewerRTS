@@ -17,10 +17,6 @@ public class UnitActions : MonoBehaviour
     [SerializeField] private GameObject bloodSplatterImage;
     [SerializeField] private GameObject bloodGoreEffect;
 
-    [Header("Physics")]
-    [SerializeField] private LayerMask enemyMask;
-    [SerializeField] private LayerMask obstacleVisionMask;
-
 
     [Header("Visuals")]
     [SerializeField] private Renderer[] bodyPartsNeedMaterial;
@@ -43,8 +39,6 @@ public class UnitActions : MonoBehaviour
     [SerializeField] private float throwAnimSpeed = 1.5f;
     [SerializeField] private float throwFireWaitTime = 0.6f;
 
-    private float findNearestEnemyCounter = 0f;
-
     private Identifier identifier;
     private CellIdentifier cellIdentifier;
     private NavMeshMovement navMovement;
@@ -57,13 +51,11 @@ public class UnitActions : MonoBehaviour
     private float throwWaitTimer = 0f;
     private Vector3 tempThrowTarget;
     private bool hasThrown = true;
-    private float lookRangeWithHeight = 0f;
-    private float attackRangeWithHeight = 0f;
     private UnitMovementType movementType = UnitMovementType.LookNearDestination;
 
     private Cell lastCell;
     //private Cell activeCell;
-
+    
 
     public void SetIsTargetable(bool isTargetable) => this.isTargetable = isTargetable;
     public bool GetIsTargetable => isTargetable;
@@ -138,23 +130,8 @@ public class UnitActions : MonoBehaviour
             lineToDestinationVisual.gameObject.SetActive(false);
         }
 
-        // RESEARCH : MAGE LARGER ATTACKS
-        float attackRange = unitStats.unitType == BuyIcons.Unit_Mage && PlayerHolder.GetCompletedResearch(identifier.GetPlayerID).Contains(BuyIcons.Research_LargerMageAttacks) ?
-            unitStats.attackRange * 1.3f :
-            unitStats.attackRange;
-
-        // increase look distace and attack distance with height up to 3x
-        if (unitStats.isRanged)
-        {
-            float heightMultiplier = 1.8f;
-            lookRangeWithHeight = unitStats.lookRange + Mathf.Clamp((-navMovement.GetBaseOffset + transform.position.y) * heightMultiplier, 0f, unitStats.lookRange * 2f);
-            attackRangeWithHeight = attackRange + Mathf.Clamp((-navMovement.GetBaseOffset + transform.position.y) * heightMultiplier, 0f, attackRange * 2f);
-        }
-        else
-        {
-            lookRangeWithHeight = unitStats.lookRange;
-            attackRangeWithHeight = attackRange;
-        }
+        
+        
 
         if (debugDie || health.GetIsDead)
             Die();
@@ -189,124 +166,10 @@ public class UnitActions : MonoBehaviour
 
         HandleMoveTowardsEnemies();
 
+        UnitCellManager.UpdateActiveCell(cellIdentifier, transform.position, ref lastCell);
 
-        UnitCellManager.UpdateActiveCell (cellIdentifier, transform.position, ref lastCell);
-
-
-        findNearestEnemyCounter -= Time.deltaTime;
-        if (/*navMovement.GetMoveSpeed01 > 0.1f || */findNearestEnemyCounter <= 0)
-        {
-            CellFindNearestEnemy();
-            findNearestEnemyCounter = Random.Range (0.1f, 0.3f);
-        }
-
-        //if (identifier.GetTeamID != lastTeamID)
-        //{
-        //    SwitchTeams(identifier.GetPlayerID, identifier.GetTeamID);
-        //}
-
-        
     }
 
-    private void CellFindNearestEnemy()
-    {
-        int cellsOutToCheck = Mathf.CeilToInt(lookRangeWithHeight / UnitCellManager.cellWidth);
-        Cell activeCell = UnitCellManager.GetCell(transform.position);
-
-        Vector2Int bottomLeft = new Vector2Int(activeCell.pos.x - cellsOutToCheck, activeCell.pos.y - cellsOutToCheck);
-        Vector2Int topRight = new Vector2Int(activeCell.pos.x + cellsOutToCheck, activeCell.pos.y + cellsOutToCheck);
-        Cell[] cellsAroundMe = UnitCellManager.GetCells(bottomLeft, topRight);
-
-
-        attacking.SetNearestEnemy(ReturnClosestEnemy(cellsAroundMe));
-    }
-
-    private CellIdentifier ReturnClosestEnemy(Cell[] cellsToCheck)
-    {
-        CellIdentifier closestEnemy = null;
-
-        //int totalUnitsAroundMe = cellsToCheck.Sum(cell => cell.unitsInCell.Count);
-
-        for (int i = 0; i < cellsToCheck.Length; i++)
-        {
-            if (cellsToCheck[i] == null)
-                continue;
-
-
-            foreach (CellIdentifier unit in cellsToCheck[i].unitsInCell)
-            {
-                if (unit == null)
-                    continue;
-
-                // if the enemy is not part of the enemy mask
-                if (enemyMask != (enemyMask | (1 << unit.gameObject.layer)))
-                    continue;
-
-                if (unit == identifier) // don't look for self
-                    continue;
-
-                // if the unit isn't targetable
-                if (unit.GetIdentifier && unit.GetIdentifier.GetIsTargetable == false)
-                    continue;
-
-                // if the unit is on the same team as you
-                if (unit.GetIdentifier.GetTeamID == identifier.GetTeamID)
-                    continue;
-
-                // if you're not a battering ram
-                if (unitStats.unitType != BuyIcons.Unit_BatteringRam && unit.GetBuilding && unit.GetBuilding.GetIsWall)
-                    continue;
-
-                // if there's something in the way
-                if (Physics.Raycast(transform.position, unit.transform.position - transform.position, unitStats.lookRange, obstacleVisionMask))
-                    continue;
-
-                Vector3 unitDir = (unit.transform.position - transform.position);
-                unitDir.y = 0; // height doesn't matter
-
-                if (unitDir.sqrMagnitude > lookRangeWithHeight * lookRangeWithHeight)
-                {
-                    continue;
-                }
-                
-
-                if (closestEnemy == null)
-                    closestEnemy = unit;
-                else if (unitDir.sqrMagnitude < (closestEnemy.transform.position - transform.position).sqrMagnitude)
-                    closestEnemy = unit;
-            }
-
-
-
-
-            // if we already found an enmy in the first 12 squares, there's no point to keep checking
-            if (i >= 12 && closestEnemy != null)
-                break;
-        }
-
-        return closestEnemy;
-    }
-
-    //private Transform FindNearestEnemyPhysics(Vector3 fromPoint)
-    //{
-    //    Transform closestEnemy = null;
-
-    //    Collider[] nearbyUnits = Physics.OverlapSphere(fromPoint, unitStats.lookRange, enemyMask).Where(unit => unit.GetComponent<Identifier>().GetTeamID != identifier.GetTeamID).ToArray();
-
-    //    if (nearbyUnits.Length <= 0)
-    //    {
-    //        return null;
-    //    }
-
-    //    foreach (Collider enemyCol in nearbyUnits)
-    //    {
-    //        if (closestEnemy == null || (enemyCol.transform.position - fromPoint).sqrMagnitude <
-    //            (nearestEnemy.position - fromPoint).sqrMagnitude)
-    //        {
-    //            nearestEnemy = enemyCol.transform;
-    //        }
-    //    }
-    //}
 
     private void HandleMoveTowardsEnemies ()
     {
@@ -355,7 +218,7 @@ public class UnitActions : MonoBehaviour
                 float sqrDistFromEnemy = dirEnemyAndMe.sqrMagnitude;
                 if (enemy.TryGetComponent (out Building enemyBuilding))
                 {
-                    float minDist = unitStats.regularAttackBuildings ? attackRangeWithHeight * attackRangeWithHeight : enemyBuilding.GetStats.interactionRadius * enemyBuilding.GetStats.interactionRadius;
+                    float minDist = unitStats.regularAttackBuildings ? attacking.AttackRangeWithHeight * attacking.AttackRangeWithHeight : enemyBuilding.GetStats.interactionRadius * enemyBuilding.GetStats.interactionRadius;
                     if (sqrDistFromEnemy > minDist)
                     {
                         // if we're out of range to throw shit on the building
@@ -384,7 +247,7 @@ public class UnitActions : MonoBehaviour
                 else
                 {
                     float colliderSqrRadius = ((CapsuleCollider)enemy.GetCollider).radius * ((CapsuleCollider)enemy.GetCollider).radius;
-                    if (sqrDistFromEnemy > attackRangeWithHeight * attackRangeWithHeight + colliderSqrRadius) // - enemy.collider.radius
+                    if (sqrDistFromEnemy > attacking.AttackRangeWithHeight * attacking.AttackRangeWithHeight + colliderSqrRadius) // - enemy.collider.radius
                     {
                         // if we're out of range of attacking
                         // move close enough to attack
@@ -514,9 +377,9 @@ public class UnitActions : MonoBehaviour
             return;
 
         Gizmos.color = new Color (Color.cyan.r, Color.cyan.g, Color.cyan.b, 0.3f);
-        Gizmos.DrawWireSphere(transform.position, lookRangeWithHeight);
+        Gizmos.DrawWireSphere(transform.position, attacking.LookRangeWithHeight);
 
         Gizmos.color = new Color(Color.blue.r, Color.blue.g, Color.blue.b, 0.3f);
-        Gizmos.DrawWireSphere(transform.position, attackRangeWithHeight);
+        Gizmos.DrawWireSphere(transform.position, attacking.AttackRangeWithHeight);
     }
 }
