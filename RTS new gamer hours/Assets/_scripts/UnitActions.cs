@@ -174,7 +174,7 @@ public class UnitActions : MonoBehaviour
     private void HandleMoveTowardsEnemies ()
     {
         // if we're at our destination, go patrol mode
-        if (!navMovement.GetIsMoving && Mathf.Abs (navMovement.GetDestination.x - transform.position.x) < 0.5f)
+        if (!navMovement.GetIsMoving && Vector3.Distance (navMovement.GetDestination, transform.position) < 0.5f)
             movementType = UnitMovementType.Patrol;
 
 

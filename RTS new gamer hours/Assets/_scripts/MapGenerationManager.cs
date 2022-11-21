@@ -59,6 +59,17 @@ public class MapGenerationManager : MonoBehaviour
 
     private float chestSpawnCounter = 0f;
 
+    [Header("Runtime Enemies")]
+    [SerializeField] private bool canSpawnEnemies = false;
+    [SerializeField] private GameObject[] enemies;
+    [SerializeField] private Vector2 timeBetweenEnemySpawns = new Vector2(20, 40f);
+    [SerializeField] private Vector2 enemySpawnArea = new Vector2 (30f, 30f);
+    [SerializeField] private int maxEnemiesInGame = 4;
+
+    private List<GameObject> spawnedEnemies = new List<GameObject>();
+    private float enemySpawnCounter = 0f;
+
+
     [SerializeField] private MapSpawnGroup[] spawnGroups;
 
     private List<SpawnObject> spawnedObjects = new List<SpawnObject>();
@@ -117,9 +128,12 @@ public class MapGenerationManager : MonoBehaviour
         // spawn chests
         HandleChestSpawns();
 
+        // spawn enemies
+        HandleEnemySpawns();
+
     }
 
-    private void HandleChestSpawns ()
+    private void HandleChestSpawns()
     {
         if (!canSpawnChests)
             return;
@@ -133,6 +147,25 @@ public class MapGenerationManager : MonoBehaviour
             Vector3 pos = new Vector3(Random.Range(-spawnArea.x, spawnArea.x), 0f, Random.Range(-spawnArea.y, spawnArea.y));
             GameObject chestInstance = Instantiate(chestPrefab, pos, Quaternion.identity);
         }
+    }
+    private void HandleEnemySpawns ()
+    {
+        spawnedEnemies.RemoveAll(enemy => enemy == null);
+
+        if (!canSpawnChests || spawnedEnemies.Count >= maxEnemiesInGame)
+            return;
+
+        enemySpawnCounter -= Time.deltaTime;
+
+        if (enemySpawnCounter < 0)
+        {
+            // spawn enemy
+            enemySpawnCounter = Random.Range(timeBetweenEnemySpawns.x, timeBetweenEnemySpawns.y);
+            Vector3 pos = new Vector3(Random.Range(-enemySpawnArea.x, enemySpawnArea.x), 5, Random.Range(-enemySpawnArea.y, enemySpawnArea.y));
+            GameObject enemyInstance = Instantiate(enemies[Random.Range (0, enemies.Length)], pos, Quaternion.identity);
+            spawnedEnemies.Add(enemyInstance);
+        }
+
     }
 
     private void SpawnGroup (MapSpawnGroup group)

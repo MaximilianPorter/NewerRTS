@@ -14,6 +14,7 @@ public class ResourceNode : MonoBehaviour
     [SerializeField] private bool canBeDestroyed = false;
     [SerializeField] private int destroyAfterHits = 3;
     [SerializeField] private int turnOffChildrenAfterHits = 0;
+    [SerializeField] private bool isReward = false;
 
     private int currentHits = 0;
     private int childrenOff = 0;
@@ -21,6 +22,7 @@ public class ResourceNode : MonoBehaviour
     private float resetCounter = 0f;
 
     public bool GetHasResources => resetCounter < 0;
+    public bool GetIsReward => isReward;
 
     private void Start()
     {

@@ -48,7 +48,6 @@ public class Attacking : MonoBehaviour
     private float attackAnimWaitTimeCounter = 1000f;
     private float findNearestEnemyCounter = 0f;
     private bool hasAttacked = false;
-    private Cell lastCell;
     private bool canLookForEnemies = true;
 
     //private List<Projectile> firedProjectiles = new List<Projectile>(4);
@@ -120,8 +119,6 @@ public class Attacking : MonoBehaviour
         }
 
         HandleAttackingTime();
-
-        UnitCellManager.UpdateActiveCell(cellIdentifier, transform.position, ref lastCell);
 
 
         findNearestEnemyCounter -= Time.deltaTime;
@@ -347,10 +344,13 @@ public class Attacking : MonoBehaviour
 
             if (hit.TryGetComponent (out ResourceNode node))
             {
+                if (identifier.GetPlayerID < 0)
+                    continue;
+                if (node.GetIsReward) // don't collect if this resource node is being used as a reward (ie. bear)
+                    continue;
+
                 if (node.TryCollectResources(out ResourceAmount returnedAmount))
                 {
-                    if (identifier.GetPlayerID < 0)
-                        continue;
 
                     int storageYardCount = PlayerHolder.GetBuildings(identifier.GetPlayerID).Count(building => building.GetStats.buildingType == BuyIcons.Building_StorageYard);
                     ResourceAmount amtToAdd = new ResourceAmount(

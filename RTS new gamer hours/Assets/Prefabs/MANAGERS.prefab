@@ -1323,6 +1323,12 @@ MonoBehaviour:
   chestPrefab: {fileID: 955535181653416307, guid: a064e43ff9436b44aac843dc1768f285, type: 3}
   timeBetweenChestSpawns: {x: 15, y: 30}
   spawnArea: {x: 73, y: 73}
+  canSpawnEnemies: 0
+  enemies:
+  - {fileID: 7085955487418373007, guid: b93685d7e3328ea41a0620b5b4a8c31e, type: 3}
+  timeBetweenEnemySpawns: {x: 20, y: 40}
+  enemySpawnArea: {x: 30, y: 30}
+  maxEnemiesInGame: 4
   spawnGroups:
   - {fileID: 11400000, guid: 0da327a43b796d7478d70ee8f7e67d1a, type: 2}
   - {fileID: 11400000, guid: 267598114aa02404f98e84c460498358, type: 2}

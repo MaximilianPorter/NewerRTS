@@ -28,6 +28,7 @@ public class AnimalActions : MonoBehaviour
     [Header("Effects")]
     [SerializeField] private GameObject deathEffect;
     [SerializeField] private GameObject spawnEffect;
+    [SerializeField] private bool destroyGameobjectOnDeath = false;
 
     [Header("Animation")]
     [SerializeField] private Animator animator;
@@ -37,6 +38,7 @@ public class AnimalActions : MonoBehaviour
 
     private float lastMaxHealth = 0f;
     private Health health;
+    private CellIdentifier cellIdentifier;
     private CellIdentifier target;
     private NavMeshMovement navMovement;
     private float decisionCounter = 0f;
@@ -46,12 +48,14 @@ public class AnimalActions : MonoBehaviour
     private bool goBackToSpawn = false;
     private bool isRunning = false;
     private bool isAttacking = false;
+    private Cell lastCell;
 
     private void Awake()
     {
         SetAnimations(animalOverrideController);
         navMovement = GetComponent<NavMeshMovement>();
         health = GetComponent<Health>();
+        cellIdentifier = GetComponent<CellIdentifier>();
         startPos = transform.position;
     }
 
@@ -86,6 +90,8 @@ public class AnimalActions : MonoBehaviour
         {
             Die();
         }
+
+        UnitCellManager.UpdateActiveCell(cellIdentifier, transform.position, ref lastCell);
     }
 
     private void HandleReturningToSpawn ()
@@ -94,11 +100,12 @@ public class AnimalActions : MonoBehaviour
         if (Vector3.Distance(transform.position, startPos) > maxLeaveRange)
         {
             goBackToSpawn = true;
+            target = null;
             navMovement.SetDestination(startPos);
         }
         else if (goBackToSpawn)
         {
-            if (Vector3.Distance(transform.position, startPos) < 0.1f)
+            if (Vector3.Distance(transform.position, startPos) < 0.5f)
             {
                 goBackToSpawn = false;
 
@@ -106,7 +113,6 @@ public class AnimalActions : MonoBehaviour
                 if (animalBehaviour == AnimalBehaviour.AGGRESSIVE)
                 {
                     attacking.SetCanLookForEnemies(false);
-                    target = null;
                     lastMaxHealth = health.GetCurrentHealth;
                 }
             }
@@ -154,6 +160,7 @@ public class AnimalActions : MonoBehaviour
                 target = attacking.GetNearestEnemy;
             }
 
+            isRunning = target != null;
 
             if (target == null)
             {
@@ -230,6 +237,8 @@ public class AnimalActions : MonoBehaviour
 
     public void Die()
     {
+        if (lastCell != null && lastCell.unitsInCell.Contains(cellIdentifier))
+            lastCell.unitsInCell.Remove(cellIdentifier);
 
         // spawn effects
         GameObject deathEffectInstance = Instantiate(deathEffect, transform.position, Quaternion.identity);
@@ -237,6 +246,15 @@ public class AnimalActions : MonoBehaviour
         dir.y = 0f;
         deathEffectInstance.transform.rotation = Quaternion.LookRotation(dir, Vector3.up);
         Destroy(deathEffectInstance, 5f);
+
+        PlayerResourceManager.instance.AddResourcesWithUI(health.GetLastHitByPlayer.GetPlayerID, animalStats.cost, transform.position + new Vector3(0f, 1f, 0f));
+
+
+        if (destroyGameobjectOnDeath)
+        {
+            Destroy(gameObject);
+        }
+
 
 
         // if they have a health script

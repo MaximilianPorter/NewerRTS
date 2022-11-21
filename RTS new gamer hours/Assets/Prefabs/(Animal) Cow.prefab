@@ -15,7 +15,6 @@ GameObject:
   - component: {fileID: 7085955487418373005}
   - component: {fileID: 875463911598884354}
   - component: {fileID: 656590705}
-  - component: {fileID: -2691473227363190047}
   - component: {fileID: 3886471620154342940}
   m_Layer: 0
   m_Name: (Animal) Cow
@@ -87,14 +86,16 @@ MonoBehaviour:
   timeBetweenDecisions: {x: 3, y: 10}
   roamRange: 5
   maxLeaveRange: 10
-  maxWalkSpeed: 1
-  maxRunSpeed: 2
+  runMultiplier: 2
   attacking: {fileID: 0}
+  attackWaitTime: 0.5
   deathEffect: {fileID: 2027223507947095810, guid: 76dd049680ad83042b2b2cc4c15c5286, type: 3}
   spawnEffect: {fileID: 4071796513243966190, guid: 58d364a7c08926c4cbe455f3f53b29ef, type: 3}
+  destroyGameobjectOnDeath: 0
   animator: {fileID: 7134645102791613346}
   animalOverrideController: {fileID: 22100000, guid: 6e76a8a541fbc2e4d87cf02ac7fb0796, type: 2}
   walkAnimSpeed: 3
+  runAnimSpeed: 1
 --- !u!195 &7085955487418373005
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -151,30 +152,6 @@ MonoBehaviour:
   onChange:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &-2691473227363190047
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7085955487418373007}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 092f7d5b394932b4da65b2ef47ec8818, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  amount:
-    food: 3
-    wood: 0
-    stone: 0
-  resetTime: 0
-  resourceSpawnEffect: {fileID: 0}
-  playEffectOnCollect: 1
-  playEffectOnChildOff: 0
-  resourceSpawnOffset: {x: 0, y: 0, z: 0}
-  canBeDestroyed: 0
-  destroyAfterHits: 3
-  turnOffChildrenAfterHits: 0
 --- !u!114 &3886471620154342940
 MonoBehaviour:
   m_ObjectHideFlags: 0

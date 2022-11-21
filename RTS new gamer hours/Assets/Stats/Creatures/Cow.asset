@@ -20,7 +20,7 @@ MonoBehaviour:
   lookRange: 0
   attackRange: 0
   cost:
-    food: 0
+    food: 3
     wood: 0
     stone: 0
   regularAttackBuildings: 0

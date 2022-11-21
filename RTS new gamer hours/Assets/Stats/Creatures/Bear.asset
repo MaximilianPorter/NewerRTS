@@ -17,12 +17,12 @@ MonoBehaviour:
   armor: 0
   damage: 20
   timeBetweenAttacks: 3
-  lookRange: 20
+  lookRange: 10
   attackRange: 2
   cost:
-    food: 0
-    wood: 0
-    stone: 0
+    food: 50
+    wood: 50
+    stone: 50
   regularAttackBuildings: 0
   isRanged: 0
   projectileForce: 0
