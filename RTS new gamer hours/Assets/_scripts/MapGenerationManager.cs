@@ -152,7 +152,7 @@ public class MapGenerationManager : MonoBehaviour
     {
         spawnedEnemies.RemoveAll(enemy => enemy == null);
 
-        if (!canSpawnChests || spawnedEnemies.Count >= maxEnemiesInGame)
+        if (!canSpawnEnemies || spawnedEnemies.Count >= maxEnemiesInGame)
             return;
 
         enemySpawnCounter -= Time.deltaTime;

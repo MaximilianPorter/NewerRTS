@@ -35,6 +35,9 @@ public class BuyIconUI : MonoBehaviour
     public string GetButtonDescription => buttonDescription;
     //public Resources GetCost => cost;
     public BuyIcons GetButtonType => buttonType;
+    public UnitStats GetUnitStats => overrideUnit;
+    public BuildingStats GetBuildingStats => overrideBuilding;
+    public ResearchStats GetResearchStats => overrideResearch;
 
     public Color GetNormalColor => normalColor;
     public Color GetDisabledColor => disabledColor;
