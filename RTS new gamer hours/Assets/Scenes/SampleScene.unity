@@ -1652,7 +1652,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 341673765}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -4971,6 +4971,48 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 96622289578300513, guid: 67b4eee71feb5b44687aed38ecdd26ad, type: 3}
   m_PrefabInstance: {fileID: 720522034}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &736494711
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e07d49e90874d70b9937cb753327a2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enabled: 1
+  label: Noise
+  blendMode: 0
+  opacity: 100
+  passIndex: 4
+  noiseType: 0
+  noiseScale: 80
+  noiseOffset: {x: 100, y: 0}
+  levels: {x: 0.5, y: 1}
+--- !u!114 &744460881
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1d046e3917e4d8580903c69758b6558, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enabled: 1
+  label: Height
+  blendMode: 0
+  opacity: 100
+  passIndex: 0
+  min: 10
+  minFalloff: 1
+  max: 2000
+  maxFalloff: 1
 --- !u!1 &750323485
 GameObject:
   m_ObjectHideFlags: 0
@@ -5758,12 +5800,28 @@ MonoBehaviour:
   - {fileID: 1756497471}
   splatmapResolution: 256
   colorMapResolution: 256
-  layerSettings: []
+  layerSettings:
+  - enabled: 1
+    layer: {fileID: 8574412962073106934, guid: 9d3c14d093c5efa488e582f9a1b2f663, type: 2}
+    modifierStack:
+    - {fileID: 1923389953}
+  - enabled: 1
+    layer: {fileID: 8574412962073106934, guid: 05929a4aec087074ba39c7059d3324c2, type: 2}
+    modifierStack:
+    - {fileID: 736494711}
+  - enabled: 1
+    layer: {fileID: 8574412962073106934, guid: 8f32cc9883b377b4ebc3538ba838bff4, type: 2}
+    modifierStack:
+    - {fileID: 1136779627}
+  - enabled: 1
+    layer: {fileID: 8574412962073106934, guid: 68e602da48e73564e9f8e9125f0b8998, type: 2}
+    modifierStack:
+    - {fileID: 744460881}
   autoRepaint: 0
   terrainListeners: []
   bounds:
-    m_Center: {x: 0, y: 300, z: 0}
-    m_Extent: {x: 75, y: 300, z: 75}
+    m_Center: {x: 0, y: 290, z: 0}
+    m_Extent: {x: 100, y: 300, z: 100}
   filterShader: {fileID: 4800000, guid: 0f44df78e3d64d9cb2616cac3d84cb77, type: 3}
 --- !u!4 &947191153
 Transform:
@@ -6307,6 +6365,27 @@ MonoBehaviour:
   - {fileID: 1163477965}
   ifOffTurnBackOn: 0
   turnBackOnTime: 15
+--- !u!114 &1136779627
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e07d49e90874d70b9937cb753327a2d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enabled: 1
+  label: Noise
+  blendMode: 0
+  opacity: 100
+  passIndex: 4
+  noiseType: 0
+  noiseScale: 70
+  noiseOffset: {x: 0, y: 0}
+  levels: {x: 0.29299363, y: 1}
 --- !u!1001 &1142235701
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10576,7 +10655,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1756497469}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -75, y: 0, z: -75}
+  m_LocalPosition: {x: -100, y: -10, z: -100}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -11526,6 +11605,27 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1908780465}
   m_Mesh: {fileID: 4300004, guid: e92eff01d7ca74341b5a391c78f0ac6a, type: 3}
+--- !u!114 &1923389953
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b1d046e3917e4d8580903c69758b6558, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enabled: 1
+  label: Height
+  blendMode: 0
+  opacity: 100
+  passIndex: 0
+  min: 0
+  minFalloff: 1
+  max: 9.5
+  maxFalloff: 1
 --- !u!1 &1948182061 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5457401778411376750, guid: 4440b6117bd49c54597be450b2476a1a, type: 3}
