@@ -20,6 +20,8 @@ public class Building : MonoBehaviour
     [SerializeField] private LineRenderer buildingRallyPointLine;
     [SerializeField] private GameObject circleRadiusEffect;
     [SerializeField] private bool needsRadius = false;
+    [SerializeField] private AnimationCurve scaleUpCurve;
+    [SerializeField] private float scaleUpSpeed = 2f;
 
 
     private float scaleUpCounter = 0f;
@@ -29,6 +31,7 @@ public class Building : MonoBehaviour
     private bool playerIsHovering = false;
     private bool isMainSpawnBuilding = false;
     private int lastTeamID = -1;
+    private Vector3 startScale;
 
     private Cell lastCell;
     private Cell activeCell;
@@ -60,6 +63,9 @@ public class Building : MonoBehaviour
     private void Start()
     {
         PlayerHolder.AddBuilding(identifier.GetPlayerID, this);
+        startScale = transform.localScale;
+        transform.localScale = Vector3.zero;
+        
 
         DestroySurroundings();
 
@@ -78,6 +84,8 @@ public class Building : MonoBehaviour
 
     private void Update()
     {
+        ScaleUpBuilding();
+
         if (debugSpawnUnit)
         {
             SpawnUnit();
@@ -117,6 +125,19 @@ public class Building : MonoBehaviour
             if (buildingRallyPointLine) buildingRallyPointLine.enabled = false;
         }
 
+    }
+
+    private void ScaleUpBuilding ()
+    {
+        scaleUpCounter += Time.deltaTime * scaleUpSpeed;
+        if (scaleUpCounter < 1f)
+        {
+            transform.localScale = startScale * scaleUpCurve.Evaluate(scaleUpCounter);
+        }
+        else if (scaleUpCounter > 1f && scaleUpCounter < 1.5f)
+        {
+            transform.localScale = startScale;
+        }
     }
 
     private void AssignActiveCell()
