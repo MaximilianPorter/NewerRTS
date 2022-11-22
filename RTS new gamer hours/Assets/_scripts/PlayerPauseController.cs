@@ -1,8 +1,10 @@
+using SCPE;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.UI;
 
 public class PlayerPauseController : MonoBehaviour
@@ -12,6 +14,9 @@ public class PlayerPauseController : MonoBehaviour
     [SerializeField] private PauseMenuSection[] pauseMenus;
 
     [SerializeField] private MyUiButton[] buttonsNotAvailableInGame;
+    [SerializeField] private VolumeProfile postProfile;
+    private CloudShadows cloudShadows;
+
 
     private Identifier identifier;
 
@@ -56,6 +61,8 @@ public class PlayerPauseController : MonoBehaviour
     {
         //pauseMenuButtons = GetComponentsInChildren<MyUiButton>();
         currentMenu = pauseMenus.FirstOrDefault(menu => menu.menuType == PauseMenus.Main);
+        if (postProfile.TryGet (out CloudShadows clouds))
+            this.cloudShadows = clouds;
     }
 
     private void Update()
@@ -188,6 +195,11 @@ public class PlayerPauseController : MonoBehaviour
     {
         HealthBarManager.SetHealthBarsOn(identifier.GetPlayerID, !HealthBarManager.GetHealthBarsOn[identifier.GetPlayerID]);
         toggle.isOn = HealthBarManager.GetHealthBarsOn[identifier.GetPlayerID];
+    }
+
+    public void ToggleClouds (Toggle toggle)
+    {
+        cloudShadows.density.value = toggle.isOn ? 1f : 0f;
     }
 
     public void QuitGame ()

@@ -47,6 +47,7 @@ public class NavMeshMovement : MonoBehaviour
     {
         //rb = GetComponent<Rigidbody>();
         agent = GetComponent<NavMeshAgent>();
+        
         if (disableMovement)
         {
             agent.enabled = false;
@@ -55,6 +56,7 @@ public class NavMeshMovement : MonoBehaviour
 
     private void Start()
     {
+
         if (stats)
         {
             agent.speed = stats.maxMoveSpeed;

@@ -280,7 +280,7 @@ MonoBehaviour:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 0.1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -360,17 +360,9 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8956819731846260277}
     m_Modifications:
-    - target: {fileID: 7846201261881417162, guid: d2f11094bddbf414dbf5ebc93b932c71, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 7846201262826004917, guid: d2f11094bddbf414dbf5ebc93b932c71, type: 3}
       propertyPath: m_Name
       value: (Projector) Circle
-      objectReference: {fileID: 0}
-    - target: {fileID: 7846201262826004917, guid: d2f11094bddbf414dbf5ebc93b932c71, type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7846201262826004918, guid: d2f11094bddbf414dbf5ebc93b932c71, type: 3}
       propertyPath: m_RootOrder
@@ -418,34 +410,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d2f11094bddbf414dbf5ebc93b932c71, type: 3}
---- !u!1 &302148435140632463 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7846201261881417160, guid: d2f11094bddbf414dbf5ebc93b932c71, type: 3}
-  m_PrefabInstance: {fileID: 7553165618885067335}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &8036550659323676752
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 302148435140632463}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0777d029ed3dffa4692f417d4aba19ca, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 2100000, guid: 7e4c27a707697eb48942a4e7c4bbd5da, type: 2}
-  m_DrawDistance: 1000
-  m_FadeScale: 0.9
-  m_StartAngleFade: 180
-  m_EndAngleFade: 180
-  m_UVScale: {x: 1, y: 1}
-  m_UVBias: {x: 0, y: 0}
-  m_ScaleMode: 0
-  m_Offset: {x: 0, y: 0, z: 10}
-  m_Size: {x: 10, y: 10, z: 20}
-  m_FadeFactor: 1
 --- !u!4 &302148436342449137 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7846201262826004918, guid: d2f11094bddbf414dbf5ebc93b932c71, type: 3}
@@ -456,18 +420,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 7846201262826004917, guid: d2f11094bddbf414dbf5ebc93b932c71, type: 3}
   m_PrefabInstance: {fileID: 7553165618885067335}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &3057697920209662596
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 302148436342449138}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 218f5670fde47c44295206e5dd087eb0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &8542130340346601629
 PrefabInstance:
   m_ObjectHideFlags: 0

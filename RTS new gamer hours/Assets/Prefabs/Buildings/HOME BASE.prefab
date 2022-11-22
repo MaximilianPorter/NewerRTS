@@ -223,7 +223,7 @@ MonoBehaviour:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 0.1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -251,6 +251,7 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  scaleUpSpeed: 2
 --- !u!114 &3659162556006566174
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -413,7 +414,8 @@ PrefabInstance:
       propertyPath: isTargetable
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6069950482148414590, guid: 197e208e373752448a8eb352aa3896d9, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 197e208e373752448a8eb352aa3896d9, type: 3}
 --- !u!4 &2387042193912765805 stripped
 Transform:
@@ -598,7 +600,8 @@ PrefabInstance:
       propertyPath: isTargetable
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6069950482148414590, guid: 197e208e373752448a8eb352aa3896d9, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 197e208e373752448a8eb352aa3896d9, type: 3}
 --- !u!4 &320531670428217635 stripped
 Transform:
@@ -750,7 +753,8 @@ PrefabInstance:
       propertyPath: isTargetable
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6069950482148414590, guid: 197e208e373752448a8eb352aa3896d9, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 197e208e373752448a8eb352aa3896d9, type: 3}
 --- !u!4 &9015745351983946792 stripped
 Transform:

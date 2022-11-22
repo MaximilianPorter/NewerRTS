@@ -140,8 +140,11 @@ public class UnitActions : MonoBehaviour
         {
             isAttacking = animator.GetCurrentAnimatorStateInfo(0).IsName("Attack");
             isThrowing = animator.GetCurrentAnimatorStateInfo(0).IsName("Throw");
-            navMovement.SetCanMove(!isAttacking && !isThrowing);
-            navMovement.SetCanTurn(!isThrowing);
+            if (navMovement != null)
+            {
+                navMovement.SetCanMove(!isAttacking && !isThrowing);
+                navMovement.SetCanTurn(!isThrowing);
+            }
 
             if (isThrowing)
                 animator.speed = throwAnimSpeed;
@@ -150,7 +153,8 @@ public class UnitActions : MonoBehaviour
 
             if (!isAttacking && !isThrowing)
             {
-                animator.SetBool("isMoving", navMovement.GetMoveSpeed01 > 0.1f);
+                if (navMovement != null)
+                    animator.SetBool("isMoving", navMovement.GetMoveSpeed01 > 0.1f);
                 if (animator.GetBool("isMoving"))
                     animator.speed = walkAnimSpeed * navMovement.GetCurrentMoveSpeed;
 
@@ -173,6 +177,9 @@ public class UnitActions : MonoBehaviour
 
     private void HandleMoveTowardsEnemies ()
     {
+        if (navMovement == null)
+            return;
+
         // if we're at our destination, go patrol mode
         if (!navMovement.GetIsMoving && Vector3.Distance (navMovement.GetDestination, transform.position) < 0.5f)
             movementType = UnitMovementType.Patrol;

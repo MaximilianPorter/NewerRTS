@@ -64,7 +64,7 @@ public class Building : MonoBehaviour
     {
         PlayerHolder.AddBuilding(identifier.GetPlayerID, this);
         startScale = transform.localScale;
-        transform.localScale = Vector3.zero;
+        transform.localScale = Vector3.one * 0.1f;
         
 
         DestroySurroundings();
