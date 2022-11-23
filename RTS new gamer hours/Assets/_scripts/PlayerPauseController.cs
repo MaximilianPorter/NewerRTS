@@ -45,6 +45,7 @@ public class PlayerPauseController : MonoBehaviour
 
     private PauseMenuSection currentMenu;
     private PauseMenus currentMenuType = PauseMenus.Main;
+    private PauseMenus lastMenuType;
     private int selectedButtonIndex = 0;
     private bool isPaused = false;
 
@@ -63,11 +64,20 @@ public class PlayerPauseController : MonoBehaviour
         currentMenu = pauseMenus.FirstOrDefault(menu => menu.menuType == PauseMenus.Main);
         if (postProfile.TryGet (out CloudShadows clouds))
             this.cloudShadows = clouds;
+
+        lastMenuType = currentMenu.menuType;
     }
 
     private void Update()
     {
         currentMenu = pauseMenus.FirstOrDefault(menu => menu.menuType == currentMenuType);
+        // update first selected if the menu changes
+        if (lastMenuType != currentMenu.menuType)
+        {
+            lastMenuType = currentMenu.menuType;
+            selectedButtonIndex = 0;
+            currentMenu.buttonsInMenu[selectedButtonIndex].SelectButton();
+        }
 
         if (isPaused)
         {
@@ -96,8 +106,6 @@ public class PlayerPauseController : MonoBehaviour
             if (currentMenuType != PauseMenus.Main)
             {
                 currentMenuType = PauseMenus.Main;
-                selectedButtonIndex = 0;
-                currentMenu.buttonsInMenu[selectedButtonIndex].SelectButton();
             }
             else
                 UnPause();
@@ -176,8 +184,6 @@ public class PlayerPauseController : MonoBehaviour
     public void OpenOptionsMenu()
     {
         currentMenuType = PauseMenus.Options;
-        selectedButtonIndex = 0;
-        currentMenu.buttonsInMenu[selectedButtonIndex].SelectButton();
     }
 
     public void LeaveGame ()
@@ -199,6 +205,7 @@ public class PlayerPauseController : MonoBehaviour
 
     public void ToggleClouds (Toggle toggle)
     {
+        toggle.isOn = !toggle.isOn;
         cloudShadows.density.value = toggle.isOn ? 1f : 0f;
     }
 

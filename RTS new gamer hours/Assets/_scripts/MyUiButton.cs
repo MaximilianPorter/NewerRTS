@@ -46,7 +46,6 @@ public class MyUiButton : MonoBehaviour
             if (isClicking)
             {
                 isClicking = false;
-                isSelected = false;
                 onComplete.Invoke();
             }
         }
@@ -56,12 +55,17 @@ public class MyUiButton : MonoBehaviour
             {
                 fillTimer = 0f;
                 isClicking = false;
-                isSelected = false;
                 onComplete.Invoke();
             }
         }
     }
+
+    private void OnDisable()
+    {
+        isSelected = false;
+    }
 }
+
 
 [Serializable]
 public enum ButtonType
