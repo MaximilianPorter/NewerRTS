@@ -42,7 +42,7 @@ public class TeamBoxes : MonoBehaviour
         else if (teamBoxes.Count (box => box.GetTouchingPlayers.Length > 0) == 1)
         {
             // need at least 2 people on team boxes to join
-            ErrorMessageHandler.SetErrorMessage(teamBoxes.FirstOrDefault(box => box.GetTouchingPlayers.Length > 0).GetTouchingPlayers[0].GetPlayerID, "NEED AT LEAST 2 PEOPLE TO PLAY");
+            ErrorMessageHandler.SetErrorMessage(teamBoxes.FirstOrDefault(box => box.GetTouchingPlayers.Length > 0).GetTouchingPlayers[0].GetPlayerID, "NEED AT LEAST 2 TEAMS/PLAYERS TO PLAY");
             counter = countdownTime;
             countdownText.text = "";
         }

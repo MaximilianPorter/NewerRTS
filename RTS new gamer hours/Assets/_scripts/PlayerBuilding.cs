@@ -81,6 +81,7 @@ public class PlayerBuilding : MonoBehaviour
     public void SetTutorial(bool inTutorial) => tutorialActive = inTutorial;
     public BuyIconUI GetSelectedUiButton => allIcons[selectedIconIndex];
     public bool GetHasMenuOpen => anyMenuOpen;
+    public Building GetHoverBuilding => hoveringBuilding;
 
     [Serializable]
     private struct UiBuilding

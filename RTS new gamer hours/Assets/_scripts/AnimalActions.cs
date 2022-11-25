@@ -56,7 +56,6 @@ public class AnimalActions : MonoBehaviour
         navMovement = GetComponent<NavMeshMovement>();
         health = GetComponent<Health>();
         cellIdentifier = GetComponent<CellIdentifier>();
-        startPos = transform.position;
     }
 
     private void Start()
@@ -65,6 +64,7 @@ public class AnimalActions : MonoBehaviour
             health.SetValues(animalStats.health, animalStats.armor);
 
         lastMaxHealth = health.GetMaxHealth;
+        startPos = transform.position;
     }
 
     private void Update()
@@ -105,7 +105,7 @@ public class AnimalActions : MonoBehaviour
         }
         else if (goBackToSpawn)
         {
-            if (Vector3.Distance(transform.position, startPos) < 0.5f)
+            if (Vector3.Distance(transform.position, startPos) < 1f || navMovement.GetMoveSpeed01 < 0.1f)
             {
                 goBackToSpawn = false;
 
@@ -240,6 +240,7 @@ public class AnimalActions : MonoBehaviour
         if (lastCell != null && lastCell.unitsInCell.Contains(cellIdentifier))
             lastCell.unitsInCell.Remove(cellIdentifier);
 
+
         // spawn effects
         GameObject deathEffectInstance = Instantiate(deathEffect, transform.position, Quaternion.identity);
         Vector3 dir = transform.position - health.GetLastHitFromPos;
@@ -247,8 +248,8 @@ public class AnimalActions : MonoBehaviour
         deathEffectInstance.transform.rotation = Quaternion.LookRotation(dir, Vector3.up);
         Destroy(deathEffectInstance, 5f);
 
-        PlayerResourceManager.instance.AddResourcesWithUI(health.GetLastHitByPlayer.GetPlayerID, animalStats.cost, transform.position + new Vector3(0f, 1f, 0f));
 
+        PlayerResourceManager.instance.AddResourcesWithUI(health.GetLastHitByPlayer.GetPlayerID, animalStats.cost, transform.position + new Vector3(0f, 1f, 0f));
 
         if (destroyGameobjectOnDeath)
         {

@@ -359,11 +359,6 @@ public class Attacking : MonoBehaviour
                         returnedAmount.GetStone + (returnedAmount.GetStone > 0 ? storageYardCount : 0)
                         );
                     PlayerResourceManager.instance.AddResourcesWithUI(identifier.GetPlayerID, amtToAdd, transform.position + new Vector3(0f, 1f, 0f));
-                    //PlayerResourceManager.PlayerResourceAmounts[identifier.GetPlayerID].AddResources(
-                    //    returnedAmount.GetFood + (returnedAmount.GetFood > 0 ? storageYardCount : 0),
-                    //    returnedAmount.GetWood + (returnedAmount.GetWood > 0 ? storageYardCount : 0),
-                    //    returnedAmount.GetStone + (returnedAmount.GetStone > 0 ? storageYardCount : 0)
-                    //    );
                 }
 
             }
@@ -375,6 +370,7 @@ public class Attacking : MonoBehaviour
                 GameObject hitEffect = Instantiate(treeShake.GetHitEffect, treeShake.transform.position + treeShake.GetHitEffectOffset, Quaternion.identity);
                 Destroy(hitEffect, 5f);
 
+                break;
             }
 
 
@@ -387,6 +383,7 @@ public class Attacking : MonoBehaviour
                 GameObject hitEffectInstance = Instantiate(defaultHitEffect, transform.position + transform.forward * stats.GetHitCenterDist, Quaternion.identity);
                 Destroy(hitEffectInstance, 1f);
 
+                break;
             }
 
             if (hit.CompareTag("Field"))
@@ -394,6 +391,7 @@ public class Attacking : MonoBehaviour
                 GameObject wheatHitInstance = Instantiate(wheatHitEffect, transform.position + transform.forward * stats.GetHitCenterDist, Quaternion.identity);
                 Destroy(wheatHitInstance, 5f);
 
+                break;
             }
         }
 
