@@ -8,6 +8,7 @@ using System.Runtime.InteropServices;
 using Unity.VisualScripting;
 using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEditor;
+using UnityEditor.EditorTools;
 using UnityEngine;
 
 public class StatsDatabaseManager : MonoBehaviour
@@ -77,12 +78,22 @@ public class StatsDatabaseManager : MonoBehaviour
         {
             yield return StartCoroutine(SetUnitDetails(i));
             unitStats[i].DumpJsonToFile(Application.persistentDataPath + "/" + unitStats[i].unitType + ".json");
+
+            if (Application.isEditor)
+            {
+                EditorUtility.SetDirty(unitStats[i]);
+            }
         }
 
         for (int i = 0; i < buildingStats.Length; i++)
         {
             yield return StartCoroutine(SetBuildingDetails(i));
             buildingStats[i].DumpJsonToFile(Application.persistentDataPath + "/" + buildingStats[i].buildingType + ".json");
+
+            if (Application.isEditor)
+            {
+                EditorUtility.SetDirty(buildingStats[i]);
+            }
         }
 
         //PauseGameManager.ForcePause = false;

@@ -384,9 +384,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7444a2888946a634ba879ce630db7727, type: 3}
---- !u!114 &8036550658248882998 stripped
+--- !u!114 &8298933359013108669 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8036550659323676752, guid: 7444a2888946a634ba879ce630db7727, type: 3}
+  m_CorrespondingSourceObject: {fileID: 8298933360087918811, guid: 7444a2888946a634ba879ce630db7727, type: 3}
   m_PrefabInstance: {fileID: 1076917094}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
@@ -430,7 +430,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 16384
   radius: 8
-  projector: {fileID: 8036550658248882998}
+  projector: {fileID: 8298933359013108669}
 --- !u!1001 &349429173150785011
 PrefabInstance:
   m_ObjectHideFlags: 0

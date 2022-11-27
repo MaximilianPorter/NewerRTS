@@ -48,6 +48,7 @@ public class Building : MonoBehaviour
     public bool GetIsMainSpawnBuilding => isMainSpawnBuilding;
     public bool GetRallyPointMoved => rallyPointMoved;
     public Vector3 GetRallyPointPos => rallyPoint.position;
+    public bool GetNeedsRadius => needsRadius;
     
     public BuildingStats GetStats => stats;
 

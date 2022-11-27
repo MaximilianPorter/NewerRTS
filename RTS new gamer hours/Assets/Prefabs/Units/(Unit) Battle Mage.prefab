@@ -26,18 +26,18 @@ PrefabInstance:
     - target: {fileID: 4258379125407079058, guid: d14c90c55a5aa6b4293e3c16f01004b4, type: 3}
       propertyPath: bodyPartsNeedMaterial.Array.data[0]
       value: 
-      objectReference: {fileID: 3173903834869465694}
+      objectReference: {fileID: 3173903834869514732}
     - target: {fileID: 4258379125407079058, guid: d14c90c55a5aa6b4293e3c16f01004b4, type: 3}
       propertyPath: bodyPartsNeedMaterial.Array.data[1]
       value: 
-      objectReference: {fileID: 3173903834864373178}
+      objectReference: {fileID: 3173903834864355066}
     - target: {fileID: 4258379125407079058, guid: d14c90c55a5aa6b4293e3c16f01004b4, type: 3}
       propertyPath: bodyPartsNeedMaterial.Array.data[2]
       value: 
       objectReference: {fileID: 3173903834864356620}
     - target: {fileID: 5160717717918629767, guid: d14c90c55a5aa6b4293e3c16f01004b4, type: 3}
       propertyPath: m_Name
-      value: (Unit) Mage
+      value: (Unit) Battle Mage
       objectReference: {fileID: 0}
     - target: {fileID: 5160717717918629872, guid: d14c90c55a5aa6b4293e3c16f01004b4, type: 3}
       propertyPath: stats
@@ -295,19 +295,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1854a3b64b66724429ff0b04e0891fc1, type: 3}
+--- !u!23 &3173903834864355066 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 2351662, guid: 1854a3b64b66724429ff0b04e0891fc1, type: 3}
+  m_PrefabInstance: {fileID: 3173903834866312404}
+  m_PrefabAsset: {fileID: 0}
 --- !u!23 &3173903834864356620 stripped
 MeshRenderer:
   m_CorrespondingSourceObject: {fileID: 2353624, guid: 1854a3b64b66724429ff0b04e0891fc1, type: 3}
   m_PrefabInstance: {fileID: 3173903834866312404}
   m_PrefabAsset: {fileID: 0}
---- !u!23 &3173903834864373178 stripped
-MeshRenderer:
-  m_CorrespondingSourceObject: {fileID: 2337134, guid: 1854a3b64b66724429ff0b04e0891fc1, type: 3}
-  m_PrefabInstance: {fileID: 3173903834866312404}
-  m_PrefabAsset: {fileID: 0}
---- !u!137 &3173903834869465694 stripped
+--- !u!137 &3173903834869514732 stripped
 SkinnedMeshRenderer:
-  m_CorrespondingSourceObject: {fileID: 13756042, guid: 1854a3b64b66724429ff0b04e0891fc1, type: 3}
+  m_CorrespondingSourceObject: {fileID: 13706552, guid: 1854a3b64b66724429ff0b04e0891fc1, type: 3}
   m_PrefabInstance: {fileID: 3173903834866312404}
   m_PrefabAsset: {fileID: 0}
 --- !u!95 &3173903834873598940 stripped

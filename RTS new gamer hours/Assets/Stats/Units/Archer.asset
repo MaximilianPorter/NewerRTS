@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Archer
   m_EditorClassIdentifier: 
   unitType: 14
-  health: 1
+  health: 70
   armor: 0
   damage: 5
   timeBetweenAttacks: 2

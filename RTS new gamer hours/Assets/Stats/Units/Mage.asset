@@ -29,7 +29,6 @@ MonoBehaviour:
   accuracy: 0
   leadsTarget: 0
   projectileArch: 1
-  projectile: {fileID: 5640332772760401253, guid: 55e4c6da466501e4da37fba31125a102, type: 3}
   hitMask:
     serializedVersion: 2
     m_Bits: 1024

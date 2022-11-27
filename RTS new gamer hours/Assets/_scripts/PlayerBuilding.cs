@@ -35,6 +35,7 @@ public class PlayerBuilding : MonoBehaviour
     [SerializeField] private GameObject wallBuildingVisual;
     [SerializeField] private MeshRenderer wallVisualToChangeColor;
     [SerializeField] private Outline placingBuildingVisual;
+    [SerializeField] private GameObject placingBuildingRing;
     [SerializeField] private MeshRenderer buildingVisualToChangeColor;
     [SerializeField] private Material canPlaceMat;
     [SerializeField] private Material canNOTPlaceMat;
@@ -747,6 +748,7 @@ public class PlayerBuilding : MonoBehaviour
     }
     private void HandlePlacingBuilding ()
     {
+        placingBuildingRing.SetActive(aboutToPlaceBuilding && aboutToPlaceBuilding.GetNeedsRadius);
         placingBuildingVisual.gameObject.SetActive(isPlacingBuilding);
         grid.SetActive(isPlacingBuilding);
 
