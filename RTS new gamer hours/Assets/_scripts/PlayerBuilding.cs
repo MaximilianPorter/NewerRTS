@@ -439,7 +439,7 @@ public class PlayerBuilding : MonoBehaviour
             {
                 // if we have no buildings, or all the buildings have no unit attached, return
                 if (PlayerHolder.GetBuildings(identifier.GetPlayerID).Count <= 0 ||
-                    PlayerHolder.GetBuildings (identifier.GetPlayerID).All (building => building.GetSpawnableUnit == null))
+                    !PlayerHolder.GetBuildings (identifier.GetPlayerID).Any (building => building.GetSpawnableUnit != null))
                 {
                     return;
                 }

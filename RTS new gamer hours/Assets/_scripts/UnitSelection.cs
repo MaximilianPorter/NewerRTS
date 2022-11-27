@@ -40,8 +40,10 @@ public class UnitSelection : MonoBehaviour
     private UnitActions[][] microGroups = new UnitActions[4][];
     private Vector3 lastRallyPointWorldPos;
     private float movementTypeTextCounter = 0f;
+    private bool isRallyingTroopsOnPattern = false;
 
     public bool GetHasTroopsSelected => selectedUnits.Count > 0;
+    public bool GetIsRallyingTroopsOnPattern => isRallyingTroopsOnPattern;
 
     private void Awake()
     {
@@ -192,6 +194,7 @@ public class UnitSelection : MonoBehaviour
         if (PlayerInput.GetPlayers[identifier.GetPlayerID].GetButtonShortPress(PlayerInput.GetInputRallyTroops))
         {
             patternNameText.transform.position = playerCam.WorldToScreenPoint(transform.position + new Vector3(0f, 4f, 0f));
+            isRallyingTroopsOnPattern = true;
 
             // change pattern number
             if (PlayerInput.GetPlayers[identifier.GetPlayerID].GetButtonDown(PlayerInput.GetCycleRight))
@@ -407,6 +410,7 @@ public class UnitSelection : MonoBehaviour
         if (PlayerInput.GetPlayers[identifier.GetPlayerID].GetButtonUp(PlayerInput.GetInputRallyTroops))
         {
             patternNameText.text = "";
+            isRallyingTroopsOnPattern = false;
 
             rallyTroopsEffect.Play();
             lastRallyPointWorldPos = transform.position + new Vector3 (0f, -0.75f, 0f);
@@ -664,6 +668,7 @@ public class UnitSelection : MonoBehaviour
 
         selectedUnitIndex = -1;
         tempSelectedUnits = new List<UnitActions>(0);
+        isRallyingTroopsOnPattern = false;
 
         for (int i = 0; i < selectedUnits.Count; i++)
         {
