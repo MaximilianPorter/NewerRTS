@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: BatteringRamOverride
+  m_Controller: {fileID: 9100000, guid: b715938cc747b6e4a9768f423e81b88b, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: ed5efca8bebba864d9f5d5b20196c94b, type: 3}
+    m_OverrideClip: {fileID: 7400000, guid: 6cb8b02f857cbc947be3e06068dcfa0c, type: 3}
+  - m_OriginalClip: {fileID: 7400000, guid: 39c5a1e19d6559345aa3c57adb589874, type: 3}
+    m_OverrideClip: {fileID: 7400000, guid: baa7490040f732842a1563add4d7dc63, type: 3}
+  - m_OriginalClip: {fileID: 7400000, guid: 2eff314cde206bb4eb0a5715561aa6fe, type: 3}
+    m_OverrideClip: {fileID: 7400000, guid: 8d599a1d36bf80b4495953ef62dbb050, type: 3}

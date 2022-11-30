@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 28087c7f2bbc206489107b1b1972109f, type: 3}
+  m_Name: Wheat Field
+  m_EditorClassIdentifier: 
+  parentName: Wheat Field Parent
+  spawnBeforeTrees: 1
+  spawnObjects:
+  - prefab: {fileID: 5093730487169844325, guid: b9f482cd10f6fb34f9608440a7e2356f, type: 3}
+    spacingBuffer: 5
+    randomRotation: 0
+    spawnWeight: 1
+  numberToPlace: 5
+  showGrid: 0
+  gridSize: {x: 2, y: 2}
+  gridOffset: {x: 0, y: 0}
+  squareSpacing: {x: 0, y: 0}
+  gridSquareSize: {x: 50, y: 50}

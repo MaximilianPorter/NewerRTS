@@ -1,0 +1,55 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - Stone Surface
+  - Tree
+  - Sword
+  - Field
+  - Bush
+  - Camera
+  - Canvas
+  - Rock
+  - Main Canvas
+  - Animal
+  - Chest
+  - UI Error Message
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - POST
+  - Water
+  - UI
+  - Ground
+  - Player
+  - Body
+  - Tree Spawning Surface
+  - Unit
+  - POST Only Selected
+  - Building
+  - Obstacle
+  - Obstace (No Bake)
+  - Terrain
+  - 
+  - 
+  - 
+  - 
+  - P1 CAM
+  - P2 CAM
+  - P3 CAM
+  - P4 CAM
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Default
+    uniqueID: 0
+    locked: 0

@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "537763471256",
+    "firebase_url": "https://rts-castles-default-rtdb.firebaseio.com",
+    "project_id": "rts-castles",
+    "storage_bucket": "rts-castles.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:537763471256:android:2361d5f83be8e63d0a95ed",
+        "android_client_info": {
+          "package_name": "com.maxporter.rtscastles"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "537763471256-qoigog4fjv8b552o1vgj254vjaggv1bp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDE4XXi6yoAEG8xFJmoAZRM1xSs4K0rB9Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "537763471256-qoigog4fjv8b552o1vgj254vjaggv1bp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
